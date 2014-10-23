@@ -111,10 +111,6 @@
             android:label="Debuging" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.debug.DebugfromPC"
-            android:label="Debuging" >
-        </activity>
-        <activity
             android:name="com.delvinglanguages.face.phrasals.ListPhrasalActivity"
             android:label="@string/title_list_phrasal" >
         </activity>

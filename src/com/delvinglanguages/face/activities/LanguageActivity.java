@@ -24,7 +24,6 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.debug.Debug;
-import com.delvinglanguages.debug.DebugfromPC;
 import com.delvinglanguages.debug.Inserter;
 import com.delvinglanguages.face.langoptions.BinFragment;
 import com.delvinglanguages.face.langoptions.LanguageFragment;
@@ -265,7 +264,7 @@ public class LanguageActivity extends FragmentActivity implements
 				}
 				break;
 			case 7: // Debug
-				startActivity(new Intent(getActivity(), DebugfromPC.class));
+				startActivity(new Intent(getActivity(), Debug.class));
 				return;
 			}
 
