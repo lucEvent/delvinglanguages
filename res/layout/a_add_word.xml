@@ -1,0 +1,182 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddWordActivity" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/options"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/word"
+                style="@style/edittext_palabra"
+                android:hint="@string/enterword"
+                android:inputType="textCapSentences" />
+
+            <EditText
+                android:id="@+id/translation"
+                style="@style/edittext_palabra"
+                android:hint="@string/translation"
+                android:inputType="textCapSentences" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:gravity="top"
+                android:text="@string/messageseparatecommas"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/pronunciation"
+                style="@style/edittext_palabra"
+                android:hint="@string/pronunciation" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:paddingBottom="3dip"
+                android:paddingTop="10dip"
+                android:text="@string/type"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/sel_noun"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_noun_backgrounds"
+                    android:paddingLeft="10dip"
+                    android:text="@string/noun" />
+
+                <Button
+                    android:id="@+id/sel_verb"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_verb_backgrounds"
+                    android:text="@string/verb" />
+
+                <Button
+                    android:id="@+id/sel_adj"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adjective_backgrounds"
+                    android:text="@string/adjective" />
+
+                <Button
+                    android:id="@+id/sel_adv"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adverb_backgrounds"
+                    android:text="@string/adverb" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/sel_phrasal"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_phrasal_backgrounds"
+                    android:text="@string/phrasalverb" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/sel_expression"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_expression_backgrounds"
+                    android:text="@string/expression" />
+
+                <Button
+                    android:id="@+id/sel_other"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_other_backgrounds"
+                    android:text="@string/other" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/letrasespeciales"
+        android:layout_centerInParent="true" >
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/button_list_selector"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/addmore"
+            style="@style/button_list_selector"
+            android:text="@string/addmore" />
+
+        <Button
+            android:id="@+id/add"
+            style="@style/button_list_selector"
+            android:text="@string/add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/letrasespeciales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ap_keyboard"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sv_ao"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_ao_cap"
+            android:text="@string/sv_ao"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_ae"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_ae_cap"
+            android:text="@string/sv_ae"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_oe"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_oe_cap"
+            android:text="@string/sv_oe"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/ap_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+</RelativeLayout>

@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WarehouseActivity" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="381dp"
+        android:layout_above="@+id/layoutbottom"
+        android:layout_alignParentTop="true"
+        android:cacheColorHint="#00000000"
+        android:paddingLeft="10dip" />
+
+    <LinearLayout
+        android:id="@+id/layoutbottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:layout_above="@+id/letrasespeciales"
+        android:paddingBottom="2dip"
+        android:paddingTop="@dimen/margenlabels" >
+
+        <EditText
+            android:id="@+id/enter"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/enteranewword"
+            android:inputType="textCapSentences" >
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/storeword"
+            android:layout_width="60dip"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/btn_default"
+            android:contentDescription="@string/add"
+            android:src="@android:drawable/ic_menu_add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/letrasespeciales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sv_ao"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_ao_cap"
+            android:text="@string/sv_ao"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_ae"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_ae_cap"
+            android:text="@string/sv_ae"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_oe"
+            style="@style/button_list_selector"
+            android:tag="@string/sv_oe_cap"
+            android:text="@string/sv_oe"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</RelativeLayout>

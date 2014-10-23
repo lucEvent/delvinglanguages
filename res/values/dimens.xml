@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="separacionbotones">1dip</dimen>
+    <dimen name="margenbotones">20dip</dimen>
+    <dimen name="margenlabels">10dip</dimen>
+
+    <!--
+         ****************************** 
+    
+        <dimen name=""></dimen>
+        <dimen name=""></dimen>
+        <dimen name=""></dimen>
+        <dimen name=""></dimen>
+        <dimen name=""></dimen>
+    -->
+
+    <dimen name="laymar">10dip</dimen>
+    <dimen name="laymartop">10dip</dimen>
+    <dimen name="laymarbottom">5dip</dimen>
+    <dimen name="laymarleft">10dip</dimen>
+    <dimen name="laymarright">10dip</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>

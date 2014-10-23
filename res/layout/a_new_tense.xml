@@ -1,0 +1,218 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/laymarleft"
+    android:paddingRight="@dimen/laymarright"
+    android:paddingTop="@dimen/laymartop"
+    tools:context=".NewTenseActivity" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/ttense"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Tense"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/tverb"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Verb Name"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+
+            <View style="@style/divisor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tjag"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="Jag"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_njag"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" >
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/edit_pjag"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tdu"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="Du"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_ndu"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" />
+
+                <EditText
+                    android:id="@+id/edit_pdu"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/thanhon"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="Han/Hon"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_nhanhon"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" />
+
+                <EditText
+                    android:id="@+id/edit_phanhon"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvi"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="Vi"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_nvi"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" />
+
+                <EditText
+                    android:id="@+id/edit_pvi"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tni"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="Ni"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_nni"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" />
+
+                <EditText
+                    android:id="@+id/edit_pni"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tde"
+                    style="@style/layout_0w1_ems10"
+                    android:layout_weight="1"
+                    android:text="De"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/edit_nde"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="@string/verb" />
+
+                <EditText
+                    android:id="@+id/edit_pde"
+                    style="@style/layout_0w1_ems10"
+                    android:hint="Pronunciation" >
+                </EditText>
+            </LinearLayout>
+
+            <View style="@style/divisor" />
+
+            <CheckBox
+                android:id="@+id/repiteall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dip"
+                android:text="Repite all"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="2dip"
+        android:background="@drawable/button_backgrounds"
+        android:text="@string/add" />
+
+</RelativeLayout>

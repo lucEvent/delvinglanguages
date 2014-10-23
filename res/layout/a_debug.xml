@@ -1,0 +1,195 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/d_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Debug" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutbuttons"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dip"
+                    android:text="@string/w"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <EditText
+                    android:id="@+id/d_word"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="1"
+                    android:maxLines="4"
+                    android:minLines="1" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dip"
+                    android:text="@string/t"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <EditText
+                    android:id="@+id/d_trans"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="1"
+                    android:maxLines="4"
+                    android:minLines="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dip"
+                    android:text="@string/p"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <EditText
+                    android:id="@+id/d_pron"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:lines="1"
+                    android:maxLines="4"
+                    android:minLines="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip" >
+
+                <Button
+                    android:id="@+id/d_noun"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_noun_backgrounds"
+                    android:paddingLeft="10dip"
+                    android:text="@string/noun" />
+
+                <Button
+                    android:id="@+id/d_verb"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_verb_backgrounds"
+                    android:text="@string/verb" />
+
+                <Button
+                    android:id="@+id/d_adj"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adjective_backgrounds"
+                    android:text="@string/adjective" />
+
+                <Button
+                    android:id="@+id/d_adv"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adverb_backgrounds"
+                    android:text="@string/adverb" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip" >
+
+                <Button
+                    android:id="@+id/d_phrasal"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_phrasal_backgrounds"
+                    android:text="@string/phrasalverb" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip" >
+
+                <Button
+                    android:id="@+id/d_expression"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_expression_backgrounds"
+                    android:text="@string/expression" />
+
+                <Button
+                    android:id="@+id/d_other"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_other_backgrounds"
+                    android:text="@string/other" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutbuttons"
+        android:layout_above="@+id/d_keyboard" >
+
+        <Button
+            android:id="@+id/d_replace"
+            style="@style/button_list_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reset" />
+
+        <Button
+            android:id="@+id/d_san"
+            style="@style/button_list_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/d_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+</RelativeLayout>

@@ -1,0 +1,242 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:stretchColumns="*" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_noun"
+                android:text="@string/nn" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_verb"
+                android:text="@string/vb" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_adj"
+                android:text="@string/adj" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_adv"
+                android:text="@string/adv" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_phrasal"
+                android:text="@string/ph.v" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_expression"
+                android:text="@string/exp" />
+
+            <TextView
+                style="@style/label_types_idiom"
+                android:background="@color/label_other"
+                android:text="@string/oth" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/ai_noun"
+                style="@style/label_types_idiom"
+                android:background="@color/label_noun" />
+
+            <TextView
+                android:id="@+id/ai_verb"
+                style="@style/label_types_idiom"
+                android:background="@color/label_verb" />
+
+            <TextView
+                android:id="@+id/ai_adj"
+                style="@style/label_types_idiom"
+                android:background="@color/label_adj" />
+
+            <TextView
+                android:id="@+id/ai_adv"
+                style="@style/label_types_idiom"
+                android:background="@color/label_adv" />
+
+            <TextView
+                android:id="@+id/ai_phrasal"
+                style="@style/label_types_idiom"
+                android:background="@color/label_phrasal" />
+
+            <TextView
+                android:id="@+id/ai_expression"
+                style="@style/label_types_idiom"
+                android:background="@color/label_expression" />
+
+            <TextView
+                android:id="@+id/ai_other"
+                style="@style/label_types_idiom"
+                android:background="@color/label_other" />
+        </TableRow>
+    </TableLayout>
+
+    <ImageButton
+        android:id="@+id/toggle_dic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/table"
+        android:layout_margin="5dip"
+        android:background="@color/transparent"
+        android:contentDescription="Change dictionary direction"
+        android:src="@drawable/change_direction" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/newword"
+        android:layout_below="@+id/table" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/laymarleft"
+            android:paddingRight="@dimen/laymarright" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/margenlabels"
+                android:paddingTop="@dimen/margenlabels"
+                android:text="@string/statistics"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/attemps" />
+
+                    <TextView
+                        android:id="@+id/as_na"
+                        style="@style/textview_statistics"
+                        android:text="0" />
+
+                    <TextView style="@style/textview_statistics" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success1" />
+
+                    <TextView
+                        android:id="@+id/as_ns1"
+                        style="@style/textview_statistics"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/as_ns1p"
+                        style="@style/textview_statistics"
+                        android:text="0%" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success2" />
+
+                    <TextView
+                        android:id="@+id/as_ns2"
+                        style="@style/textview_statistics"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/as_ns2p"
+                        style="@style/textview_statistics"
+                        android:text="0%" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success3" />
+
+                    <TextView
+                        android:id="@+id/as_ns3"
+                        style="@style/textview_statistics"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/as_ns3p"
+                        style="@style/textview_statistics"
+                        android:text="0%" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/failures" />
+
+                    <TextView
+                        android:id="@+id/as_nf"
+                        style="@style/textview_statistics"
+                        android:text="0" />
+
+                    <TextView
+                        android:id="@+id/as_nfp"
+                        style="@style/textview_statistics"
+                        android:text="0%" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/newword"
+        style="@style/button_list_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="New word" />
+
+</RelativeLayout>

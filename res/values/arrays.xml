@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string-array name="paises">
+        <item>(select a language)</item>
+        <item>Arabic</item>
+        <item>Azerbaijani</item>
+        <item>Bagheli</item>
+        <item>Bavarian</item>
+        <item>Belarusian</item>
+        <item>Bengali</item>
+        <item>Bulgarian</item>
+        <item>Catalan</item>
+        <item>Czech</item>
+        <item>Dutch</item>
+        <item>English</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>Hindustani</item>
+        <item>Hungarian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Kurdish</item>
+        <item>Lombard</item>
+        <item>Mandarin</item>
+        <item>Nepali</item>
+        <item>Northern Berber</item>
+        <item>Persian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Serbo-Croatian</item>
+        <item>Somali</item>
+        <item>Spanish</item>
+        <item>Swedish</item>
+        <item>Thai</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Uzbek</item>
+        <item>Vietnamese</item>
+        <item>Zulu</item>
+    </string-array>
+    <string-array name="lang_opt">
+        <item>Language</item>
+        <item>Practise</item>
+        <item>Dictionary</item>
+        <item>Verbs</item>
+        <item>Warehouse</item>
+        <item>Bin</item>
+        <item>Debug</item>
+    </string-array>
+    <string-array name="lang_opt_ext">
+        <item>Language</item>
+        <item>Practise</item>
+        <item>Dictionary</item>
+        <item>Verbs</item>
+        <item>Phrasal verbs</item>
+        <item>Warehouse</item>
+        <item>Bin</item>
+        <item>Debug</item>
+    </string-array>
+    <string-array name="prac_opt">
+        <item>Match</item>
+        <item>Complete</item>
+        <item>Write</item>
+        <item>Listening</item>
+        <item>Test you</item>
+        <item>Translate</item>
+    </string-array>
+    <string-array name="phv_opt">
+        <item>Practise</item>
+        <item>Add phrasal</item>
+        <item>Lists phrasals</item>
+    </string-array>
+    <string-array name="fonetics_consonant_symbols">
+        <item>/&#98;/</item>
+        <item>/&#100;/</item>
+        <item>/&#676;/</item>
+        <item>/&#102;/</item>
+        <item>/&#103;/</item>
+        <item>/&#104;/</item>
+        <item>/&#104;&#119;/</item>
+        <item>/&#106;/</item>
+        <item>/&#107;/</item>
+        <item>/&#108;/</item>
+        <item>/&#316;/</item>
+        <item>/&#109;/</item>
+        <item>/&#110;/</item>
+        <item>/&#326;/</item>
+        <item>/&#331;/</item>
+        <item>/&#112;/</item>
+        <item>/&#114;/</item>
+        <item>/&#115;/</item>
+        <item>/&#643;/</item>
+        <item>/&#116;/</item>
+        <item>/&#679;/</item>
+        <item>/&#1256;/</item>
+        <item>/&#240;/</item>
+        <item>/&#118;/</item>
+        <item>/&#119;/</item>
+        <item>/&#120;/</item>
+        <item>/&#122;/</item>
+        <item>/&#658;/</item>
+    </string-array>
+
+    <!-- HASTA AQUI TRADUCIDO -->
+
+    <string-array name="settings">
+        <item>Native Language</item>
+        <item>Double direction</item>
+        <item>Fonetics</item>
+        <item>Background</item>
+        <item>About</item>
+    </string-array>
+    <string-array name="es_tenses">
+        <item>Presente</item>
+        <item>Pretérido imperfecto</item>
+        <item>Pretérito perfecto simple</item>
+        <item>Futuro</item>
+        <item>Pretérito perfecto</item>
+        <item>Pretérito pluscuamperfecto</item>
+        <item>Futuro perfecto</item>
+        <item>Presente de subjuntivo</item>
+        <item>Préterito imperfecto de subjuntivo </item>
+        <item>Futuro de subjuntivo </item>
+        <item>Pretérito perfecto de subjuntivo</item>
+        <item>Pretérito pluscuamperfecto de subjuntivo</item>
+        <item>Imperativo afirmativo</item>
+        <item>Imperativo negativo</item>
+    </string-array>
+    <string-array name="en_tenses">
+        <item>Present</item>
+        <item>Past simple</item>
+        <item>Future</item>
+        <item>Present continuous</item>
+        <item>Present perfect</item>
+        <item>Present perfect continuous</item>
+        <item>Past continuous</item>
+        <item>Past perfect</item>
+        <item>Past continuous</item>
+        <item>Future continuous</item>
+        <item>Future perfect</item>
+        <item>Future (going to)  </item>
+        <item>Conditional</item>
+        <item>Imperative</item>
+    </string-array>
+    <string-array name="sv_tenses">
+        <item>Present</item>
+        <item>Supinum</item>
+        <item>Preteritum</item>
+        <item>Future</item>
+        <item>Imperativ</item>
+    </string-array>
+    <string-array name="es_subjects">
+        <item>Yo</item>
+        <item>Tú</item>
+        <item>El/Ella</item>
+        <item>Nosotros</item>
+        <item>Vosotros</item>
+        <item>Ellos</item>
+    </string-array>
+    <string-array name="en_subjects">
+        <item>I</item>
+        <item>You</item>
+        <item>He/She</item>
+        <item>We</item>
+        <item>You</item>
+        <item>They</item>
+    </string-array>
+    <string-array name="sv_subjects">
+        <item>Jag</item>
+        <item>Du</item>
+        <item>Han/Hon</item>
+        <item>Vi</item>
+        <item>Ni</item>
+        <item>De</item>
+    </string-array>
+
+</resources>

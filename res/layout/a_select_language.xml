@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/alang_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/all_butlay"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+            <Spinner
+                android:id="@+id/aia_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/paises"
+                android:gravity="center_horizontal"
+                android:padding="20dip"
+                android:spinnerMode="dialog" />
+
+            <EditText
+                android:id="@+id/aia_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_selectlanguage"
+                android:gravity="center_horizontal"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:padding="20dip" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/all_butlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingTop="10dip" >
+
+        <Button
+            android:id="@+id/aia_cancel"
+            style="@style/button_list_selector"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/aia_accept"
+            style="@style/button_list_selector"
+            android:text="@string/accept" />
+    </LinearLayout>
+
+</RelativeLayout>

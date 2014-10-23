@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ast_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectTestActivity" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dip" >
+
+            <TextView
+                style="@style/textview_title"
+                android:text="@string/wordstotest" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dip" >
+
+                <Button
+                    android:id="@+id/ast_menos"
+                    style="@style/buttons_complete"
+                    android:text="@string/menos" />
+
+                <TextView
+                    android:id="@+id/ast_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:minWidth="60dip"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/ast_mas"
+                    style="@style/buttons_complete"
+                    android:text="@string/mas" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/textview_title"
+                android:text="@string/selectingbetween" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/ast_noun"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_noun_backgrounds"
+                    android:paddingLeft="10dip"
+                    android:text="@string/nouns" />
+
+                <Button
+                    android:id="@+id/ast_verb"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_verb_backgrounds"
+                    android:text="@string/verbs" />
+
+                <Button
+                    android:id="@+id/ast_adj"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adjective_backgrounds"
+                    android:text="@string/adjectives" />
+
+                <Button
+                    android:id="@+id/ast_adv"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_adverb_backgrounds"
+                    android:text="@string/adverbs" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/ast_phrasal"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_phrasal_backgrounds"
+                    android:text="@string/phrasalverbs" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/ast_expression"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_expression_backgrounds"
+                    android:text="@string/expressions" />
+
+                <Button
+                    android:id="@+id/ast_other"
+                    style="@style/button_type_word"
+                    android:background="@drawable/type_other_backgrounds"
+                    android:text="@string/others" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/textview_title"
+                android:text="@string/testssaved" />
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="1dip"
+                android:orientation="vertical"
+                tools:ignore="NestedScrolling" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/ast_cancel"
+            style="@style/button_list_selector"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/ast_go"
+            style="@style/button_list_selector"
+            android:text="@string/gotest" />
+    </LinearLayout>
+
+</RelativeLayout>

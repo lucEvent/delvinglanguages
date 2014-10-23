@@ -1,0 +1,100 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- ************** GENERAL ************** -->
+
+        <TextView
+            style="@style/settings_indexs"
+            android:text="@string/general" />
+
+        <View style="@style/divisor" />
+
+        <Button
+            android:id="@+id/nativelanguage"
+            style="@style/settings_option"
+            android:text="@string/nativelanguage" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <CheckedTextView
+            android:id="@+id/doublemode"
+            style="@style/settings_option"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:paddingRight="20dip"
+            android:text="@string/doubledirection" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <CheckedTextView
+            android:id="@+id/vibrate_phon_kb"
+            style="@style/settings_option"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:paddingRight="20dip"
+            android:text="@string/vibratekb" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <Button
+            android:id="@+id/fonetics"
+            style="@style/settings_option"
+            android:text="@string/title_fonetics" />
+
+        <!-- ************** PERSONALIZACION ************** -->
+
+        <TextView
+            style="@style/settings_indexs"
+            android:text="@string/customization" />
+
+        <View style="@style/divisor" />
+
+        <Button
+            android:id="@+id/sel_background"
+            style="@style/settings_option"
+            android:text="@string/background" />
+        <!-- ************** ABOUT ************** -->
+
+        <TextView
+            style="@style/settings_indexs"
+            android:text="@string/about_cap" />
+
+        <View style="@style/divisor" />
+
+        <Button
+            android:id="@+id/historial"
+            style="@style/settings_option"
+            android:text="@string/historial" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <Button
+            android:id="@+id/about"
+            style="@style/settings_option"
+            android:text="@string/about" />
+    </LinearLayout>
+
+</ScrollView>

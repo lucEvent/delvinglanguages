@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ac_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CompleteActivity" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="5dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/ac_noun"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/nn" />
+
+                <TextView
+                    android:id="@+id/ac_verb"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/vb" />
+
+                <TextView
+                    android:id="@+id/ac_adj"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/adj" />
+
+                <TextView
+                    android:id="@+id/ac_adv"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/adv" />
+
+                <TextView
+                    android:id="@+id/ac_phrasal"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/ph.v" />
+
+                <TextView
+                    android:id="@+id/ac_expression"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/exp" />
+
+                <TextView
+                    android:id="@+id/ac_other"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/oth" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ac_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="20dip"
+                android:text="WORD"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ac_solution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30dip"
+                android:text="SOLUTION"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ac_pronounce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30dip"
+                android:text="PRONUNTIATION"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/ac_a1"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_a2"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_a3"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_a4"
+                style="@style/buttons_complete" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/ac_b1"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_b2"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_b3"
+                style="@style/buttons_complete" />
+
+            <Button
+                android:id="@+id/ac_b4"
+                style="@style/buttons_complete" />
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>

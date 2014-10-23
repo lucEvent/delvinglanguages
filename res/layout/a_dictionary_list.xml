@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/lab_nn"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_noun_backgrounds"
+            android:text="@string/nn" />
+
+        <Button
+            android:id="@+id/lab_vb"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_verb_backgrounds"
+            android:text="@string/vb" />
+
+        <Button
+            android:id="@+id/lab_adj"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_adjective_backgrounds"
+            android:text="@string/adj" />
+
+        <Button
+            android:id="@+id/lab_adv"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_adverb_backgrounds"
+            android:text="@string/adv" />
+
+        <Button
+            android:id="@+id/lab_phv"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_phrasal_backgrounds"
+            android:text="@string/ph.v" />
+
+        <Button
+            android:id="@+id/lab_exp"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_expression_backgrounds"
+            android:text="@string/exp" />
+
+        <Button
+            android:id="@+id/lab_oth"
+            style="@style/label_types_idiom"
+            android:background="@drawable/type_other_backgrounds"
+            android:text="@string/oth" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:paddingTop="5dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

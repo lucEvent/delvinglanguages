@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="5dip"
+    tools:context=".WriteWordsActivity" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/aww_noun"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/nn" />
+
+                <TextView
+                    android:id="@+id/aww_verb"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/vb" />
+
+                <TextView
+                    android:id="@+id/aww_adj"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/adj" />
+
+                <TextView
+                    android:id="@+id/aww_adv"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/adv" />
+
+                <TextView
+                    android:id="@+id/aww_phrasal"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/ph.v" />
+
+                <TextView
+                    android:id="@+id/aww_expression"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/exp" />
+
+                <TextView
+                    android:id="@+id/aww_other"
+                    style="@style/textview_label_types_top"
+                    android:text="@string/oth" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/aww_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:gravity="center"
+                android:paddingTop="20dip"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/aww_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:minHeight="40dp"
+                android:paddingTop="10dip" />
+
+            <EditText
+                android:id="@+id/aww_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="textCapSentences" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/scrollView1" >
+
+        <ImageButton
+            android:id="@+id/aww_swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/aww_new"
+            android:layout_centerHorizontal="true"
+            android:background="@android:drawable/btn_default"
+            android:contentDescription="@string/changedirection"
+            android:src="@drawable/change_direction" />
+
+        <ImageButton
+            android:id="@+id/aww_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@android:drawable/btn_default"
+            android:contentDescription="@string/newword"
+            android:src="@drawable/next" />
+
+        <ImageButton
+            android:id="@+id/aww_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:drawable/btn_default"
+            android:contentDescription="@string/helps"
+            android:src="@drawable/helps" />
+    </RelativeLayout>
+
+</RelativeLayout>
