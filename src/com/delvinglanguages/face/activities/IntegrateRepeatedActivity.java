@@ -221,7 +221,6 @@ public class IntegrateRepeatedActivity extends Activity implements
 				trads.append(buttset[i].getText());
 			}
 		}
-
 	}
 
 	private void showMessage(int text) {

@@ -1,25 +1,21 @@
 package com.delvinglanguages.face.langoptions;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.TreeSet;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.face.activities.DictionaryActivity;
 import com.delvinglanguages.settings.Configuraciones;
 

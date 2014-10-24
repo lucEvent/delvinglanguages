@@ -26,7 +26,8 @@ public class Debug extends Activity implements OnClickListener,
 	private Button san,rep;
 	private Button[] types;
 	private FoneticsKeyboard fonetickb;
-	private String[] replacements;
+	private String[] replacements = { "word1", "word2" };
+
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -50,8 +51,6 @@ public class Debug extends Activity implements OnClickListener,
 		rep.setOnClickListener(this);
 		rep.setText("Remove Store");
 
-//		TxtReader txt = new TxtReader();
-//		replacements = txt.getOntheShadowofTheMountain();
 		indexREPS = 0;
 
 		word = (EditText) findViewById(R.id.d_word);
@@ -116,7 +115,6 @@ public class Debug extends Activity implements OnClickListener,
 		pronuntiation.setText("");
 		pronuntiation.requestFocus();
 		setType(0);
-
 	}
 
 	private int indexREPS;

@@ -5,7 +5,7 @@
 
     <!-- * *************************** Titles **************************** * -->
     <string name="addingnewword">Adding a new word</string>
-    <string name="bin">bin</string>
+    <string name="bin">Bin</string>
     <string name="emptyingbin">Emptying bin</string>
     <string name="modifyingword">Modifying word</string>
     <string name="renaminglanguage">Renaming language</string>
@@ -27,6 +27,7 @@
     <string name="title_removingtest">Removing test</string>
     <string name="title_searching">Searching words</string>
     <string name="title_select_background">Select background</string>
+    <string name="title_language_settings">Language settings</string>
     <string name="title_select_language">Select native language</string>
     <string name="title_test">Test</string>
     <string name="warehouse">warehouse</string>
@@ -222,9 +223,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="languageintegrated">Language integrated</string>
     <string name="title_activity_new_tense">NewTenseActivity</string>
-    <string name="about_content">        Delving Languages v1.0.0\n
+    <string name="about_content">
+        Delving Languages v1.2.2.3\n
         Develop by Rafael J. Lucena\n
-      	
+
+      	Version 1.2.2.3 2014&#8211;05&#8211;13 Language Menu ch\n\n
       	Version 1.2.1 2014&#8211;05&#8211;13 ListWord changed\n\n
         Version 1.2.0 2014&#8211;05&#8211;13 Improved dictionary and related stuff. More common exceptions found solved\n\n
         Version 1.1.14 2014&#8211;04&#8211;15 NullPointerException solved\n\n

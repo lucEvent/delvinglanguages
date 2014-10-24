@@ -42,25 +42,6 @@
         <item>Vietnamese</item>
         <item>Zulu</item>
     </string-array>
-    <string-array name="lang_opt">
-        <item>Language</item>
-        <item>Practise</item>
-        <item>Dictionary</item>
-        <item>Verbs</item>
-        <item>Warehouse</item>
-        <item>Bin</item>
-        <item>Debug</item>
-    </string-array>
-    <string-array name="lang_opt_ext">
-        <item>Language</item>
-        <item>Practise</item>
-        <item>Dictionary</item>
-        <item>Verbs</item>
-        <item>Phrasal verbs</item>
-        <item>Warehouse</item>
-        <item>Bin</item>
-        <item>Debug</item>
-    </string-array>
     <string-array name="prac_opt">
         <item>Match</item>
         <item>Complete</item>

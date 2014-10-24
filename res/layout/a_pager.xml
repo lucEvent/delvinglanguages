@@ -1,15 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.delvinglanguages.face.langoptions.LanguageFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/langoptions"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" >
+    </fragment>
 
     <LinearLayout
         android:id="@+id/langoptions"
@@ -33,15 +36,14 @@
 
             <Button
                 android:id="@+id/warehouse"
-                android:onClick="jumptoWarehouse"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
+                android:onClick="jumptoWarehouse"
                 android:text="@string/Warehouse" />
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/delv"
-            android:onClick="jumptoLanguageMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -49,6 +51,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="menu main language fragment"
+            android:onClick="jumptoLanguageMain"
             android:src="@drawable/ic_launcher" />
 
         <LinearLayout
@@ -59,16 +62,16 @@
 
             <Button
                 android:id="@+id/dictionary"
-                android:onClick="jumptoDictionary"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
+                android:onClick="jumptoDictionary"
                 android:text="@string/Dictionary" />
 
             <Button
                 android:id="@+id/other"
-                android:onClick="jumptoOther"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
+                android:onClick="jumptoOther"
                 android:text="@string/other" />
         </LinearLayout>
     </LinearLayout>

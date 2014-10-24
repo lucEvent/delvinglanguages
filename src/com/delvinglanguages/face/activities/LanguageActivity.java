@@ -1,15 +1,17 @@
 package com.delvinglanguages.face.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -26,7 +28,7 @@ import com.delvinglanguages.face.langoptions.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class LanguageActivity extends FragmentActivity {
+public class LanguageActivity extends Activity {
 
 	private static final String DEBUG = "##LanguageActivity##";
 
@@ -37,12 +39,10 @@ public class LanguageActivity extends FragmentActivity {
 	private static final int PHRASAL_VERBS = 4;
 	private static final int WAREHOUSE = 5;
 	private static final int BIN = 6;
-	private static final int _DEBUG_ = 7;
 
 	private IDDelved idioma;
 
-	private ViewAdapter sectionAdapter;
-	private ViewPager viewPager;
+	private boolean actualPHMode;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -50,32 +50,28 @@ public class LanguageActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_pager);
 
-		viewPager = (ViewPager) findViewById(R.id.pager);
+		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			viewPager.setBackgroundDrawable(Configuraciones
+			background.setBackgroundDrawable(Configuraciones
 					.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			viewPager.setBackgroundColor(Configuraciones.getBackgroundColor());
+			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
 		idioma = ControlCore.getIdiomaActual(this);
 		ControlCore.loadLanguage(true);
 
-		sectionAdapter = new ViewAdapter(getSupportFragmentManager());
-		viewPager.setAdapter(sectionAdapter);
-
-		indexTitles = getResources().getStringArray(R.array.lang_opt);
-		indexTitles[0] = idioma.getName();
-		indexTitlesAdv = getResources().getStringArray(R.array.lang_opt_ext);
-		indexTitlesAdv[0] = idioma.getName();
-
-		actualPHMode = idioma.getSettings(IDDelved.MASK_PH);
-		String[] options = actualPHMode ? indexTitlesAdv : indexTitles;
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.add(R.id.fragment, new LanguageFragment());
+		ft.commit();
 	}
 
-	private boolean actualPHMode;
-	private String[] indexTitles, indexTitlesAdv;
+	@Override
+	protected void onResume() {
+		super.onResume();
+		actualPHMode = idioma.getSettings(IDDelved.MASK_PH);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,58 +89,49 @@ public class LanguageActivity extends FragmentActivity {
 		return false;
 	}
 
-	public class ViewAdapter extends FragmentStatePagerAdapter {
-
-		public ViewAdapter(FragmentManager fm) {
-			super(fm);
+	private void setFragment(int position) {
+		Log.d(DEBUG, "Position:" + position);
+		Fragment fragment = null;
+		String title = null;
+		switch (position) {
+		case LANGUAGE:
+			fragment = new LanguageFragment();
+			title = idioma.getName();
+			break;
+		case PRACTISE:
+			fragment = new PractiseFragment();
+			title = getString(R.string.title_practising) + " "
+					+ idioma.getName();
+			break;
+		case DICTIONARY:
+			fragment = new DictionaryFragment();
+			title = getString(R.string.title_list_selector);
+			break;
+		case VERBS:
+			fragment = new VerbsFragment();
+			title = idioma.getName() + "'s Verbs";
+			break;
+		case PHRASAL_VERBS:
+			fragment = new PhrasalsFragment();
+			title = getString(R.string.title_phrasals);
+			break;
+		case WAREHOUSE:
+			fragment = new WarehouseFragment();
+			title = idioma.getName() + " " + getString(R.string.warehouse);
+			break;
+		case BIN:
+			fragment = new BinFragment();
+			title = idioma.getName() + " " + getString(R.string.bin);
+			break;
+		default:
+			fragment = new LanguageFragment();
+			title = idioma.getName();
 		}
 
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment = null;
-			String title = null;
-			switch (position) {
-			case 0: // Language
-				fragment = new LanguageFragment();
-				title = idioma.getName();
-				break;
-			case 1: // Pratise
-				fragment = new PractiseFragment();
-				title = getString(R.string.title_practising) + " "
-						+ idioma.getName();
-				break;
-			case 2: // Dictionary
-				fragment = new DictionaryFragment();
-				title = getString(R.string.title_list_selector);
-				break;
-			case 3: // Verbs
-				fragment = new VerbsFragment();
-				title = idioma.getName() + "'s Verbs";
-				break;
-			case 4: // Phrasal verbs
-				fragment = new PhrasalsFragment();
-				title = getString(R.string.title_phrasals);
-				break;
-			case 5: // Warehouse
-				fragment = new WarehouseFragment();
-				title = idioma.getName() + " " + getString(R.string.warehouse);
-				break;
-			case 6: // Bin
-				fragment = new BinFragment();
-				title = idioma.getName() + " " + getString(R.string.bin);
-				break;
-			default:
-				fragment = new LanguageFragment();
-				title = idioma.getName();
-			}
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			return 3;
-		}
-
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.replace(R.id.fragment, fragment);
+		ft.commit();
+		setTitle(title);
 	}
 
 	public void jumptoPractise(View v) {
@@ -152,7 +139,7 @@ public class LanguageActivity extends FragmentActivity {
 			showMessage(R.string.mssNoWords);
 			return;
 		}
-		viewPager.setCurrentItem(PRACTISE);
+		setFragment(PRACTISE);
 	}
 
 	public void jumptoDictionary(View v) {
@@ -160,33 +147,56 @@ public class LanguageActivity extends FragmentActivity {
 			showMessage(R.string.mssNoWordsToList);
 			return;
 		}
-		viewPager.setCurrentItem(DICTIONARY);
+		setFragment(DICTIONARY);
 	}
 
 	public void jumptoLanguageMain(View v) {
-		viewPager.setCurrentItem(LANGUAGE);
+		setFragment(LANGUAGE);
 	}
 
+	private Dialog dialog;
+
 	public void jumptoOther(View v) {
-		// Mostrar otras opciones: Bin, debug
-		// Bin
-		if (idioma.getPapelera().size() <= 0) {
-			showMessage(R.string.mssNoTrash);
-			return;
-		}
-		// Debug
-		startActivity(new Intent(this, Debug.class));
+		View view = getLayoutInflater().inflate(R.layout.d_other_langoptions,
+				null);
+
+		// PH_MODE mirar
+
+		dialog = new AlertDialog.Builder(this).setView(view).show();
 		return;
 	}
 
 	public void jumptoWarehouse(View v) {
-		viewPager.setCurrentItem(WAREHOUSE);
+		setFragment(WAREHOUSE);
+	}
 
+	public void jumptoVerbs(View v) {
+		setFragment(VERBS);
+		dialog.dismiss();
+	}
+
+	public void jumptoPhrasalVerbs(View v) {
+		setFragment(PHRASAL_VERBS);
+		dialog.dismiss();
+	}
+
+	public void jumptoBin(View v) {
+		if (idioma.getPapelera().size() <= 0) {
+			showMessage(R.string.mssNoTrash);
+			dialog.dismiss();
+			return;
+		}
+		setFragment(BIN);
+		dialog.dismiss();
+	}
+
+	public void jumptoDebug(View v) {
+		dialog.dismiss();
+		startActivity(new Intent(this, Debug.class));
 	}
 
 	private void showMessage(int text) {
-		Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
-		toast.show();
+		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 	}
 
 }

@@ -45,6 +45,10 @@
             android:label="@string/title_select_language" >
         </activity>
         <activity
+            android:name="com.delvinglanguages.face.settings.LanguageSettingsActivity"
+            android:label="@string/title_language_settings" >
+        </activity>
+        <activity
             android:name="com.delvinglanguages.face.settings.SelectBackground"
             android:label="@string/title_select_background" >
         </activity>
