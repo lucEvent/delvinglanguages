@@ -38,13 +38,9 @@ public class PhrasalLister extends ArrayAdapter<String> {
 
 		word.setText(values[position]);
 		if (marks[position] == STAT_PRESSED) {
-			Log.d("##ListOfPhrasals##", "##Asignando PRESSED a: "
-					+ values[position]);
-			viewres.setBackgroundResource(R.drawable.pressed_button_background);
+			viewres.setBackgroundResource(R.drawable.button_bg_pressed);
 		} else if (marks[position] == STAT_MARKED) {
-			Log.d("##ListOfPhrasals##", "##Asignando MARKED a: "
-					+ values[position]);
-			viewres.setBackgroundResource(R.drawable.marked_button_background);
+			viewres.setBackgroundResource(R.drawable.button_bg_marked);
 		}
 		return viewres;
 	}

@@ -1,24 +1,15 @@
 package com.delvinglanguages.face.activities;
 
-import java.util.Locale;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -33,19 +24,25 @@ import com.delvinglanguages.face.langoptions.PractiseFragment;
 import com.delvinglanguages.face.langoptions.VerbsFragment;
 import com.delvinglanguages.face.langoptions.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
-import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class LanguageActivity extends FragmentActivity implements
-		OnClickListener {
+public class LanguageActivity extends FragmentActivity {
 
 	private static final String DEBUG = "##LanguageActivity##";
 
+	private static final int LANGUAGE = 0;
+	private static final int PRACTISE = 1;
+	private static final int DICTIONARY = 2;
+	private static final int VERBS = 3;
+	private static final int PHRASAL_VERBS = 4;
+	private static final int WAREHOUSE = 5;
+	private static final int BIN = 6;
+	private static final int _DEBUG_ = 7;
+
 	private IDDelved idioma;
 
-	// private String actualLangName;
-
 	private ViewAdapter sectionAdapter;
+	private ViewPager viewPager;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -53,7 +50,7 @@ public class LanguageActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_pager);
 
-		ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager = (ViewPager) findViewById(R.id.pager);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			viewPager.setBackgroundDrawable(Configuraciones
@@ -68,18 +65,6 @@ public class LanguageActivity extends FragmentActivity implements
 		sectionAdapter = new ViewAdapter(getSupportFragmentManager());
 		viewPager.setAdapter(sectionAdapter);
 
-		// Opciones Menu
-		delv = (Button) findViewById(R.id.delv);
-		delv.setOnClickListener(this);
-		practise = (Button) findViewById(R.id.practise);
-		practise.setOnClickListener(this);
-		dictionary = (Button) findViewById(R.id.dictionary);
-		dictionary.setOnClickListener(this);
-		warehouse = (Button) findViewById(R.id.warehouse);
-		warehouse.setOnClickListener(this);
-		other = (Button) findViewById(R.id.other);
-		other.setOnClickListener(this);
-		
 		indexTitles = getResources().getStringArray(R.array.lang_opt);
 		indexTitles[0] = idioma.getName();
 		indexTitlesAdv = getResources().getStringArray(R.array.lang_opt_ext);
@@ -162,37 +147,41 @@ public class LanguageActivity extends FragmentActivity implements
 
 	}
 
-	private Button delv, practise, dictionary, warehouse, other;
-
-	@Override
-	public void onClick(View v) {
-		if (v == delv) {
-
-		} else if (v == practise) {
-			if (!idioma.hasEntries()) {
-				showMessage(R.string.mssNoWords);
-				return;
-			}
-
-		} else if (v == dictionary) {
-			if (!idioma.hasEntries()) {
-				showMessage(R.string.mssNoWordsToList);
-				return;
-			}
-
-		} else if (v == warehouse) {
-
-		} else if (v == other) {
-			// Mostrar otras opciones: Bin, debug
-			// Bin
-			if (idioma.getPapelera().size() <= 0) {
-				showMessage(R.string.mssNoTrash);
-				return;
-			}
-			// Debug
-			startActivity(new Intent(this, Debug.class));
+	public void jumptoPractise(View v) {
+		if (!idioma.hasEntries()) {
+			showMessage(R.string.mssNoWords);
 			return;
 		}
+		viewPager.setCurrentItem(PRACTISE);
+	}
+
+	public void jumptoDictionary(View v) {
+		if (!idioma.hasEntries()) {
+			showMessage(R.string.mssNoWordsToList);
+			return;
+		}
+		viewPager.setCurrentItem(DICTIONARY);
+	}
+
+	public void jumptoLanguageMain(View v) {
+		viewPager.setCurrentItem(LANGUAGE);
+	}
+
+	public void jumptoOther(View v) {
+		// Mostrar otras opciones: Bin, debug
+		// Bin
+		if (idioma.getPapelera().size() <= 0) {
+			showMessage(R.string.mssNoTrash);
+			return;
+		}
+		// Debug
+		startActivity(new Intent(this, Debug.class));
+		return;
+	}
+
+	public void jumptoWarehouse(View v) {
+		viewPager.setCurrentItem(WAREHOUSE);
+
 	}
 
 	private void showMessage(int text) {

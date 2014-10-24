@@ -8,14 +8,69 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/langoptions" />
-    
-    <Button
+        android:layout_above="@+id/langoptions"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
         android:id="@+id/langoptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Blabla" />
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/practise"
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:onClick="jumptoPractise"
+                android:text="@string/practise" />
+
+            <Button
+                android:id="@+id/warehouse"
+                android:onClick="jumptoWarehouse"
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:text="@string/Warehouse" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/delv"
+            android:onClick="jumptoLanguageMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dip"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="menu main language fragment"
+            android:src="@drawable/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/dictionary"
+                android:onClick="jumptoDictionary"
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:text="@string/Dictionary" />
+
+            <Button
+                android:id="@+id/other"
+                android:onClick="jumptoOther"
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:text="@string/other" />
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -3,16 +3,16 @@
 
     
     <item
-        android:drawable="@drawable/disabled_button_background"
+        android:drawable="@drawable/button_bg_disabled"
         android:state_enabled="false"/>
     <item
-        android:drawable="@drawable/pressed_button_background"
+        android:drawable="@drawable/button_bg_pressed"
         android:state_pressed="true"/>
     <item
-        android:drawable="@drawable/pressed_button_background"
+        android:drawable="@drawable/button_bg_pressed"
         android:state_focused="true"/>
     
     <item
-        android:drawable="@drawable/default_button_background"/>
+        android:drawable="@drawable/button_bg_default"/>
 
 </selector>

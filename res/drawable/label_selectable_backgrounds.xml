@@ -3,9 +3,9 @@
 
     
     <item
-        android:drawable="@drawable/selected_label"
+        android:drawable="@drawable/label_sel_bg_selected"
         android:state_selected="true"/>
     <item
-        android:drawable="@drawable/default_sel_label"/>
+        android:drawable="@drawable/label_sel_bg_default"/>
 
 </selector>

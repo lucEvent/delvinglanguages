@@ -151,6 +151,9 @@
     <string name="sv_ao_cap">Å</string>
     <string name="sv_ae_cap">Ä</string>
     <string name="sv_oe_cap">Ö</string>
+    <string name="practise">Practise</string>
+    <string name="Warehouse">Warehouse</string>
+    <string name="Dictionary">Dictionary</string>
 
     <!-- * ***************** Hints o Content Descriptions ***************** * -->
     <string name="changedirection">Change direction</string>
@@ -200,7 +203,6 @@
     <string name="mssclearstats">Statistics has been cleared</string>
     <string name="createconjugatuionquestion">There are no data for this tense. Do you want to add tense data?</string>
     <string name="makecolor">Make your own color</string>
-    
 
     <!-- * ************************** Preguntas *************************** * -->
     <string name="removeidiomquestion">Are you sure to remove this language?</string>
