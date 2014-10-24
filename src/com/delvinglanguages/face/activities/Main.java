@@ -70,12 +70,10 @@ public class Main extends ListActivity implements OnClickListener {
 		} else {
 			toinvis = fsteps;
 			tovisib = list;
-			setListAdapter(new LanguageLister(this,
-					getIdiomsStrings(ControlCore.getIdiomas())));
+			setListAdapter(new LanguageLister(this, getLanguageStrings()));
 		}
 		toinvis.setVisibility(View.INVISIBLE);
 		tovisib.setVisibility(View.VISIBLE);
-
 	}
 
 	/** *************** METODOS DE MENÚ *************** **/
@@ -103,11 +101,10 @@ public class Main extends ListActivity implements OnClickListener {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		ControlCore.setIdiomaActual(position);
 		startActivity(new Intent(this, LanguageActivity.class));
-
 	}
 
-	/** ***************** FUNCIONES PRIVADAS ******************** **/
-	private String[] getIdiomsStrings(ArrayList<IDDelved> langs) {
+	private String[] getLanguageStrings() {
+		ArrayList<IDDelved> langs = ControlCore.getIdiomas();
 		String[] values = new String[langs.size()];
 		for (int i = 0; i < langs.size(); ++i) {
 			values[i] = langs.get(i).getName();
@@ -122,7 +119,6 @@ public class Main extends ListActivity implements OnClickListener {
 		} else if (v == changeSett) {
 			startActivity(new Intent(this, SettingsActivity.class));
 		}
-
 	}
 
 }

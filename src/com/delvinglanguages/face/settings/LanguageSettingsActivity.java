@@ -5,10 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -23,21 +21,17 @@ import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.adapters.IntegrateManager;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class LanguageSettingsFragment extends Fragment implements
-		OnClickListener {
+public class LanguageSettingsActivity extends Activity implements OnClickListener {
 
 	private Button languagename, clearstats, remove, integrate;
 	private CheckedTextView phrasalsEn, adjectivesEn, specialcharsEn;
 
 	@SuppressWarnings("deprecation")
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.a_language_settings);
 
-		View view = inflater.inflate(R.layout.a_language_settings, container,
-				false);
-
-		ScrollView background = (ScrollView) view.findViewById(R.id.background);
+		ScrollView background = (ScrollView) findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -46,16 +40,13 @@ public class LanguageSettingsFragment extends Fragment implements
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		languagename = (Button) view.findViewById(R.id.set_languagename);
-		phrasalsEn = (CheckedTextView) view
-				.findViewById(R.id.set_phrasalsenabled);
-		adjectivesEn = (CheckedTextView) view
-				.findViewById(R.id.set_adjectsenabled);
-		specialcharsEn = (CheckedTextView) view
-				.findViewById(R.id.set_special_chars_enabled);
-		clearstats = (Button) view.findViewById(R.id.set_clearstats);
-		remove = (Button) view.findViewById(R.id.set_remove);
-		integrate = (Button) view.findViewById(R.id.set_integrate);
+		languagename = (Button) findViewById(R.id.set_languagename);
+		phrasalsEn = (CheckedTextView) findViewById(R.id.set_phrasalsenabled);
+		adjectivesEn = (CheckedTextView) findViewById(R.id.set_adjectsenabled);
+		specialcharsEn = (CheckedTextView) findViewById(R.id.set_special_chars_enabled);
+		clearstats = (Button) findViewById(R.id.set_clearstats);
+		remove = (Button) findViewById(R.id.set_remove);
+		integrate = (Button) findViewById(R.id.set_integrate);
 
 		languagename.setOnClickListener(this);
 		phrasalsEn.setOnClickListener(this);
@@ -65,12 +56,11 @@ public class LanguageSettingsFragment extends Fragment implements
 		remove.setOnClickListener(this);
 		integrate.setOnClickListener(this);
 
-		IDDelved idioma = ControlCore.getIdiomaActual(getActivity());
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
 		phrasalsEn.setChecked(idioma.getSettings(IDDelved.MASK_PH));
 		adjectivesEn.setChecked(idioma.getSettings(IDDelved.MASK_ADJ));
 		specialcharsEn.setChecked(idioma.getSettings(IDDelved.MASK_ESP_CHARS));
 
-		return view;
 	}
 
 	@Override
@@ -81,11 +71,10 @@ public class LanguageSettingsFragment extends Fragment implements
 
 	@Override
 	public void onClick(View v) {
-		Activity activity = getActivity();
 		if (v == languagename) {
-			String name = ControlCore.getIdiomaActual(getActivity()).getName();
+			String name = ControlCore.getIdiomaActual(this).getName();
 
-			View view = LayoutInflater.from(activity).inflate(R.layout.i_input,
+			View view = LayoutInflater.from(this).inflate(R.layout.i_input,
 					null);
 			final EditText input = (EditText) view
 					.findViewById(R.id.input_dialog);
@@ -93,7 +82,7 @@ public class LanguageSettingsFragment extends Fragment implements
 			input.setText(name);
 			input.setSelection(name.length());
 
-			new AlertDialog.Builder(activity)
+			new AlertDialog.Builder(this)
 					.setTitle(R.string.renaminglanguage)
 					.setView(view)
 					.setPositiveButton(R.string.confirm,
@@ -111,8 +100,7 @@ public class LanguageSettingsFragment extends Fragment implements
 							}).setNegativeButton(R.string.cancel, null)
 					.create().show();
 
-			((InputMethodManager) activity
-					.getSystemService(Context.INPUT_METHOD_SERVICE))
+			((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
 					.showSoftInput(input, InputMethodManager.SHOW_FORCED);
 
 		} else if (v == phrasalsEn) {
@@ -131,13 +119,13 @@ public class LanguageSettingsFragment extends Fragment implements
 			ControlCore.clearStatistics();
 			showMessage(R.string.mssclearstats);
 		} else if (v == integrate) {
-			IntegrateManager im = new IntegrateManager(activity);
+			IntegrateManager im = new IntegrateManager(this);
 			im.start();
 		} else if (v == remove) {
 			String temp = getString(R.string.title_removing) + " "
-					+ ControlCore.getIdiomaActual(getActivity()).getName();
+					+ ControlCore.getIdiomaActual(this).getName();
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(temp);
 			builder.setMessage(R.string.removeidiomquestion);
 			builder.setPositiveButton(R.string.confirm,
@@ -155,11 +143,11 @@ public class LanguageSettingsFragment extends Fragment implements
 
 	private void removeLanguage() {
 		ControlCore.removeLanguage();
-		getActivity().finish();
+		finish();
 	}
 
 	private void showMessage(int text) {
-		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 
 }
