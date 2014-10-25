@@ -7,11 +7,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -44,27 +44,35 @@ public class LanguageActivity extends Activity {
 
 	private boolean actualPHMode;
 
+	private View options, show_options;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_pager);
+		setContentView(R.layout.a_language_main);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
+		options = findViewById(R.id.langoptions);
+		show_options = findViewById(R.id.open_opts);
+
+		FrameLayout background = (FrameLayout) findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
 					.getBackgroundImage());
+			options.setBackgroundDrawable(Configuraciones.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
+			options.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
 		idioma = ControlCore.getIdiomaActual(this);
 		ControlCore.loadLanguage(true);
 
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.add(R.id.fragment, new LanguageFragment());
+		ft.replace(R.id.fragment, new LanguageFragment());
 		ft.commit();
+		setTitle(idioma.getName());
 	}
 
 	@Override
@@ -90,7 +98,6 @@ public class LanguageActivity extends Activity {
 	}
 
 	private void setFragment(int position) {
-		Log.d(DEBUG, "Position:" + position);
 		Fragment fragment = null;
 		String title = null;
 		switch (position) {
@@ -140,6 +147,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(PRACTISE);
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoDictionary(View v) {
@@ -148,6 +156,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(DICTIONARY);
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoLanguageMain(View v) {
@@ -160,24 +169,29 @@ public class LanguageActivity extends Activity {
 		View view = getLayoutInflater().inflate(R.layout.d_other_langoptions,
 				null);
 
-		// PH_MODE mirar
-
+		if (!actualPHMode) {
+			((Button) view.findViewById(R.id.phrasal_verbs))
+					.setVisibility(View.GONE);
+		}
 		dialog = new AlertDialog.Builder(this).setView(view).show();
 		return;
 	}
 
 	public void jumptoWarehouse(View v) {
 		setFragment(WAREHOUSE);
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoVerbs(View v) {
 		setFragment(VERBS);
 		dialog.dismiss();
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoPhrasalVerbs(View v) {
 		setFragment(PHRASAL_VERBS);
 		dialog.dismiss();
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoBin(View v) {
@@ -188,15 +202,27 @@ public class LanguageActivity extends Activity {
 		}
 		setFragment(BIN);
 		dialog.dismiss();
+		hideOptionsMenu(null);
 	}
 
 	public void jumptoDebug(View v) {
 		dialog.dismiss();
+		hideOptionsMenu(null);
 		startActivity(new Intent(this, Debug.class));
 	}
 
 	private void showMessage(int text) {
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+	}
+
+	public void showOptionsMenu(View v) {
+		show_options.setVisibility(View.GONE);
+		options.setVisibility(View.VISIBLE);
+	}
+
+	public void hideOptionsMenu(View v) {
+		options.setVisibility(View.GONE);
+		show_options.setVisibility(View.VISIBLE);
 	}
 
 }

@@ -9,7 +9,6 @@
     <color name="label_expression">#FF9933FF</color>
     <color name="label_other">#FFFF3399</color>
     <color name="transparent">#00000000</color>
-    
-    
+    <color name="border_button">#B3236990</color>
 
 </resources>

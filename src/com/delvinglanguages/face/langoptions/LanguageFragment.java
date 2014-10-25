@@ -2,7 +2,6 @@ package com.delvinglanguages.face.langoptions;
 
 import java.text.DecimalFormat;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
@@ -25,7 +23,7 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class LanguageFragment extends Fragment implements OnClickListener {
 
-	private static final String DEBUG = "LanguageFragment";
+	private static final String DEBUG = "##LanguageFragment##";
 
 	private IDDelved idioma;
 
@@ -42,15 +40,14 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		idioma = ControlCore.getIdiomaActual(getActivity());
 
 		View view = inflater.inflate(R.layout.a_language, container, false);
-
-		RelativeLayout bg = (RelativeLayout) view.findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			bg.setBackgroundDrawable(Configuraciones.getBackgroundImage());
+			view.setBackgroundDrawable(Configuraciones.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			bg.setBackgroundColor(Configuraciones.getBackgroundColor());
+			view.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
+		int values[] = idioma.getNumTypes();
 		labels = new TextView[Configuraciones.NUM_TYPES];
 		labels[0] = (TextView) view.findViewById(R.id.ai_noun);
 		labels[1] = (TextView) view.findViewById(R.id.ai_verb);
@@ -60,37 +57,32 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		labels[5] = (TextView) view.findViewById(R.id.ai_expression);
 		labels[6] = (TextView) view.findViewById(R.id.ai_other);
 
+		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+			labels[i].setText("" + values[i]);
+		}
+
 		addword = (Button) view.findViewById(R.id.newword);
 		addword.setOnClickListener(this);
 		toggle_dic = (ImageButton) view.findViewById(R.id.toggle_dic);
 		toggle_dic.setOnClickListener(this);
 
-		return view;
-	}
+		TextView succes1 = (TextView) view.findViewById(R.id.as_ns1);
+		TextView succes2 = (TextView) view.findViewById(R.id.as_ns2);
+		TextView succes3 = (TextView) view.findViewById(R.id.as_ns3);
+		TextView failures = (TextView) view.findViewById(R.id.as_nf);
 
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		Activity cv = getActivity();
-
-		TextView nattempts = (TextView) cv.findViewById(R.id.as_na);
-		TextView nsucces1 = (TextView) cv.findViewById(R.id.as_ns1);
-		TextView nsucces2 = (TextView) cv.findViewById(R.id.as_ns2);
-		TextView nsucces3 = (TextView) cv.findViewById(R.id.as_ns3);
-		TextView failures = (TextView) cv.findViewById(R.id.as_nf);
-
-		TextView psucces1 = (TextView) cv.findViewById(R.id.as_ns1p);
-		TextView psucces2 = (TextView) cv.findViewById(R.id.as_ns2p);
-		TextView psucces3 = (TextView) cv.findViewById(R.id.as_ns3p);
-		TextView pfailures = (TextView) cv.findViewById(R.id.as_nfp);
+		TextView psucces1 = (TextView) view.findViewById(R.id.as_ns1p);
+		TextView psucces2 = (TextView) view.findViewById(R.id.as_ns2p);
+		TextView psucces3 = (TextView) view.findViewById(R.id.as_ns3p);
+		TextView pfailures = (TextView) view.findViewById(R.id.as_nfp);
 
 		Estadisticas stats = idioma.getEstadisticas();
-		nattempts.setText("" + stats.npIntentadas);
-		nsucces1.setText("" + stats.npAcertadas1);
-		nsucces2.setText("" + stats.npAcertadas2);
-		nsucces3.setText("" + stats.npAcertadas3);
-		failures.setText("" + stats.npFalladas);
+		TextView attempts = (TextView) view.findViewById(R.id.as_na);
+		attempts.setText("" + stats.intentos);
+		succes1.setText("" + stats.aciertos1);
+		succes2.setText("" + stats.aciertos2);
+		succes3.setText("" + stats.aciertos3);
+		failures.setText("" + stats.fallos);
 
 		DecimalFormat df = new DecimalFormat("0.0 %");
 
@@ -99,11 +91,7 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		psucces3.setText(df.format(stats.porcentageAcertadas3()));
 		pfailures.setText(df.format(stats.porcentageFalladas()));
 
-		int values[] = idioma.getNumTypes();
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
-			labels[i].setText("" + values[i]);
-		}
-
+		return view;
 	}
 
 	@Override

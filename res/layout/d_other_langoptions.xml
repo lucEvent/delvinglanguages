@@ -5,7 +5,6 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/verb"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
         android:onClick="jumptoVerbs"
@@ -19,14 +18,12 @@
         android:text="@string/phrasalverbs" />
 
     <Button
-        android:id="@+id/bin"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
         android:onClick="jumptoBin"
         android:text="@string/bin" />
 
     <Button
-        android:id="@+id/debug"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
         android:onClick="jumptoDebug"

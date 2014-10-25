@@ -14,21 +14,20 @@ public class ControlCore {
 
 	private static final String DEBUG = "##ControlCore##";
 
-	//Codes to send data between Activities
+	// Codes to send data between Activities
 	public static final String sendDReference = "sendDR";
 	public static final String sendPalabra = "sendW";
 	public static final String sendCharacter = "sendChar";
 	public static final String sendType = "sendTy";
 
-	
-	//---------------------------------------------
+	// ---------------------------------------------
 	private static ControlDB database;
 	private static ControlDisco disco;
 
 	private static ArrayList<IDDelved> idiomas;
 	private static IDDelved actualLang;
 
-//	public static Character subdiccionario;
+	// public static Character subdiccionario;
 	public static ArrayList<Palabra> integrateWords;
 	public static IDDelved integrateLanguage;
 
@@ -42,14 +41,12 @@ public class ControlCore {
 	public ControlCore(Context context) {
 		this.context = context;
 		initializeAll();
-		
-		
-		
-		//Recover rec = new Recover();
-		//if (getIdiomas().size() == 0) {
-			//rec.recoverDatafromCopy();
-		//}
-			//rec.makeCopy();
+
+		// Recover rec = new Recover();
+		// if (getIdiomas().size() == 0) {
+		// rec.recoverDatafromCopy();
+		// }
+		// rec.makeCopy();
 	}
 
 	private static void initializeAll() {
@@ -94,7 +91,7 @@ public class ControlCore {
 		loadwords();
 		return actualLang.getPalabras();
 	}
-	
+
 	public static ArrayList<DReference> getReferences() {
 		return actualLang.getReferences();
 	}
@@ -102,7 +99,7 @@ public class ControlCore {
 	public static Palabra getPalabra(int id) {
 		return actualLang.getPalabra(id);
 	}
-	
+
 	public static DReference getReference(String name) {
 		return actualLang.getReference(name);
 	}
@@ -143,7 +140,7 @@ public class ControlCore {
 		loadwords();
 		actualLang = temp;
 	}
-	
+
 	public static void loadLanguage(boolean withDictionary) {
 		loadwords();
 		actualLang.createDictionaries();
@@ -197,8 +194,8 @@ public class ControlCore {
 		database.removeTest(testActual.id);
 	}
 
-	public static void updatePalabra(Palabra pal, String name, String trad, String spell,
-			int type) {
+	public static void updatePalabra(Palabra pal, String name, String trad,
+			String spell, int type) {
 		actualLang.reindexar(pal, name, trad, spell, type);
 		if (actualLang.isIdiomaNativo()) {
 			pal = pal.cloneReverse();
@@ -292,10 +289,10 @@ public class ControlCore {
 		}
 
 		// Copiando el Diccionario
-		ArrayList<Palabra> fuentes = actualLang.getPalabras();	//Necesario
+		ArrayList<Palabra> fuentes = actualLang.getPalabras(); // Necesario
 		for (int i = 0; i < fuentes.size(); ++i) {
 			Palabra pinsert = fuentes.get(i);
-			Palabra porig = destino.getPalabra(pinsert.getName());//Necesario
+			Palabra porig = destino.getPalabra(pinsert.getName());// Necesario
 			if (porig == null) {
 				destino.addPalabra(pinsert);
 				database.integrateWord(pinsert, destino.getID());
@@ -322,7 +319,8 @@ public class ControlCore {
 		return database.getTense(verbId, tense);
 	}
 
-	public static void addNewTense(int verbId, int tenseId, String form, String pron) {
+	public static void addNewTense(int verbId, int tenseId, String form,
+			String pron) {
 		database.insertTense(actualLang.getID(), verbId, form, pron, tenseId);
 	}
 
@@ -330,17 +328,11 @@ public class ControlCore {
 		actualLang.getEstadisticas().nuevoIntento(intento);
 		if (intento == 1) {
 			ref.priority += -5;
-		} else if (intento > 3) {
+		} else {
 			ref.priority += intento;
 		}
 		for (Palabra p : ref.owners) {
-			if (intento == 1) {
-				p.updatePriority(-5);
-			} else if (intento > 3) {
-				p.updatePriority(intento);
-			} else {
-				continue;
-			}
+			p.updatePriority(ref.priority);
 			database.updatePriority(p);
 		}
 	}

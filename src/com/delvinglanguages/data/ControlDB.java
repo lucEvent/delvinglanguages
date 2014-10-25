@@ -178,11 +178,11 @@ public class ControlDB {
 
 	public void updateStatistics(Estadisticas e) {
 		ContentValues values = new ContentValues();
-		values.put(DataBase.col_estadisticas[1], e.npIntentadas);
-		values.put(DataBase.col_estadisticas[2], e.npAcertadas1);
-		values.put(DataBase.col_estadisticas[3], e.npAcertadas2);
-		values.put(DataBase.col_estadisticas[4], e.npAcertadas3);
-		values.put(DataBase.col_estadisticas[5], e.npFalladas);
+		values.put(DataBase.col_estadisticas[1], e.intentos);
+		values.put(DataBase.col_estadisticas[2], e.aciertos1);
+		values.put(DataBase.col_estadisticas[3], e.aciertos2);
+		values.put(DataBase.col_estadisticas[4], e.aciertos3);
+		values.put(DataBase.col_estadisticas[5], e.fallos);
 		database = gateway.getWritableDatabase();
 		database.update(DataBase.estadisticas, values,
 				DataBase.col_estadisticas[0] + " = " + e.id, null);

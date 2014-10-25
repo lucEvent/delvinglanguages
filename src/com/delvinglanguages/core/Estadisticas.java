@@ -4,81 +4,77 @@ public class Estadisticas {
 
 	public final int id;
 
-	public int npIntentadas;
-	public int npAcertadas1;
-	public int npAcertadas2;
-	public int npAcertadas3;
-	public int npFalladas;
+	public int intentos;
+	public int aciertos1;
+	public int aciertos2;
+	public int aciertos3;
+	public int fallos;
 
-	// Constructora
 	public Estadisticas(int id) {
 		this.id = id;
-		npIntentadas = 0;
-		npAcertadas1 = 0;
-		npAcertadas2 = 0;
-		npAcertadas3 = 0;
-		npFalladas = 0;
+		intentos = 0;
+		aciertos1 = 0;
+		aciertos2 = 0;
+		aciertos3 = 0;
+		fallos = 0;
 	}
 
 	public Estadisticas(int id, int nPI, int nPA1, int nPA2, int nPA3, int nPF) {
 		this.id = id;
-		npIntentadas = nPI;
-		npAcertadas1 = nPA1;
-		npAcertadas2 = nPA2;
-		npAcertadas3 = nPA3;
-		npFalladas = nPF;
+		intentos = nPI;
+		aciertos1 = nPA1;
+		aciertos2 = nPA2;
+		aciertos3 = nPA3;
+		fallos = nPF;
 	}
 
-	// Consultoras
-
 	public float porcentageAcertadas1() {
-		if (npIntentadas == 0)
+		if (intentos == 0)
 			return 0;
-		return (float) npAcertadas1 / (float) npIntentadas;
+		return (float) aciertos1 / (float) intentos;
 	}
 
 	public float porcentageAcertadas2() {
-		if (npIntentadas == 0)
+		if (intentos == 0)
 			return 0;
-		return (float) npAcertadas2 / (float) npIntentadas;
+		return (float) aciertos2 / (float) intentos;
 	}
 
 	public float porcentageAcertadas3() {
-		if (npIntentadas == 0)
+		if (intentos == 0)
 			return 0;
-		return (float) npAcertadas3 / (float) npIntentadas;
+		return (float) aciertos3 / (float) intentos;
 	}
 
 	public float porcentageFalladas() {
-		if (npIntentadas == 0)
+		if (intentos == 0)
 			return 0;
-		return (float) npFalladas / (float) npIntentadas;
+		return (float) fallos / (float) intentos;
 	}
 
-	// Modificadoras
 	public void nuevoIntento(int resultado) {
-		npIntentadas++;
+		intentos++;
 		switch (resultado) {
 		case 1:
-			npAcertadas1++;
+			aciertos1++;
 			break;
 		case 2:
-			npAcertadas2++;
+			aciertos2++;
 			break;
 		case 3:
-			npAcertadas3++;
+			aciertos3++;
 			break;
 		default:
-			npFalladas++;
+			fallos++;
 		}
 	}
 
 	public void clear() {
-		npIntentadas = 0;
-		npAcertadas1 = 0;
-		npAcertadas2 = 0;
-		npAcertadas3 = 0;
-		npFalladas = 0;
+		intentos = 0;
+		aciertos1 = 0;
+		aciertos2 = 0;
+		aciertos3 = 0;
+		fallos = 0;
 	}
 
 }

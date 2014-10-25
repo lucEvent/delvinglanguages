@@ -6,6 +6,6 @@
 
     <stroke
         android:width="2dip"
-        android:color="#B3236990" />
+        android:color="@color/border_button" />
 
 </shape>

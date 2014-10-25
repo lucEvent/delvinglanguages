@@ -30,7 +30,7 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class PreguntasActivity extends Activity implements OnClickListener {
 
-	private static final String DEBUG = "##PreguntaAct##";
+	private static final String DEBUG = "##PreguntaActivity##";
 	
 	protected final int NUM_RESP = 6;
 
@@ -90,6 +90,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Log.d(DEBUG, "Guardando estadisticas en disco");
 		ControlCore.saveStatistics();
 	}
 

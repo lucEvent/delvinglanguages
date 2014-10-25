@@ -1,0 +1,100 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true" >
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.delvinglanguages.face.langoptions.NullFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </fragment>
+
+    <ImageButton
+        android:id="@+id/open_opts"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_gravity="bottom"
+        android:background="@color/border_button"
+        android:onClick="showOptionsMenu"
+        android:src="@android:drawable/arrow_up_float" 
+        android:visibility="invisible" />
+    
+    <LinearLayout
+        android:baselineAligned="false"
+        android:id="@+id/langoptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:onClick="jumptoPractise"
+                android:text="@string/practise" />
+
+            <Button
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:onClick="jumptoWarehouse"
+                android:text="@string/Warehouse" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:id="@+id/delv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/close_open"
+                android:layout_alignParentTop="true"
+                android:layout_margin="2dip"
+                android:background="#22222222"
+                android:onClick="jumptoLanguageMain"
+                android:src="@drawable/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/close_open"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignLeft="@+id/delv"
+                android:layout_alignParentBottom="true"
+                android:layout_alignRight="@+id/delv"
+                android:layout_marginBottom="2dip"
+                android:background="@color/border_button"
+                android:onClick="hideOptionsMenu"
+                android:src="@android:drawable/arrow_down_float" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:onClick="jumptoDictionary"
+                android:text="@string/Dictionary" />
+
+            <Button
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:onClick="jumptoOther"
+                android:text="@string/other" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

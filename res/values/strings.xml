@@ -224,10 +224,12 @@
     <string name="languageintegrated">Language integrated</string>
     <string name="title_activity_new_tense">NewTenseActivity</string>
     <string name="about_content">
-        Delving Languages v1.2.2.3\n
+        Delving Languages v1.2.3.1 \n
         Develop by Rafael J. Lucena\n
 
-      	Version 1.2.2.3 2014&#8211;05&#8211;13 Language Menu ch\n\n
+      	Version 1.2.3.1 2014&#8211;10&#8211;25 Improvements in statistics stuff ch\n\n
+      	Version 1.2.3 2014&#8211;10&#8211;25 New Language Menu 100% working ch\n\n
+      	Version 1.2.2.3 2014&#8211;10&#8211;24 Language Menu ch\n\n
       	Version 1.2.1 2014&#8211;05&#8211;13 ListWord changed\n\n
         Version 1.2.0 2014&#8211;05&#8211;13 Improved dictionary and related stuff. More common exceptions found solved\n\n
         Version 1.1.14 2014&#8211;04&#8211;15 NullPointerException solved\n\n

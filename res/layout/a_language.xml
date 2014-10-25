@@ -100,7 +100,7 @@
         android:layout_below="@+id/table"
         android:layout_margin="5dip"
         android:background="@color/transparent"
-        android:contentDescription="Change dictionary direction"
+        android:contentDescription="Toggle dictionary"
         android:src="@drawable/change_direction" />
 
     <ScrollView
@@ -142,8 +142,7 @@
 
                     <TextView
                         android:id="@+id/as_na"
-                        style="@style/textview_statistics"
-                        android:text="0" />
+                        style="@style/textview_statistics" />
 
                     <TextView style="@style/textview_statistics" />
                 </TableRow>
@@ -159,13 +158,11 @@
 
                     <TextView
                         android:id="@+id/as_ns1"
-                        style="@style/textview_statistics"
-                        android:text="0" />
+                        style="@style/textview_statistics" />
 
                     <TextView
                         android:id="@+id/as_ns1p"
-                        style="@style/textview_statistics"
-                        android:text="0%" />
+                        style="@style/textview_statistics" />
                 </TableRow>
 
                 <TableRow
@@ -179,13 +176,11 @@
 
                     <TextView
                         android:id="@+id/as_ns2"
-                        style="@style/textview_statistics"
-                        android:text="0" />
+                        style="@style/textview_statistics" />
 
                     <TextView
                         android:id="@+id/as_ns2p"
-                        style="@style/textview_statistics"
-                        android:text="0%" />
+                        style="@style/textview_statistics" />
                 </TableRow>
 
                 <TableRow
@@ -199,13 +194,11 @@
 
                     <TextView
                         android:id="@+id/as_ns3"
-                        style="@style/textview_statistics"
-                        android:text="0" />
+                        style="@style/textview_statistics" />
 
                     <TextView
                         android:id="@+id/as_ns3p"
-                        style="@style/textview_statistics"
-                        android:text="0%" />
+                        style="@style/textview_statistics" />
                 </TableRow>
 
                 <TableRow
@@ -220,12 +213,12 @@
                     <TextView
                         android:id="@+id/as_nf"
                         style="@style/textview_statistics"
-                        android:text="0" />
+                       />
 
                     <TextView
                         android:id="@+id/as_nfp"
                         style="@style/textview_statistics"
-                        android:text="0%" />
+                        />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
@@ -237,6 +230,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="New word" />
+        android:text="@string/newword" />
 
 </RelativeLayout>
