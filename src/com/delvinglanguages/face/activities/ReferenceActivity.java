@@ -31,6 +31,8 @@ import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.core.Tense;
+import com.delvinglanguages.face.activity.add.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.listers.TranslationLister;
 import com.delvinglanguages.listers.WordLister;
 import com.delvinglanguages.settings.Configuraciones;
@@ -78,8 +80,7 @@ public class ReferenceActivity extends Activity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		String s = getIntent().getExtras()
-				.getString(ControlCore.sendDReference);
+		String s = getIntent().getExtras().getString(ControlCore.sendDReference);
 		reference = ControlCore.getIdiomaActual(this).getReference(s);
 
 		tword = (TextView) findViewById(R.id.word);
@@ -218,9 +219,8 @@ public class ReferenceActivity extends Activity {
 	}
 
 	private void editAction(int pos) {
-		Intent intent = new Intent(this, AddWordActivity.class);
-		intent.putExtra("from", AddWordActivity.FROM_MODIFY);
-		intent.putExtra(ControlCore.sendPalabra, reference.owners.get(pos).id);
+		Intent intent = new Intent(this, AddWordFromModifyActivity.class);
+		intent.putExtra(AddWordActivity.SEND_WORD, reference.owners.get(pos).id);
 		startActivityForResult(intent, REQUEST_EDIT);
 	}
 

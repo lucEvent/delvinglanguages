@@ -16,9 +16,7 @@ public class ControlCore {
 
 	// Codes to send data between Activities
 	public static final String sendDReference = "sendDR";
-	public static final String sendPalabra = "sendW";
 	public static final String sendCharacter = "sendChar";
-	public static final String sendType = "sendTy";
 
 	// ---------------------------------------------
 	private static ControlDB database;

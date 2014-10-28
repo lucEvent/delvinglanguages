@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="5dip"
-    android:paddingRight="dip"
-    tools:context=".TranslateActivity" >
+    android:paddingRight="5dip" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tr_input"
+        android:layout_above="@+id/input"
         android:layout_alignParentTop="true"
-        android:layout_below="@+id/tr_search" >
+        android:layout_below="@+id/input" >
 
         <LinearLayout
             android:id="@+id/list"
@@ -22,21 +21,32 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/tr_search"
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttons"
+        android:ems="10"
+        android:hint="@string/hint_search"
+        android:inputType="textCapSentences" />
+
+    <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dip"
-        android:text="Search" />
+        android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/tr_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tr_search"
-        android:ems="10"
-        android:hint="Type word to search"
-        android:inputType="text" />
+        <Button
+            android:id="@+id/search"
+            style="@style/button_list_selector"
+            android:text="@string/search" />
+
+        <Button
+            android:id="@+id/add"
+            style="@style/button_list_selector"
+            android:text="@string/add" />
+    </LinearLayout>
 
 </RelativeLayout>

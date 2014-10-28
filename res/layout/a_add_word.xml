@@ -3,15 +3,15 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddWordActivity" >
+    android:animateLayoutChanges="true" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/options"
         android:layout_alignParentTop="true"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip" >
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +63,7 @@
                     android:id="@+id/sel_noun"
                     style="@style/button_type_word"
                     android:background="@drawable/type_noun_backgrounds"
+                    android:onClick="changeState"
                     android:paddingLeft="10dip"
                     android:text="@string/noun" />
 
@@ -70,18 +71,21 @@
                     android:id="@+id/sel_verb"
                     style="@style/button_type_word"
                     android:background="@drawable/type_verb_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/verb" />
 
                 <Button
                     android:id="@+id/sel_adj"
                     style="@style/button_type_word"
                     android:background="@drawable/type_adjective_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/adjective" />
 
                 <Button
                     android:id="@+id/sel_adv"
                     style="@style/button_type_word"
                     android:background="@drawable/type_adverb_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/adverb" />
             </LinearLayout>
 
@@ -94,6 +98,7 @@
                     android:id="@+id/sel_phrasal"
                     style="@style/button_type_word"
                     android:background="@drawable/type_phrasal_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/phrasalverb" />
             </LinearLayout>
 
@@ -106,12 +111,14 @@
                     android:id="@+id/sel_expression"
                     style="@style/button_type_word"
                     android:background="@drawable/type_expression_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/expression" />
 
                 <Button
                     android:id="@+id/sel_other"
                     style="@style/button_type_word"
                     android:background="@drawable/type_other_backgrounds"
+                    android:onClick="changeState"
                     android:text="@string/other" />
             </LinearLayout>
         </LinearLayout>
@@ -127,16 +134,19 @@
         <Button
             android:id="@+id/cancel"
             style="@style/button_list_selector"
+            android:onClick="cancel"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/addmore"
             style="@style/button_list_selector"
+            android:onClick="secondOption"
             android:text="@string/addmore" />
 
         <Button
             android:id="@+id/add"
             style="@style/button_list_selector"
+            android:onClick="addWord"
             android:text="@string/add" />
     </LinearLayout>
 
@@ -151,6 +161,7 @@
         <Button
             android:id="@+id/sv_ao"
             style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
             android:tag="@string/sv_ao_cap"
             android:text="@string/sv_ao"
             android:visibility="gone" />
@@ -158,6 +169,7 @@
         <Button
             android:id="@+id/sv_ae"
             style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
             android:tag="@string/sv_ae_cap"
             android:text="@string/sv_ae"
             android:visibility="gone" />
@@ -165,8 +177,17 @@
         <Button
             android:id="@+id/sv_oe"
             style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
             android:tag="@string/sv_oe_cap"
             android:text="@string/sv_oe"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/es_ene"
+            style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
+            android:tag="@string/es_n_cap"
+            android:text="@string/es_n"
             android:visibility="gone" />
     </LinearLayout>
 

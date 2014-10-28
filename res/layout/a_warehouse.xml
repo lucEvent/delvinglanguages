@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="381dp"
         android:layout_above="@+id/layoutbottom"
+        android:animateLayoutChanges="true"
         android:layout_alignParentTop="true"
         android:cacheColorHint="#00000000"
         android:paddingLeft="10dip" />
@@ -71,6 +72,18 @@
             android:tag="@string/sv_oe_cap"
             android:text="@string/sv_oe"
             android:visibility="gone" />
-    </LinearLayout>
+
+                <Button
+            android:id="@+id/es_ene"
+            style="@style/button_list_selector"
+            android:tag="@string/es_n_cap"
+            android:text="@string/es_n"
+            android:visibility="gone" />
+        
+        
+        
+        
+        
+        </LinearLayout>
 
 </RelativeLayout>

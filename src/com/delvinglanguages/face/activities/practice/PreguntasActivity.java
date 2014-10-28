@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

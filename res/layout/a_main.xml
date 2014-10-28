@@ -3,6 +3,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".Main" >
 
     <RelativeLayout
@@ -70,6 +71,7 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:focusable="true"

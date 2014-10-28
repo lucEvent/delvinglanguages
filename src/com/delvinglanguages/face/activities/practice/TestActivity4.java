@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
-import com.delvinglanguages.face.adapters.InputDialog;
+import com.delvinglanguages.face.dialog.InputDialog;
 
 public class TestActivity4 extends CompleteActivity {
 

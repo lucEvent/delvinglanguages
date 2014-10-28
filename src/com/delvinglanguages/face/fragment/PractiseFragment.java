@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.langoptions;
+package com.delvinglanguages.face.fragment;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -11,12 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.face.activities.practics.CompleteActivity;
-import com.delvinglanguages.face.activities.practics.ListeningActivity;
-import com.delvinglanguages.face.activities.practics.PreguntasActivity;
-import com.delvinglanguages.face.activities.practics.SelectTestActivity;
-import com.delvinglanguages.face.activities.practics.TranslateActivity;
-import com.delvinglanguages.face.activities.practics.WriteWordsActivity;
+import com.delvinglanguages.face.activities.practice.CompleteActivity;
+import com.delvinglanguages.face.activities.practice.ListeningActivity;
+import com.delvinglanguages.face.activities.practice.PreguntasActivity;
+import com.delvinglanguages.face.activities.practice.SelectTestActivity;
+import com.delvinglanguages.face.activities.practice.WriteWordsActivity;
 import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -65,9 +64,6 @@ public class PractiseFragment extends ListFragment {
 			break;
 		case 4:// Test you
 			startActivity(new Intent(activity, SelectTestActivity.class));
-			break;
-		case 5:// Translate
-			startActivity(new Intent(activity, TranslateActivity.class));
 			break;
 		}
 	}

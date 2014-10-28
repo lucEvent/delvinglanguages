@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,7 +22,7 @@ import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
 import com.delvinglanguages.core.Cerebro.QuestionModel;
-import com.delvinglanguages.face.adapters.InputDialog;
+import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class TestActivity3 extends Activity implements OnClickListener {

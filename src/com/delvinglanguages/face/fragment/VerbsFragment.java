@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.langoptions;
+package com.delvinglanguages.face.fragment;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.face.activities.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
 import com.delvinglanguages.face.activities.ReferenceActivity;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
@@ -62,9 +62,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener {
 
 	@Override
 	public void onClick(View button) {
-		Intent intent = new Intent(getActivity(), AddWordActivity.class);
-		intent.putExtra("from", AddWordActivity.FROM_VERB);
-		startActivity(intent);
+		startActivity(new Intent(getActivity(), AddWordFromVerbActivity.class));
 	}
 
 }

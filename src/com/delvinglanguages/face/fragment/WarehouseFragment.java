@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.langoptions;
+package com.delvinglanguages.face.fragment;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Nota;
 import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.settings.Configuraciones;
-import com.delvinglanguages.face.activities.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
 import com.delvinglanguages.listers.StoreWordLister;
 
@@ -80,8 +80,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 		super.onListItemClick(l, v, position, id);
 
 		ControlCore.notaToModify = lista.get(position);
-		Intent intent = new Intent(getActivity(), AddWordActivity.class);
-		intent.putExtra("from", AddWordActivity.FROM_WAREHOUSE);
+		Intent intent = new Intent(getActivity(), AddWordFromWarehouseActivity.class);
 		startActivity(intent);
 	}
 

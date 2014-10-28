@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
-import com.delvinglanguages.face.adapters.InputDialog;
+import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.listers.TestStatsLister;
 import com.delvinglanguages.settings.Configuraciones;
 

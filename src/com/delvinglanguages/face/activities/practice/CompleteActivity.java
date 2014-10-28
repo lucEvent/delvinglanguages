@@ -1,9 +1,8 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,7 +14,6 @@ import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.Cerebro.Action;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class CompleteActivity extends Activity implements OnClickListener {

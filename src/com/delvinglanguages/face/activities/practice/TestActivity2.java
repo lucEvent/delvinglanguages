@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practics;
+package com.delvinglanguages.face.activities.practice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,9 +17,8 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.core.Test;
-import com.delvinglanguages.face.adapters.InputDialog;
+import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class TestActivity2 extends Activity implements OnClickListener {

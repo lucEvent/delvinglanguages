@@ -21,7 +21,8 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.face.activities.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity;
 import com.delvinglanguages.listers.PhrasalLister;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -217,9 +218,8 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher,
 				break;
 			}
 		}
-		Intent intent = new Intent(this, AddWordActivity.class);
-		intent.putExtra("from", AddWordActivity.FROM_PHRASAL);
-		intent.putExtra("phrasal", base + " " + prep);
+		Intent intent = new Intent(this, AddWordFromPhrasalActivity.class);
+		intent.putExtra(AddWordActivity.SEND_NAME, base + " " + prep);
 		startActivity(intent);
 		finish();
 	}

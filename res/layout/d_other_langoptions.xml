@@ -20,6 +20,12 @@
     <Button
         style="@style/button_list_selector"
         android:layout_width="match_parent"
+        android:onClick="jumptoSearch"
+        android:text="@string/search" />
+
+    <Button
+        style="@style/button_list_selector"
+        android:layout_width="match_parent"
         android:onClick="jumptoBin"
         android:text="@string/bin" />
 

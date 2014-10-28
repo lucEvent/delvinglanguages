@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.adapters;
+package com.delvinglanguages.face.dialog;
 
 import java.util.ArrayList;
 

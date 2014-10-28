@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.face.adapters.IntegrateManager;
+import com.delvinglanguages.face.dialog.IntegrateManager;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class LanguageSettingsActivity extends Activity implements OnClickListener {

@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="10dip"
+        android:layout_gravity="center_vertical"
         android:layout_margin="2dip"
         android:background="@drawable/type_verb_backgrounds"
+        android:gravity="center"
+        android:padding="10dip"
         android:text="FF"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
+    <CheckedTextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/type"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/type"
         android:layout_toRightOf="@+id/type"
-        android:gravity="center"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:clickable="true"
+        android:gravity="center_vertical"
         android:paddingLeft="15dip"
+        android:textAlignment="center"
+        android:paddingRight="15dip"
         android:text="@string/verb"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

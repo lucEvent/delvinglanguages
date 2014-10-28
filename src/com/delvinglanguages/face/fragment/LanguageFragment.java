@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.langoptions;
+package com.delvinglanguages.face.fragment;
 
 import java.text.DecimalFormat;
 
@@ -18,7 +18,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Estadisticas;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.face.activities.AddWordActivity;
+import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class LanguageFragment extends Fragment implements OnClickListener {
@@ -98,7 +98,6 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 	public void onClick(View button) {
 		if (button == addword) {
 			Intent intent = new Intent(getActivity(), AddWordActivity.class);
-			intent.putExtra("from", AddWordActivity.FROM_DEFAULT);
 			startActivity(intent);
 		} else if (button == toggle_dic) {
 			Log.d(DEBUG, "Cambiando el diccionario");

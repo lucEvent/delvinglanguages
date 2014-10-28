@@ -18,13 +18,14 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.debug.Debug;
-import com.delvinglanguages.face.langoptions.BinFragment;
-import com.delvinglanguages.face.langoptions.DictionaryFragment;
-import com.delvinglanguages.face.langoptions.LanguageFragment;
-import com.delvinglanguages.face.langoptions.PhrasalsFragment;
-import com.delvinglanguages.face.langoptions.PractiseFragment;
-import com.delvinglanguages.face.langoptions.VerbsFragment;
-import com.delvinglanguages.face.langoptions.WarehouseFragment;
+import com.delvinglanguages.face.fragment.BinFragment;
+import com.delvinglanguages.face.fragment.DictionaryFragment;
+import com.delvinglanguages.face.fragment.LanguageFragment;
+import com.delvinglanguages.face.fragment.PhrasalsFragment;
+import com.delvinglanguages.face.fragment.PractiseFragment;
+import com.delvinglanguages.face.fragment.SearchFragment;
+import com.delvinglanguages.face.fragment.VerbsFragment;
+import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -39,6 +40,7 @@ public class LanguageActivity extends Activity {
 	private static final int PHRASAL_VERBS = 4;
 	private static final int WAREHOUSE = 5;
 	private static final int BIN = 6;
+	private static final int SEARCH = 7;
 
 	private IDDelved idioma;
 
@@ -130,6 +132,10 @@ public class LanguageActivity extends Activity {
 			fragment = new BinFragment();
 			title = idioma.getName() + " " + getString(R.string.bin);
 			break;
+		case SEARCH:
+			fragment = new SearchFragment();
+			title = idioma.getName() + " " + getString(R.string.search);
+			break;
 		default:
 			fragment = new LanguageFragment();
 			title = idioma.getName();
@@ -201,6 +207,12 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(BIN);
+		dialog.dismiss();
+		hideOptionsMenu(null);
+	}
+	
+	public void jumptoSearch(View v) {
+		setFragment(SEARCH);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
