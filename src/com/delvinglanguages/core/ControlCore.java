@@ -26,7 +26,7 @@ public class ControlCore {
 	private static IDDelved actualLang;
 
 	// public static Character subdiccionario;
-	public static ArrayList<Palabra> integrateWords;
+	public static ArrayList<Word> integrateWords;
 	public static IDDelved integrateLanguage;
 
 	// Variables para PalabraActivity
@@ -85,7 +85,7 @@ public class ControlCore {
 		return idiomas;
 	}
 
-	public static ArrayList<Palabra> getPalabras() {
+	public static ArrayList<Word> getPalabras() {
 		loadwords();
 		return actualLang.getPalabras();
 	}
@@ -94,7 +94,7 @@ public class ControlCore {
 		return actualLang.getReferences();
 	}
 
-	public static Palabra getPalabra(int id) {
+	public static Word getPalabra(int id) {
 		return actualLang.getPalabra(id);
 	}
 
@@ -102,7 +102,7 @@ public class ControlCore {
 		return actualLang.getReference(name);
 	}
 
-	public static ArrayList<Palabra> getPapelera() {
+	public static ArrayList<Word> getPapelera() {
 		loadwords();
 		return actualLang.getPapelera();
 	}
@@ -141,7 +141,6 @@ public class ControlCore {
 
 	public static void loadLanguage(boolean withDictionary) {
 		loadwords();
-		actualLang.createDictionaries();
 	}
 
 	public static void switchDictionary() {
@@ -159,8 +158,8 @@ public class ControlCore {
 
 	public static void addPalabra(String nom, String trad, String spell,
 			int type) {
-		nom = Palabra.format(nom);
-		trad = Palabra.format(trad);
+		nom = Word.format(nom);
+		trad = Word.format(trad);
 		if (actualLang.isIdiomaNativo()) {
 			String temp = nom;
 			nom = trad;
@@ -192,7 +191,7 @@ public class ControlCore {
 		database.removeTest(testActual.id);
 	}
 
-	public static void updatePalabra(Palabra pal, String name, String trad,
+	public static void updatePalabra(Word pal, String name, String trad,
 			String spell, int type) {
 		actualLang.reindexar(pal, name, trad, spell, type);
 		if (actualLang.isIdiomaNativo()) {
@@ -226,7 +225,7 @@ public class ControlCore {
 		saveStatistics();
 	}
 
-	public static void throwPalabra(Palabra thrown) {
+	public static void throwPalabra(Word thrown) {
 		database.throworrestoreWord(thrown);
 		actualLang.tirarPalabra(thrown);
 	}
@@ -237,9 +236,9 @@ public class ControlCore {
 	}
 
 	public static void clearPapelera() {
-		ArrayList<Palabra> bin = actualLang.getPapelera();
+		ArrayList<Word> bin = actualLang.getPapelera();
 		for (int i = 0; i < bin.size(); i++) {
-			Palabra p = bin.get(i);
+			Word p = bin.get(i);
 			if (p.isVerb()) {
 				database.removeTenses(p.id);
 			}
@@ -277,20 +276,19 @@ public class ControlCore {
 		database.updateLanguage(actualLang);
 	}
 
-	public static ArrayList<Palabra> integrateLanguage(int langdestinoposition) {
-		integrateWords = new ArrayList<Palabra>();
+	public static ArrayList<Word> integrateLanguage(int langdestinoposition) {
+		integrateWords = new ArrayList<Word>();
 		integrateLanguage = idiomas.get(langdestinoposition);
 		IDDelved destino = integrateLanguage;
 		loadwords(destino);
-		destino.createDictionaries();
-		while (!destino.datos.dictionariesCreated) {
+		while (!destino.datos.isDictionaryCreated()) {
 		}
 
 		// Copiando el Diccionario
-		ArrayList<Palabra> fuentes = actualLang.getPalabras(); // Necesario
+		ArrayList<Word> fuentes = actualLang.getPalabras(); // Necesario
 		for (int i = 0; i < fuentes.size(); ++i) {
-			Palabra pinsert = fuentes.get(i);
-			Palabra porig = destino.getPalabra(pinsert.getName());// Necesario
+			Word pinsert = fuentes.get(i);
+			Word porig = destino.getPalabra(pinsert.getName());// Necesario
 			if (porig == null) {
 				destino.addPalabra(pinsert);
 				database.integrateWord(pinsert, destino.getID());
@@ -329,7 +327,7 @@ public class ControlCore {
 		} else {
 			ref.priority += intento;
 		}
-		for (Palabra p : ref.owners) {
+		for (Word p : ref.owners) {
 			p.updatePriority(ref.priority);
 			database.updatePriority(p);
 		}

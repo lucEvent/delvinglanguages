@@ -17,13 +17,13 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class IntegrateRepeatedActivity extends Activity implements
 		OnClickListener {
 
-	private ArrayList<Palabra> words;
+	private ArrayList<Word> words;
 
 	private TextView name, pronOrig, pronNew;
 	private Button[] translateOrig, translateNew, types, typesNew;
@@ -101,7 +101,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 	}
 
 	private void siguiente() {
-		Palabra orig = words.get(index);
+		Word orig = words.get(index);
 
 		// Nombre
 		name.setText(orig.getName());
@@ -122,7 +122,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 		// Types original
 		setType(types, orig.getType());
 
-		Palabra pnew = words.get(index + 1);
+		Word pnew = words.get(index + 1);
 
 		// Tranducciones new
 		layNew.removeAllViews();
@@ -188,7 +188,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 				return;
 			}
 
-			Palabra p = words.get(index);
+			Word p = words.get(index);
 			IDDelved tmp = ControlCore.getIdiomaActual(this);
 			ControlCore.setIdiomaActual(ControlCore.integrateLanguage);
 			ControlCore.updatePalabra(p, p.getName(), trads.toString(),

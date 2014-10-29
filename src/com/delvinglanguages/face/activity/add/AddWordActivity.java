@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.listeners.FoneticsKeyboard;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
 import com.delvinglanguages.settings.Configuraciones;
@@ -250,7 +250,7 @@ public class AddWordActivity extends Activity implements TextWatcher,
 
 	/** ** METODOS TEXT WATCHER ** **/
 	protected boolean autocomplete = false;
-	protected Palabra modifiedWord = null;
+	protected Word modifiedWord = null;
 	private Editable savedTranlation = null;
 	private Editable savedPronuntiation = null;
 	private int savedType = 0;

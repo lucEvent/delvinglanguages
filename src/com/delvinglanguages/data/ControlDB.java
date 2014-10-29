@@ -12,7 +12,7 @@ import com.delvinglanguages.core.Datos;
 import com.delvinglanguages.core.Estadisticas;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Nota;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.core.Test;
 import com.delvinglanguages.core.Tense;
 
@@ -51,16 +51,16 @@ public class ControlDB {
 		return result;
 	}
 
-	public ArrayList<Palabra> readWords(int langID) {
+	public ArrayList<Word> readWords(int langID) {
 		database = gateway.getReadableDatabase();
-		ArrayList<Palabra> result = new ArrayList<Palabra>();
+		ArrayList<Word> result = new ArrayList<Word>();
 		Cursor cursor = database.query(DataBase.palabra, DataBase.col_palabra,
 				DataBase.col_palabra[3] + "=" + langID, null, null, null,
 				DataBase.col_palabra[1] + " ASC");
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			Palabra pal = cursorToPalabra(cursor);
+			Word pal = cursorToWord(cursor);
 			result.add(pal);
 			cursor.moveToNext();
 		}
@@ -118,7 +118,7 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void updateWord(Palabra p) {
+	public void updateWord(Word p) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[1], p.getName());
 		values.put(DataBase.col_palabra[2], p.getTranslationFormated());
@@ -130,7 +130,7 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void integrateWord(Palabra p, int newlangid) {
+	public void integrateWord(Word p, int newlangid) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[3], newlangid);
 		database = gateway.getWritableDatabase();
@@ -148,7 +148,7 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void updatePriority(Palabra p) {
+	public void updatePriority(Word p) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[7], p.getPriority());
 		database = gateway.getWritableDatabase();
@@ -166,7 +166,7 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void throworrestoreWord(Palabra p) {
+	public void throworrestoreWord(Word p) {
 		int place = p.isThrown() ? 0 : 1;
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[6], place);
@@ -215,7 +215,7 @@ public class ControlDB {
 		return language;
 	}
 
-	public Palabra insertWord(String name, String trad, int langID,
+	public Word insertWord(String name, String trad, int langID,
 			String pron, int type) {
 		// Inserting word
 		ContentValues values = new ContentValues();
@@ -225,12 +225,12 @@ public class ControlDB {
 		values.put(DataBase.col_palabra[4], pron);
 		values.put(DataBase.col_palabra[5], type);
 		values.put(DataBase.col_palabra[6], 0);
-		values.put(DataBase.col_palabra[7], Palabra.INITIAL_PRIORITY);
+		values.put(DataBase.col_palabra[7], Word.INITIAL_PRIORITY);
 		database = gateway.getWritableDatabase();
 		long palid = database.insert(DataBase.palabra, null, values);
 		database.close();
-		return new Palabra((int) palid, name, trad, pron, type, false,
-				Palabra.INITIAL_PRIORITY);
+		return new Word((int) palid, name, trad, pron, type, false,
+				Word.INITIAL_PRIORITY);
 	}
 
 	public Nota insertStoreWord(String pal, int langID, int type) {
@@ -370,10 +370,10 @@ public class ControlDB {
 				c.getString(3)));
 	}
 
-	private Palabra cursorToPalabra(Cursor c) {
+	private Word cursorToWord(Cursor c) {
 		boolean b = c.getInt(6) == 1 ? true : false;
 
-		return new Palabra(c.getInt(0), c.getString(1), c.getString(2),
+		return new Word(c.getInt(0), c.getString(1), c.getString(2),
 				c.getString(4), c.getInt(5), b, c.getInt(7));
 	}
 

@@ -18,7 +18,6 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.Palabra;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class WriteWordsActivity extends Activity implements OnClickListener,

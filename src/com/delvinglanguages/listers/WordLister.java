@@ -10,15 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class WordLister extends ArrayAdapter<Palabra> {
+public class WordLister extends ArrayAdapter<Word> {
 
-	private ArrayList<Palabra> values;
+	private ArrayList<Word> values;
 	private Context context;
 
-	public WordLister(Context context, ArrayList<Palabra> values) {
+	public WordLister(Context context, ArrayList<Word> values) {
 		super(context, R.layout.i_word, values);
 		this.context = context;
 		this.values = values;
@@ -31,7 +31,7 @@ public class WordLister extends ArrayAdapter<Palabra> {
 
 		View viewres = inflater.inflate(R.layout.i_word, parent, false);
 
-		Palabra pal = values.get(position);
+		Word pal = values.get(position);
 		TextView word = (TextView) viewres.findViewById(R.id.lp_word);
 		TextView tranlation = (TextView) viewres
 				.findViewById(R.id.lp_translation);

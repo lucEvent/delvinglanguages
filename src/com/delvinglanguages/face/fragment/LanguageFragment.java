@@ -2,6 +2,7 @@ package com.delvinglanguages.face.fragment;
 
 import java.text.DecimalFormat;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +48,6 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 			view.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		int values[] = idioma.getNumTypes();
 		labels = new TextView[Configuraciones.NUM_TYPES];
 		labels[0] = (TextView) view.findViewById(R.id.ai_noun);
 		labels[1] = (TextView) view.findViewById(R.id.ai_verb);
@@ -57,6 +57,16 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		labels[5] = (TextView) view.findViewById(R.id.ai_expression);
 		labels[6] = (TextView) view.findViewById(R.id.ai_other);
 
+		return view;
+	}
+
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		Activity view = getActivity();
+	
+		int values[] = idioma.getNumTypes();
 		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
 			labels[i].setText("" + values[i]);
 		}
@@ -91,9 +101,9 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		psucces3.setText(df.format(stats.porcentageAcertadas3()));
 		pfailures.setText(df.format(stats.porcentageFalladas()));
 
-		return view;
-	}
 
+	}
+	
 	@Override
 	public void onClick(View button) {
 		if (button == addword) {

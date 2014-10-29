@@ -15,7 +15,7 @@ import android.util.Log;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Nota;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 
 public class Recover {
 
@@ -53,11 +53,11 @@ public class Recover {
 				saveString(idm.getName());
 				Log.d(DEBUG, idm.getName());
 				ControlCore.setIdiomaActual(i);
-				ArrayList<Palabra> palabras = ControlCore.getPalabras();
+				ArrayList<Word> palabras = ControlCore.getPalabras();
 				//Por cada palabra del idioma
 				saveInteger(palabras.size());
 				for (int j = 0; j < palabras.size(); j++) {
-					Palabra p = palabras.get(j);
+					Word p = palabras.get(j);
 					Log.d(DEBUG, "_____"+p.getName());
 					saveString(p.getName());
 					saveString(p.getTranslation());

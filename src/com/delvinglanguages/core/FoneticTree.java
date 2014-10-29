@@ -7,11 +7,11 @@ import android.R.integer;
 
 public class FoneticTree {
 
-	public class PalabraFonetica {
-		public Palabra word;
-		public ArrayList< ArrayList<Palabra> > matches;
+	public class FoneticWord {
+		public Word word;
+		public ArrayList< ArrayList<Word> > matches;
 		
-		public PalabraFonetica(Palabra word) {
+		public FoneticWord(Word word) {
 			this.word = word;
 		}
 	}
@@ -22,31 +22,31 @@ public class FoneticTree {
 		int afininadDER;
 	}
 	
-	private ArrayList<Palabra> palabras;
+	private ArrayList<Word> palabras;
 	
-	public FoneticTree(ArrayList<Palabra> words) {
+	public FoneticTree(ArrayList<Word> words) {
 		palabras = words;
 	}
 	
-	public PalabraFonetica makeTree(int position) {
+	public FoneticWord makeTree(int position) {
 		return treeMaker(palabras.get(position));
 	}
 	
-	public PalabraFonetica makeTree(Palabra p) {
+	public FoneticWord makeTree(Word p) {
 		return treeMaker(p);
 	}
 	
-	public PalabraFonetica makeTree() {
+	public FoneticWord makeTree() {
 		int pos = new Random().nextInt(palabras.size());
 		return treeMaker(palabras.get(pos));
 	}
 	
-	private PalabraFonetica treeMaker(Palabra p) {
+	private FoneticWord treeMaker(Word p) {
 		// ------- Save state -----
 		int tmppospal = palabras.indexOf(p);
 		palabras.remove(p);
 		// --------------
-		PalabraFonetica res = new PalabraFonetica(p);
+		FoneticWord res = new FoneticWord(p);
 		String fonetica = p.getPronunciation();
 		String puntuacion = "¡'!\"·$%&/()=?¿^*¨_:;,.-´`+";
 		int lenght = fonetica.length();
@@ -55,10 +55,10 @@ public class FoneticTree {
 				lenght--;
 			}
 		}
-		res.matches = new ArrayList< ArrayList<Palabra> >(lenght);
+		res.matches = new ArrayList< ArrayList<Word> >(lenght);
 		
 		for (int i = 0; i < palabras.size(); i++) {
-			Palabra q = palabras.get(i);
+			Word q = palabras.get(i);
 			String qfon = q.getPronunciation();
 			for (int j = 0; j < fonetica.length(); ++j) {
 				Affinity af = affinityBetween(fonetica, qfon, i);

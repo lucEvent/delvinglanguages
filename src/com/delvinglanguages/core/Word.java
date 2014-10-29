@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
-public class Palabra implements Comparable<Palabra> {
+public class Word implements Comparable<Word> {
 
 	public static final int INITIAL_PRIORITY = 100;
 
@@ -20,12 +20,12 @@ public class Palabra implements Comparable<Palabra> {
 	private int prioridad;
 
 	// Constructoras
-	public Palabra(int id, String name, String trad, String pron, int type,
+	public Word(int id, String name, String trad, String pron, int type,
 			boolean thrown, int priority) {
 		this(id, name, new StringBuilder(trad), pron, type, thrown, priority);
 	}
 
-	public Palabra(int id, String name, StringBuilder trad, String pron,
+	public Word(int id, String name, StringBuilder trad, String pron,
 			int type, boolean thrown, int priority) {
 		this.id = id;
 		nombre = name;
@@ -185,21 +185,21 @@ public class Palabra implements Comparable<Palabra> {
 		prioridad += value;
 	}
 
-	public Palabra cloneReverse() {
-		return new Palabra(id, traducciones.toString(), nombre, pronunciacion,
+	public Word cloneReverse() {
+		return new Word(id, traducciones.toString(), nombre, pronunciacion,
 				tipo, enPapelera, prioridad);
 	}
 
 	/** ************** COMPARABLE ********************** **/
 
 	@Override
-	public int compareTo(Palabra another) {
+	public int compareTo(Word another) {
 		return nombre.compareToIgnoreCase(another.nombre);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		Palabra temp = (Palabra) obj;
+		Word temp = (Word) obj;
 		return this.id == temp.id;
 	}
 

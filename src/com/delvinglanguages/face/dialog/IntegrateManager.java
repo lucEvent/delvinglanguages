@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activities.IntegrateRepeatedActivity;
 import com.delvinglanguages.listers.TranslationLister;
 
@@ -86,7 +86,7 @@ public class IntegrateManager extends Builder implements OnItemClickListener {
 	private void startintegration(int position) {
 		currentDialog.dismiss();
 
-		ArrayList<Palabra> repited = ControlCore.integrateLanguage(position);
+		ArrayList<Word> repited = ControlCore.integrateLanguage(position);
 
 		if (repited.size() == 0) {
 			// Cerrar dialog y acabar activity y eliminar idioma

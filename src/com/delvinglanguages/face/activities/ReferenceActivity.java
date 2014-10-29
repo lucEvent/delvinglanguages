@@ -29,7 +29,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.core.Tense;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
@@ -170,7 +170,7 @@ public class ReferenceActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Builder builder = new AlertDialog.Builder(this);
 		ListView lw = new ListView(this);
-		ArrayList<Palabra> v = reference.getPureOwners();
+		ArrayList<Word> v = reference.getPureOwners();
 		lw.setAdapter(new WordLister(this, v));
 		switch (item.getItemId()) {
 		case R.id.m_edit:

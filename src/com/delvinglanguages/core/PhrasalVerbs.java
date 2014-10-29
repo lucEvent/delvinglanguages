@@ -10,14 +10,14 @@ public class PhrasalVerbs {
 	private String[] prepositions;
 	public TreeMap<String, Boolean[]> phrasals;
 
-	public PhrasalVerbs(ArrayList<Palabra> words, String[] preps) {
+	public PhrasalVerbs(ArrayList<Word> words, String[] preps) {
 		phrasals = new TreeMap<String, Boolean[]>();
 		prepositions = new String[preps.length];
 		for (int i = 0; i < preps.length; i++) {
 			prepositions[i] = preps[i].toLowerCase();
 		}
 		int typePH = 1 << 4;
-		for (Palabra p : words) {
+		for (Word p : words) {
 			if ((typePH & p.getType()) != 0) {
 				Log.d("##Phrasals##", "Phrasal: " + p.getName());
 				decodePhrasal(p.getName());

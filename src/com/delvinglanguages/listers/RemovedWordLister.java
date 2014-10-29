@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 
-public class RemovedWordLister extends ArrayAdapter<Palabra> implements
+public class RemovedWordLister extends ArrayAdapter<Word> implements
 		OnClickListener {
 
 	private Button[] buttons;
-	private ArrayList<Palabra> trash;
+	private ArrayList<Word> trash;
 	private Context context;
 
 	public RemovedWordLister(Context context) {
@@ -37,7 +37,7 @@ public class RemovedWordLister extends ArrayAdapter<Palabra> implements
 
 		View viewres = inflater.inflate(R.layout.i_bin, parent, false);
 
-		Palabra pal = trash.get(position);
+		Word pal = trash.get(position);
 		TextView word = (TextView) viewres.findViewById(R.id.tp_word);
 		TextView tranlation = (TextView) viewres
 				.findViewById(R.id.tp_translation);

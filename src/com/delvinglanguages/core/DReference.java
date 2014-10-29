@@ -16,7 +16,7 @@ public class DReference implements Comparable<DReference> {
 
 	public ArrayList<DReference> links;
 
-	public ArrayList<Palabra> owners;
+	public ArrayList<Word> owners;
 
 	public int type, priority;
 
@@ -26,12 +26,12 @@ public class DReference implements Comparable<DReference> {
 		type = 0;
 		priority = Integer.MIN_VALUE;
 		links = new ArrayList<DReference>();
-		owners = new ArrayList<Palabra>();
+		owners = new ArrayList<Word>();
 	}
 
 	private int debug = 0;
 
-	public void addReference(DReference ref, Palabra owner) {
+	public void addReference(DReference ref, Word owner) {
 		debug++;
 		links.add(ref);
 		owners.add(owner);
@@ -41,14 +41,14 @@ public class DReference implements Comparable<DReference> {
 		}
 	}
 
-	public void removeReferencesto(Palabra enDelv) {
+	public void removeReferencesto(Word enDelv) {
 		for (int i = 0; i < owners.size(); i++) {
 			if (owners.get(i).id == enDelv.id) {
 				links.remove(i).removeReference(this);
 				owners.remove(i);
 				type = 0;
 				priority = Integer.MIN_VALUE;
-				for (Palabra owner : owners) {
+				for (Word owner : owners) {
 					type |= owner.getType();
 					if (owner.getPriority() > priority) {
 						priority = owner.getPriority();
@@ -135,11 +135,11 @@ public class DReference implements Comparable<DReference> {
 		return owners.get(0).getPronunciation();
 	}
 
-	public ArrayList<Palabra> getPureOwners() {
-		ArrayList<Palabra> res = new ArrayList<Palabra>();
+	public ArrayList<Word> getPureOwners() {
+		ArrayList<Word> res = new ArrayList<Word>();
 		res.add(owners.get(0));
 		for (int i = 1; i < owners.size(); i++) {
-			Palabra p = owners.get(i);
+			Word p = owners.get(i);
 			if (!res.contains(p)) {
 				res.add(p);
 			}

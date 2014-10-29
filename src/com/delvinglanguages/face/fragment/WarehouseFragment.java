@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Nota;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.settings.Configuraciones;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
@@ -33,7 +33,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 	private EditText edit;
 	private StoreWordLister adapter;
 
-	private Palabra auxiliar;
+	private Word auxiliar;
 
 	private SpecialKeysBar specialKeys;
 
@@ -62,7 +62,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 		storeword = (ImageButton) view.findViewById(R.id.storeword);
 		storeword.setOnClickListener(this);
 
-		auxiliar = new Palabra(-1, "", "", "", 0, false, 0);
+		auxiliar = new Word(-1, "", "", "", 0, false, 0);
 
 		specialKeys = new SpecialKeysBar(getActivity(), view, new SpecialListener());
 

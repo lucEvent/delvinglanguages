@@ -158,20 +158,24 @@
         <item>De</item>
     </string-array>
     <string-array name="about_content">
-        <item>Delving Languages version 1.3</item>
-        <item>Develop by Rafael J. Lucena</item>
+        <item><b>Delving Languages version 1.3</b></item>
+        <item><b>Develop by Rafael J. Lucena</b></item>
+        <item><b>Contact: rafaa89@gmail(at)com</b></item>
+        <item>   </item>
         
-        <item>Version 1.3 2014&#8211;10&#8211;28\n "Translation" change to "Search". Added Add word from Search. Solved problem adding word from Verb. Internal improvements on Add words. "About" visual changed</item>
-        <item>Version 1.2.3.2 2014&#8211;10&#8211;26\n Moved and Improved Translation section</item>
-        <item>Version 1.2.3.1 2014&#8211;10&#8211;25 Improvements in statistics stuff</item>
-        <item>Version 1.2.3 2014&#8211;10&#8211;25 New Language Menu 100% working</item>
-        <item>Version 1.2.2.3 2014&#8211;10&#8211;24 Language Menu</item>
-        <item>Version 1.2.1 2014&#8211;05&#8211;13 ListWord changed</item>
-        <item>Version 1.2.0 2014&#8211;05&#8211;13 Improved dictionary and related stuff. More common exceptions found solved</item>
-        <item>Version 1.1.9 2014&#8211;04&#8211;14 NullPointerException solved and Set commas between translations</item>
-        <item>Version 1.1.8 2014&#8211;04&#8211;14 StringIndexOutOfBoundsException solved</item>
-        <item>Version 1.1.5 2014&#8211;04&#8211;14 IllegalStateException solved</item>
-        <item>Version 1.1.3 2014&#8211;04&#8211;14 ClassCastException solved</item>
+        <item>Version 1.3.0.2 2014&#8211;10&#8211;28\nMany coherence erros adjusted</item>
+        <item>Version 1.3.0.1 2014&#8211;10&#8211;28\n2 coherence erros adjusted on LanguageFragment. New internal Dictionary implemented for better performance.</item>
+        <item>Version 1.3 2014&#8211;10&#8211;28\n"Translation" change to "Search". Added Add word from Search. Solved problem adding word from Verb. Internal improvements on Add words. "About" visual changed</item>
+        <item>Version 1.2.3.2 2014&#8211;10&#8211;26\nMoved and Improved Translation section</item>
+        <item>Version 1.2.3.1 2014&#8211;10&#8211;25\nImprovements in statistics stuff</item>
+        <item>Version 1.2.3 2014&#8211;10&#8211;25\nNew Language Menu 100% working</item>
+        <item>Version 1.2.2.3 2014&#8211;10&#8211;24\nLanguage Menu</item>
+        <item>Version 1.2.1 2014&#8211;05&#8211;13\nListWord changed</item>
+        <item>Version 1.2.0 2014&#8211;05&#8211;13\nImproved dictionary and related stuff. More common exceptions found solved</item>
+        <item>Version 1.1.9 2014&#8211;04&#8211;14\nNullPointerException solved and Set commas between translations</item>
+        <item>Version 1.1.8 2014&#8211;04&#8211;14\nStringIndexOutOfBoundsException solved</item>
+        <item>Version 1.1.5 2014&#8211;04&#8211;14\nIllegalStateException solved</item>
+        <item>Version 1.1.3 2014&#8211;04&#8211;14\nClassCastException solved</item>
         <item>Version 1.1.2 2014&#8211;04&#8211;14</item>
     </string-array>
 

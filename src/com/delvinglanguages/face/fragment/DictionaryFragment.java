@@ -1,6 +1,6 @@
 package com.delvinglanguages.face.fragment;
 
-import java.util.Enumeration;
+import java.util.Set;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -110,9 +110,8 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
 			}
 		}
 
-		Enumeration<Character> keys = idioma.getDiccionario().keys();
-		while (keys.hasMoreElements()) {
-			Character cap = keys.nextElement();
+		Set<Character> keys = idioma.getDiccionario().keySet();
+		for (Character cap : keys) {
 			int index = cap - 'A';
 			if (index > 26 || index < 0) {
 				switch (cap) {

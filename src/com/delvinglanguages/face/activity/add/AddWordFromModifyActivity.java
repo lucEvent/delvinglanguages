@@ -2,7 +2,7 @@ package com.delvinglanguages.face.activity.add;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Palabra;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import android.content.Intent;
 
 public class AddWordFromModifyActivity extends AddWordActivity {
 
-	private Palabra palabra;
+	private Word palabra;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

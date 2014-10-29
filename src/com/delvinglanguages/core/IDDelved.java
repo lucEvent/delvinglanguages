@@ -1,19 +1,38 @@
 package com.delvinglanguages.core;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import android.util.Log;
-
 import com.delvinglanguages.R;
-import com.delvinglanguages.settings.Configuraciones;
 
 public class IDDelved {
 
 	private static final String DEBUG = "##IDDelved##";
+
+	private static final Character CAPS[][] = {
+			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+					'Z' },//NOTDETECTED
+			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+					'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+					'Y', 'Z' },//ES
+			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+					'Z' },//EN
+			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+					'Z', 'Ä', 'Ö', 'Å' },//SV
+			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+					'Z', 'Ä', 'Ö', 'Å' },//FI
+			{ 'A', 'B', 'C', 'Ç', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+					'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+					'Y', 'Z' }//CA
+
+	};
 
 	// Language ID
 	public static final int NOTDETECTED = 0;
@@ -21,7 +40,7 @@ public class IDDelved {
 	public static final int EN = 2;
 	public static final int SV = 3;
 	public static final int FI = 4;
-	// public static final int CA = 5;
+	public static final int CA = 5;
 	// public static final int IT = 4;
 	// public static final int FR = 6;
 	// public static final int PO = 7;
@@ -60,7 +79,6 @@ public class IDDelved {
 		} else {
 			CODE = NOTDETECTED;
 		}
-		datos.numtypes = new int[Configuraciones.NUM_TYPES];
 	}
 
 	/** *************** CONSULTORAS **************** **/
@@ -72,11 +90,12 @@ public class IDDelved {
 		return datos.nombre;
 	}
 
-	public Palabra getPalabra(String name) {
-		return getPalabra(name, datos.diccionarioDelved.get(name.charAt(0)));
+	public Word getPalabra(String name) {
+		return getPalabra(name,
+				datos.dictionary.dictionary_D_to_N.get(name.charAt(0)));
 	}
 
-	protected Palabra getPalabra(String name, TreeSet<DReference> sub) {
+	protected Word getPalabra(String name, TreeSet<DReference> sub) {
 		if (sub != null) {
 			for (DReference temp : sub) {
 				if (temp.item.equals(name)) {
@@ -87,10 +106,10 @@ public class IDDelved {
 		return null;
 	}
 
-	public Palabra getPalabra(int id) {
-		Iterator<Palabra> it = datos.palabrasDelved.iterator();
+	public Word getPalabra(int id) {
+		Iterator<Word> it = datos.palabrasDelved.iterator();
 		while (it.hasNext()) {
-			Palabra temp = it.next();
+			Word temp = it.next();
 			if (temp.id == id) {
 				return temp;
 			}
@@ -99,7 +118,8 @@ public class IDDelved {
 	}
 
 	public DReference getReference(String name) {
-		TreeSet<DReference> sub = datos.diccionarioDelved.get(name.charAt(0));
+		TreeSet<DReference> sub = datos.dictionary.dictionary_D_to_N.get(name
+				.charAt(0));
 		if (sub != null) {
 			Iterator<DReference> it = sub.iterator();
 			while (it.hasNext()) {
@@ -112,20 +132,21 @@ public class IDDelved {
 		return null;
 	}
 
-	public boolean contains(Palabra p) {
+	public boolean contains(Word p) {
 		return datos.palabrasDelved.contains(p);
 	}
 
-	public ArrayList<Palabra> getPalabras() {
+	public ArrayList<Word> getPalabras() {
 		return datos.palabrasDelved;
 	}
 
 	public ArrayList<DReference> getReferences() {
 		ArrayList<DReference> res = new ArrayList<DReference>();
 		TreeSet<Character> keys = new TreeSet<Character>(
-				datos.diccionarioDelved.keySet());
+				datos.dictionary.dictionary_D_to_N.keySet());
 		for (Character key : keys) {
-			TreeSet<DReference> sub = datos.diccionarioDelved.get(key);
+			TreeSet<DReference> sub = datos.dictionary.dictionary_D_to_N
+					.get(key);
 			for (DReference ref : sub) {
 				res.add(ref);
 			}
@@ -137,7 +158,7 @@ public class IDDelved {
 		return datos.estadistics;
 	}
 
-	public ArrayList<Palabra> getPapelera() {
+	public ArrayList<Word> getPapelera() {
 		return datos.papelera;
 	}
 
@@ -145,12 +166,12 @@ public class IDDelved {
 		return almacen;
 	}
 
-	public Hashtable<Character, TreeSet<DReference>> getDiccionario() {
-		return datos.diccionarioDelved;
+	public HashMap<Character, TreeSet<DReference>> getDiccionario() {
+		return datos.dictionary.dictionary_D_to_N;
 	}
 
 	public int[] getNumTypes() {
-		return datos.numtypes;
+		return datos.dictionary.types;
 	}
 
 	public ArrayList<Test> getTests() {
@@ -178,9 +199,10 @@ public class IDDelved {
 	public ArrayList<DReference> getVerbs() {
 		ArrayList<DReference> verbs = new ArrayList<DReference>();
 		TreeSet<Character> keys = new TreeSet<Character>(
-				datos.diccionarioDelved.keySet());
+				datos.dictionary.dictionary_D_to_N.keySet());
 		for (Character key : keys) {
-			TreeSet<DReference> sub = datos.diccionarioDelved.get(key);
+			TreeSet<DReference> sub = datos.dictionary.dictionary_D_to_N
+					.get(key);
 			for (DReference ref : sub) {
 				if (ref.isVerb()) {
 					verbs.add(ref);
@@ -232,10 +254,10 @@ public class IDDelved {
 		datos.estadistics = est;
 	}
 
-	public void setPalabras(ArrayList<Palabra> words) {
-		datos.papelera = new ArrayList<Palabra>();
+	public void setPalabras(ArrayList<Word> words) {
+		datos.papelera = new ArrayList<Word>();
 		for (int i = 0; i < words.size(); i++) {
-			Palabra temp = words.get(i);
+			Word temp = words.get(i);
 			if (temp.isThrown()) {
 				datos.papelera.add(temp);
 				words.remove(i);
@@ -243,14 +265,7 @@ public class IDDelved {
 			}
 		}
 		datos.palabrasDelved = words;
-		for (Palabra palabra : words) {
-			int type = palabra.getType();
-			for (int j = 0; j < Configuraciones.NUM_TYPES; j++) {
-				if ((type & (1 << j)) != 0) {
-					datos.numtypes[j]++;
-				}
-			}
-		}
+		datos.createDictionary(	CAPS[CODE], CAPS[datos.nativo.CODE]);
 		datos.nativo.setPalabras(words);
 	}
 
@@ -286,7 +301,7 @@ public class IDDelved {
 		}
 	}
 
-	public void addPalabra(Palabra p) {
+	public void addPalabra(Word p) {
 		datos.indexa(p);
 	}
 
@@ -294,7 +309,7 @@ public class IDDelved {
 		almacen.add(0, nota);
 	}
 
-	public void tirarPalabra(Palabra thrown) {
+	public void tirarPalabra(Word thrown) {
 		datos.desindexa(thrown);
 		datos.papelera.add(thrown);
 	}
@@ -318,22 +333,15 @@ public class IDDelved {
 
 	// Restores
 	public void restorePalabra(int binposition) {
-		Palabra p = datos.papelera.remove(binposition);
+		Word p = datos.papelera.remove(binposition);
 		datos.indexa(p);
 	}
 
-	public void reindexar(Palabra p, String name, String trad, String spell,
+	public void reindexar(Word p, String name, String trad, String spell,
 			int type) {
 		datos.desindexa(p);
 		p.setChanges(name, trad, spell, type);
 		datos.indexa(p);
-	}
-
-	public void createDictionaries() {
-		if (datos.diccionarioDelved == null) {
-			datos.dictionariesCreated = false;
-			datos.createDictionaries();
-		}
 	}
 
 	// De clase
@@ -379,9 +387,10 @@ public class IDDelved {
 	public ArrayList<DReference> getPhrasalVerbs() {
 		ArrayList<DReference> phvs = new ArrayList<DReference>();
 		TreeSet<Character> keys = new TreeSet<Character>(
-				datos.diccionarioDelved.keySet());
+				datos.dictionary.dictionary_D_to_N.keySet());
 		for (Character key : keys) {
-			TreeSet<DReference> sub = datos.diccionarioDelved.get(key);
+			TreeSet<DReference> sub = datos.dictionary.dictionary_D_to_N
+					.get(key);
 			for (DReference ref : sub) {
 				if (ref.isPhrasalVerb()) {
 					phvs.add(ref);
