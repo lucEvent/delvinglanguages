@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.face.activities.ReferenceActivity;
+import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
 

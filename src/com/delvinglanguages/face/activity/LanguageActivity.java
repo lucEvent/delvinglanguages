@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities;
+package com.delvinglanguages.face.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +18,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.debug.Debug;
+import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.fragment.BinFragment;
 import com.delvinglanguages.face.fragment.DictionaryFragment;
 import com.delvinglanguages.face.fragment.LanguageFragment;
@@ -89,15 +90,30 @@ public class LanguageActivity extends Activity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == LanguageSettingsActivity.REQUEST_REMOVE) {
+			if (resultCode == Activity.RESULT_OK) {
+				finish();
+			}
+		}
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_langsettings:
-			startActivity(new Intent(this, LanguageSettingsActivity.class));
+			startActivityForResult(new Intent(this,
+					LanguageSettingsActivity.class),
+					LanguageSettingsActivity.REQUEST_REMOVE);
 			return true;
 		}
 		return false;
 	}
+	
+	
 
 	private void setFragment(int position) {
 		Fragment fragment = null;
@@ -210,7 +226,7 @@ public class LanguageActivity extends Activity {
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
-	
+
 	public void jumptoSearch(View v) {
 		setFragment(SEARCH);
 		dialog.dismiss();

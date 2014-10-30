@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
 import android.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,16 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
-import com.delvinglanguages.face.activities.ReferenceActivity;
+import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class VerbsFragment extends ListFragment implements OnClickListener {
 
+	private static final int REQUEST_MODIFIED = 0;
+
 	private ArrayList<DReference> verbslist;
+
 	private Button addVerb;
 
 	@SuppressWarnings("deprecation")
@@ -33,12 +37,10 @@ public class VerbsFragment extends ListFragment implements OnClickListener {
 
 		View view = inflater.inflate(R.layout.a_verbs, container, false);
 
-		RelativeLayout background = (RelativeLayout) view
-				.findViewById(R.id.background);
+		View background = view.findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
+			background.setBackgroundDrawable(Configuraciones.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
@@ -57,9 +59,21 @@ public class VerbsFragment extends ListFragment implements OnClickListener {
 		super.onListItemClick(l, v, pos, id);
 		Intent intent = new Intent(getActivity(), ReferenceActivity.class);
 		intent.putExtra(ControlCore.sendDReference, verbslist.get(pos).item);
-		startActivity(intent);
+		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_MODIFIED) {
+			if (resultCode == Activity.RESULT_OK) {
+				verbslist = ControlCore.getVerbs();
+				setListAdapter(new ReferenceLister(getActivity(), verbslist));
+			}
+		}
+	}
+	
+	
 	@Override
 	public void onClick(View button) {
 		startActivity(new Intent(getActivity(), AddWordFromVerbActivity.class));

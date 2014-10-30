@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,10 @@ import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.dialog.IntegrateManager;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class LanguageSettingsActivity extends Activity implements OnClickListener {
+public class LanguageSettingsActivity extends Activity implements
+		OnClickListener {
+
+	public static final int REQUEST_REMOVE = 0;
 
 	private Button languagename, clearstats, remove, integrate;
 	private CheckedTextView phrasalsEn, adjectivesEn, specialcharsEn;
@@ -142,11 +146,19 @@ public class LanguageSettingsActivity extends Activity implements OnClickListene
 	}
 
 	private void removeLanguage() {
+		String mssg = ControlCore.getIdiomaActual(this).getName()
+				+ getResources().getString(R.string._removed);
 		ControlCore.removeLanguage();
+		setResult(Activity.RESULT_OK, null);
+		showMessage(mssg);
 		finish();
 	}
 
 	private void showMessage(int text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	private void showMessage(String text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 

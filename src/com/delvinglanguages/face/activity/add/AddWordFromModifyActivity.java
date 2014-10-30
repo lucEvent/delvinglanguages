@@ -18,12 +18,11 @@ public class AddWordFromModifyActivity extends AddWordActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_add_word_from_modify);
 
 		word.removeTextChangedListener(this);
 		((Button) findViewById(R.id.addmore)).setVisibility(View.GONE);
+		((Button) findViewById(R.id.add)).setText(R.string.savechanges);
 
-		
 		int id = getIntent().getExtras().getInt(SEND_WORD);
 		palabra = idioma.getPalabra(id);
 

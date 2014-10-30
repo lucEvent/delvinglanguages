@@ -16,7 +16,7 @@ import android.widget.TableLayout;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.face.activities.DictionaryActivity;
+import com.delvinglanguages.face.activity.DictionaryListActivity;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class DictionaryFragment extends Fragment implements OnClickListener {
@@ -136,9 +136,11 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
 				}
 			}
 			try {
-				letras[index].setEnabled(true);
-				letras[index].setOnClickListener(this);
-				letras[index].setTag(cap);
+				if (!idioma.getDiccionario().get(cap).isEmpty()) {
+					letras[index].setEnabled(true);
+					letras[index].setOnClickListener(this);
+					letras[index].setTag(cap);
+				}	
 			} catch (NullPointerException e) {
 				Log.d(DEBUG, "ERROR index->" + index + ", cap->" + cap);
 			}
@@ -149,7 +151,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View button) {
 		button.setOnClickListener(null);
-		Intent intent = new Intent(getActivity(), DictionaryActivity.class);
+		Intent intent = new Intent(getActivity(), DictionaryListActivity.class);
 		intent.putExtra(ControlCore.sendCharacter, (Character) button.getTag());
 		startActivity(intent);
 	}

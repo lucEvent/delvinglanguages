@@ -15,7 +15,7 @@
     <ImageButton
         android:id="@+id/open_opts"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="16dp"
         android:layout_gravity="bottom"
         android:background="@color/border_button"
         android:onClick="showOptionsMenu"
@@ -67,7 +67,7 @@
             <ImageButton
                 android:id="@+id/close_open"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="21dp"
                 android:layout_alignLeft="@+id/delv"
                 android:layout_alignParentBottom="true"
                 android:layout_alignRight="@+id/delv"

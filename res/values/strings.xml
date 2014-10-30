@@ -54,6 +54,7 @@
     <string name="match">Match</string>
     <string name="messageseparatecommas">**Separate different translations with commas.</string>
     <string name="modifier">Modifier</string>
+    <string name="savechanges">Save changes</string>
     <string name="nn">NN</string>
     <string name="noun">Noun</string>
     <string name="nouns">Nouns</string>
@@ -206,6 +207,8 @@
     <string name="mssclearstats">Statistics has been cleared</string>
     <string name="createconjugatuionquestion">There are no data for this tense. Do you want to add tense data?</string>
     <string name="makecolor">Make your own color</string>
+    <string name="_removed">removed</string>
+    
 
     <!-- * ************************** Preguntas *************************** * -->
     <string name="removeidiomquestion">Are you sure to remove this language?</string>

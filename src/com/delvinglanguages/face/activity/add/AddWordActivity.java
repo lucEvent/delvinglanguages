@@ -143,45 +143,48 @@ public class AddWordActivity extends Activity implements TextWatcher,
 	}
 
 	public void secondOption(View v) {
-		addWord();
-		word.setText("");
-		tranlation.setText("");
-		pronuntiation.setText("");
-		setType(0);
-		word.requestFocus();
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (imm != null) {
-			imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
+		if (addWord()) {
+			word.setText("");
+			tranlation.setText("");
+			pronuntiation.setText("");
+			setType(0);
+			word.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			if (imm != null) {
+				imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
+			}
 		}
 	}
 
 	public void addWord(View v) {
-		addWord();
-		finish();
+		if (addWord()) {
+			finish();
+		}
 	}
 
-	protected void addWord() {
+	protected boolean addWord() {
 		String nombre = word.getText().toString();
 		if (nombre.length() == 0) {
 			showMessage(R.string.noword);
-			return;
+			return false;
 		}
 		String trans = tranlation.getText().toString();
 		if (trans.length() == 0) {
 			showMessage(R.string.notrans);
-			return;
+			return false;
 		}
 		String pron = pronuntiation.getText().toString();
 		if (pron.length() == 0) {
 			showMessage(R.string.nopron);
-			return;
+			return false;
 		}
 		int type = getType();
 		if (type == 0) {
 			showMessage(R.string.notype);
-			return;
+			return false;
 		}
 		saveWord(nombre, trans, pron, type);
+		return true;
 	}
 
 	protected int getType() {

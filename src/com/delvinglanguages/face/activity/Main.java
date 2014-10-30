@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities;
+package com.delvinglanguages.face.activity;
 
 import java.util.ArrayList;
 

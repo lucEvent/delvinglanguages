@@ -19,7 +19,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Word;
-import com.delvinglanguages.face.activities.IntegrateRepeatedActivity;
+import com.delvinglanguages.face.activity.IntegrateRepeatedActivity;
 import com.delvinglanguages.listers.TranslationLister;
 
 public class IntegrateManager extends Builder implements OnItemClickListener {

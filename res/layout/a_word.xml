@@ -3,8 +3,8 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".PalabraActivity" >
+    android:animateLayoutChanges="true"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -110,9 +110,9 @@
 
                 <TableLayout
                     android:id="@+id/tense_table"
-                    android:layout_margin="5dip"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
                 </TableLayout>
             </FrameLayout>
         </LinearLayout>

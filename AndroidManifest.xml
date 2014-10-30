@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.delvinglanguages.face.activities.Main"
+            android:name="com.delvinglanguages.face.activity.Main"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/app_name" >
             <intent-filter>
@@ -32,12 +32,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.LanguageActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.LanguageActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.DictionaryActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.DictionaryListActivity" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.AddLanguageActivity"
+            android:name="com.delvinglanguages.face.activity.AddLanguageActivity"
             android:label="@string/title_add_idiom" >
         </activity>
         <activity
@@ -119,18 +119,18 @@
             android:label="@string/title_list_phrasal" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.IntegrateRepeatedActivity"
+            android:name="com.delvinglanguages.face.activity.IntegrateRepeatedActivity"
             android:label="@string/title_activity_integrate_repeated" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.ReferenceActivity"
+            android:name="com.delvinglanguages.face.activity.ReferenceActivity"
             android:label="@string/title_activity_palabra" >
         </activity>
         <activity
             android:name="com.delvinglanguages.face.settings.SettingsActivity"
             android:label="@string/settings" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.NewTenseActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.NewTenseActivity" >
         </activity>
         <activity android:name="com.delvinglanguages.communications.IntentReceiver" >
             <intent-filter>

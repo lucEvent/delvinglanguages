@@ -117,8 +117,7 @@ public class Dictionary {
 		TreeSet<DReference> sub;
 
 		ArrayList<String> refsD = Word.formatArray(null, entry.getName());
-		ArrayList<String> refsN = Word
-				.formatArray(null, entry.getTranslation());
+		ArrayList<String> refsN = Word.formatArray(null, entry.getTranslation());
 
 		for (String refD : refsD) {
 			Character car = refD.charAt(0);
@@ -126,6 +125,9 @@ public class Dictionary {
 			DReference temp = sub.ceiling(new DReference(refD));
 
 			temp.removeReferencesto(entry);
+			if (temp.owners.isEmpty()) {
+				sub.remove(temp);
+			}
 		}
 		for (String refN : refsN) {
 			Character car = refN.charAt(0);
@@ -133,6 +135,9 @@ public class Dictionary {
 			DReference temp = sub.ceiling(new DReference(refN));
 
 			temp.removeReferencesto(entry);
+			if (temp.owners.isEmpty()) {
+				sub.remove(temp);
+			}
 		}
 	}
 

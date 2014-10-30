@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities;
+package com.delvinglanguages.face.activity;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -7,10 +7,10 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,19 +18,16 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
-
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class DictionaryActivity extends ListActivity implements OnClickListener {
+public class DictionaryListActivity extends ListActivity {
 
-	private static final String DEBUG = "##DictionaryAct##";
+	private static final String DEBUG = "##DictionaryListActivity##";
 
-	private static final int REQUEST_EDIT = 0;
+	private static final int REQUEST_MODIFIED = 0;
 
 	private Character capital;
-
-	private int type;
 
 	private ArrayList<DReference> values;
 
@@ -42,7 +39,7 @@ public class DictionaryActivity extends ListActivity implements OnClickListener 
 		super.onCreate(state);
 		setContentView(R.layout.a_dictionary_list);
 
-		LinearLayout background = (LinearLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -57,7 +54,6 @@ public class DictionaryActivity extends ListActivity implements OnClickListener 
 
 		for (int i = 0; i < types.length; i++) {
 			types[i] = (Button) findViewById(ids[i]);
-			types[i].setOnClickListener(this);
 			types[i].setSelected(true);
 		}
 
@@ -71,8 +67,7 @@ public class DictionaryActivity extends ListActivity implements OnClickListener 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == REQUEST_EDIT) {
+		if (requestCode == REQUEST_MODIFIED) {
 			if (resultCode == Activity.RESULT_OK) {
 				setList();
 			}
@@ -94,7 +89,7 @@ public class DictionaryActivity extends ListActivity implements OnClickListener 
 			}
 		}
 		setListAdapter(new ReferenceLister(this, values));
-		//Se podria actualizar en lugar de crear cada vez de nuevo
+		// Se podria actualizar en lugar de crear cada vez de nuevo
 	}
 
 	private int getType() {
@@ -127,11 +122,10 @@ public class DictionaryActivity extends ListActivity implements OnClickListener 
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
 		intent.putExtra(ControlCore.sendDReference, values.get(pos).item);
-		startActivityForResult(intent, REQUEST_EDIT);
+		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
-	@Override
-	public void onClick(View v) {
+	public void changeState(View v) {
 		v.setSelected(!v.isSelected());
 	}
 

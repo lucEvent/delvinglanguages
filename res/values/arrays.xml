@@ -158,13 +158,13 @@
         <item>De</item>
     </string-array>
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.3</b></item>
+        <item><b>Delving Languages version 1.3.0.20</b></item>
         <item><b>Develop by Rafael J. Lucena</b></item>
         <item><b>Contact: rafaa89@gmail(at)com</b></item>
         <item>   </item>
         
-        <item>Version 1.3.0.2 2014&#8211;10&#8211;28\nMany coherence erros adjusted</item>
-        <item>Version 1.3.0.1 2014&#8211;10&#8211;28\n2 coherence erros adjusted on LanguageFragment. New internal Dictionary implemented for better performance.</item>
+        <item>Version 1.3.0.20 2014&#8211;10&#8211;28\nAll remained coherence errors found solved: After modify/remove words and verbs.</item>
+        <item>Version 1.3.0.1 2014&#8211;10&#8211;28\n2 coherence errors adjusted on LanguageFragment. New internal Dictionary implemented for better performance.</item>
         <item>Version 1.3 2014&#8211;10&#8211;28\n"Translation" change to "Search". Added Add word from Search. Solved problem adding word from Verb. Internal improvements on Add words. "About" visual changed</item>
         <item>Version 1.2.3.2 2014&#8211;10&#8211;26\nMoved and Improved Translation section</item>
         <item>Version 1.2.3.1 2014&#8211;10&#8211;25\nImprovements in statistics stuff</item>

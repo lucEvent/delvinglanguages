@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities;
+package com.delvinglanguages.face.activity;
 
 import java.util.ArrayList;
 
@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -39,13 +40,13 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class ReferenceActivity extends Activity {
 
-	private static final String DEBUG = "##PalabraActivity##";
+	private static final String DEBUG = "##ReferenceActivity##";
 
 	private static final String TRANSLATIONS = "Translations";
-	private static final String TENSES = "Tense";
+	private static final String TENSES = "Tenses";
 	private static final String ACTUALTENSE = "actualTense";
 
-	private static final int REQUEST_EDIT = 0;
+	private static final int REQUEST_MODIFIED = 0;
 
 	private DReference reference;
 
@@ -80,7 +81,8 @@ public class ReferenceActivity extends Activity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		String s = getIntent().getExtras().getString(ControlCore.sendDReference);
+		String s = getIntent().getExtras()
+				.getString(ControlCore.sendDReference);
 		reference = ControlCore.getIdiomaActual(this).getReference(s);
 
 		tword = (TextView) findViewById(R.id.word);
@@ -101,18 +103,27 @@ public class ReferenceActivity extends Activity {
 		tenseList = (ListView) findViewById(R.id.tenses_list);
 		tenseTable = (TableLayout) findViewById(R.id.tense_table);
 
-		tabhost = (TabHost) findViewById(R.id.tabhost);
-		tabhost.setup();
-
 		translations = reference.getTranslationArray(null);
 		adapter = new TranslationLister(this, translations);
 		adapter.setNotifyOnChange(true);
 		transList.setAdapter(adapter);
 
+		tabhost = (TabHost) findViewById(R.id.tabhost);
+		tabhost.setup();
+
+		setTenseTabs();
+
+	}
+
+	private void setTenseTabs() {
+		transList.setVisibility(View.INVISIBLE);
+		tenseList.setVisibility(View.INVISIBLE);
 		if (reference.isVerb()) {
+
+			Log.d(DEBUG, "Seteando los tabs");
 			tabhost.addTab(tabhost.newTabSpec(TRANSLATIONS)
-					.setIndicator("Translations").setContent(R.id.transl_list));
-			tabhost.addTab(tabhost.newTabSpec(TENSES).setIndicator("Tenses")
+					.setIndicator(TRANSLATIONS).setContent(R.id.transl_list));
+			tabhost.addTab(tabhost.newTabSpec(TENSES).setIndicator(TENSES)
 					.setContent(R.id.tenses_list));
 
 			IDDelved idioma = ControlCore.getIdiomaActual(this);
@@ -123,19 +134,29 @@ public class ReferenceActivity extends Activity {
 
 			tenseList.setAdapter(new TranslationLister(this, tenses));
 			tenseList.setOnItemClickListener(new TensesClickListener());
-		}
+		} 
+		transList.setVisibility(View.VISIBLE);
+		
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_EDIT) {
+		if (requestCode == REQUEST_MODIFIED) {
 			if (resultCode == Activity.RESULT_OK) {
-				String ref = (String) data.getExtras().get(AddWordActivity.EDITED);
+				String ref = (String) data.getExtras().get(
+						AddWordActivity.EDITED);
 				reference = ControlCore.getIdiomaActual(this).getReference(ref);
 				adapter.notifyDataSetChanged();
-				
-				setResult(Activity.RESULT_OK, new Intent());
+
+				TabWidget tw = tabhost.getTabWidget();
+				while (tw.getChildCount() > 0) {
+					Log.d(DEBUG, "	Removiendo");
+					tw.removeViewAt(0);
+				}
+				setTenseTabs();
+
+				setResult(Activity.RESULT_OK, null);
 			}
 		}
 	}
@@ -157,7 +178,6 @@ public class ReferenceActivity extends Activity {
 				ttypes[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
-
 	}
 
 	@Override
@@ -221,7 +241,7 @@ public class ReferenceActivity extends Activity {
 	private void editAction(int pos) {
 		Intent intent = new Intent(this, AddWordFromModifyActivity.class);
 		intent.putExtra(AddWordActivity.SEND_WORD, reference.owners.get(pos).id);
-		startActivityForResult(intent, REQUEST_EDIT);
+		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
 	private void removeAction(final int pos) {
@@ -241,6 +261,7 @@ public class ReferenceActivity extends Activity {
 
 	private void remove(int pos) {
 		ControlCore.throwPalabra(reference.owners.get(pos));
+		setResult(Activity.RESULT_OK, null);
 		finish();
 	}
 

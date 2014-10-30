@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities;
+package com.delvinglanguages.face.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
