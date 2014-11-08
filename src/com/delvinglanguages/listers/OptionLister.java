@@ -12,23 +12,25 @@ import com.delvinglanguages.R;
 public class OptionLister extends ArrayAdapter<String> {
 
 	private String[] values;
+	private LayoutInflater inflater;
 
-	public OptionLister(Context context,String[] values) {
+	public OptionLister(Context context, String[] values) {
 		super(context, R.layout.i_option, values);
 		this.values = values;
+		this.inflater = (LayoutInflater) getContext().getSystemService(
+				Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_option, parent, false);
+		}
 
-		View viewres = inflater.inflate(R.layout.i_option, parent, false);
-
-		TextView option = (TextView) viewres.findViewById(R.id.io_option);
+		TextView option = (TextView) view.findViewById(R.id.option);
 		option.setText(values[position]);
 
-		return viewres;
+		return view;
 	}
-	
+
 }

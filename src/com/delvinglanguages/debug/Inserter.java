@@ -16,7 +16,8 @@ public class Inserter extends Activity implements Runnable {
 	 * Normalmente las creadas en drive.excel
 	 */
 	private String[] values = {};
-
+	
+			
 	private TextView index, word, trans;
 
 	private int type;
@@ -30,15 +31,14 @@ public class Inserter extends Activity implements Runnable {
 		word = (TextView) findViewById(R.id.textword);
 		trans = (TextView) findViewById(R.id.texttrans);
 
-		type = 0x2;// Verb
-
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-	//	new Thread(this).start();
+		// new Thread(this).start();
 
 	}
 

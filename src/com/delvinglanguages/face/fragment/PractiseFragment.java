@@ -11,11 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.face.activities.practice.CompleteActivity;
-import com.delvinglanguages.face.activities.practice.ListeningActivity;
-import com.delvinglanguages.face.activities.practice.PreguntasActivity;
-import com.delvinglanguages.face.activities.practice.SelectTestActivity;
-import com.delvinglanguages.face.activities.practice.WriteWordsActivity;
+import com.delvinglanguages.face.activity.practice.CompleteActivity;
+import com.delvinglanguages.face.activity.practice.ListeningActivity;
+import com.delvinglanguages.face.activity.practice.PreguntasActivity;
+import com.delvinglanguages.face.activity.practice.SelectTestActivity;
+import com.delvinglanguages.face.activity.practice.WriteWordsActivity;
 import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.settings.Configuraciones;
 

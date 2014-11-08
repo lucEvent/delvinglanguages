@@ -40,6 +40,15 @@ public class WordReference implements Runnable {
 	private String lang_to;
 
 	private String address;
+	private URL pagina;
+
+	private Handler handler = new Handler();
+
+	private TreeSet<WRItem> res;
+
+	private NetManager net;
+
+	private String wordName;
 
 	private NetWork network;
 
@@ -85,16 +94,6 @@ public class WordReference implements Runnable {
 		}
 		new Thread(this).start();
 	}
-
-	private URL pagina;
-
-	private Handler handler = new Handler();
-
-	private TreeSet<WRItem> res;
-
-	private NetManager net;
-	
-	private String wordName;
 
 	@Override
 	public void run() {
@@ -143,7 +142,8 @@ public class WordReference implements Runnable {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				network.datagram(NetWork.OK, wordName, new ArrayList<WRItem>(res));
+				network.datagram(NetWork.OK, wordName, new ArrayList<WRItem>(
+						res));
 			}
 		});
 

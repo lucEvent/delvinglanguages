@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,20 +8,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Test;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class TestActivity2 extends Activity implements OnClickListener {
+public class TestActivityLearn extends Activity {
 
 	// Delving Activity
 	private Test test;
@@ -39,7 +39,7 @@ public class TestActivity2 extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_test_delving);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.ta2_bg);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -51,47 +51,48 @@ public class TestActivity2 extends Activity implements OnClickListener {
 		test = ControlCore.testActual;
 		test.state = Test.STAT_DELVING;
 
-		next = (Button) findViewById(R.id.ta2_next);
-		previous = (Button) findViewById(R.id.ta2_previous);
+		next = (Button) findViewById(R.id.next);
+		previous = (Button) findViewById(R.id.previous);
 
-		next.setOnClickListener(this);
-		previous.setOnClickListener(this);
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) findViewById(R.id.ta2_noun);
-		labels[1] = (TextView) findViewById(R.id.ta2_verb);
-		labels[2] = (TextView) findViewById(R.id.ta2_adj);
-		labels[3] = (TextView) findViewById(R.id.ta2_adv);
-		labels[4] = (TextView) findViewById(R.id.ta2_phrasal);
-		labels[5] = (TextView) findViewById(R.id.ta2_expression);
-		labels[6] = (TextView) findViewById(R.id.ta2_other);
+		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
+		labels[Word.ADVERB] = (TextView) findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
+		
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+		}
 
-		delv = (TextView) findViewById(R.id.ta2_delv);
-		delv_p = (TextView) findViewById(R.id.ta2_delv_p);
-		nativ = (TextView) findViewById(R.id.ta2_nativ);
-		nativ_p = (TextView) findViewById(R.id.ta2_nativ_p);
+		delv = (TextView) findViewById(R.id.delv_name);
+		delv_p = (TextView) findViewById(R.id.delv_pron);
+		nativ = (TextView) findViewById(R.id.native_name);
+		nativ_p = (TextView) findViewById(R.id.nativ_pron);
 
 		for (index = 0; test.passed[index]; index++)
 			;
 		actualiza();
 	}
 
-	@Override
-	public void onClick(View view) {
-		if (view == next) {
-			index++;
-			if (index < test.references.size()) {
-				actualiza();
-			} else {
-				test.nextStat();
-				startActivity(new Intent(this, TestActivity3.class));
-				finish();
-			}
-		} else if (view == previous) {
-			index--;
+	public void nextWord(View v) {
+		index++;
+		if (index < test.references.size()) {
 			actualiza();
-
+		} else {
+			test.nextStat();
+			startActivity(new Intent(this, TestActivityMatch.class));
+			finish();
 		}
+	}
+
+	public void previousWord(View v) {
+		index--;
+		actualiza();
 	}
 
 	private void actualiza() {
@@ -106,7 +107,7 @@ public class TestActivity2 extends Activity implements OnClickListener {
 			}
 		}
 
-		delv.setText(ref.item);
+		delv.setText(ref.name);
 		nativ.setText(ref.getTranslation());
 		if (ControlCore.getIdiomaActual(this).isIdiomaNativo()) {
 			nativ_p.setText("[ " + ref.getPronunciation() + " ]");

@@ -190,7 +190,7 @@ public class ControlDB {
 	}
 
 	/** ********* Escrituras en la BD ************* **/
-	public IDDelved insertLanguage(String name) {
+	public IDDelved insertLanguage(String name, int isettings) {
 		// Inserting stadistics
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_estadisticas[1], 0);
@@ -202,7 +202,7 @@ public class ControlDB {
 		long estadid = database.insert(DataBase.estadisticas, null, values);
 
 		// Inserting language
-		String settings = Integer.toString(0);
+		String settings = Integer.toString(isettings);
 
 		values = new ContentValues();
 		values.put(DataBase.col_idioma[1], name);
@@ -215,8 +215,8 @@ public class ControlDB {
 		return language;
 	}
 
-	public Word insertWord(String name, String trad, int langID,
-			String pron, int type) {
+	public Word insertWord(String name, String trad, int langID, String pron,
+			int type) {
 		// Inserting word
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[1], name);
@@ -272,7 +272,7 @@ public class ControlDB {
 		// Removing tests
 		database.delete(DataBase.test, DataBase.col_test[2] + " = " + id, null);
 		// Removing tiempos verbales
-		database.delete(DataBase.tiempo_verbal, DataBase.col_tiempo_verbal[1]
+		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
 				+ " = " + id, null);
 		// Removing language
 		database.delete(DataBase.idioma, DataBase.col_idioma[0] + " = " + id,
@@ -307,57 +307,60 @@ public class ControlDB {
 		database.close();
 	}
 
-	public Tense getTense(int verbId, int tense) {
+	public Tense getTense(int langId, int verbId, int tense, String verbName) {
 		database = gateway.getReadableDatabase();
-		Cursor cursor = database.query(DataBase.tiempo_verbal,
-				DataBase.col_tiempo_verbal, DataBase.col_tiempo_verbal[2]
+		Cursor cursor = database.query(DataBase.conjugacion,
+				DataBase.col_conjugacion, DataBase.col_conjugacion[1] + " = "
+						+ langId + " and " + DataBase.col_conjugacion[2]
 						+ " = " + verbId + " and "
-						+ DataBase.col_tiempo_verbal[5] + " = " + tense, null,
+						+ DataBase.col_conjugacion[3] + " = " + tense, null,
 				null, null, null);
-
 		Tense result = null;
 		cursor.moveToFirst();
 		Log.d(DEBUG, "Encontrados:" + cursor.getCount() + " buscando tense:"
 				+ tense + " en verbid:" + verbId);
-		while (!cursor.isAfterLast()) {
-			result = new Tense(cursor.getInt(0), cursor.getString(3),
-					cursor.getString(4), cursor.getInt(5));
-			break;
+		if (!cursor.isAfterLast()) {
+			result = new Tense(cursor.getInt(0), tense, verbName,
+					cursor.getString(4), cursor.getString(5));
 		}
 		cursor.close();
 		database.close();
 		return result;
 	}
 
-	public Tense insertTense(int langId, int verbId, String forms, String pron,
-			int opts) {
+	public Tense insertTense(int langId, int verbId, String verbName,
+			int tense, String forms, String pronunciations) {
 		ContentValues values = new ContentValues();
-		values.put(DataBase.col_tiempo_verbal[1], langId);
-		values.put(DataBase.col_tiempo_verbal[2], verbId);
-		values.put(DataBase.col_tiempo_verbal[3], forms);
-		values.put(DataBase.col_tiempo_verbal[4], pron);
-		values.put(DataBase.col_tiempo_verbal[5], opts);
+		values.put(DataBase.col_conjugacion[1], langId);
+		values.put(DataBase.col_conjugacion[2], verbId);
+		values.put(DataBase.col_conjugacion[3], tense);
+		values.put(DataBase.col_conjugacion[4], forms);
+		values.put(DataBase.col_conjugacion[5], pronunciations);
 		database = gateway.getWritableDatabase();
-		int cid = (int) database.insert(DataBase.tiempo_verbal, null, values);
+		int cid = (int) database.insert(DataBase.conjugacion, null, values);
 		database.close();
-		Log.d(DEBUG, "Result:" + cid + " insertando tense:" + opts
+		Log.d(DEBUG, "Result:" + cid + " insertando tense:" + tense
 				+ " en verbid:" + verbId);
-		return new Tense(cid, forms, pron, opts);
+		return new Tense(cid, tense, verbName, forms, pronunciations);
 	}
 
-	public void updateTense(Tense tns) {
+	public void updateTense(Tense tense) {
 		ContentValues values = new ContentValues();
-		values.put(DataBase.col_tiempo_verbal[3], tns.getForms());
-		values.put(DataBase.col_tiempo_verbal[4], tns.getPronuntiations());
+		values.put(DataBase.col_conjugacion[3], tense.getFormsString());
+		values.put(DataBase.col_conjugacion[4], tense.getPronuntiationsString());
 		database = gateway.getWritableDatabase();
-		database.update(DataBase.tiempo_verbal, values,
-				DataBase.col_tiempo_verbal[0] + " = " + tns.id, null);
+		database.update(DataBase.conjugacion, values,
+				DataBase.col_conjugacion[0] + " = " + tense.id, null);
 		database.close();
 	}
 
-	public void removeTenses(int verbId) {
+	String col_conjugacion[] = { "_id", "idioma", "verbo", "tiempo", "formas",
+			"pronunciacion" };
+
+	public void removeTenses(int langId, int verbId) {
 		database = gateway.getWritableDatabase();
-		database.delete(DataBase.tiempo_verbal, DataBase.col_tiempo_verbal[2]
+		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
+				+ " = " + langId + " and " + DataBase.col_conjugacion[2]
 				+ " = " + verbId, null);
 		database.close();
 	}

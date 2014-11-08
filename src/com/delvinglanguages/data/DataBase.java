@@ -10,7 +10,7 @@ public class DataBase extends SQLiteOpenHelper {
 	private static final String DEBUG = "##DataBase##";
 	
 	private static final String DATABASE_NAME = "delving.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	// Database SQL CREATES 
     public static final String estadisticas = "db_estadisticas"; 
@@ -78,19 +78,18 @@ public class DataBase extends SQLiteOpenHelper {
         "FOREIGN KEY(" + col_test[2] + ") REFERENCES " + idioma + "(" + col_idioma[0] + ")" + 
         ");"; 
 	
-	public static final String tiempo_verbal = "db_tiempo_verbal";
-	public static final String col_tiempo_verbal[] = { "_id", "idioma", "verbo", "formas", "pronunciacion", "opciones" };	
+	public static final String conjugacion = "db_conjugacion";
+	public static final String col_conjugacion[] = { "_id", "idioma", "verbo", "tiempo", "formas", "pronunciacion" };
 
-	private static final String CREATE_TIEMPO_VERBAL =
-			"CREATE TABLE " + tiempo_verbal + " (" +
-			col_tiempo_verbal[0] + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-			col_tiempo_verbal[1] + " INTEGER," +
-			col_tiempo_verbal[2] + " INTEGER," +
-			col_tiempo_verbal[3] + " TEXT NOT NULL," +
-			col_tiempo_verbal[4] + " TEXT NOT NULL," +
-			col_tiempo_verbal[5] + " INTEGER," +
-			"FOREIGN KEY(" + col_tiempo_verbal[1] + ") REFERENCES " + idioma + "(" + col_idioma[0] + ")" +
-			"FOREIGN KEY(" + col_tiempo_verbal[2] + ") REFERENCES " + palabra + "(" + col_palabra[0] + ")" + 
+	private static final String CREATE_CONJUGACION =
+			"CREATE TABLE " + conjugacion + " (" +
+			col_conjugacion[0] + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+			col_conjugacion[1] + " INTEGER," +
+			col_conjugacion[2] + " INTEGER," +
+			col_conjugacion[3] + " INTEGER," +
+			col_conjugacion[4] + " TEXT NOT NULL," +
+			col_conjugacion[5] + " TEXT NOT NULL," +
+			"FOREIGN KEY(" + col_conjugacion[1] + ") REFERENCES " + idioma + "(" + col_idioma[0] + ")" +
 	    ");";
 
 	
@@ -107,7 +106,7 @@ public class DataBase extends SQLiteOpenHelper {
 		db.execSQL(CREATE_PALABRA);
 		db.execSQL(CREATE_ALMACEN);
 		db.execSQL(CREATE_TEST);
-		db.execSQL(CREATE_TIEMPO_VERBAL);
+		db.execSQL(CREATE_CONJUGACION);
 	}
 
 	@Override
@@ -115,11 +114,9 @@ public class DataBase extends SQLiteOpenHelper {
 		Log.d(DEBUG,"Upgrading DB from VERS: " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		
-		//Delete all need tables
-		//db.execSQL("DROP TABLE "+ palabra);
-
-		//Create all need tables
-	//	db.execSQL("DROP TABLE db_conjugacion");
-	//	db.execSQL(CREATE_TIEMPO_VERBAL);
+		//Delete all needed tables
+		db.execSQL("DROP TABLE "+ "db_tiempo_verbal");
+		//Create all needed tables
+		db.execSQL(CREATE_CONJUGACION);
 	}
 }

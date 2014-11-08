@@ -1,17 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ast_bg"
+    android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SelectTestActivity" >
+    android:layout_height="match_parent" >
 
     <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_above="@+id/buttons"
         android:layout_alignParentTop="true" >
 
         <LinearLayout
@@ -32,12 +28,12 @@
                 android:padding="5dip" >
 
                 <Button
-                    android:id="@+id/ast_menos"
+                    android:id="@+id/less"
                     style="@style/buttons_complete"
                     android:text="@string/menos" />
 
                 <TextView
-                    android:id="@+id/ast_number"
+                    android:id="@+id/number"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -49,7 +45,7 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/ast_mas"
+                    android:id="@+id/more"
                     style="@style/buttons_complete"
                     android:text="@string/mas" />
             </LinearLayout>
@@ -64,26 +60,26 @@
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/ast_noun"
+                    android:id="@+id/noun"
                     style="@style/button_type_word"
                     android:background="@drawable/type_noun_backgrounds"
                     android:paddingLeft="10dip"
                     android:text="@string/nouns" />
 
                 <Button
-                    android:id="@+id/ast_verb"
+                    android:id="@+id/verb"
                     style="@style/button_type_word"
                     android:background="@drawable/type_verb_backgrounds"
                     android:text="@string/verbs" />
 
                 <Button
-                    android:id="@+id/ast_adj"
+                    android:id="@+id/adjective"
                     style="@style/button_type_word"
                     android:background="@drawable/type_adjective_backgrounds"
                     android:text="@string/adjectives" />
 
                 <Button
-                    android:id="@+id/ast_adv"
+                    android:id="@+id/adverb"
                     style="@style/button_type_word"
                     android:background="@drawable/type_adverb_backgrounds"
                     android:text="@string/adverbs" />
@@ -95,7 +91,7 @@
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/ast_phrasal"
+                    android:id="@+id/phrasal"
                     style="@style/button_type_word"
                     android:background="@drawable/type_phrasal_backgrounds"
                     android:text="@string/phrasalverbs" />
@@ -107,13 +103,13 @@
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/ast_expression"
+                    android:id="@+id/expression"
                     style="@style/button_type_word"
                     android:background="@drawable/type_expression_backgrounds"
                     android:text="@string/expressions" />
 
                 <Button
-                    android:id="@+id/ast_other"
+                    android:id="@+id/other"
                     style="@style/button_type_word"
                     android:background="@drawable/type_other_backgrounds"
                     android:text="@string/others" />
@@ -131,24 +127,23 @@
                 android:layout_marginRight="1dip"
                 android:orientation="vertical"
                 tools:ignore="NestedScrolling" />
-
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" >
 
         <Button
-            android:id="@+id/ast_cancel"
             style="@style/button_list_selector"
+            android:onClick="cancel"
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/ast_go"
             style="@style/button_list_selector"
+            android:onClick="createTest"
             android:text="@string/gotest" />
     </LinearLayout>
 

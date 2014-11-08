@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.delvinglanguages.data.ControlDB;
 import com.delvinglanguages.data.ControlDisco;
-import com.delvinglanguages.debug.Recover;
 
 public class ControlCore {
 
@@ -151,8 +149,8 @@ public class ControlCore {
 		}
 	}
 
-	public static void addIdioma(String name) {
-		IDDelved newLang = database.insertLanguage(name);
+	public static void addIdioma(String name, int settings) {
+		IDDelved newLang = database.insertLanguage(name, settings);
 		idiomas.add(newLang);
 	}
 
@@ -240,7 +238,7 @@ public class ControlCore {
 		for (int i = 0; i < bin.size(); i++) {
 			Word p = bin.get(i);
 			if (p.isVerb()) {
-				database.removeTenses(p.id);
+				database.removeTenses(actualLang.getID(), p.id);
 			}
 		}
 		actualLang.vaciarPapelera();
@@ -311,13 +309,14 @@ public class ControlCore {
 		return actualLang.getVerbs();
 	}
 
-	public static Tense getTense(int verbId, int tense) {
-		return database.getTense(verbId, tense);
+	public static Tense getTense(DReference verb, int tense) {
+		return database.getTense(actualLang.getID(), verb.id, tense, verb.name);
 	}
 
-	public static void addNewTense(int verbId, int tenseId, String form,
-			String pron) {
-		database.insertTense(actualLang.getID(), verbId, form, pron, tenseId);
+	public static void addTense(int verbId, int tenseId, String verbName,
+			String forms, String pronunciations) {
+		database.insertTense(actualLang.getID(), verbId, verbName, tenseId,
+				forms, pronunciations);
 	}
 
 	public static void ejercicio(DReference ref, int intento) {
@@ -327,9 +326,9 @@ public class ControlCore {
 		} else {
 			ref.priority += intento;
 		}
-		for (Word p : ref.owners) {
-			p.updatePriority(ref.priority);
-			database.updatePriority(p);
+		for (Link link : ref.links) {
+			link.owner.updatePriority(ref.priority);
+			database.updatePriority(link.owner);
 		}
 	}
 

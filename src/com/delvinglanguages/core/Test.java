@@ -89,7 +89,7 @@ public class Test {
 		res.append(references.size()).append(p);
 		// ID's de las palabras (separado por puntos)
 		for (DReference ref : references) {
-			res.append(ref.item).append(p);
+			res.append(ref.name).append(p);
 		}
 		// Estado
 		res.append(state).append(p);

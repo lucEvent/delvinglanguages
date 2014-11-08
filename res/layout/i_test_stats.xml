@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/its_word"
+        android:id="@+id/word"
         style="@style/textview_title"
         android:text="Title" />
 
@@ -32,7 +32,7 @@
                     android:text="@string/match" />
 
                 <TextView
-                    android:id="@+id/its_match"
+                    android:id="@+id/match"
                     style="@style/text_ww1_center_medium"
                     android:text="100%" />
             </TableRow>
@@ -47,7 +47,7 @@
                     android:text="@string/complete" />
 
                 <TextView
-                    android:id="@+id/its_complete"
+                    android:id="@+id/complete"
                     style="@style/text_ww1_center_medium"
                     android:text="100%" />
             </TableRow>
@@ -62,7 +62,7 @@
                     android:text="@string/write" />
 
                 <TextView
-                    android:id="@+id/its_write"
+                    android:id="@+id/write"
                     style="@style/text_ww1_center_medium"
                     android:text="100%" />
             </TableRow>
@@ -77,11 +77,11 @@
             <TextView
                 style="@style/text_ww1_center_medium"
                 android:layout_width="match_parent"
-                android:text="Total"
+                android:text="@string/total"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/its_total"
+                android:id="@+id/total"
                 style="@style/text_ww1_center_medium"
                 android:layout_width="match_parent"
                 android:text="100%"

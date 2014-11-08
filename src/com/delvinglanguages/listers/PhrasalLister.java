@@ -19,29 +19,29 @@ public class PhrasalLister extends ArrayAdapter<String> {
 
 	private String[] values;
 	private Integer[] marks;
-	private Context context;
+	private LayoutInflater inflater;
 
 	public PhrasalLister(Context context, String[] values, Integer[] marks) {
 		super(context, R.layout.i_stored_word, values);
-		this.context = context;
 		this.values = values;
 		this.marks = marks;
+		this.inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View viewres = inflater.inflate(R.layout.i_stored_word, parent, false);
-		TextView word = (TextView) viewres.findViewById(R.id.stored_word);
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_stored_word, parent, false);
+		}
+		TextView word = (TextView) view.findViewById(R.id.stored_word);
 
 		word.setText(values[position]);
 		if (marks[position] == STAT_PRESSED) {
-			viewres.setBackgroundResource(R.drawable.button_bg_pressed);
+			view.setBackgroundResource(R.drawable.button_bg_pressed);
 		} else if (marks[position] == STAT_MARKED) {
-			viewres.setBackgroundResource(R.drawable.button_bg_marked);
+			view.setBackgroundResource(R.drawable.button_bg_marked);
 		}
-		return viewres;
+		return view;
 	}
 }

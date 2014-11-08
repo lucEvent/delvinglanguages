@@ -6,66 +6,39 @@
     android:animateLayoutChanges="true"
     tools:context=".Main" >
 
-    <RelativeLayout
-        android:id="@+id/mainfirststeps"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/firststeps"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dip" >
+        android:layout_margin="20dip"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/addlanguage"
+        <CheckedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dip"
+            android:layout_marginBottom="15dip"
             android:background="@drawable/button_backgrounds"
+            android:checkMark="@android:drawable/ic_menu_add"
             android:clickable="true"
-            android:orientation="horizontal"
-            android:padding="10dip" >
+            android:gravity="center_vertical"
+            android:onClick="addLanguage"
+            android:padding="25dip"
+            android:text="@string/addfirstlanguage"
+            android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/ic_menu_add"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dip"
-                android:text="Add first language"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/settings"
+        <CheckedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/addlanguage"
             android:background="@drawable/button_backgrounds"
+            android:checkMark="@android:drawable/ic_menu_more"
             android:clickable="true"
-            android:orientation="horizontal"
-            android:padding="10dip" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/ic_menu_more"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dip"
-                android:text="App Settings"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
-    </RelativeLayout>
+            android:gravity="center_vertical"
+            android:onClick="changeSettings"
+            android:padding="25dip"
+            android:text="@string/appsettings"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <ListView
         android:id="@android:id/list"

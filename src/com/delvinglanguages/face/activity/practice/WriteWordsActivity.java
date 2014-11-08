@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.graphics.PorterDuff;
@@ -11,13 +11,14 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class WriteWordsActivity extends Activity implements OnClickListener,
@@ -45,20 +46,20 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_write);
 
-		RelativeLayout bg = (RelativeLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			bg.setBackgroundDrawable(Configuraciones.getBackgroundImage());
+			background.setBackgroundDrawable(Configuraciones.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			bg.setBackgroundColor(Configuraciones.getBackgroundColor());
+			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		help = (ImageButton) findViewById(R.id.aww_help);
-		swap = (ImageButton) findViewById(R.id.aww_swap);
-		next = (ImageButton) findViewById(R.id.aww_new);
-		palabra = (TextView) findViewById(R.id.aww_word);
-		input = (EditText) findViewById(R.id.aww_input);
-		progress = (ProgressBar) findViewById(R.id.aww_progress);
+		help = (ImageButton) findViewById(R.id.help);
+		swap = (ImageButton) findViewById(R.id.swap);
+		next = (ImageButton) findViewById(R.id.next);
+		palabra = (TextView) findViewById(R.id.word);
+		input = (EditText) findViewById(R.id.input);
+		progress = (ProgressBar) findViewById(R.id.progress);
 		progress.getProgressDrawable().setColorFilter(0xFF33CC00,
 				PorterDuff.Mode.MULTIPLY);
 
@@ -70,13 +71,18 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 		cerebro = new Cerebro(ControlCore.getReferences());
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) findViewById(R.id.aww_noun);
-		labels[1] = (TextView) findViewById(R.id.aww_verb);
-		labels[2] = (TextView) findViewById(R.id.aww_adj);
-		labels[3] = (TextView) findViewById(R.id.aww_adv);
-		labels[4] = (TextView) findViewById(R.id.aww_phrasal);
-		labels[5] = (TextView) findViewById(R.id.aww_expression);
-		labels[6] = (TextView) findViewById(R.id.aww_other);
+		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
+		labels[Word.ADVERB] = (TextView) findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
+
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+		}
 
 		String temp = getString(R.string.title_practising);
 		setTitle(temp + " " + ControlCore.getIdiomaActual(this).getName());
@@ -101,7 +107,7 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
-		progress.setMax(refActual.item.length());
+		progress.setMax(refActual.name.length());
 		progress.setProgress(0);
 		iswrong = false;
 		answer = "";
@@ -127,8 +133,8 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 					answer = answer.substring(0, len - 1);
 				}
 			} else {
-				if (len != refActual.item.length()) {
-					answer += refActual.item.charAt(len);
+				if (len != refActual.name.length()) {
+					answer += refActual.name.charAt(len);
 				}
 			}
 			input.setText(answer);
@@ -146,7 +152,7 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 	@Override
 	public void afterTextChanged(Editable s) {
 		answer = input.getText().toString();
-		if (refActual.item.toLowerCase()
+		if (refActual.name.toLowerCase()
 				.startsWith(answer.toLowerCase())) {
 
 			progress.setProgress(answer.length());
@@ -156,7 +162,7 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 				iswrong = false;
 			}
 
-			if (refActual.item.equalsIgnoreCase(answer)) {
+			if (refActual.name.equalsIgnoreCase(answer)) {
 				help.setEnabled(false);
 				swap.setEnabled(false);
 				next.setEnabled(false);
@@ -189,7 +195,7 @@ public class WriteWordsActivity extends Activity implements OnClickListener,
 			}
 		} else {
 			intento++;
-			progress.setProgress(refActual.item.length());
+			progress.setProgress(refActual.name.length());
 			if (!iswrong) {
 				progress.getProgressDrawable().setColorFilter(0xFFFF0000,
 						PorterDuff.Mode.SRC_IN);

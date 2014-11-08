@@ -13,32 +13,36 @@ import com.delvinglanguages.R;
 
 public class TranslationLister extends ArrayAdapter<String> {
 
-		private ArrayList<String> values;
+	private ArrayList<String> values;
+	private LayoutInflater inflater;
 
-		public TranslationLister(Context context, ArrayList<String> values) {
-			super(context, R.layout.i_option, values);
-			this.values = values;
+	public TranslationLister(Context context, ArrayList<String> values) {
+		super(context, R.layout.i_option, values);
+		this.values = values;
+		inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public TranslationLister(Context context, String[] Svalues) {
+		super(context, R.layout.i_option, Svalues);
+		values = new ArrayList<String>();
+		for (int i = 0; i < Svalues.length; ++i) {
+			values.add(Svalues[i]);
+		}
+		inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	@Override
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_translation, parent, false);
 		}
 
-		public TranslationLister(Context context, String[] Svalues) {
-			super(context, R.layout.i_option, Svalues);		
-			values = new ArrayList<String>();
-			for (int i = 0; i < Svalues.length; ++i) {
-				values.add(Svalues[i]);
-			}
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		TextView option = (TextView) view.findViewById(R.id.translation);
+		option.setText(values.get(position));
 
-			View viewres = inflater.inflate(R.layout.i_translation, parent, false);
-
-			TextView option = (TextView) viewres.findViewById(R.id.it_trans);
-			option.setText(values.get(position));
-
-			return viewres;
-		}
+		return view;
+	}
 
 }

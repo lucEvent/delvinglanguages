@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -21,7 +21,7 @@ import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.listers.TestStatsLister;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class TestActivity6 extends ListActivity implements OnClickListener {
+public class TestActivityResult extends ListActivity implements OnClickListener {
 
 	private RelativeLayout background;
 
@@ -68,7 +68,7 @@ public class TestActivity6 extends ListActivity implements OnClickListener {
 			saveTest();
 		} else if (v == redo) {
 			test.nextStat();
-			startActivity(new Intent(this, TestActivity2.class));
+			startActivity(new Intent(this, TestActivityLearn.class));
 			finish();
 		} else if (v == finish) {
 			finish();

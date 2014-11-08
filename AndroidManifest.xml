@@ -66,38 +66,38 @@
         </activity>
 
         <!-- practice ACTIVITIES -->
-        <activity android:name="com.delvinglanguages.face.activities.practice.PreguntasActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.PreguntasActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.practice.WriteWordsActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.WriteWordsActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.practice.CompleteActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.CompleteActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.practice.SelectTestActivity" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.SelectTestActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activities.practice.TestActivity1" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.TestActivity1" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.ListeningActivity"
+            android:name="com.delvinglanguages.face.activity.practice.ListeningActivity"
             android:label="@string/title_listening" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.TestActivity2"
+            android:name="com.delvinglanguages.face.activity.practice.TestActivityLearn"
             android:label="@string/test_title_2" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.TestActivity3"
+            android:name="com.delvinglanguages.face.activity.practice.TestActivityMatch"
             android:label="@string/test_title_3" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.TestActivity4"
+            android:name="com.delvinglanguages.face.activity.practice.TestActivityComplete"
             android:label="@string/test_title_4" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.TestActivity5"
+            android:name="com.delvinglanguages.face.activity.practice.TestActivityWrite"
             android:label="@string/test_title_5" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activities.practice.TestActivity6"
+            android:name="com.delvinglanguages.face.activity.practice.TestActivityResult"
             android:label="@string/test_title_6" >
         </activity>
 
@@ -132,22 +132,13 @@
         </activity>
         <activity android:name="com.delvinglanguages.face.activity.NewTenseActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.communications.IntentReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.Historial"
-            android:label="@string/title_activity_historial" >
+            android:name="com.delvinglanguages.face.settings.HistorialActivity"
+            android:label="@string/historial" >
         </activity>
         <activity
             android:name="com.delvinglanguages.debug.Inserter"
-            android:label="@string/title_activity_inserter" >
+            android:label="Inserter" >
         </activity>
         <activity
             android:name="com.delvinglanguages.face.activity.add.AddWordFromSearchActivity"

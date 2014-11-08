@@ -4,37 +4,28 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
-import com.delvinglanguages.debug.Debug;
-
 public class DReference implements Comparable<DReference> {
 
 	private static final String DEBUG = "##DReference##";
 
-	public int id;
+	public final int id;
 
-	public String item;
+	public String name;
 
-	public ArrayList<DReference> links;
-
-	public ArrayList<Word> owners;
+	public ArrayList<Link> links;
 
 	public int type, priority;
 
 	public DReference(String ref) {
 		id = ref.hashCode();
-		item = ref;
+		name = ref;
 		type = 0;
 		priority = Integer.MIN_VALUE;
-		links = new ArrayList<DReference>();
-		owners = new ArrayList<Word>();
+		links = new ArrayList<Link>();
 	}
 
-	private int debug = 0;
-
-	public void addReference(DReference ref, Word owner) {
-		debug++;
-		links.add(ref);
-		owners.add(owner);
+	public void addReference(DReference reference, Word owner) {
+		links.add(new Link(reference, owner));
 		type |= owner.getType();
 		if (owner.getPriority() > priority) {
 			priority = owner.getPriority();
@@ -42,29 +33,26 @@ public class DReference implements Comparable<DReference> {
 	}
 
 	public void removeReferencesto(Word enDelv) {
-		for (int i = 0; i < owners.size(); i++) {
-			if (owners.get(i).id == enDelv.id) {
-				links.remove(i).removeReference(this);
-				owners.remove(i);
-				type = 0;
-				priority = Integer.MIN_VALUE;
-				for (Word owner : owners) {
-					type |= owner.getType();
-					if (owner.getPriority() > priority) {
-						priority = owner.getPriority();
-					}
-				}
+		for (int i = 0; i < links.size(); i++) {
+			if (links.get(i).owner.id == enDelv.id) {
+				links.remove(i).reference.removeReference(this);
 				i--;
 			}
 		}
-
+		type = 0;
+		priority = Integer.MIN_VALUE;
+		for (Link link : links) {
+			type |= link.owner.getType();
+			if (link.owner.getPriority() > priority) {
+				priority = link.owner.getPriority();
+			}
+		}
 	}
 
 	public void removeReference(DReference ref) {
 		for (int i = 0; i < links.size(); i++) {
-			if (ref.id == links.get(i).id) {
+			if (ref.id == links.get(i).reference.id) {
 				links.remove(i);
-				owners.remove(i);
 				return;
 			}
 		}
@@ -72,11 +60,11 @@ public class DReference implements Comparable<DReference> {
 
 	@Override
 	public int compareTo(DReference another) {
-		return item.compareToIgnoreCase(another.item);
+		return name.compareToIgnoreCase(another.name);
 	}
 
 	public Character getCap() {
-		return item.charAt(0);
+		return name.charAt(0);
 	}
 
 	public boolean isNoun() {
@@ -110,11 +98,11 @@ public class DReference implements Comparable<DReference> {
 	public String getTranslation() {
 		StringBuilder res = new StringBuilder();
 		for (int i = 0; i < links.size(); i++) {
-			DReference ref = links.get(i);
+			DReference ref = links.get(i).reference;
 			if (i != 0) {
 				res.append(", ");
 			}
-			res.append(ref.item);
+			res.append(ref.name);
 		}
 		return res.toString();
 	}
@@ -125,21 +113,22 @@ public class DReference implements Comparable<DReference> {
 		} else {
 			list.clear();
 		}
-		for (DReference ref : links) {
-			list.add(ref.item);
+
+		for (Link link : links) {
+			list.add(link.reference.name);
 		}
 		return list;
 	}
 
 	public String getPronunciation() {
-		return owners.get(0).getPronunciation();
+		return links.get(0).owner.getPronunciation();
 	}
 
 	public ArrayList<Word> getPureOwners() {
 		ArrayList<Word> res = new ArrayList<Word>();
-		res.add(owners.get(0));
-		for (int i = 1; i < owners.size(); i++) {
-			Word p = owners.get(i);
+		res.add(links.get(0).owner);
+		for (int i = 1; i < links.size(); i++) {
+			Word p = links.get(i).owner;
 			if (!res.contains(p)) {
 				res.add(p);
 			}

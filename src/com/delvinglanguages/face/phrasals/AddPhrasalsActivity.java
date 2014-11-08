@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -26,8 +23,7 @@ import com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity;
 import com.delvinglanguages.listers.PhrasalLister;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class AddPhrasalsActivity extends Activity implements TextWatcher,
-		OnClickListener, OnFocusChangeListener {
+public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocusChangeListener {
 
 	private String[] bases;
 	private Integer[] m_bases, m_preps;
@@ -37,7 +33,6 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher,
 	private PhrasalLister prepadapter, baseadapter;
 
 	private EditText inputbase, inputprep;
-	private Button advance;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -45,7 +40,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_add_phrasals);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -77,12 +72,10 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher,
 
 		inputbase = (EditText) findViewById(R.id.input_verb);
 		inputprep = (EditText) findViewById(R.id.input_prep);
-		advance = (Button) findViewById(R.id.continue_);
 		inputbase.addTextChangedListener(this);
 		inputbase.setOnFocusChangeListener(this);
 		inputprep.addTextChangedListener(this);
 		inputprep.setOnFocusChangeListener(this);
-		advance.setOnClickListener(this);
 	}
 
 	private class VerbListListener implements OnItemClickListener {
@@ -188,9 +181,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher,
 		}
 	}
 
-	/** *********************** * ONCLICK * ************************/
-	@Override
-	public void onClick(View v) {
+	public void addPhrasal(View v) {
 		String base = inputbase.getText().toString();
 		if (base.length() == 0) {
 			Toast.makeText(this, R.string.noverb, Toast.LENGTH_SHORT).show();

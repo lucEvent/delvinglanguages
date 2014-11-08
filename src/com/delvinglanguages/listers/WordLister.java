@@ -16,36 +16,36 @@ import com.delvinglanguages.settings.Configuraciones;
 public class WordLister extends ArrayAdapter<Word> {
 
 	private ArrayList<Word> values;
-	private Context context;
+	private LayoutInflater inflater;
+	private boolean phMode;
 
-	public WordLister(Context context, ArrayList<Word> values) {
+	public WordLister(Context context, ArrayList<Word> values, boolean phMode) {
 		super(context, R.layout.i_word, values);
-		this.context = context;
 		this.values = values;
+		this.phMode = phMode;
+		inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View viewres = inflater.inflate(R.layout.i_word, parent, false);
-
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_word, parent, false);
+		}
 		Word pal = values.get(position);
-		TextView word = (TextView) viewres.findViewById(R.id.lp_word);
-		TextView tranlation = (TextView) viewres
-				.findViewById(R.id.lp_translation);
+		TextView word = (TextView) view.findViewById(R.id.word);
+		TextView tranlation = (TextView) view.findViewById(R.id.translation);
 
 		// Tipos
 		TextView labels[] = new TextView[Configuraciones.NUM_TYPES];
 		// noun //verb //adj //adv //phrasal //expresion //other
-		labels[0] = (TextView) viewres.findViewById(R.id.lp_noun);
-		labels[1] = (TextView) viewres.findViewById(R.id.lp_verb);
-		labels[2] = (TextView) viewres.findViewById(R.id.lp_adj);
-		labels[3] = (TextView) viewres.findViewById(R.id.lp_adverb);
-		labels[4] = (TextView) viewres.findViewById(R.id.lp_phrasal);
-		labels[5] = (TextView) viewres.findViewById(R.id.lp_expression);
-		labels[6] = (TextView) viewres.findViewById(R.id.lp_other);
+		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adj);
+		labels[Word.ADVERB] = (TextView) view.findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) view.findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) view.findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) view.findViewById(R.id.other);
 
 		int type = pal.getType();
 		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
@@ -55,10 +55,13 @@ public class WordLister extends ArrayAdapter<Word> {
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
+		if (!phMode) {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+		}
 
 		word.setText(pal.getName());
 		tranlation.setText(pal.getTranslation());
-		return viewres;
+		return view;
 	}
 
 }

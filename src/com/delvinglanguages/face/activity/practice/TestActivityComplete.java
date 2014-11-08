@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,15 +16,14 @@ import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
 import com.delvinglanguages.face.dialog.InputDialog;
 
-public class TestActivity4 extends CompleteActivity {
+public class TestActivityComplete extends CompleteActivity {
 
-	private static final String DEBUG = "##TestAct4##";
+	private static final String DEBUG = "##TestActivityComplete##";
 
 	private Test test;
 
 	private int succesCounter, posicionPalabra;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,7 +69,7 @@ public class TestActivity4 extends CompleteActivity {
 				test.statistics.get(posicionPalabra).aciertos_complete++;
 				if (succesCounter == test.passed.length) {
 					test.nextStat();
-					startActivity(new Intent(this, TestActivity5.class));
+					startActivity(new Intent(this, TestActivityWrite.class));
 					finish();
 					return;
 				}

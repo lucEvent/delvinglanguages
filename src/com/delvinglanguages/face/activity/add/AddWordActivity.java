@@ -10,7 +10,6 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -32,14 +31,6 @@ public class AddWordActivity extends Activity implements TextWatcher,
 	public static final String SEND_WORD = "sendWord";
 	public static final String EDITED = "edited";
 
-	protected static final int NOUN = 0;
-	protected static final int VERB = 1;
-	protected static final int ADJECTIVE = 2;
-	protected static final int ADVERB = 3;
-	protected static final int PHRASAL = 4;
-	protected static final int EXPRESSION = 5;
-	protected static final int OTHER = 6;
-
 	protected IDDelved idioma;
 
 	protected EditText word, tranlation, pronuntiation;
@@ -58,7 +49,7 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_add_word);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -78,17 +69,20 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		pronuntiation.setOnFocusChangeListener(this);
 
 		types = new Button[Configuraciones.NUM_TYPES];
-		types[NOUN] = (Button) findViewById(R.id.sel_noun);
-		types[VERB] = (Button) findViewById(R.id.sel_verb);
-		types[ADJECTIVE] = (Button) findViewById(R.id.sel_adj);
-		types[ADVERB] = (Button) findViewById(R.id.sel_adv);
-		types[PHRASAL] = (Button) findViewById(R.id.sel_phrasal);
-		types[EXPRESSION] = (Button) findViewById(R.id.sel_expression);
-		types[OTHER] = (Button) findViewById(R.id.sel_other);
+		types[Word.NOUN] = (Button) findViewById(R.id.sel_noun);
+		types[Word.VERB] = (Button) findViewById(R.id.sel_verb);
+		types[Word.ADJECTIVE] = (Button) findViewById(R.id.sel_adj);
+		types[Word.ADVERB] = (Button) findViewById(R.id.sel_adv);
+		types[Word.PHRASAL] = (Button) findViewById(R.id.sel_phrasal);
+		types[Word.EXPRESSION] = (Button) findViewById(R.id.sel_expression);
+		types[Word.OTHER] = (Button) findViewById(R.id.sel_other);
 		for (int i = 0; i < types.length; i++) {
 			types[i].setSelected(false);
 		}
-
+		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+			types[Word.PHRASAL].setVisibility(View.GONE);
+		}
+		
 		specialKeys = new SpecialKeysBar(this, null, null);
 
 		fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation,

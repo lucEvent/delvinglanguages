@@ -6,12 +6,12 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
@@ -28,11 +28,11 @@ public class ListPhrasalActivity extends ListActivity implements Runnable {
 		setContentView(R.layout.a_simple_list);
 
 		values = new ArrayList<DReference>();
-		adapter = new ReferenceLister(this, values);
+		adapter = new ReferenceLister(this, values, true);
 		setListAdapter(adapter);
 		new Thread(this).start();
 
-		FrameLayout background = (FrameLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -46,13 +46,14 @@ public class ListPhrasalActivity extends ListActivity implements Runnable {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference, values.get(pos).item);
+		intent.putExtra(ControlCore.sendDReference, values.get(pos).name);
 		startActivity(intent);
 	}
 
 	@Override
 	public void run() {
-		ArrayList<DReference> lista = ControlCore.getIdiomaActual(this).getPhrasalVerbs();
+		ArrayList<DReference> lista = ControlCore.getIdiomaActual(this)
+				.getPhrasalVerbs();
 		for (DReference ref : lista) {
 			values.add(ref);
 		}

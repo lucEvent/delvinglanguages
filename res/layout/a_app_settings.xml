@@ -1,14 +1,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip" >
 
         <!-- ************** GENERAL ************** -->
 
@@ -19,8 +19,8 @@
         <View style="@style/divisor" />
 
         <Button
-            android:id="@+id/nativelanguage"
             style="@style/settings_option"
+            android:onClick="changeNativeLanguage"
             android:text="@string/nativelanguage" />
 
         <View
@@ -34,6 +34,7 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:clickable="true"
             android:gravity="center_vertical"
+            android:onClick="double_mode_state"
             android:paddingRight="20dip"
             android:text="@string/doubledirection" />
 
@@ -43,11 +44,12 @@
             android:background="#B7B7B7" />
 
         <CheckedTextView
-            android:id="@+id/vibrate_phon_kb"
+            android:id="@+id/vibratekb_state"
             style="@style/settings_option"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:clickable="true"
             android:gravity="center_vertical"
+            android:onClick="vibratekb_state"
             android:paddingRight="20dip"
             android:text="@string/vibratekb" />
 
@@ -57,8 +59,8 @@
             android:background="#B7B7B7" />
 
         <Button
-            android:id="@+id/fonetics"
             style="@style/settings_option"
+            android:onClick="fonetics"
             android:text="@string/title_fonetics" />
 
         <!-- ************** PERSONALIZACION ************** -->
@@ -70,8 +72,8 @@
         <View style="@style/divisor" />
 
         <Button
-            android:id="@+id/sel_background"
             style="@style/settings_option"
+            android:onClick="background"
             android:text="@string/background" />
         <!-- ************** ABOUT ************** -->
 
@@ -82,8 +84,8 @@
         <View style="@style/divisor" />
 
         <Button
-            android:id="@+id/historial"
             style="@style/settings_option"
+            android:onClick="historial"
             android:text="@string/historial" />
 
         <View
@@ -92,8 +94,8 @@
             android:background="#B7B7B7" />
 
         <Button
-            android:id="@+id/about"
             style="@style/settings_option"
+            android:onClick="about"
             android:text="@string/about" />
     </LinearLayout>
 

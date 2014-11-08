@@ -18,7 +18,6 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.debug.Debug;
-import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.fragment.BinFragment;
 import com.delvinglanguages.face.fragment.DictionaryFragment;
 import com.delvinglanguages.face.fragment.LanguageFragment;
@@ -33,6 +32,8 @@ import com.delvinglanguages.settings.Configuraciones;
 public class LanguageActivity extends Activity {
 
 	private static final String DEBUG = "##LanguageActivity##";
+
+	private static final int REQUEST_REMOVE = 0;
 
 	private static final int LANGUAGE = 0;
 	private static final int PRACTISE = 1;
@@ -90,30 +91,26 @@ public class LanguageActivity extends Activity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == LanguageSettingsActivity.REQUEST_REMOVE) {
+		if (requestCode == REQUEST_REMOVE) {
 			if (resultCode == Activity.RESULT_OK) {
 				finish();
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_langsettings:
 			startActivityForResult(new Intent(this,
-					LanguageSettingsActivity.class),
-					LanguageSettingsActivity.REQUEST_REMOVE);
+					LanguageSettingsActivity.class), REQUEST_REMOVE);
 			return true;
 		}
 		return false;
 	}
-	
-	
 
 	private void setFragment(int position) {
 		Fragment fragment = null;

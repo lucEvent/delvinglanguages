@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
@@ -21,26 +18,20 @@ import com.delvinglanguages.face.settings.SettingsActivity;
 import com.delvinglanguages.listers.LanguageLister;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class Main extends ListActivity implements OnClickListener {
+public class Main extends ListActivity {
 
 	private static final String DEBUG = "##Main##";
 
-	private ControlCore core;
-	private Configuraciones settings;
-
-	private LinearLayout addLang, changeSett;
+	private static ControlCore core;
+	private static Configuraciones settings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.a_main);
 
 		core = new ControlCore(this);
 		settings = new Configuraciones();
-
-		setContentView(R.layout.a_main);
-
-		addLang = (LinearLayout) findViewById(R.id.addlanguage);
-		changeSett = (LinearLayout) findViewById(R.id.settings);
 
 	}
 
@@ -48,9 +39,8 @@ public class Main extends ListActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		int type_bg = Configuraciones.backgroundType();
-		FrameLayout background = (FrameLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
 					.getBackgroundImage());
@@ -58,13 +48,10 @@ public class Main extends ListActivity implements OnClickListener {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 		ListView list = getListView();
-		RelativeLayout fsteps = (RelativeLayout) findViewById(R.id.mainfirststeps);
-
+		View fsteps = findViewById(R.id.firststeps);
 		View toinvis, tovisib = null;
 
 		if (ControlCore.getCount() == 0) {
-			addLang.setOnClickListener(this);
-			changeSett.setOnClickListener(this);
 			toinvis = list;
 			tovisib = fsteps;
 		} else {
@@ -75,8 +62,6 @@ public class Main extends ListActivity implements OnClickListener {
 		toinvis.setVisibility(View.INVISIBLE);
 		tovisib.setVisibility(View.VISIBLE);
 	}
-
-	/** *************** METODOS DE MENÚ *************** **/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,13 +97,13 @@ public class Main extends ListActivity implements OnClickListener {
 		return values;
 	}
 
-	@Override
-	public void onClick(View v) {
-		if (v == addLang) {
-			startActivity(new Intent(this, AddLanguageActivity.class));
-		} else if (v == changeSett) {
-			startActivity(new Intent(this, SettingsActivity.class));
-		}
+	public void addLanguage(View v) {
+		startActivity(new Intent(this, AddLanguageActivity.class));
 	}
+
+	public void changeSettings(View v) {
+		startActivity(new Intent(this, SettingsActivity.class));
+	}
+
 
 }

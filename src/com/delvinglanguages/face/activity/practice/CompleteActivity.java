@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
@@ -14,6 +13,8 @@ import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.Cerebro.Action;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class CompleteActivity extends Activity implements OnClickListener {
@@ -43,39 +44,44 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_complete);
 
-		RelativeLayout bg = (RelativeLayout) findViewById(R.id.ac_bg);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			bg.setBackgroundDrawable(Configuraciones
+			background.setBackgroundDrawable(Configuraciones
 					.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			bg.setBackgroundColor(Configuraciones.getBackgroundColor());
+			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		pista = (TextView) findViewById(R.id.ac_word);
-		hidden = (TextView) findViewById(R.id.ac_solution);
-		pronounce = (TextView) findViewById(R.id.ac_pronounce);
+		pista = (TextView) findViewById(R.id.word);
+		hidden = (TextView) findViewById(R.id.solution);
+		pronounce = (TextView) findViewById(R.id.pronounce);
 
 		cerebro = new Cerebro(ControlCore.getReferences());
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) findViewById(R.id.ac_noun);
-		labels[1] = (TextView) findViewById(R.id.ac_verb);
-		labels[2] = (TextView) findViewById(R.id.ac_adj);
-		labels[3] = (TextView) findViewById(R.id.ac_adv);
-		labels[4] = (TextView) findViewById(R.id.ac_phrasal);
-		labels[5] = (TextView) findViewById(R.id.ac_expression);
-		labels[6] = (TextView) findViewById(R.id.ac_other);
+		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
+		labels[Word.ADVERB] = (TextView) findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+		}
+		
 		letras = new Button[8];
-		letras[0] = (Button) findViewById(R.id.ac_a1);
-		letras[1] = (Button) findViewById(R.id.ac_a2);
-		letras[2] = (Button) findViewById(R.id.ac_a3);
-		letras[3] = (Button) findViewById(R.id.ac_a4);
-		letras[4] = (Button) findViewById(R.id.ac_b1);
-		letras[5] = (Button) findViewById(R.id.ac_b2);
-		letras[6] = (Button) findViewById(R.id.ac_b3);
-		letras[7] = (Button) findViewById(R.id.ac_b4);
+		letras[0] = (Button) findViewById(R.id.key_a1);
+		letras[1] = (Button) findViewById(R.id.key_a2);
+		letras[2] = (Button) findViewById(R.id.key_a3);
+		letras[3] = (Button) findViewById(R.id.key_a4);
+		letras[4] = (Button) findViewById(R.id.key_b1);
+		letras[5] = (Button) findViewById(R.id.key_b2);
+		letras[6] = (Button) findViewById(R.id.key_b3);
+		letras[7] = (Button) findViewById(R.id.key_b4);
 		for (int i = 0; i < letras.length; i++) {
 			letras[i].setOnClickListener(this);
 			letras[i].setTag(i);
@@ -96,7 +102,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 	protected void siguientePregunta(DReference ref) {
 		intento = 1;
 		refActual = ref;
-		palabraUpp = ref.item.toUpperCase();
+		palabraUpp = ref.name.toUpperCase();
 
 		position = 0;
 		int type = refActual.type;

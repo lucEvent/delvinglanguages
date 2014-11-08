@@ -116,11 +116,8 @@ public class ControlDisco {
 
 			int elems = readInteger();
 			for (int i = 0; i < elems; i++) {
-				int type = readInteger();
-				int id = readInteger();
-				String descrip = readString();
-				long time = readLong();
-				res.add(new HistorialItem(type, id, descrip, time));
+				String content = readString();
+				res.add(new HistorialItem(content));
 			}
 
 			bufferIn.close();
@@ -130,6 +127,25 @@ public class ControlDisco {
 			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
 		}
 		return res;
+	}
+
+	public void saveHistorial(ArrayList<HistorialItem> H) {
+		File file = new File(folder, "historial.dat");
+		try {
+			bufferOut = new BufferedOutputStream(new FileOutputStream(file));
+
+			int elems = H.size();
+			saveInteger(elems);
+			for (int i = 0; i < elems; i++) {
+				saveString(H.get(i).toString());
+			}
+
+			bufferIn.close();
+		} catch (FileNotFoundException e) {
+			Log.d(DEBUG, "FILENOTEXIST: " + e.toString());
+		} catch (IOException e) {
+			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+		}
 	}
 
 	public File getFile(String name) {

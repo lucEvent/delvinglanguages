@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -18,7 +18,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
@@ -51,24 +50,20 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.a_match);
 
 		// Iniciamos elementos del core
 		idioma = ControlCore.getIdiomaActual(this);
 		calculador = new Cerebro(ControlCore.getReferences());
 
-		// Iniciamos elementos de la activity
-		setContentView(R.layout.a_match);
-
-		// Configuramos background
-		LinearLayout bg = (LinearLayout) findViewById(R.id.apreg_bg);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			bg.setBackgroundDrawable(Configuraciones.getBackgroundImage());
+			background.setBackgroundDrawable(Configuraciones.getBackgroundImage());
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			bg.setBackgroundColor(Configuraciones.getBackgroundColor());
+			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		// Iniciamos elementos graficos
 		palabra = (TextView) findViewById(R.id.palabra);
 		pregunta = (TextView) findViewById(R.id.quesignifica);
 
@@ -151,7 +146,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	private void nuevaPregunta() {
 		intento = 1;
 		pActual = calculador.nextQuestion(NUM_RESP);
-		palabra.setText(pActual.reference.item);
+		palabra.setText(pActual.reference.name);
 		pregunta.setText(pActual.reference.getPronunciation());
 
 		for (int i = 0; i < NUM_RESP; i++) {

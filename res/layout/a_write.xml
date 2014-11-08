@@ -2,9 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="5dip"
-    tools:context=".WriteWordsActivity" >
+    android:layout_height="match_parent" >
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -25,43 +23,43 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/aww_noun"
+                    android:id="@+id/noun"
                     style="@style/textview_label_types_top"
                     android:text="@string/nn" />
 
                 <TextView
-                    android:id="@+id/aww_verb"
+                    android:id="@+id/verb"
                     style="@style/textview_label_types_top"
                     android:text="@string/vb" />
 
                 <TextView
-                    android:id="@+id/aww_adj"
+                    android:id="@+id/adjective"
                     style="@style/textview_label_types_top"
                     android:text="@string/adj" />
 
                 <TextView
-                    android:id="@+id/aww_adv"
+                    android:id="@+id/adverb"
                     style="@style/textview_label_types_top"
                     android:text="@string/adv" />
 
                 <TextView
-                    android:id="@+id/aww_phrasal"
+                    android:id="@+id/phrasal"
                     style="@style/textview_label_types_top"
                     android:text="@string/ph.v" />
 
                 <TextView
-                    android:id="@+id/aww_expression"
+                    android:id="@+id/expression"
                     style="@style/textview_label_types_top"
                     android:text="@string/exp" />
 
                 <TextView
-                    android:id="@+id/aww_other"
+                    android:id="@+id/other"
                     style="@style/textview_label_types_top"
                     android:text="@string/oth" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/aww_word"
+                android:id="@+id/word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
@@ -72,7 +70,7 @@
                 android:textStyle="bold" />
 
             <ProgressBar
-                android:id="@+id/aww_progress"
+                android:id="@+id/progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +80,7 @@
                 android:paddingTop="10dip" />
 
             <EditText
-                android:id="@+id/aww_input"
+                android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dip"
@@ -101,17 +99,17 @@
         android:layout_below="@+id/scrollView1" >
 
         <ImageButton
-            android:id="@+id/aww_swap"
+            android:id="@+id/swap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/aww_new"
+            android:layout_alignTop="@+id/next"
             android:layout_centerHorizontal="true"
             android:background="@android:drawable/btn_default"
             android:contentDescription="@string/changedirection"
             android:src="@drawable/change_direction" />
 
         <ImageButton
-            android:id="@+id/aww_new"
+            android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -121,7 +119,7 @@
             android:src="@drawable/next" />
 
         <ImageButton
-            android:id="@+id/aww_help"
+            android:id="@+id/help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

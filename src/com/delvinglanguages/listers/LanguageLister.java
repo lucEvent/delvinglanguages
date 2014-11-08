@@ -14,29 +14,30 @@ import com.delvinglanguages.communications.NetWork;
 public class LanguageLister extends ArrayAdapter<String> implements NetWork {
 
 	private String[] values;
-	
+
 	private Drawable[] flags;
+	private LayoutInflater inflater;
 
 	public LanguageLister(Context context, String[] values) {
 		super(context, R.layout.i_language, values);
 		this.values = values;
+		this.inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		View viewres = inflater.inflate(R.layout.i_language, parent, false);
-
-		TextView idioma = (TextView) viewres.findViewById(R.id.li_name);
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_language, parent, false);
+		}
+		TextView idioma = (TextView) view.findViewById(R.id.li_name);
 
 		idioma.setText(values[position]);
-		return viewres;
+		return view;
 	}
 
 	@Override
 	public void datagram(int code, String message, Object packet) {
-		// TODO Auto-generated method stub
-		
+
 	}
+
 }

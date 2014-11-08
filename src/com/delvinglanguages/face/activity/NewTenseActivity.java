@@ -22,7 +22,7 @@ import com.delvinglanguages.core.Tense;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class NewTenseActivity extends Activity implements
-		OnCheckedChangeListener, OnClickListener {
+		OnCheckedChangeListener {
 
 	private static final String DEBUG = "##NewTenseAct##";
 
@@ -35,7 +35,8 @@ public class NewTenseActivity extends Activity implements
 	private EditText[] forms;
 	private EditText[] prons;
 	private CheckBox repite;
-	private Button add;
+
+	private int tenseId;//ATENCION: ASSIGNAR VALOR A ESTA VARIABLE
 
 	private DReference reference;
 
@@ -45,7 +46,7 @@ public class NewTenseActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_new_tense);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -61,7 +62,7 @@ public class NewTenseActivity extends Activity implements
 
 		tverb = (TextView) findViewById(R.id.tverb);
 
-		tverb.setText(reference.item);
+		tverb.setText(reference.name);
 
 		ttense = (TextView) findViewById(R.id.ttense);
 		int arrayid = ControlCore.getIdiomaActual(this).getTensesArray();
@@ -93,15 +94,11 @@ public class NewTenseActivity extends Activity implements
 
 		repite = (CheckBox) findViewById(R.id.repiteall);
 		repite.setOnCheckedChangeListener(this);
-
-		add = (Button) findViewById(R.id.add);
-		add.setOnClickListener(this);
-
+	
 		repiteAll = false;
 	}
 
-	@Override
-	public void onClick(View v) {
+	public void addTense(View v) {
 		String[] form = new String[6];
 		String[] pron = new String[6];
 
@@ -109,9 +106,8 @@ public class NewTenseActivity extends Activity implements
 			form[i] = forms[i].getText().toString();
 			pron[i] = prons[i].getText().toString();
 		}
-		ControlCore.addNewTense(reference.id, tposition,
+		ControlCore.addTense(reference.id, tenseId, reference.name,
 				Tense.queueString(form), Tense.queueString(pron));
-
 		finish();
 	}
 

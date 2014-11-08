@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,26 +13,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.Cerebro;
+import com.delvinglanguages.core.Cerebro.QuestionModel;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
-import com.delvinglanguages.core.Cerebro.QuestionModel;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class TestActivity3 extends Activity implements OnClickListener {
+public class TestActivityMatch extends Activity implements OnClickListener {
 	
-	private static final String DEBUG = "##TestAct3##";
+	private static final String DEBUG = "##TestActivityMatch##";
 
 	// Match Activity
 	private final int NUM_RESP = 6;
-
-	private LinearLayout background;
 
 	// Elementos del core
 	private Cerebro calculador;
@@ -49,16 +46,14 @@ public class TestActivity3 extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.a_match);
 
 		// Iniciamos elementos del core
 		test = ControlCore.testActual;
 		test.state = Test.STAT_MATCH;
 		calculador = new Cerebro(test.references);
-		// Iniciamos elementos de la activity
-		setContentView(R.layout.a_match);
 
-		// Configuramos background
-		background = (LinearLayout) findViewById(R.id.apreg_bg);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -156,7 +151,7 @@ public class TestActivity3 extends Activity implements OnClickListener {
 	private void siguientePalabra() {
 		pActual = calculador.nextWord(test.passed, NUM_RESP);
 		positionActual = test.references.indexOf(pActual.reference);
-		palabra.setText(pActual.reference.item);
+		palabra.setText(pActual.reference.name);
 		pregunta.setText(pActual.reference.getPronunciation());
 
 		for (int i = 0; i < NUM_RESP; i++) {
@@ -183,7 +178,7 @@ public class TestActivity3 extends Activity implements OnClickListener {
 					public void run() {
 						test.nextStat();
 						startActivity(new Intent(getApplicationContext(),
-								TestActivity4.class));
+								TestActivityComplete.class));
 						finish();
 					}
 				});

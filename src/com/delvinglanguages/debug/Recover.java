@@ -98,7 +98,7 @@ public class Recover {
 			int nIdiomas = readInteger();
 			for (int i = 0; i < nIdiomas; i++) {
 				String idName = readString();
-				ControlCore.addIdioma(idName);
+				ControlCore.addIdioma(idName, 0);
 				ControlCore.setIdiomaActual(i);
 				ControlCore.loadLanguage(true);
 				ControlCore.getPalabras();

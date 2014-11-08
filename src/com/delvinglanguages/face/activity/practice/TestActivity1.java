@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import java.util.ArrayList;
 
@@ -87,7 +87,7 @@ public class TestActivity1 extends ListActivity implements Runnable {
 							setTitle(searchString
 									+ dots[progressi % dots.length]);
 							values[index - 1] = index + ". "
-									+ references.get(index - 1).item;
+									+ references.get(index - 1).name;
 							adapter.notifyDataSetChanged();
 						}
 					});
@@ -112,7 +112,7 @@ public class TestActivity1 extends ListActivity implements Runnable {
 			e.printStackTrace();
 		}
 		ControlCore.addTest(references);
-		startActivity(new Intent(this, TestActivity2.class));
+		startActivity(new Intent(this, TestActivityLearn.class));
 		finish();
 	}
 }

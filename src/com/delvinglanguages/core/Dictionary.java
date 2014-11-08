@@ -71,7 +71,7 @@ public class Dictionary {
 				temp = sub.ceiling(new DReference(refD));
 			}
 
-			if (temp == null || !temp.item.equals(refD)) {
+			if (temp == null || !temp.name.equals(refD)) {
 				temp = new DReference(refD);
 				sub.add(temp);
 			}
@@ -92,7 +92,7 @@ public class Dictionary {
 				temp = sub.ceiling(new DReference(refN));
 			}
 
-			if (temp == null || !temp.item.equals(refN)) {
+			if (temp == null || !temp.name.equals(refN)) {
 				temp = new DReference(refN);
 				sub.add(temp);
 			}
@@ -125,7 +125,7 @@ public class Dictionary {
 			DReference temp = sub.ceiling(new DReference(refD));
 
 			temp.removeReferencesto(entry);
-			if (temp.owners.isEmpty()) {
+			if (temp.links.isEmpty()) {
 				sub.remove(temp);
 			}
 		}
@@ -135,7 +135,7 @@ public class Dictionary {
 			DReference temp = sub.ceiling(new DReference(refN));
 
 			temp.removeReferencesto(entry);
-			if (temp.owners.isEmpty()) {
+			if (temp.links.isEmpty()) {
 				sub.remove(temp);
 			}
 		}

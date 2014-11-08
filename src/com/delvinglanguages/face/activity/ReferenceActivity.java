@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,11 +16,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -30,8 +28,9 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
 import com.delvinglanguages.core.Tense;
+import com.delvinglanguages.core.Word;
+import com.delvinglanguages.core.verb.FinnishTense;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.listers.TranslationLister;
@@ -66,13 +65,15 @@ public class ReferenceActivity extends Activity {
 	private int actualTense = -1;
 	private TabSpec tabspec;
 
+	private boolean phMode;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_word);
 
-		LinearLayout background = (LinearLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -83,19 +84,22 @@ public class ReferenceActivity extends Activity {
 
 		String s = getIntent().getExtras()
 				.getString(ControlCore.sendDReference);
-		reference = ControlCore.getIdiomaActual(this).getReference(s);
+
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		reference = idioma.getReference(s);
+		phMode = idioma.getSettings(IDDelved.MASK_PH);
 
 		tword = (TextView) findViewById(R.id.word);
 		tpron = (TextView) findViewById(R.id.pronuntiation);
 
 		ttypes = new TextView[Configuraciones.NUM_TYPES];
-		ttypes[0] = (TextView) findViewById(R.id.lab_noun);
-		ttypes[1] = (TextView) findViewById(R.id.lab_verb);
-		ttypes[2] = (TextView) findViewById(R.id.lab_adj);
-		ttypes[3] = (TextView) findViewById(R.id.lab_adv);
-		ttypes[4] = (TextView) findViewById(R.id.lab_phrasal);
-		ttypes[5] = (TextView) findViewById(R.id.lab_expression);
-		ttypes[6] = (TextView) findViewById(R.id.lab_other);
+		ttypes[Word.NOUN] = (TextView) findViewById(R.id.lab_noun);
+		ttypes[Word.VERB] = (TextView) findViewById(R.id.lab_verb);
+		ttypes[Word.ADJECTIVE] = (TextView) findViewById(R.id.lab_adj);
+		ttypes[Word.ADVERB] = (TextView) findViewById(R.id.lab_adv);
+		ttypes[Word.PHRASAL] = (TextView) findViewById(R.id.lab_phrasal);
+		ttypes[Word.EXPRESSION] = (TextView) findViewById(R.id.lab_expression);
+		ttypes[Word.OTHER] = (TextView) findViewById(R.id.lab_other);
 
 		transList = (ListView) findViewById(R.id.transl_list);
 		transList.setOnItemClickListener(new TranslationClickListener());
@@ -119,8 +123,6 @@ public class ReferenceActivity extends Activity {
 		transList.setVisibility(View.INVISIBLE);
 		tenseList.setVisibility(View.INVISIBLE);
 		if (reference.isVerb()) {
-
-			Log.d(DEBUG, "Seteando los tabs");
 			tabhost.addTab(tabhost.newTabSpec(TRANSLATIONS)
 					.setIndicator(TRANSLATIONS).setContent(R.id.transl_list));
 			tabhost.addTab(tabhost.newTabSpec(TENSES).setIndicator(TENSES)
@@ -134,9 +136,8 @@ public class ReferenceActivity extends Activity {
 
 			tenseList.setAdapter(new TranslationLister(this, tenses));
 			tenseList.setOnItemClickListener(new TensesClickListener());
-		} 
+		}
 		transList.setVisibility(View.VISIBLE);
-		
 	}
 
 	@Override
@@ -151,7 +152,6 @@ public class ReferenceActivity extends Activity {
 
 				TabWidget tw = tabhost.getTabWidget();
 				while (tw.getChildCount() > 0) {
-					Log.d(DEBUG, "	Removiendo");
 					tw.removeViewAt(0);
 				}
 				setTenseTabs();
@@ -165,8 +165,8 @@ public class ReferenceActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		setTitle(reference.item);
-		tword.setText(reference.item);
+		setTitle(reference.name);
+		tword.setText(reference.name);
 		tpron.setText("[ " + reference.getPronunciation() + " ]");
 		reference.getTranslationArray(translations);
 
@@ -177,6 +177,9 @@ public class ReferenceActivity extends Activity {
 			} else {
 				ttypes[i].setBackgroundColor(0xFFCCCCCC);
 			}
+		}
+		if (!phMode) {
+			ttypes[Word.PHRASAL].setVisibility(View.GONE);
 		}
 	}
 
@@ -191,7 +194,8 @@ public class ReferenceActivity extends Activity {
 		Builder builder = new AlertDialog.Builder(this);
 		ListView lw = new ListView(this);
 		ArrayList<Word> v = reference.getPureOwners();
-		lw.setAdapter(new WordLister(this, v));
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		lw.setAdapter(new WordLister(this, v, idioma.getSettings(IDDelved.MASK_PH)));
 		switch (item.getItemId()) {
 		case R.id.m_edit:
 			if (v.size() == 1) {
@@ -207,12 +211,10 @@ public class ReferenceActivity extends Activity {
 				}
 
 			});
-
 			builder.setTitle(getString(R.string.edit));
 			builder.setView(lw);
 			builder.create().show();
 			break;
-
 		case R.id.m_remove:
 			if (v.size() == 1) {
 				removeAction(0);
@@ -227,7 +229,6 @@ public class ReferenceActivity extends Activity {
 				}
 
 			});
-
 			builder.setTitle(getString(R.string.remove));
 			builder.setView(lw);
 			builder.create().show();
@@ -240,7 +241,8 @@ public class ReferenceActivity extends Activity {
 
 	private void editAction(int pos) {
 		Intent intent = new Intent(this, AddWordFromModifyActivity.class);
-		intent.putExtra(AddWordActivity.SEND_WORD, reference.owners.get(pos).id);
+		intent.putExtra(AddWordActivity.SEND_WORD,
+				reference.links.get(pos).owner.id);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
@@ -260,7 +262,7 @@ public class ReferenceActivity extends Activity {
 	}
 
 	private void remove(int pos) {
-		ControlCore.throwPalabra(reference.owners.get(pos));
+		ControlCore.throwPalabra(reference.links.get(pos).owner);
 		setResult(Activity.RESULT_OK, null);
 		finish();
 	}
@@ -270,7 +272,6 @@ public class ReferenceActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			Log.d(DEBUG, "Translation selected: " + translations.get(position));
 			navigateTo(position);
 		}
 
@@ -280,7 +281,7 @@ public class ReferenceActivity extends Activity {
 		ControlCore.switchDictionary();
 		Intent intent = new Intent(this, ReferenceActivity.class);
 		intent.putExtra(ControlCore.sendDReference,
-				reference.links.get(pos).item);
+				reference.links.get(pos).reference.name);
 		startActivity(intent);
 	}
 
@@ -288,45 +289,55 @@ public class ReferenceActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
-				final int position, long id) {
-			Tense tense = ControlCore.getTense(reference.id, position);
-			if (tense == null) {
-				Builder builder = new AlertDialog.Builder(
-						ReferenceActivity.this);
-				builder.setTitle(reference.item);
-				builder.setMessage(R.string.createconjugatuionquestion);
-				builder.setPositiveButton(R.string.confirm,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								addNewTense(position);
-							}
-
-						});
-				builder.setNegativeButton(R.string.cancel, null);
-				builder.create().show();
-				return;
+				final int tenseId, long id) {
+			int langId = ControlCore.getIdiomaActual(ReferenceActivity.this).CODE;
+			Tense tense;
+			switch (langId) {
+			case IDDelved.FI:
+				tense = new FinnishTense(Tense.FI_PRESENT, reference.name);
+				break;
+			default:
+				tense = ControlCore.getTense(reference, tenseId);
+				if (tense == null) {
+					Builder builder = new AlertDialog.Builder(
+							ReferenceActivity.this);
+					builder.setTitle(reference.name);
+					builder.setMessage(R.string.createconjugatuionquestion);
+					builder.setPositiveButton(R.string.confirm,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int id) {
+									addNewTense(tenseId);
+								}
+							});
+					builder.setNegativeButton(R.string.cancel, null);
+					builder.create().show();
+					return;
+				}
 			}
 			if (actualTense == -1) {
-				tabspec = tabhost.newTabSpec(ACTUALTENSE).setIndicator("")
+				tabspec = tabhost.newTabSpec(ACTUALTENSE)
+						.setIndicator(tenses[tenseId])
 						.setContent(R.id.tense_table);
 				tabhost.addTab(tabspec);
 			}
-			if (actualTense != position) {
-				actualTense = position;
+			if (actualTense != tenseId) {
+				actualTense = tenseId;
 				showActualTense(tense);
 				TextView title = (TextView) tabhost.getTabWidget()
 						.getChildAt(2).findViewById(android.R.id.title);
-				title.setText(tenses[position]);
+				title.setText(tenses[tenseId]);
 			}
 			tabhost.setCurrentTab(2);
 		}
-
 	}
 
 	private void showActualTense(Tense tense) {
 		tenseTable.removeAllViews();
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		String[] forms = tense.getConjugations();
+		String[] prons = tense.getPronunciations();
 		for (int i = 0; i < tense.getSize(); ++i) {
 			TableRow tr = (TableRow) inflater.inflate(R.layout.i_tense_row,
 					null, false);
@@ -334,9 +345,9 @@ public class ReferenceActivity extends Activity {
 			TextView per = (TextView) tr.findViewById(R.id.subject);
 			per.setText(subjects[i]);
 			TextView val = (TextView) tr.findViewById(R.id.form);
-			val.setText(tense.forms[i]);
+			val.setText(forms[i]);
 			TextView pro = (TextView) tr.findViewById(R.id.pronuntiation);
-			pro.setText("[" + tense.pronuntiations[i] + "]");
+			pro.setText("[" + prons[i] + "]");
 
 			tenseTable.addView(tr);
 		}
@@ -344,7 +355,7 @@ public class ReferenceActivity extends Activity {
 
 	private void addNewTense(int position) {
 		Intent intent = new Intent(this, NewTenseActivity.class);
-		intent.putExtra(ControlCore.sendDReference, reference.item);
+		intent.putExtra(ControlCore.sendDReference, reference.name);
 		intent.putExtra(NewTenseActivity.TENSE, position);
 		startActivity(intent);
 	}

@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AddPhrasalsActivity" >
+    android:layout_height="match_parent" >
 
     <ListView
         android:id="@+id/verb_list"
@@ -24,6 +23,7 @@
 
     <Button
         android:id="@+id/continue_"
+        android:onClick="addPhrasal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -13,27 +13,27 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.Nota;
 
 public class StoreWordLister extends ArrayAdapter<Nota> {
-	
+
 	private ArrayList<Nota> values;
-	public Context context;
+	private LayoutInflater inflater;
 
 	public StoreWordLister(Context context, ArrayList<Nota> values) {
 		super(context, R.layout.i_stored_word, values);
-		this.context = context;
 		this.values = values;
+		inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = inflater.inflate(R.layout.i_stored_word, parent, false);
+		}
 
-		View viewres = inflater.inflate(R.layout.i_stored_word, parent, false);
+		TextView word = (TextView) view.findViewById(R.id.stored_word);
 
-		TextView word = (TextView) viewres.findViewById(R.id.stored_word);
-	
 		word.setText(values.get(position).get());
-		return viewres;
+		return view;
 	}
 
 }

@@ -1,48 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/alang_bg"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/all_butlay"
-        android:layout_alignParentTop="true" >
+        android:layout_above="@+id/buttons"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dip" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-
             <Spinner
-                android:id="@+id/aia_selector"
+                android:id="@+id/selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:entries="@array/paises"
                 android:gravity="center_horizontal"
                 android:padding="20dip"
                 android:spinnerMode="dialog" />
 
             <EditText
-                android:id="@+id/aia_input"
+                android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dip"
                 android:ems="10"
-                android:hint="@string/hint_selectlanguage"
                 android:gravity="center_horizontal"
+                android:hint="@string/hint_selectlanguage"
                 android:inputType="textCapSentences"
-                android:maxLines="1"
-                android:padding="20dip" >
+                android:maxLines="1" >
 
                 <requestFocus />
             </EditText>
+
+            <LinearLayout
+                android:id="@+id/parameters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/settings_indexs"
+                    android:text="@string/parameters" />
+
+                <View style="@style/divisor" />
+
+                <CheckedTextView
+                    android:id="@+id/phrasalsenabled"
+                    style="@style/settings_option"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="toggle"
+                    android:paddingRight="20dip"
+                    android:text="@string/phrasalsenabled" />
+
+                <View
+                    style="@style/divisor"
+                    android:layout_height="0.5dip"
+                    android:background="#B7B7B7" />
+
+                <CheckedTextView
+                    android:id="@+id/adjectsenabled"
+                    style="@style/settings_option"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="toggle"
+                    android:paddingRight="20dip"
+                    android:text="@string/adjectsenabled" />
+
+                <View
+                    style="@style/divisor"
+                    android:layout_height="0.5dip"
+                    android:background="#B7B7B7" />
+
+                <CheckedTextView
+                    android:id="@+id/special_chars_enabled"
+                    style="@style/settings_option"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="toggle"
+                    android:paddingRight="20dip"
+                    android:text="@string/special_chars_enabled" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/all_butlay"
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -50,13 +104,13 @@
         android:paddingTop="10dip" >
 
         <Button
-            android:id="@+id/aia_cancel"
             style="@style/button_list_selector"
+            android:onClick="cancel"
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/aia_accept"
             style="@style/button_list_selector"
+            android:onClick="addLanguage"
             android:text="@string/accept" />
     </LinearLayout>
 

@@ -15,22 +15,22 @@ public class IDDelved {
 	private static final Character CAPS[][] = {
 			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-					'Z' },//NOTDETECTED
+					'Z' },// NOTDETECTED
 			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 					'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-					'Y', 'Z' },//ES
+					'Y', 'Z' },// ES
 			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-					'Z' },//EN
+					'Z' },// EN
 			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-					'Z', 'Ä', 'Ö', 'Å' },//SV
+					'Z', 'Ä', 'Ö', 'Å' },// SV
 			{ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 					'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-					'Z', 'Ä', 'Ö', 'Å' },//FI
+					'Z', 'Ä', 'Ö', 'Å' },// FI
 			{ 'A', 'B', 'C', 'Ç', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 					'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-					'Y', 'Z' }//CA
+					'Y', 'Z' } // CA
 
 	};
 
@@ -98,8 +98,8 @@ public class IDDelved {
 	protected Word getPalabra(String name, TreeSet<DReference> sub) {
 		if (sub != null) {
 			for (DReference temp : sub) {
-				if (temp.item.equals(name)) {
-					return temp.owners.get(0);
+				if (temp.name.equals(name)) {
+					return temp.links.get(0).owner;
 				}
 			}
 		}
@@ -124,7 +124,7 @@ public class IDDelved {
 			Iterator<DReference> it = sub.iterator();
 			while (it.hasNext()) {
 				DReference temp = it.next();
-				if (temp.item.equals(name)) {
+				if (temp.name.equals(name)) {
 					return temp;
 				}
 			}
@@ -220,6 +220,8 @@ public class IDDelved {
 			res = R.array.en_tenses;
 		} else if (CODE == IDDelved.SV) {
 			res = R.array.sv_tenses;
+		} else if (CODE == IDDelved.FI) {
+			res = R.array.fi_tenses;
 		} else {
 			res = R.array.en_tenses;
 		}
@@ -234,6 +236,8 @@ public class IDDelved {
 			res = R.array.en_subjects;
 		} else if (CODE == IDDelved.SV) {
 			res = R.array.sv_subjects;
+		} else if (CODE == IDDelved.FI) {
+			res = R.array.fi_subjects;
 		} else {
 			res = R.array.en_subjects;
 		}
@@ -265,7 +269,7 @@ public class IDDelved {
 			}
 		}
 		datos.palabrasDelved = words;
-		datos.createDictionary(	CAPS[CODE], CAPS[datos.nativo.CODE]);
+		datos.createDictionary(CAPS[CODE], CAPS[datos.nativo.CODE]);
 		datos.nativo.setPalabras(words);
 	}
 
@@ -299,6 +303,18 @@ public class IDDelved {
 				datos.settings ^= mask;
 			}
 		}
+	}
+
+	public static int configure(boolean phrasal, boolean adjective,
+			boolean special) {
+		int settings = 0;
+		if (phrasal)
+			settings |= MASK_PH;
+		if (adjective)
+			settings |= MASK_ADJ;
+		if (special)
+			settings |= MASK_ESP_CHARS;
+		return settings;
 	}
 
 	public void addPalabra(Word p) {

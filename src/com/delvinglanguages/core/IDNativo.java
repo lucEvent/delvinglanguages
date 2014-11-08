@@ -30,7 +30,7 @@ public class IDNativo extends IDDelved {
 			Iterator<DReference> it = sub.iterator();
 			while (it.hasNext()) {
 				DReference temp = it.next();
-				if (temp.item.equals(name)) {
+				if (temp.name.equals(name)) {
 					return temp;
 				}
 			}

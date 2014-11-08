@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,13 +23,14 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Test;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class TestActivity5 extends Activity implements TextWatcher,
+public class TestActivityWrite extends Activity implements TextWatcher,
 		OnClickListener {
-	// Write Activity
 
 	private DReference refActual;
 	private Cerebro cerebro;
@@ -52,7 +52,7 @@ public class TestActivity5 extends Activity implements TextWatcher,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_write);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -61,18 +61,18 @@ public class TestActivity5 extends Activity implements TextWatcher,
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		ImageButton help = (ImageButton) findViewById(R.id.aww_help);
-		ImageButton swap = (ImageButton) findViewById(R.id.aww_swap);
-		next = (ImageButton) findViewById(R.id.aww_new);
+		ImageButton help = (ImageButton) findViewById(R.id.help);
+		ImageButton swap = (ImageButton) findViewById(R.id.swap);
+		next = (ImageButton) findViewById(R.id.next);
 		help.setClickable(false);
 		swap.setClickable(false);
 		help.setEnabled(false);
 		swap.setEnabled(false);
 		next.setOnClickListener(this);
 
-		palabra = (TextView) findViewById(R.id.aww_word);
-		input = (EditText) findViewById(R.id.aww_input);
-		progress = (ProgressBar) findViewById(R.id.aww_progress);
+		palabra = (TextView) findViewById(R.id.word);
+		input = (EditText) findViewById(R.id.input);
+		progress = (ProgressBar) findViewById(R.id.progress);
 
 		progress.getProgressDrawable().setColorFilter(0xFF33CC00,
 				PorterDuff.Mode.MULTIPLY);
@@ -84,14 +84,19 @@ public class TestActivity5 extends Activity implements TextWatcher,
 		cerebro = new Cerebro(test.references);
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) findViewById(R.id.aww_noun);
-		labels[1] = (TextView) findViewById(R.id.aww_verb);
-		labels[2] = (TextView) findViewById(R.id.aww_adj);
-		labels[3] = (TextView) findViewById(R.id.aww_adv);
-		labels[4] = (TextView) findViewById(R.id.aww_phrasal);
-		labels[5] = (TextView) findViewById(R.id.aww_expression);
-		labels[6] = (TextView) findViewById(R.id.aww_other);
+		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
+		labels[Word.ADVERB] = (TextView) findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
+		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+		}
+		
 		succesCounter = 0;
 		for (int i = 0; i < test.passed.length; i++) {
 			if (test.passed[i]) {
@@ -113,7 +118,7 @@ public class TestActivity5 extends Activity implements TextWatcher,
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
-		progress.setMax(refActual.item.length());
+		progress.setMax(refActual.name.length());
 		progress.setProgress(0);
 		answer = "";
 		input.setText(answer);
@@ -126,7 +131,7 @@ public class TestActivity5 extends Activity implements TextWatcher,
 	public void afterTextChanged(Editable s) {
 
 		answer = input.getText().toString();
-		if (refActual.item.toLowerCase()
+		if (refActual.name.toLowerCase()
 				.startsWith(answer.toLowerCase())) {
 			test.statistics.get(posicionPalabra).aciertos_write++;
 
@@ -134,12 +139,12 @@ public class TestActivity5 extends Activity implements TextWatcher,
 			progress.getProgressDrawable().setColorFilter(0xFF33CC00,
 					PorterDuff.Mode.MULTIPLY);
 
-			if (refActual.item.toLowerCase()
+			if (refActual.name.toLowerCase()
 					.equals(answer.toLowerCase())) {
 				succesCounter++;
 				if (succesCounter == test.passed.length) {
 					test.nextStat();
-					startActivity(new Intent(this, TestActivity6.class));
+					startActivity(new Intent(this, TestActivityResult.class));
 					finish();
 					return;
 				}
@@ -164,7 +169,7 @@ public class TestActivity5 extends Activity implements TextWatcher,
 			}
 		} else {
 			test.statistics.get(posicionPalabra).fallos_write++;
-			progress.setProgress(refActual.item.length());
+			progress.setProgress(refActual.name.length());
 			progress.getProgressDrawable().setColorFilter(0xFFFF0000,
 					PorterDuff.Mode.SRC_IN);
 		}

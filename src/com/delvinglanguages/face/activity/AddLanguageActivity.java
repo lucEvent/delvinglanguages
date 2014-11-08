@@ -7,23 +7,23 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class AddLanguageActivity extends Activity implements
-		OnItemSelectedListener, OnClickListener {
+		OnItemSelectedListener {
 
-	private RelativeLayout background;
-	
-	private Spinner selector;
-	private EditText input;
-	private Button aceptar;
-	private Button cancelar;
+	protected Spinner selector;
+
+	protected EditText input;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -31,7 +31,7 @@ public class AddLanguageActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_select_language);
 
-		background = (RelativeLayout) findViewById(R.id.alang_bg);
+		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -39,16 +39,12 @@ public class AddLanguageActivity extends Activity implements
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
-		
-		selector = (Spinner) findViewById(R.id.aia_selector);
+
+		selector = (Spinner) findViewById(R.id.selector);
 		selector.setOnItemSelectedListener(this);
 		selector.setSelection(0);
 
-		input = (EditText) findViewById(R.id.aia_input);
-		aceptar = (Button) findViewById(R.id.aia_accept);
-		cancelar = (Button) findViewById(R.id.aia_cancel);
-		aceptar.setOnClickListener(this);
-		cancelar.setOnClickListener(this);
+		input = (EditText) findViewById(R.id.input);
 	}
 
 	/** *************** METODOS ONITEMSELECTEDLISTENER *************** **/
@@ -66,12 +62,33 @@ public class AddLanguageActivity extends Activity implements
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
-	/** *************** METODOS ONCLICKLISTENER *************** **/
-	@Override
-	public void onClick(View v) {
-		if (v == aceptar) {
-			ControlCore.addIdioma(input.getText().toString());
+	public void toggle(View v) {
+		((CheckedTextView) v).toggle();
+	}
+
+	public void addLanguage(View v) {
+		String name = input.getText().toString();
+		if (name.isEmpty()) {
+			showMessage(R.string.msgnolangname);
+			return;
 		}
+		boolean ph = ((CheckedTextView) findViewById(R.id.phrasalsenabled))
+				.isChecked();
+		boolean adj = ((CheckedTextView) findViewById(R.id.adjectsenabled))
+				.isChecked();
+		boolean spe = ((CheckedTextView) findViewById(R.id.special_chars_enabled))
+				.isChecked();
+		int settings = IDDelved.configure(ph, adj, spe);
+
+		ControlCore.addIdioma(name, settings);
 		finish();
+	}
+
+	public void cancel(View v) {
+		finish();
+	}
+
+	protected void showMessage(int text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 }

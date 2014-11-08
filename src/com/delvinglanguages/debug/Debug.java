@@ -1,5 +1,8 @@
 package com.delvinglanguages.debug;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,21 +16,28 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.listeners.FoneticsKeyboard;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class Debug extends Activity implements OnClickListener,
 		OnFocusChangeListener {
 
+	private static final String DEBUG = "##DEBUG##";
 	// ///////////
 	// //////////
 	private RelativeLayout background;
 	private EditText word, tranlation, pronuntiation;
-	private Button san,rep;
+	private Button san, rep;
 	private Button[] types;
 	private FoneticsKeyboard fonetickb;
-	private String[] replacements = { "word1", "word2" };
+	private String[] replacements = {};
 
+	private String[] fonetics = {};
+
+	private int indexREPS, indexFON;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -46,12 +56,12 @@ public class Debug extends Activity implements OnClickListener,
 
 		san = (Button) findViewById(R.id.d_san);
 		san.setOnClickListener(this);
-		
+
 		rep = (Button) findViewById(R.id.d_replace);
 		rep.setOnClickListener(this);
-		rep.setText("Remove Store");
 
 		indexREPS = 0;
+		indexFON = 0;
 
 		word = (EditText) findViewById(R.id.d_word);
 		tranlation = (EditText) findViewById(R.id.d_trans);
@@ -73,7 +83,8 @@ public class Debug extends Activity implements OnClickListener,
 			types[i].setSelected(false);
 		}
 
-		fonetickb = new FoneticsKeyboard(this, R.id.d_keyboard, pronuntiation, ControlCore.getIdiomaActual(this).CODE);
+		fonetickb = new FoneticsKeyboard(this, R.id.d_keyboard, pronuntiation,
+				ControlCore.getIdiomaActual(this).CODE);
 
 		setNext();
 
@@ -83,8 +94,8 @@ public class Debug extends Activity implements OnClickListener,
 	protected void onResume() {
 		super.onResume();
 
-		word.setText(replacements[indexREPS - 2]);
-		tranlation.setText(replacements[indexREPS - 1]);
+		// word.setText(replacements[indexREPS - 2]);
+		// tranlation.setText(replacements[indexREPS - 1]);
 
 	}
 
@@ -102,26 +113,30 @@ public class Debug extends Activity implements OnClickListener,
 			return;
 		}
 
-		String pal = replacements[indexREPS];
-		Toast.makeText(this, pal, Toast.LENGTH_SHORT).show();
-		word.setText(pal);
-		indexREPS++;
-		
-		String trans = replacements[indexREPS];
-		Toast.makeText(this, trans, Toast.LENGTH_SHORT).show();
-		tranlation.setText(trans);
-		indexREPS++;
+		String palabra = replacements[indexREPS++];
+		String translation = replacements[indexREPS++];
 
-		pronuntiation.setText("");
-		pronuntiation.requestFocus();
-		setType(0);
+		int type = 0;
+		for (int i = 0; i < 7; i++) {
+			if (replacements[indexREPS++].length() != 0) {
+				type += (1 << i);
+			}
+		}
+
+		word.setText(palabra);
+		tranlation.setText(translation);
+
+		setType(type);
+
+		Toast.makeText(this, palabra, Toast.LENGTH_SHORT).show();
+		pronuntiation.setText(fonetics[indexFON++]);
+		// pronuntiation.requestFocus();
 	}
-
-	private int indexREPS;
 
 	@Override
 	public void onClick(View v) {
 		if (v == rep) {
+			setNext();
 			return;
 		}
 		if (v != san) {
@@ -150,10 +165,10 @@ public class Debug extends Activity implements OnClickListener,
 			showMessage(R.string.notype);
 			return;
 		}
-		Log.d("##DEBUG##", "Añadiendo");
+		Log.d("##DEBUG##", "AÃ±adiendo");
 		ControlCore.addPalabra(nombre, trans, pron, type);
-		Log.d("##DEBUG##", "Añadida");
-		
+		Log.d("##DEBUG##", "AÃ±adida");
+
 		// Siguiente palabra
 		setNext();
 	}

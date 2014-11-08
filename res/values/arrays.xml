@@ -52,7 +52,7 @@
     <string-array name="phv_opt">
         <item>Practise</item>
         <item>Add phrasal</item>
-        <item>Lists phrasals</item>
+        <item>Phrasal\'s list</item>
     </string-array>
     <string-array name="fonetics_consonant_symbols">
         <item>/&#98;/</item>
@@ -84,9 +84,6 @@
         <item>/&#122;/</item>
         <item>/&#658;/</item>
     </string-array>
-
-    <!-- HASTA AQUI TRADUCIDO -->
-
     <string-array name="settings">
         <item>Native Language</item>
         <item>Double direction</item>
@@ -119,7 +116,7 @@
         <item>Present perfect continuous</item>
         <item>Past continuous</item>
         <item>Past perfect</item>
-        <item>Past continuous</item>
+        <item>Past perfect continuous</item>
         <item>Future continuous</item>
         <item>Future perfect</item>
         <item>Future (going to)  </item>
@@ -132,6 +129,11 @@
         <item>Preteritum</item>
         <item>Future</item>
         <item>Imperativ</item>
+    </string-array>
+    <string-array name="fi_tenses">
+        <item>Present</item>
+        <item>Imperfect</item>
+        <item>Conditional</item>
     </string-array>
     <string-array name="es_subjects">
         <item>Yo</item>
@@ -157,14 +159,25 @@
         <item>Ni</item>
         <item>De</item>
     </string-array>
+    <string-array name="fi_subjects">
+        <item>Minä</item>
+        <item>Sinä</item>
+        <item>Hän</item>
+        <item>Me</item>
+        <item>Te</item>
+        <item>He</item>
+    </string-array>
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.3.0.20</b></item>
+        <item><b>Delving Languages version 1.3.2</b></item>
         <item><b>Develop by Rafael J. Lucena</b></item>
         <item><b>Contact: rafaa89@gmail(at)com</b></item>
-        <item>   </item>
-        
-        <item>Version 1.3.0.20 2014&#8211;10&#8211;28\nAll remained coherence errors found solved: After modify/remove words and verbs.</item>
-        <item>Version 1.3.0.1 2014&#8211;10&#8211;28\n2 coherence errors adjusted on LanguageFragment. New internal Dictionary implemented for better performance.</item>
+        <item></item>
+        <item>Version 1.3.2 2014&#8211;11&#8211;06\nIncluded option of select setting languages on creation. Kernel preparations for supporting historial.</item>
+        <item>Version 1.3.1.2 2014&#8211;11&#8211;05\nAdded kernel support to Swedish and English verbs. Still not supported. Now it support more Finnish verbs conjugations</item>
+        <item>Version 1.3.1.1 2014&#8211;11&#8211;03\nAdded better support to Finnish conjugations. Still not finished. Conjugation view improved</item>
+        <item>Version 1.3.1.0 2014&#8211;11&#8211;01\nNew improvements to suport Tenses on Verbs</item>
+        <item>Version 1.3.0.20 2014&#8211;10&#8211;30\nAll remained coherence errors found solved: After modify/remove words and verbs.</item>
+        <item>Version 1.3.0.1 2014&#8211;10&#8211;29\n2 coherence errors adjusted on LanguageFragment. New internal Dictionary implemented for better performance.</item>
         <item>Version 1.3 2014&#8211;10&#8211;28\n"Translation" change to "Search". Added Add word from Search. Solved problem adding word from Verb. Internal improvements on Add words. "About" visual changed</item>
         <item>Version 1.2.3.2 2014&#8211;10&#8211;26\nMoved and Improved Translation section</item>
         <item>Version 1.2.3.1 2014&#8211;10&#8211;25\nImprovements in statistics stuff</item>
@@ -172,10 +185,7 @@
         <item>Version 1.2.2.3 2014&#8211;10&#8211;24\nLanguage Menu</item>
         <item>Version 1.2.1 2014&#8211;05&#8211;13\nListWord changed</item>
         <item>Version 1.2.0 2014&#8211;05&#8211;13\nImproved dictionary and related stuff. More common exceptions found solved</item>
-        <item>Version 1.1.9 2014&#8211;04&#8211;14\nNullPointerException solved and Set commas between translations</item>
-        <item>Version 1.1.8 2014&#8211;04&#8211;14\nStringIndexOutOfBoundsException solved</item>
-        <item>Version 1.1.5 2014&#8211;04&#8211;14\nIllegalStateException solved</item>
-        <item>Version 1.1.3 2014&#8211;04&#8211;14\nClassCastException solved</item>
+        <item>Version 1.1.9 2014&#8211;04&#8211;14\nSet commas between translations</item>
         <item>Version 1.1.2 2014&#8211;04&#8211;14</item>
     </string-array>
 

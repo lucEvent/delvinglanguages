@@ -1,4 +1,4 @@
-package com.delvinglanguages.face.activities.practice;
+package com.delvinglanguages.face.activity.practice;
 
 import java.util.Locale;
 
@@ -49,8 +49,8 @@ public class ListeningActivity extends Activity implements OnInitListener,
 				Locale list[] = Locale.getAvailableLocales();
 				for (int i = 0; i < list.length; i++) {
 					int r = speech.isLanguageAvailable(list[i]);
-					if (r == TextToSpeech.LANG_AVAILABLE ||
-							r == TextToSpeech.LANG_COUNTRY_AVAILABLE
+					if (r == TextToSpeech.LANG_AVAILABLE
+							|| r == TextToSpeech.LANG_COUNTRY_AVAILABLE
 							|| r == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE) {
 
 						Log.d("##ListeningAct##", i + ". ##################");
@@ -64,7 +64,6 @@ public class ListeningActivity extends Activity implements OnInitListener,
 					}
 
 				}
-
 
 				switch (res) {
 
@@ -88,15 +87,13 @@ public class ListeningActivity extends Activity implements OnInitListener,
 					Log.d("##ListeningAct##", "lang not supported");
 
 				}
-				
+
 				String l = speech.getDefaultEngine();
-				
-				Log.d("##ListeningAct##", "####################");
-				Log.d("##ListeningAct##",
-						"Name: " + l);
 
 				Log.d("##ListeningAct##", "####################");
-		
+				Log.d("##ListeningAct##", "Name: " + l);
+
+				Log.d("##ListeningAct##", "####################");
 
 			} else {
 				// missing data, install it

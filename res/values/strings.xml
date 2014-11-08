@@ -80,6 +80,7 @@
     <string name="wordstotest"># Words to test:</string>
     <string name="write">Write</string>
     <string name="newmatch">New match</string>
+    <string name="total">Total</string>
 
     <!-- * *************************** Opciones *************************** * -->
     <string name="about_cap">ABOUT</string>
@@ -158,6 +159,10 @@
     <string name="Warehouse">Warehouse</string>
     <string name="Dictionary">Dictionary</string>
     <string name="search">Search</string>
+    <string name="addfirstlanguage">Add first language</string>
+    <string name="appsettings">App Settings</string>
+    
+    
 
     <!-- * ***************** Hints o Content Descriptions ***************** * -->
     <string name="changedirection">Change direction</string>
@@ -208,7 +213,7 @@
     <string name="createconjugatuionquestion">There are no data for this tense. Do you want to add tense data?</string>
     <string name="makecolor">Make your own color</string>
     <string name="_removed">removed</string>
-    
+    <string name="msgnolangname">Please, enter a name for the language</string>
 
     <!-- * ************************** Preguntas *************************** * -->
     <string name="removeidiomquestion">Are you sure to remove this language?</string>
@@ -232,13 +237,30 @@
     <string name="actions">ACTIONS</string>
     <string name="parameters">PARAMETERS</string>
     <string name="title_activity_intent_receiver">IntentReceiver</string>
-    <string name="title_activity_historial">Historial</string>
-    <string name="title_activity_inserter">Inserter</string>
     <string name="hint_search">Type word to search</string>
-    <string name="title_activity_add_word_from_search">Title</string>
-    <string name="title_activity_add_word_from_ware_house">Title</string>
-    <string name="title_activity_add_word_from_verb">Title</string>
-    <string name="title_activity_add_word_from_modify">Title</string>
-    <string name="title_activity_add_word_from_phrasal">Title</string>
+
+    <string name="langcreated">Language created</string>
+    <string name="langerased">Language erased</string>
+    <string name="langintegrated">Language integrated</string>
+    <string name="wordaddedtostore">Word added to store</string>
+    <string name="wordadded">Word added</string>
+    <string name="wordconsulted">Word looked up</string>
+    <string name="wordmodified">Word modified</string>
+    <string name="wordremoved">Word removed</string>
+    <string name="bincleared">Bin cleared</string>
+    <string name="tenseadded">Tense added</string>
+    <string name="tensemodified">Tense modified</string>
+    <string name="testcreated">Test created</string>
+    <string name="testdone">Test done</string>
+    <string name="practisedmatch">Played match</string>
+    <string name="practisedcomplete">Played complete</string>
+    <string name="practisedwrite">Played write</string>
+    <string name="nativenamechanged">Native language name changed</string>
+    <string name="backgroundchanged">Background changed</string>
+    <string name="changedoubledirection">Double direction changed</string>
+    <string name="langnamechanged">Language name changed</string>
+    <string name="enablephrasalchanged">Phrasals support needed changed</string>
+    <string name="enableadjectivechange">Adjective support needed changed</string>
+    <string name="statisticscleared">Statistics cleared</string>
 
 </resources>

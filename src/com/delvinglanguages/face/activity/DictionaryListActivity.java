@@ -18,6 +18,8 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -32,6 +34,8 @@ public class DictionaryListActivity extends ListActivity {
 	private ArrayList<DReference> values;
 
 	private Button[] types;
+	
+	private boolean phMode;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -48,6 +52,10 @@ public class DictionaryListActivity extends ListActivity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
+		phMode = ControlCore.getIdiomaActual(this).getSettings(
+				IDDelved.MASK_PH);
+
+		
 		types = new Button[Configuraciones.NUM_TYPES];
 		int[] ids = { R.id.lab_nn, R.id.lab_vb, R.id.lab_adj, R.id.lab_adv,
 				R.id.lab_phv, R.id.lab_exp, R.id.lab_oth };
@@ -55,6 +63,9 @@ public class DictionaryListActivity extends ListActivity {
 		for (int i = 0; i < types.length; i++) {
 			types[i] = (Button) findViewById(ids[i]);
 			types[i].setSelected(true);
+		}
+		if (!ControlCore.getIdiomaActual(this).getSettings(IDDelved.MASK_PH)) {
+			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
 		capital = getIntent().getExtras().getChar(ControlCore.sendCharacter);
@@ -88,7 +99,7 @@ public class DictionaryListActivity extends ListActivity {
 				}
 			}
 		}
-		setListAdapter(new ReferenceLister(this, values));
+		setListAdapter(new ReferenceLister(this, values, phMode));
 		// Se podria actualizar en lugar de crear cada vez de nuevo
 	}
 
@@ -121,7 +132,7 @@ public class DictionaryListActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference, values.get(pos).item);
+		intent.putExtra(ControlCore.sendDReference, values.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

@@ -19,6 +19,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Estadisticas;
 import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -49,13 +50,13 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		}
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) view.findViewById(R.id.ai_noun);
-		labels[1] = (TextView) view.findViewById(R.id.ai_verb);
-		labels[2] = (TextView) view.findViewById(R.id.ai_adj);
-		labels[3] = (TextView) view.findViewById(R.id.ai_adv);
-		labels[4] = (TextView) view.findViewById(R.id.ai_phrasal);
-		labels[5] = (TextView) view.findViewById(R.id.ai_expression);
-		labels[6] = (TextView) view.findViewById(R.id.ai_other);
+		labels[0] = (TextView) view.findViewById(R.id.noun);
+		labels[1] = (TextView) view.findViewById(R.id.verb);
+		labels[2] = (TextView) view.findViewById(R.id.adjective);
+		labels[3] = (TextView) view.findViewById(R.id.adverb);
+		labels[4] = (TextView) view.findViewById(R.id.phrasal);
+		labels[5] = (TextView) view.findViewById(R.id.expression);
+		labels[6] = (TextView) view.findViewById(R.id.other);
 
 		return view;
 	}
@@ -69,6 +70,16 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		int values[] = idioma.getNumTypes();
 		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
 			labels[i].setText("" + values[i]);
+		}
+		
+		View phtitle = view.findViewById(R.id.phrasal_title);
+		if (idioma.getSettings(IDDelved.MASK_PH)) {
+			labels[Word.PHRASAL].setVisibility(View.VISIBLE);
+			phtitle.setVisibility(View.VISIBLE);
+		}
+		else {
+			labels[Word.PHRASAL].setVisibility(View.GONE);
+			phtitle.setVisibility(View.GONE);
 		}
 
 		addword = (Button) view.findViewById(R.id.newword);
