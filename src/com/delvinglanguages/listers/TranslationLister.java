@@ -19,7 +19,7 @@ public class TranslationLister extends ArrayAdapter<String> {
 	public TranslationLister(Context context, ArrayList<String> values) {
 		super(context, R.layout.i_option, values);
 		this.values = values;
-		inflater = (LayoutInflater) context
+		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -29,7 +29,7 @@ public class TranslationLister extends ArrayAdapter<String> {
 		for (int i = 0; i < Svalues.length; ++i) {
 			values.add(Svalues[i]);
 		}
-		inflater = (LayoutInflater) context
+		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

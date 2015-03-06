@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.delvinglanguages.data.ControlDB;
 import com.delvinglanguages.data.ControlDisco;
@@ -149,9 +150,10 @@ public class ControlCore {
 		}
 	}
 
-	public static void addIdioma(String name, int settings) {
+	public static int addIdioma(String name, int settings) {
 		IDDelved newLang = database.insertLanguage(name, settings);
 		idiomas.add(newLang);
+		return idiomas.size()-1;
 	}
 
 	public static void addPalabra(String nom, String trad, String spell,
@@ -166,6 +168,7 @@ public class ControlCore {
 		}
 		actualLang.addPalabra(database.insertWord(nom, trad,
 				actualLang.getID(), spell, type));
+		Log.d(DEBUG, "size:"+actualLang.getPalabras().size());
 	}
 
 	public static void addTest(ArrayList<DReference> words) {
@@ -191,12 +194,30 @@ public class ControlCore {
 
 	public static void updatePalabra(Word pal, String name, String trad,
 			String spell, int type) {
+		ArrayList<String> oldword = Word.formatArray(null, pal.getName());
+		oldword.addAll(Word.formatArray(null, pal.getTranslation()));
 		actualLang.reindexar(pal, name, trad, spell, type);
 		if (actualLang.isIdiomaNativo()) {
 			pal = pal.cloneReverse();
 		}
 		database.updateWord(pal);
-	}
+/*		ArrayList<String> newword = Word.formatArray(null, pal.getName());
+		newword.addAll(Word.formatArray(null, pal.getTranslation()));
+		for (int i = 0; i < oldword.size(); i++) {
+			String word = oldword.get(i);
+			boolean present = false;
+			b: for (int j = 0; j < newword.size(); j++) {
+				if (word.equals(oldword.get(j))) {
+			d
+					present = true;
+					break b;
+				}
+			}
+			if (!present) {
+				database.removeConjugation(actualLang.getID(), word.hashCode());
+			}
+		}
+*/	}
 
 	public static void removeLanguage() {
 		database.removeLanguage(actualLang.getID());
@@ -238,7 +259,7 @@ public class ControlCore {
 		for (int i = 0; i < bin.size(); i++) {
 			Word p = bin.get(i);
 			if (p.isVerb()) {
-				database.removeTenses(actualLang.getID(), p.id);
+///				database.removeTenses(actualLang.getID(), p.id);
 			}
 		}
 		actualLang.vaciarPapelera();
@@ -322,9 +343,7 @@ public class ControlCore {
 	public static void ejercicio(DReference ref, int intento) {
 		actualLang.getEstadisticas().nuevoIntento(intento);
 		if (intento == 1) {
-			ref.priority += -5;
-		} else {
-			ref.priority += intento;
+			ref.priority += -1;
 		}
 		for (Link link : ref.links) {
 			link.owner.updatePriority(ref.priority);

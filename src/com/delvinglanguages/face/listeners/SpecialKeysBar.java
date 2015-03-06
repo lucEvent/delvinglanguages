@@ -11,13 +11,14 @@ import com.delvinglanguages.core.IDDelved;
 
 public class SpecialKeysBar {
 
-	public SpecialKeysBar(Activity context, View parent, OnClickListener listener) {
+	public SpecialKeysBar(Activity context, View parent) {
 		IDDelved idioma = ControlCore.getIdiomaActual(context);
 		if (!idioma.getSettings(IDDelved.MASK_ESP_CHARS)) {
 			return;
 		}
 		switch (idioma.CODE) {
 		case IDDelved.SV:
+		case IDDelved.FI:
 			Button å = (Button) context.findViewById(R.id.sv_ao);
 			if (å == null) {
 				å = (Button) parent.findViewById(R.id.sv_ao);
@@ -35,12 +36,6 @@ public class SpecialKeysBar {
 				ö = (Button) parent.findViewById(R.id.sv_oe);
 			}
 			ö.setVisibility(Button.VISIBLE);
-			
-			if (listener != null) {
-				å.setOnClickListener(listener);
-				ä.setOnClickListener(listener);
-				ö.setOnClickListener(listener);
-			}
 			break;
 		case IDDelved.ES:
 			Button ñ = (Button) context.findViewById(R.id.es_ene);
@@ -48,9 +43,6 @@ public class SpecialKeysBar {
 				ñ = (Button) parent.findViewById(R.id.es_ene);
 			}
 			ñ.setVisibility(Button.VISIBLE);
-			if (listener != null) {
-				ñ.setOnClickListener(listener);
-			}
 			break;
 		}
 	}

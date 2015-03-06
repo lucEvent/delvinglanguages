@@ -214,6 +214,8 @@
     <string name="makecolor">Make your own color</string>
     <string name="_removed">removed</string>
     <string name="msgnolangname">Please, enter a name for the language</string>
+    <string name="nowordmatched">No words matching your paramaters</string>
+    
 
     <!-- * ************************** Preguntas *************************** * -->
     <string name="removeidiomquestion">Are you sure to remove this language?</string>

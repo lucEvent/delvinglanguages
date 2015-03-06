@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
@@ -50,34 +51,32 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		}
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
-		labels[0] = (TextView) view.findViewById(R.id.noun);
-		labels[1] = (TextView) view.findViewById(R.id.verb);
-		labels[2] = (TextView) view.findViewById(R.id.adjective);
-		labels[3] = (TextView) view.findViewById(R.id.adverb);
-		labels[4] = (TextView) view.findViewById(R.id.phrasal);
-		labels[5] = (TextView) view.findViewById(R.id.expression);
-		labels[6] = (TextView) view.findViewById(R.id.other);
+		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
+		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
+		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adjective);
+		labels[Word.ADVERB] = (TextView) view.findViewById(R.id.adverb);
+		labels[Word.PHRASAL] = (TextView) view.findViewById(R.id.phrasal);
+		labels[Word.EXPRESSION] = (TextView) view.findViewById(R.id.expression);
+		labels[Word.OTHER] = (TextView) view.findViewById(R.id.other);
 
 		return view;
 	}
 
-	
 	@Override
 	public void onResume() {
 		super.onResume();
 		Activity view = getActivity();
-	
+
 		int values[] = idioma.getNumTypes();
 		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
 			labels[i].setText("" + values[i]);
 		}
-		
+
 		View phtitle = view.findViewById(R.id.phrasal_title);
 		if (idioma.getSettings(IDDelved.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.VISIBLE);
 			phtitle.setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 			phtitle.setVisibility(View.GONE);
 		}
@@ -86,6 +85,7 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		addword.setOnClickListener(this);
 		toggle_dic = (ImageButton) view.findViewById(R.id.toggle_dic);
 		toggle_dic.setOnClickListener(this);
+		toggle_dic.bringToFront();
 
 		TextView succes1 = (TextView) view.findViewById(R.id.as_ns1);
 		TextView succes2 = (TextView) view.findViewById(R.id.as_ns2);
@@ -111,19 +111,26 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		psucces2.setText(df.format(stats.porcentageAcertadas2()));
 		psucces3.setText(df.format(stats.porcentageAcertadas3()));
 		pfailures.setText(df.format(stats.porcentageFalladas()));
-
-
 	}
-	
+
 	@Override
 	public void onClick(View button) {
 		if (button == addword) {
 			Intent intent = new Intent(getActivity(), AddWordActivity.class);
 			startActivity(intent);
 		} else if (button == toggle_dic) {
-			Log.d(DEBUG, "Cambiando el diccionario");
 			ControlCore.switchDictionary();
 			idioma = ControlCore.getIdiomaActual(getActivity());
+			String lang1, lang2;
+			if (idioma.isIdiomaNativo()) {
+				lang1 = Configuraciones.IdiomaNativo;
+				lang2 = idioma.getName();
+			} else {
+				lang1 = idioma.getName();
+				lang2 = Configuraciones.IdiomaNativo;
+			}
+			Toast.makeText(getActivity(), lang1 + " to " + lang2,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 

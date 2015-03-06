@@ -97,6 +97,29 @@
             style="@style/settings_option"
             android:onClick="about"
             android:text="@string/about" />
+
+        <!-- ************** RECOVERING/BACK UP ************** -->
+
+        <TextView
+            style="@style/settings_indexs"
+            android:text="BACKUP / RECOVER" />
+
+        <View style="@style/divisor" />
+
+        <Button
+            style="@style/settings_option"
+            android:onClick="createBackup"
+            android:text="Create backup" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <Button
+            style="@style/settings_option"
+            android:onClick="recoverBackup"
+            android:text="Recover backup" />
     </LinearLayout>
 
 </ScrollView>

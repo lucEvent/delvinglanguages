@@ -1,12 +1,19 @@
 package com.delvinglanguages.face.settings;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.data.BackUp;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class SettingsActivity extends Activity {
@@ -68,6 +75,20 @@ public class SettingsActivity extends Activity {
 
 	public void about(View v) {
 		startActivity(new Intent(this, About.class));
+	}
+
+	public void createBackup(View v) {
+		new BackUp().createBackUp(this);
+	}
+
+	public void recoverBackup(View v) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				new BackUp().recoverBackUp(SettingsActivity.this);
+			}
+		}).start();
 	}
 
 }

@@ -168,10 +168,17 @@
         <item>He</item>
     </string-array>
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.3.2</b></item>
+        <item><b>Delving Languages version 1.3.4</b></item>
         <item><b>Develop by Rafael J. Lucena</b></item>
         <item><b>Contact: rafaa89@gmail(at)com</b></item>
         <item></item>
+        <item>News Features and Improvements:</item>
+        <item>Version 1.3.4 2015&#8211;03&#8211;06\nSystem of priority for words improved. Now the tests are certainly randomly chosen and the result shows the errors done, not weird percentages anymore. Special characters and explaining text completion now also available in Writing practise and Writing test section. Some other bugs fixed and improvements.</item>
+        <item></item>
+        <item>Old improvements:</item>
+        <item>Version 1.3.3.2 2014&#8211;11&#8211;09\nSpecial characters enabled for Finnish</item>
+        <item>Version 1.3.3.1 2014&#8211;11&#8211;09\nError with the priority of words fixed. Reverse dictionary button in language screen now working</item>
+        <item>Version 1.3.3 2014&#8211;11&#8211;08\nLots and lots of internal changes done for improve performance and understanding. Added some new features: Phrasal Verbs elements don\'t displayed when the option is not selected in the language, Some Finnish verb conjugations, those of types 1, 2 and 3. Also conjugation view improved</item>
         <item>Version 1.3.2 2014&#8211;11&#8211;06\nIncluded option of select setting languages on creation. Kernel preparations for supporting historial.</item>
         <item>Version 1.3.1.2 2014&#8211;11&#8211;05\nAdded kernel support to Swedish and English verbs. Still not supported. Now it support more Finnish verbs conjugations</item>
         <item>Version 1.3.1.1 2014&#8211;11&#8211;03\nAdded better support to Finnish conjugations. Still not finished. Conjugation view improved</item>

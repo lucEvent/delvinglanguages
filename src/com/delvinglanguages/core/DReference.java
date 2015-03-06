@@ -60,7 +60,7 @@ public class DReference implements Comparable<DReference> {
 
 	@Override
 	public int compareTo(DReference another) {
-		return name.compareToIgnoreCase(another.name);
+		return name.compareToIgnoreCase(another.name) + 1;
 	}
 
 	public Character getCap() {

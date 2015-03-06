@@ -5,9 +5,9 @@
     android:layout_height="match_parent" >
 
     <ScrollView
-        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/buttons"
         android:layout_alignParentTop="true"
         android:paddingLeft="5dip"
         android:paddingRight="5dip" >
@@ -93,40 +93,84 @@
     </ScrollView>
 
     <RelativeLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/scrollView1" >
-
-        <ImageButton
-            android:id="@+id/swap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/next"
-            android:layout_centerHorizontal="true"
-            android:background="@android:drawable/btn_default"
-            android:contentDescription="@string/changedirection"
-            android:src="@drawable/change_direction" />
+        android:layout_above="@+id/letrasespeciales" >
 
         <ImageButton
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="@android:drawable/btn_default"
+            android:background="@drawable/button_backgrounds"
             android:contentDescription="@string/newword"
+            android:onClick="next"
+            android:padding="5dip"
             android:src="@drawable/next" />
+
+        <ImageButton
+            android:id="@+id/swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_backgrounds"
+            android:contentDescription="@string/changedirection"
+            android:onClick="swap"
+            android:padding="5dip"
+            android:src="@drawable/change_direction" />
 
         <ImageButton
             android:id="@+id/help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@android:drawable/btn_default"
+            android:background="@drawable/button_backgrounds"
             android:contentDescription="@string/helps"
+            android:onClick="help"
+            android:padding="5dip"
             android:src="@drawable/helps" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/letrasespeciales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sv_ao"
+            style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
+            android:tag="@string/sv_ao_cap"
+            android:text="@string/sv_ao"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_ae"
+            style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
+            android:tag="@string/sv_ae_cap"
+            android:text="@string/sv_ae"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sv_oe"
+            style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
+            android:tag="@string/sv_oe_cap"
+            android:text="@string/sv_oe"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/es_ene"
+            style="@style/button_list_selector"
+            android:onClick="specialKeyAction"
+            android:tag="@string/es_n_cap"
+            android:text="@string/es_n"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -88,9 +88,7 @@
             android:name="com.delvinglanguages.face.activity.practice.TestActivityMatch"
             android:label="@string/test_title_3" >
         </activity>
-        <activity
-            android:name="com.delvinglanguages.face.activity.practice.TestActivityComplete"
-            android:label="@string/test_title_4" >
+        <activity android:name="com.delvinglanguages.face.activity.practice.TestActivityComplete" >
         </activity>
         <activity
             android:name="com.delvinglanguages.face.activity.practice.TestActivityWrite"

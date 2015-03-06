@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -23,8 +22,6 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class TestActivityResult extends ListActivity implements OnClickListener {
 
-	private RelativeLayout background;
-
 	private Test test;
 
 	private Button save, redo, finish;
@@ -35,7 +32,7 @@ public class TestActivityResult extends ListActivity implements OnClickListener 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_test_statistics);
 
-		background = (RelativeLayout) findViewById(R.id.ts_bg);
+		View background = findViewById(R.id.ts_bg);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -83,7 +80,7 @@ public class TestActivityResult extends ListActivity implements OnClickListener 
 			new InputDialog(this).create().show();
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.test, menu);

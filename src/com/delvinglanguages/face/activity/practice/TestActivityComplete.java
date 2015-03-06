@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
+import com.delvinglanguages.core.game.CompleteGame;
 import com.delvinglanguages.face.dialog.InputDialog;
 
 public class TestActivityComplete extends CompleteActivity {
@@ -27,10 +27,11 @@ public class TestActivityComplete extends CompleteActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle(R.string.test_title_4);
 
 		test = ControlCore.testActual;
 		test.state = Test.STAT_COMPLETE;
-		cerebro = new Cerebro(test.references);
+		gamecontroller = new CompleteGame(test.references);
 
 		succesCounter = 0;
 		for (int i = 0; i < test.passed.length; i++) {
@@ -43,7 +44,7 @@ public class TestActivityComplete extends CompleteActivity {
 	}
 
 	private void siguientePregunta() {
-		posicionPalabra = cerebro.nextPosition(test.passed);
+		posicionPalabra = gamecontroller.nextPosition(test.passed);
 		super.siguientePregunta(test.references.get(posicionPalabra));
 	}
 
@@ -66,7 +67,6 @@ public class TestActivityComplete extends CompleteActivity {
 			if (cursor == palabraUpp.length()) {
 				pronounce.setText("[" + refActual.getPronunciation() + "]");
 				succesCounter++;
-				test.statistics.get(posicionPalabra).aciertos_complete++;
 				if (succesCounter == test.passed.length) {
 					test.nextStat();
 					startActivity(new Intent(this, TestActivityWrite.class));

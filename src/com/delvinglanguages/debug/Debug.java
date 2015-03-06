@@ -86,16 +86,7 @@ public class Debug extends Activity implements OnClickListener,
 		fonetickb = new FoneticsKeyboard(this, R.id.d_keyboard, pronuntiation,
 				ControlCore.getIdiomaActual(this).CODE);
 
-		setNext();
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		// word.setText(replacements[indexREPS - 2]);
-		// tranlation.setText(replacements[indexREPS - 1]);
+		// setNext();
 
 	}
 

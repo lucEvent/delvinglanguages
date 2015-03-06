@@ -23,7 +23,7 @@ public class WordLister extends ArrayAdapter<Word> {
 		super(context, R.layout.i_word, values);
 		this.values = values;
 		this.phMode = phMode;
-		inflater = (LayoutInflater) context
+		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

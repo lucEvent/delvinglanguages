@@ -83,7 +83,7 @@ public class AddWordActivity extends Activity implements TextWatcher,
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 		
-		specialKeys = new SpecialKeysBar(this, null, null);
+		specialKeys = new SpecialKeysBar(this, null);
 
 		fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation,
 				idioma.CODE);

@@ -25,7 +25,7 @@ public class RemovedWordLister extends ArrayAdapter<Word> implements
 	public RemovedWordLister(Context context) {
 		super(context, R.layout.i_bin, ControlCore.getPapelera());
 		this.trash = ControlCore.getPapelera();
-		buttons = new Button[trash.size()];
+		this.buttons = new Button[trash.size()];
 		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

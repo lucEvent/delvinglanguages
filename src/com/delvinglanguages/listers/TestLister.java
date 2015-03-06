@@ -19,17 +19,17 @@ public class TestLister extends ArrayAdapter<Test> {
 	public TestLister(Context context, ArrayList<Test> values) {
 		super(context, android.R.layout.simple_list_item_1, values);
 		this.values = values;
-		inflater = (LayoutInflater) context
+		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-		TextView view = (TextView) inflater.inflate(
-				android.R.layout.simple_list_item_1, parent, false);
-
-		view.setText(values.get(position).name);
+	public View getView(int position, View view, ViewGroup parent) {
+		if (view == null) {
+			view = (TextView) inflater.inflate(
+					android.R.layout.simple_list_item_1, parent, false);
+		}
+		((TextView) view).setText(values.get(position).name);
 		return view;
 	}
 

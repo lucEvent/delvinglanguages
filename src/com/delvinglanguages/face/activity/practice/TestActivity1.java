@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Cerebro;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.core.game.TestGame;
 import com.delvinglanguages.listers.LanguageLister;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -21,13 +22,13 @@ public class TestActivity1 extends ListActivity implements Runnable {
 
 	private LinearLayout background;
 
-	private Cerebro cerebro;
+	private TestGame gamecontroller;
 	private ArrayList<DReference> references;
 
 	private ProgressBar progreso;
 
 	private String searchString;
-	private String[] values, dots = { "", " .", " . .", " . . .", " . . . ." };;
+	private String[] values, dots = { "", " .", " . .", " . . .", " . . . ." };
 
 	private Handler mHandler = new Handler();
 	private LanguageLister adapter;
@@ -51,8 +52,15 @@ public class TestActivity1 extends ListActivity implements Runnable {
 
 		int numero = getIntent().getExtras().getInt("number");
 		int types = getIntent().getExtras().getInt("types");
-		cerebro = new Cerebro(ControlCore.getReferences());
-		references = cerebro.getWords(numero, types);
+		gamecontroller = new TestGame(ControlCore.getReferences());
+		references = gamecontroller.getWords(numero, types);
+		
+		if (references.isEmpty()) {
+			Toast.makeText(this, R.string.nowordmatched,
+					Toast.LENGTH_SHORT).show();
+			finish();
+			return;
+		}
 
 		progreso = (ProgressBar) findViewById(R.id.tp_progress);
 		progreso.getProgressDrawable().setColorFilter(0xFF33CC00,

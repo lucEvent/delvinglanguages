@@ -373,6 +373,9 @@ public class IDDelved {
 		return datos.delved;
 	}
 
+	public boolean isbusy() {
+		return !datos.dictionary.dictionariesCreated;
+	}
 	/** ******************* NUEVAS A DEBUGGAR **********************/
 
 	private PhrasalVerbs phrasalverbs;

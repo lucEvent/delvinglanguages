@@ -74,8 +74,7 @@ public class TestActivityLearn extends Activity {
 		nativ = (TextView) findViewById(R.id.native_name);
 		nativ_p = (TextView) findViewById(R.id.nativ_pron);
 
-		for (index = 0; test.passed[index]; index++)
-			;
+		for (index = 0; test.passed[index]; index++);
 		actualiza();
 	}
 

@@ -26,13 +26,12 @@ public class ReferenceLister extends ArrayAdapter<DReference> {
 		super(context, R.layout.i_word, values);
 		this.values = values;
 		this.phMode = phMode;
-		inflater = (LayoutInflater) context
+		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
-
 		if (view == null) {
 			view = inflater.inflate(R.layout.i_word, parent, false);
 		}

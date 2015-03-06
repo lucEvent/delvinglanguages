@@ -14,17 +14,11 @@ public class Test {
 
 	public class State {
 
-		public int aciertos_match;
-		public int aciertos_complete;
-		public int aciertos_write;
 		public int fallos_match;
 		public int fallos_complete;
 		public int fallos_write;
 
 		public State() {
-			aciertos_match = 0;
-			aciertos_complete = 0;
-			aciertos_write = 0;
 			fallos_match = 0;
 			fallos_complete = 0;
 			fallos_write = 0;
@@ -73,11 +67,8 @@ public class Test {
 		statistics = new ArrayList<State>(size);
 		for (int i = 0; i < passed.length; i++) {
 			State e = new State();
-			e.aciertos_match = Integer.parseInt(elems[index++]);
 			e.fallos_match = Integer.parseInt(elems[index++]);
-			e.aciertos_complete = Integer.parseInt(elems[index++]);
 			e.fallos_complete = Integer.parseInt(elems[index++]);
-			e.aciertos_write = Integer.parseInt(elems[index++]);
 			e.fallos_write = Integer.parseInt(elems[index++]);
 			statistics.add(e);
 		}
@@ -99,9 +90,9 @@ public class Test {
 		}
 		// Estadisticas - se guardan: "Estado.acierto" "." "Estado.fallo" "."
 		for (State s : statistics) {
-			res.append(s.aciertos_match).append(p).append(s.fallos_match).append(p);
-			res.append(s.aciertos_complete).append(p).append(s.fallos_complete).append(p);
-			res.append(s.aciertos_write).append(p).append(s.fallos_write).append(p);
+			res.append(s.fallos_match).append(p);
+			res.append(s.fallos_complete).append(p);
+			res.append(s.fallos_write).append(p);
 		}
 		return res.toString();
 	}
@@ -110,9 +101,6 @@ public class Test {
 		for (int i = 0; i < passed.length; i++) {
 			passed[i] = false;
 			State e = statistics.get(i);
-			e.aciertos_match = 0;
-			e.aciertos_complete = 0;
-			e.aciertos_write = 0;
 			e.fallos_match = 0;
 			e.fallos_complete = 0;
 			e.fallos_write = 0;

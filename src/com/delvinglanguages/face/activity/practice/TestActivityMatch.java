@@ -17,10 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Cerebro;
-import com.delvinglanguages.core.Cerebro.QuestionModel;
+import com.delvinglanguages.core.game.MatchGame.QuestionModel;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Test;
+import com.delvinglanguages.core.game.MatchGame;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.settings.Configuraciones;
 
@@ -32,7 +32,7 @@ public class TestActivityMatch extends Activity implements OnClickListener {
 	private final int NUM_RESP = 6;
 
 	// Elementos del core
-	private Cerebro calculador;
+	private MatchGame gamecontroller;
 	private Test test;
 
 	// Elementos de la activity
@@ -51,7 +51,7 @@ public class TestActivityMatch extends Activity implements OnClickListener {
 		// Iniciamos elementos del core
 		test = ControlCore.testActual;
 		test.state = Test.STAT_MATCH;
-		calculador = new Cerebro(test.references);
+		gamecontroller = new MatchGame(test.references);
 
 		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
@@ -86,7 +86,6 @@ public class TestActivityMatch extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Boolean acierto = (Boolean) v.getTag();
 		if (acierto == true) {
-			test.statistics.get(positionActual).aciertos_match++;
 			int count = 0;
 			for (int i = 0; i < test.passed.length; i++) {
 				if (pActual.reference == test.references.get(i)) {
@@ -149,7 +148,7 @@ public class TestActivityMatch extends Activity implements OnClickListener {
 	private int positionActual;
 
 	private void siguientePalabra() {
-		pActual = calculador.nextWord(test.passed, NUM_RESP);
+		pActual = gamecontroller.nextWord(test.passed, NUM_RESP);
 		positionActual = test.references.indexOf(pActual.reference);
 		palabra.setText(pActual.reference.name);
 		pregunta.setText(pActual.reference.getPronunciation());

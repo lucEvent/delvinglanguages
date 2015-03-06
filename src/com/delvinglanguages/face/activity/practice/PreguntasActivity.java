@@ -1,30 +1,20 @@
 package com.delvinglanguages.face.activity.practice;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Cerebro;
-import com.delvinglanguages.core.Cerebro.QuestionModel;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.game.MatchGame;
+import com.delvinglanguages.core.game.MatchGame.QuestionModel;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class PreguntasActivity extends Activity implements OnClickListener {
@@ -35,10 +25,9 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 
 	// Elementos del core
 	protected IDDelved idioma;
-	protected Cerebro calculador;
+	protected MatchGame gamecontroller;
 
 	// Elementos de la activity
-
 	protected QuestionModel pActual;
 	protected int intento;
 
@@ -54,7 +43,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 
 		// Iniciamos elementos del core
 		idioma = ControlCore.getIdiomaActual(this);
-		calculador = new Cerebro(ControlCore.getReferences());
+		gamecontroller = new MatchGame(ControlCore.getReferences());
 
 		View background = findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
@@ -145,7 +134,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 
 	private void nuevaPregunta() {
 		intento = 1;
-		pActual = calculador.nextQuestion(NUM_RESP);
+		pActual = gamecontroller.nextQuestion(NUM_RESP);
 		palabra.setText(pActual.reference.name);
 		pregunta.setText(pActual.reference.getPronunciation());
 
@@ -157,96 +146,6 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 			resps[i].setTag(pActual.correct[i]);
 		}
 
-	}
-
-}
-
-class MatchActivity extends Activity implements OnTouchListener {
-
-	private static final String DEBUG = "##MatchActivity##";
-
-	private ImageView image;
-
-	private Bitmap bitmap;
-
-	private int width, height;
-
-	private static Canvas canvas;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		width = getIntent().getExtras().getInt("width");
-		height = getIntent().getExtras().getInt("height");
-		if (width > height) {
-			int tmp = width;
-			width = height;
-			height = tmp;
-		}
-
-		bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		canvas = new Canvas(bitmap);
-
-		image = new ImageView(this);
-		image.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
-		image.setImageBitmap(bitmap);
-
-		makePaints();
-		draw(width >> 1, height >> 1, 0);
-
-		setContentView(image);
-	}
-
-	private Paint buttons, background, text;
-
-	private void makePaints() {
-		// Button style
-
-		// Text style
-		text = new Paint();
-		text.setTextSize(100);
-		text.setColor(Color.BLACK);
-		text.setTextAlign(Align.CENTER);
-		text.setStyle(Paint.Style.FILL);
-
-		// Background style
-		background = new Paint();
-		background.setStyle(Paint.Style.FILL);
-		background.setARGB(255, 1, 101, 2);
-
-	}
-
-	private void draw(float x, float y, double gforce) {
-		// Background
-		canvas.drawRect(0, 0, width, height, background);
-
-		// Buttons
-		// Text
-
-		image.invalidate();
-	}
-
-	/** ******************* * METODOS TOUCH LISTENER * *********************** **/
-
-	private boolean dragging;
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-
-			break;
-		case MotionEvent.ACTION_MOVE:
-
-			break;
-		case MotionEvent.ACTION_UP:
-			dragging = false;
-			break;
-		}
-		return false;
 	}
 
 }

@@ -190,7 +190,7 @@ public class Word implements Comparable<Word> {
 	}
 
 	public void updatePriority(int value) {
-		prioridad += value;
+		prioridad = value;
 	}
 
 	public Word cloneReverse() {

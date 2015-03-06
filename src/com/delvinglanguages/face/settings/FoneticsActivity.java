@@ -2,14 +2,12 @@ package com.delvinglanguages.face.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
+import android.view.View;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class FoneticsActivity extends Activity {
-
-	private RelativeLayout background;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -17,7 +15,7 @@ public class FoneticsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_fonetics);
 
-		background = (RelativeLayout) findViewById(R.id.af_bg);
+		View background = findViewById(R.id.af_bg);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones

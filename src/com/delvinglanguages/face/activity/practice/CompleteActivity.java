@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Cerebro;
-import com.delvinglanguages.core.Cerebro.Action;
+import com.delvinglanguages.core.game.CompleteGame;
+import com.delvinglanguages.core.game.CompleteGame.Action;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
@@ -19,10 +19,10 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class CompleteActivity extends Activity implements OnClickListener {
 
-	private static final String DEBUG = "##Complete##";
+	private static final String DEBUG = "##CompleteActivity##";
 
 	protected DReference refActual;
-	protected Cerebro cerebro;
+	protected CompleteGame gamecontroller;
 
 	protected TextView pista, hidden, pronounce;
 	protected TextView labels[];
@@ -57,7 +57,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		hidden = (TextView) findViewById(R.id.solution);
 		pronounce = (TextView) findViewById(R.id.pronounce);
 
-		cerebro = new Cerebro(ControlCore.getReferences());
+		gamecontroller = new CompleteGame(ControlCore.getReferences());
 
 		labels = new TextView[Configuraciones.NUM_TYPES];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
@@ -90,7 +90,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		String temp = getString(R.string.title_practising);
 		setTitle(temp + " " + ControlCore.getIdiomaActual(this).getName());
 
-		siguientePregunta(cerebro.nextReference());
+		siguientePregunta(gamecontroller.nextReference());
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		pista.setText(refActual.getTranslation().toUpperCase());
 		pronounce.setText("");
 
-		teclas = cerebro.char_merger(palabraUpp, 8);
+		teclas = gamecontroller.char_merger(palabraUpp, 8);
 
 		for (int i = 0; i < letras.length; i++) {
 			letras[i].setEnabled(true);
@@ -188,7 +188,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 						mHandler.post(new Runnable() {
 							@Override
 							public void run() {
-								siguientePregunta(cerebro.nextReference());
+								siguientePregunta(gamecontroller.nextReference());
 							}
 						});
 					}

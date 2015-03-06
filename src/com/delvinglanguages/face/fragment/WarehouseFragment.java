@@ -7,23 +7,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.Nota;
 import com.delvinglanguages.core.Word;
-import com.delvinglanguages.settings.Configuraciones;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
 import com.delvinglanguages.listers.StoreWordLister;
+import com.delvinglanguages.settings.Configuraciones;
 
 public class WarehouseFragment extends ListFragment implements OnClickListener {
 
@@ -35,8 +34,6 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 
 	private Word auxiliar;
 
-	private SpecialKeysBar specialKeys;
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +41,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 
 		View view = inflater.inflate(R.layout.a_warehouse, container, false);
 
-		RelativeLayout background = (RelativeLayout) view
-				.findViewById(R.id.background);
+		View background = view.findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -64,7 +60,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 
 		auxiliar = new Word(-1, "", "", "", 0, false, 0);
 
-		specialKeys = new SpecialKeysBar(getActivity(), view, new SpecialListener());
+		new SpecialKeysBar(getActivity(), view);
 
 		return view;
 	}
@@ -80,7 +76,8 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 		super.onListItemClick(l, v, position, id);
 
 		ControlCore.notaToModify = lista.get(position);
-		Intent intent = new Intent(getActivity(), AddWordFromWarehouseActivity.class);
+		Intent intent = new Intent(getActivity(),
+				AddWordFromWarehouseActivity.class);
 		startActivity(intent);
 	}
 
@@ -105,20 +102,15 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 	}
 
-	private class SpecialListener implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			String t = edit.getText().toString();
-			if (t.length() == 0) {
-				t = t + v.getTag();
-			} else {
-				Button b = (Button) v;
-				t = t + b.getText();
-			}
-			edit.setText(t);
-			edit.setSelection(t.length());
+	public void specialKeyAction(View v) {
+		String t = edit.getText().toString();
+		if (t.length() == 0) {
+			t = t + v.getTag();
+		} else {
+			Button b = (Button) v;
+			t = t + b.getText();
 		}
-
+		edit.setText(t);
+		edit.setSelection(t.length());
 	}
 }

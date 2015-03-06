@@ -1,20 +1,18 @@
 package com.delvinglanguages.data;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.delvinglanguages.core.HistorialItem;
-
 import android.os.Environment;
 import android.util.Log;
 
-public class ControlDisco {
+import com.delvinglanguages.core.HistorialItem;
+
+public class ControlDisco extends IOOperations {
 
 	private static final String DEBUG = "##ControlDisco##";
 
@@ -22,8 +20,6 @@ public class ControlDisco {
 	private static final String STATE = "state.dat";
 
 	private static File folder;
-	private static BufferedInputStream bufferIn;
-	private static BufferedOutputStream bufferOut;
 
 	public ControlDisco() {
 		String estado = Environment.getExternalStorageState();
@@ -40,40 +36,35 @@ public class ControlDisco {
 
 	public int getLastLanguage() {
 		int result = 0;
-		File file = new File(folder, STATE);
-		// file.delete();
 		try {
-			bufferIn = new BufferedInputStream(new FileInputStream(file));
+			File file = new File(folder, STATE);
+			// file.delete();
 
+			initInputBuffer(file);
 			result = readInteger();
-
 			bufferIn.close();
 		} catch (FileNotFoundException e) {
-		                  System.out.println(DEBUG+ " FILENOTEXIST: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 		return result;
 	}
 
 	public void saveLastLaguage(int position) {
 		try {
-			File file = new File(folder, STATE);
-			bufferOut = new BufferedOutputStream(new FileOutputStream(file));
-
+			initOutputBuffer(new File(folder, STATE));
 			saveInteger(position);
-
 			bufferOut.close();
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION->" + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 	}
 
 	public String[] readParams(String settings, int elems) {
 		String[] params = new String[elems];
-		File file = new File(folder, settings);
 		try {
-			bufferIn = new BufferedInputStream(new FileInputStream(file));
+			initInputBuffer(new File(folder, settings));
 
 			for (int i = 0; i < elems; i++) {
 				params[i] = readString();
@@ -81,19 +72,18 @@ public class ControlDisco {
 
 			bufferIn.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FILENOTEXIST: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 			params = null;
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 			params = null;
 		}
 		return params;
 	}
 
 	public void saveParams(String settings, String[] params) {
-		File file = new File(folder, settings);
 		try {
-			bufferOut = new BufferedOutputStream(new FileOutputStream(file));
+			initOutputBuffer(new File(folder, settings));
 
 			for (int i = 0; i < params.length; i++) {
 				saveString(params[i]);
@@ -101,18 +91,17 @@ public class ControlDisco {
 
 			bufferOut.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FNFEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 
 	}
 
 	public ArrayList<HistorialItem> getHistorial() {
 		ArrayList<HistorialItem> res = new ArrayList<HistorialItem>();
-		File file = new File(folder, "historial.dat");
 		try {
-			bufferIn = new BufferedInputStream(new FileInputStream(file));
+			initInputBuffer(new File(folder, "historial.dat"));
 
 			int elems = readInteger();
 			for (int i = 0; i < elems; i++) {
@@ -122,17 +111,16 @@ public class ControlDisco {
 
 			bufferIn.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FILENOTEXIST: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 		return res;
 	}
 
 	public void saveHistorial(ArrayList<HistorialItem> H) {
-		File file = new File(folder, "historial.dat");
 		try {
-			bufferOut = new BufferedOutputStream(new FileOutputStream(file));
+			initOutputBuffer(new File(folder, "historial.dat"));
 
 			int elems = H.size();
 			saveInteger(elems);
@@ -142,9 +130,9 @@ public class ControlDisco {
 
 			bufferIn.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FILENOTEXIST: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 	}
 
@@ -159,25 +147,26 @@ public class ControlDisco {
 	public File saveFile(String name, StringBuilder data) {
 		File file = new File(folder, name);
 		try {
-			bufferOut = new BufferedOutputStream(new FileOutputStream(
-					file.getAbsolutePath()));
+			initInputBuffer(file);
 
 			byte[] buffer = data.toString().getBytes();
 			bufferOut.write(buffer, 0, buffer.length);
 			bufferOut.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FNF_EXCEPTION: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IO_EXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 		return file;
 	}
 
 	public void copyFile(File forig, File fcopy) {
 		try {
-			bufferIn = new BufferedInputStream(new FileInputStream(forig));
+			initInputBuffer(forig);
+
 			bufferOut = new BufferedOutputStream(new FileOutputStream(
 					fcopy.getAbsolutePath()));
+
 			int len;
 			byte[] buffer = new byte[1024];
 			while ((len = bufferIn.read(buffer, 0, buffer.length)) > 0) {
@@ -186,9 +175,9 @@ public class ControlDisco {
 			bufferIn.close();
 			bufferOut.close();
 		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FNFEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOEXCEPTION: " + e.toString());
+			Log.d(DEBUG, "IOException: " + e.toString());
 		}
 	}
 
@@ -197,71 +186,9 @@ public class ControlDisco {
 		try {
 			tempFile = File.createTempFile(prefix, sufix, folder);
 		} catch (IOException e) {
-			Log.d(DEBUG, "IOERROR en locationForImage");
+			Log.d(DEBUG, "IOException en locationForImage");
 		}
 		return tempFile;
-	}
-
-	private static int readInteger() throws IOException {
-		int result = bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		return result;
-
-	}
-
-	private static void saveInteger(int i) throws IOException {
-		byte[] buff = new byte[4];
-		buff[3] = (byte) (i);
-		buff[2] = (byte) (i >> 8);
-		buff[1] = (byte) (i >> 16);
-		buff[0] = (byte) (i >> 24);
-		bufferOut.write(buff, 0, 4);
-	}
-
-	private static long readLong() throws IOException {
-		long result = bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		result = (result << 8) + bufferIn.read();
-		return result;
-
-	}
-
-	private static void saveLong(long i) throws IOException {
-		byte[] buff = new byte[8];
-		buff[7] = (byte) (i);
-		buff[6] = (byte) (i >> 8);
-		buff[5] = (byte) (i >> 16);
-		buff[4] = (byte) (i >> 24);
-		buff[3] = (byte) (i >> 32);
-		buff[2] = (byte) (i >> 40);
-		buff[1] = (byte) (i >> 48);
-		buff[0] = (byte) (i >> 56);
-		bufferOut.write(buff, 0, 8);
-	}
-
-	private static String readString() throws IOException {
-		int lon = bufferIn.read();
-		if (lon > 0) {
-			byte[] b = new byte[lon];
-			bufferIn.read(b, 0, lon);
-			return new String(b, 0, lon);
-		}
-		return "";
-	}
-
-	private static void saveString(String n) throws IOException {
-		byte[] aux = n.getBytes();
-		bufferOut.write(aux.length);
-		if (aux.length > 0) {
-			bufferOut.write(aux);
-		}
 	}
 
 }

@@ -19,7 +19,6 @@ import com.delvinglanguages.core.Tense;
 public class ControlDB {
 
 	private static final String DEBUG = "##ControlDB##";
-	private SQLiteDatabase database;
 	private DataBase gateway;
 
 	public ControlDB(Context context) {
@@ -28,7 +27,7 @@ public class ControlDB {
 
 	/** ********* Lecturas en la BD ************* **/
 	public ArrayList<IDDelved> readLanguages() {
-		database = gateway.getReadableDatabase();
+		SQLiteDatabase database = gateway.getReadableDatabase();
 		ArrayList<IDDelved> result = new ArrayList<IDDelved>();
 		Cursor cursorID = database.query(DataBase.idioma, DataBase.col_idioma,
 				null, null, null, null, null);
@@ -52,7 +51,7 @@ public class ControlDB {
 	}
 
 	public ArrayList<Word> readWords(int langID) {
-		database = gateway.getReadableDatabase();
+		SQLiteDatabase database = gateway.getReadableDatabase();
 		ArrayList<Word> result = new ArrayList<Word>();
 		Cursor cursor = database.query(DataBase.palabra, DataBase.col_palabra,
 				DataBase.col_palabra[3] + "=" + langID, null, null, null,
@@ -71,7 +70,7 @@ public class ControlDB {
 	}
 
 	public ArrayList<Nota> readStore(int langID) {
-		database = gateway.getReadableDatabase();
+		SQLiteDatabase database = gateway.getReadableDatabase();
 		ArrayList<Nota> result = new ArrayList<Nota>();
 		Cursor cursor = database.query(DataBase.almacen, DataBase.col_almacen,
 				DataBase.col_almacen[2] + "=" + langID, null, null, null,
@@ -89,7 +88,7 @@ public class ControlDB {
 	}
 
 	public ArrayList<Test> readTests(int langID) {
-		database = gateway.getReadableDatabase();
+		SQLiteDatabase database = gateway.getReadableDatabase();
 		ArrayList<Test> result = new ArrayList<Test>();
 		Cursor cursor = database.query(DataBase.test, DataBase.col_test,
 				DataBase.col_test[2] + "=" + langID, null, null, null,
@@ -112,7 +111,7 @@ public class ControlDB {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_idioma[1], lang.getName());
 		values.put(DataBase.col_idioma[3], lang.getSettings());
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.idioma, values, DataBase.col_idioma[0] + " = "
 				+ lang.getID(), null);
 		database.close();
@@ -124,7 +123,7 @@ public class ControlDB {
 		values.put(DataBase.col_palabra[2], p.getTranslationFormated());
 		values.put(DataBase.col_palabra[4], p.getPronunciation());
 		values.put(DataBase.col_palabra[5], p.getType());
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.palabra, values, DataBase.col_palabra[0]
 				+ " = " + p.id, null);
 		database.close();
@@ -133,7 +132,7 @@ public class ControlDB {
 	public void integrateWord(Word p, int newlangid) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[3], newlangid);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.palabra, values, DataBase.col_palabra[0]
 				+ " = " + p.id, null);
 		database.close();
@@ -142,7 +141,7 @@ public class ControlDB {
 	public void integrateStore(int oldlangid, int newlangid) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_almacen[2], newlangid);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.almacen, values, DataBase.col_almacen[2]
 				+ " = " + oldlangid, null);
 		database.close();
@@ -151,14 +150,14 @@ public class ControlDB {
 	public void updatePriority(Word p) {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[7], p.getPriority());
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.palabra, values, DataBase.col_palabra[0]
 				+ " = " + p.id, null);
 		database.close();
 	}
 
 	public void updateTest(Test t) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_test[3], t.encapsulate());
 		database.update(DataBase.test, values, DataBase.col_test[0] + " = "
@@ -170,7 +169,7 @@ public class ControlDB {
 		int place = p.isThrown() ? 0 : 1;
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_palabra[6], place);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.palabra, values, DataBase.col_palabra[0]
 				+ " = " + p.id, null);
 		database.close();
@@ -183,7 +182,7 @@ public class ControlDB {
 		values.put(DataBase.col_estadisticas[3], e.aciertos2);
 		values.put(DataBase.col_estadisticas[4], e.aciertos3);
 		values.put(DataBase.col_estadisticas[5], e.fallos);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.estadisticas, values,
 				DataBase.col_estadisticas[0] + " = " + e.id, null);
 		database.close();
@@ -198,7 +197,7 @@ public class ControlDB {
 		values.put(DataBase.col_estadisticas[3], 0);
 		values.put(DataBase.col_estadisticas[4], 0);
 		values.put(DataBase.col_estadisticas[5], 0);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		long estadid = database.insert(DataBase.estadisticas, null, values);
 
 		// Inserting language
@@ -226,7 +225,7 @@ public class ControlDB {
 		values.put(DataBase.col_palabra[5], type);
 		values.put(DataBase.col_palabra[6], 0);
 		values.put(DataBase.col_palabra[7], Word.INITIAL_PRIORITY);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		long palid = database.insert(DataBase.palabra, null, values);
 		database.close();
 		return new Word((int) palid, name, trad, pron, type, false,
@@ -239,7 +238,7 @@ public class ControlDB {
 		values.put(DataBase.col_almacen[1], pal);
 		values.put(DataBase.col_almacen[2], langID);
 		values.put(DataBase.col_almacen[3], type);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		long notid = database.insert(DataBase.almacen, null, values);
 		database.close();
 		return new Nota((int) notid, pal, type);
@@ -251,7 +250,7 @@ public class ControlDB {
 		values.put(DataBase.col_test[1], name);
 		values.put(DataBase.col_test[2], langID);
 		values.put(DataBase.col_test[3], content);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		long tid = database.insert(DataBase.test, null, values);
 		database.close();
 		return (int) tid;
@@ -259,7 +258,7 @@ public class ControlDB {
 
 	/** ********* Borrados en la BD ************* **/
 	public void removeLanguage(int id) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		// Removing words
 		database.delete(DataBase.palabra, DataBase.col_palabra[3] + " = " + id,
 				null);
@@ -281,34 +280,34 @@ public class ControlDB {
 	}
 
 	public void removeWord(int id) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.palabra, DataBase.col_palabra[0] + " = " + id,
 				null);
 		database.close();
 	}
 
 	public void clearTrash(int idid) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.palabra, DataBase.col_palabra[3] + " = "
 				+ idid + " AND " + DataBase.col_palabra[6] + " = 1", null);
 		database.close();
 	}
 
 	public void removeStoredWord(int id) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.almacen, DataBase.col_almacen[0] + " = " + id,
 				null);
 		database.close();
 	}
 
 	public void removeTest(int id) {
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.test, DataBase.col_test[0] + " = " + id, null);
 		database.close();
 	}
 
 	public Tense getTense(int langId, int verbId, int tense, String verbName) {
-		database = gateway.getReadableDatabase();
+		SQLiteDatabase database = gateway.getReadableDatabase();
 		Cursor cursor = database.query(DataBase.conjugacion,
 				DataBase.col_conjugacion, DataBase.col_conjugacion[1] + " = "
 						+ langId + " and " + DataBase.col_conjugacion[2]
@@ -336,7 +335,7 @@ public class ControlDB {
 		values.put(DataBase.col_conjugacion[3], tense);
 		values.put(DataBase.col_conjugacion[4], forms);
 		values.put(DataBase.col_conjugacion[5], pronunciations);
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		int cid = (int) database.insert(DataBase.conjugacion, null, values);
 		database.close();
 		Log.d(DEBUG, "Result:" + cid + " insertando tense:" + tense
@@ -348,7 +347,7 @@ public class ControlDB {
 		ContentValues values = new ContentValues();
 		values.put(DataBase.col_conjugacion[3], tense.getFormsString());
 		values.put(DataBase.col_conjugacion[4], tense.getPronuntiationsString());
-		database = gateway.getWritableDatabase();
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.update(DataBase.conjugacion, values,
 				DataBase.col_conjugacion[0] + " = " + tense.id, null);
 		database.close();
@@ -357,8 +356,8 @@ public class ControlDB {
 	String col_conjugacion[] = { "_id", "idioma", "verbo", "tiempo", "formas",
 			"pronunciacion" };
 
-	public void removeTenses(int langId, int verbId) {
-		database = gateway.getWritableDatabase();
+	public void removeConjugation(int langId, int verbId) {
+		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
 				+ " = " + langId + " and " + DataBase.col_conjugacion[2]
 				+ " = " + verbId, null);

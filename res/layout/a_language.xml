@@ -4,6 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ImageButton
+        android:id="@+id/toggle_dic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/table"
+        android:layout_margin="5dip"
+        android:background="@drawable/button_backgrounds"
+        android:clickable="true"
+        android:contentDescription="Toggle dictionary"
+        android:focusable="true"
+        android:padding="5dip"
+        android:src="@drawable/change_direction" />
+
+
     <TableLayout
         android:id="@+id/table"
         android:layout_width="match_parent"
@@ -92,17 +107,6 @@
                 android:background="@color/label_other" />
         </TableRow>
     </TableLayout>
-
-    <ImageButton
-        android:id="@+id/toggle_dic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/table"
-        android:layout_margin="5dip"
-        android:background="@color/transparent"
-        android:contentDescription="Toggle dictionary"
-        android:src="@drawable/change_direction" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -213,13 +217,11 @@
 
                     <TextView
                         android:id="@+id/as_nf"
-                        style="@style/textview_statistics"
-                       />
+                        style="@style/textview_statistics" />
 
                     <TextView
                         android:id="@+id/as_nfp"
-                        style="@style/textview_statistics"
-                        />
+                        style="@style/textview_statistics" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
