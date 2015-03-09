@@ -17,7 +17,8 @@ public class IDNativo extends IDDelved {
 
 	/** *************** CONSULTORAS **************** **/
 	public Word getPalabra(String name) {
-		return getPalabra(name, datos.dictionary.dictionary_N_to_D.get(name.charAt(0)));
+		return getPalabra(name,
+				datos.dictionary.dictionary_N_to_D.get(name.charAt(0)));
 	}
 
 	public Word getPalabra(int id) {
@@ -25,7 +26,8 @@ public class IDNativo extends IDDelved {
 	}
 
 	public DReference getReference(String name) {
-		TreeSet<DReference> sub = datos.dictionary.dictionary_N_to_D.get(name.charAt(0));
+		TreeSet<DReference> sub = datos.dictionary.dictionary_N_to_D.get(name
+				.charAt(0));
 		if (sub != null) {
 			Iterator<DReference> it = sub.iterator();
 			while (it.hasNext()) {
@@ -38,20 +40,24 @@ public class IDNativo extends IDDelved {
 		return null;
 	}
 
-	public ArrayList<Word> getPapelera() {
-		ArrayList<Word> papelera = new ArrayList<Word>();
-		for (int i = 0; i < datos.papelera.size(); i++) {
-			papelera.add(datos.papelera.get(i).cloneReverse());
-		}
-		return datos.papelera;
-	}
-
 	public boolean contains(Word p) {
 		return datos.palabrasNativo.contains(p);
 	}
 
 	public ArrayList<Word> getPalabras() {
 		return datos.palabrasNativo;
+	}
+
+	public ArrayList<DReference> getReferences() {
+		return getReferences(datos.dictionary.dictionary_N_to_D);
+	}
+
+	public ArrayList<Word> getPapelera() {
+		ArrayList<Word> papelera = new ArrayList<Word>();
+		for (int i = 0; i < datos.papelera.size(); i++) {
+			papelera.add(datos.papelera.get(i).cloneReverse());
+		}
+		return datos.papelera;
 	}
 
 	public HashMap<Character, TreeSet<DReference>> getDiccionario() {
@@ -63,7 +69,8 @@ public class IDNativo extends IDDelved {
 		TreeSet<Character> keys = new TreeSet<Character>(
 				datos.dictionary.dictionary_N_to_D.keySet());
 		for (Character key : keys) {
-			TreeSet<DReference> sub = datos.dictionary.dictionary_N_to_D.get(key);
+			TreeSet<DReference> sub = datos.dictionary.dictionary_N_to_D
+					.get(key);
 			for (DReference ref : sub) {
 				if (ref.isVerb()) {
 					verbs.add(ref);

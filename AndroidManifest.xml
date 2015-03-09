@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.delvinglanguages.face.activity.Main"
+            android:name=".face.activity.Main"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/app_name" >
             <intent-filter>
@@ -32,131 +32,139 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.LanguageActivity" >
+        <activity android:name=".face.activity.LanguageActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.DictionaryListActivity" >
+        <activity android:name=".face.activity.DictionaryListActivity" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.AddLanguageActivity"
+            android:name=".face.activity.AddLanguageActivity"
             android:label="@string/title_add_idiom" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.SelectLanguage"
+            android:name=".face.settings.SelectLanguage"
             android:label="@string/title_select_language" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.LanguageSettingsActivity"
+            android:name=".face.settings.LanguageSettingsActivity"
             android:label="@string/title_language_settings" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.SelectBackground"
+            android:name=".face.settings.SelectBackground"
             android:label="@string/title_select_background" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.About"
+            android:name=".face.settings.About"
             android:label="@string/about" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordActivity"
+            android:name=".face.activity.add.AddWordActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.MakeColorActivity"
+            android:name=".face.settings.MakeColorActivity"
             android:label="Make your color" >
         </activity>
 
         <!-- practice ACTIVITIES -->
-        <activity android:name="com.delvinglanguages.face.activity.practice.PreguntasActivity" >
+        <activity android:name=".face.activity.practice.PreguntasActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.practice.WriteWordsActivity" >
+        <activity android:name=".face.activity.practice.WriteWordsActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.practice.CompleteActivity" >
+        <activity android:name=".face.activity.practice.CompleteActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.practice.SelectTestActivity" >
+        <activity android:name=".face.activity.practice.SelectTestActivity" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.practice.TestActivity1" >
+        <activity android:name=".face.activity.practice.TestActivity1" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.practice.ListeningActivity"
+            android:name=".face.activity.practice.ListeningActivity"
             android:label="@string/title_listening" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.practice.TestActivityLearn"
+            android:name=".face.activity.practice.TestActivityLearn"
             android:label="@string/test_title_2" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.practice.TestActivityMatch"
+            android:name=".face.activity.practice.TestActivityMatch"
             android:label="@string/test_title_3" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.practice.TestActivityComplete" >
+        <activity android:name=".face.activity.practice.TestActivityComplete" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.practice.TestActivityWrite"
+            android:name=".face.activity.practice.TestActivityWrite"
             android:label="@string/test_title_5" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.practice.TestActivityResult"
+            android:name=".face.activity.practice.TestActivityResult"
             android:label="@string/test_title_6" >
         </activity>
 
         <!-- ************************************************************** -->
         <activity
-            android:name="com.delvinglanguages.face.settings.FoneticsActivity"
+            android:name=".face.settings.FoneticsActivity"
             android:label="@string/title_fonetics" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.phrasals.AddPhrasalsActivity"
+            android:name=".face.phrasals.AddPhrasalsActivity"
             android:label="@string/title_add_phrasals" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.debug.Debug"
+            android:name=".debug.Debug"
             android:label="Debuging" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.phrasals.ListPhrasalActivity"
+            android:name=".face.phrasals.ListPhrasalActivity"
             android:label="@string/title_list_phrasal" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.IntegrateRepeatedActivity"
+            android:name=".face.activity.IntegrateRepeatedActivity"
             android:label="@string/title_activity_integrate_repeated" >
         </activity>
-        <activity
-            android:name="com.delvinglanguages.face.activity.ReferenceActivity"
-            android:label="@string/title_activity_palabra" >
+        <activity android:name=".face.activity.ReferenceActivity" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.SettingsActivity"
+            android:name=".face.settings.SettingsActivity"
             android:label="@string/settings" >
         </activity>
-        <activity android:name="com.delvinglanguages.face.activity.NewTenseActivity" >
+        <activity android:name=".face.activity.NewTenseActivity" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.settings.HistorialActivity"
+            android:name=".face.settings.HistorialActivity"
             android:label="@string/historial" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.debug.Inserter"
+            android:name=".debug.Inserter"
             android:label="Inserter" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordFromSearchActivity"
+            android:name=".face.activity.add.AddWordFromSearchActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity"
+            android:name=".face.activity.add.AddWordFromWarehouseActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordFromVerbActivity"
+            android:name=".face.activity.add.AddWordFromVerbActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordFromModifyActivity"
+            android:name=".face.activity.add.AddWordFromModifyActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
         </activity>
         <activity
-            android:name="com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity"
+            android:name=".face.activity.add.AddWordFromPhrasalActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" >
+        </activity>
+        <activity android:name=".face.activity.theme.ThemeActivity" >
+        </activity>
+        <activity
+            android:name=".face.activity.theme.CreateThemeActivity"
+            android:label="@string/title_activity_create_theme" >
+        </activity>
+        <activity
+            android:name=".face.activity.theme.ModifyThemeActivity"
+            android:label="@string/title_activity_modify_theme" >
         </activity>
     </application>
 

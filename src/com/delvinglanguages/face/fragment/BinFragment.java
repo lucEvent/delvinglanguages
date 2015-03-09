@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -20,17 +19,16 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class BinFragment extends ListFragment implements OnClickListener {
 
-	private Button clear;
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.a_bin, container, false);
+		View view = inflater.inflate(R.layout.a_list_with_button, container,
+				false);
 		Activity activity = getActivity();
 
-		RelativeLayout background = (RelativeLayout) view.findViewById(R.id.background);
+		View background = view.findViewById(R.id.background);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -41,14 +39,15 @@ public class BinFragment extends ListFragment implements OnClickListener {
 
 		setListAdapter(new RemovedWordLister(activity));
 
-		clear = (Button) view.findViewById(R.id.atow_clear);
-		clear.setOnClickListener(this);
+		Button action = ((Button) view.findViewById(R.id.action));
+		action.setText(getString(R.string.emptybin));
+		action.setOnClickListener(this);
 
 		return view;
 	}
 
 	@Override
-	public void onClick(View button) {
+	public void onClick(View v) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.emptyingbin);
 		builder.setMessage(R.string.clearbinquestion);

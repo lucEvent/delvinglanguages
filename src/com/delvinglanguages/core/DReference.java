@@ -2,8 +2,6 @@ package com.delvinglanguages.core;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 public class DReference implements Comparable<DReference> {
 
 	private static final String DEBUG = "##DReference##";
@@ -60,7 +58,7 @@ public class DReference implements Comparable<DReference> {
 
 	@Override
 	public int compareTo(DReference another) {
-		return name.compareToIgnoreCase(another.name) + 1;
+		return name.compareToIgnoreCase(another.name);
 	}
 
 	public Character getCap() {

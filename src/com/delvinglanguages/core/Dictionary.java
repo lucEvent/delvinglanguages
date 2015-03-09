@@ -8,8 +8,10 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class Dictionary {
 
+	private static final String DEBUG = null;
 	public int[] types;
-	public HashMap<Character, TreeSet<DReference>> dictionary_D_to_N, dictionary_N_to_D;
+	public HashMap<Character, TreeSet<DReference>> dictionary_D_to_N,
+			dictionary_N_to_D;
 
 	public Dictionary(Character[] indexsD, Character[] indexsN) {
 		dictionary_D_to_N = new HashMap<Character, TreeSet<DReference>>(
@@ -28,8 +30,8 @@ public class Dictionary {
 		}
 	}
 
-
 	public boolean dictionariesCreated;
+
 	public void addEntries(final ArrayList<Word> entries) {
 		dictionariesCreated = false;
 		new Thread(new Runnable() {
@@ -117,7 +119,8 @@ public class Dictionary {
 		TreeSet<DReference> sub;
 
 		ArrayList<String> refsD = Word.formatArray(null, entry.getName());
-		ArrayList<String> refsN = Word.formatArray(null, entry.getTranslation());
+		ArrayList<String> refsN = Word
+				.formatArray(null, entry.getTranslation());
 
 		for (String refD : refsD) {
 			Character car = refD.charAt(0);

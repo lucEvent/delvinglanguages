@@ -15,6 +15,10 @@ import com.delvinglanguages.core.Nota;
 import com.delvinglanguages.core.Word;
 import com.delvinglanguages.core.Test;
 import com.delvinglanguages.core.Tense;
+import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.core.theme.Theme;
+import com.delvinglanguages.core.theme.ThemePair;
 
 public class ControlDB {
 
@@ -106,6 +110,43 @@ public class ControlDB {
 		return result;
 	}
 
+	public Themes readThemes(int langID) {
+		SQLiteDatabase database = gateway.getReadableDatabase();
+		Cursor cursor = database.query(DataBase.theme, DataBase.col_theme,
+				DataBase.col_theme[1] + "=" + langID, null, null, null,
+				DataBase.col_theme[2] + " ASC");
+
+		Themes result = new Themes();
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Theme theme = cursorToTheme(cursor);
+			theme.setPairs(readThemePairs(theme.id));
+			result.add(theme);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		Log.d(DEBUG, "Themes leidos: " + result.size());
+		database.close();
+		return result;
+	}
+
+	public ThemePairs readThemePairs(int themeID) {
+		SQLiteDatabase database = gateway.getReadableDatabase();
+		Cursor cursor = database.query(DataBase.theme_pair,
+				DataBase.col_theme_pair, DataBase.col_theme_pair[1] + "="
+						+ themeID, null, null, null, null);
+
+		ThemePairs result = new ThemePairs();
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			result.add(cursorToThemePair(cursor));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		database.close();
+		return result;
+	}
+
 	/** ********* Modificaciones en la BD ************* **/
 	public void updateLanguage(IDDelved lang) {
 		ContentValues values = new ContentValues();
@@ -188,6 +229,21 @@ public class ControlDB {
 		database.close();
 	}
 
+	public void updateTheme(Theme theme) {
+		ContentValues values = new ContentValues();
+		values.put(DataBase.col_theme[2], theme.getName());
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		database.update(DataBase.theme, values, DataBase.col_theme[0] + " = "
+				+ theme.id, null);
+		database.delete(DataBase.theme_pair, DataBase.col_theme_pair[1] + " = "
+				+ theme.id, null);
+		database.close();
+
+		for (ThemePair pair : theme.getPairs()) {
+			insertThemePair(theme.id, pair);
+		}
+	}
+
 	/** ********* Escrituras en la BD ************* **/
 	public IDDelved insertLanguage(String name, int isettings) {
 		// Inserting stadistics
@@ -256,6 +312,32 @@ public class ControlDB {
 		return (int) tid;
 	}
 
+	public Theme insertTheme(int langID, String thname, ThemePairs pairs) {
+		ContentValues values = new ContentValues();
+		values.put(DataBase.col_theme[1], langID);
+		values.put(DataBase.col_theme[2], thname);
+		values.put(DataBase.col_theme[3], "");
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		int id = (int) database.insert(DataBase.theme, null, values);
+		database.close();
+
+		for (ThemePair pair : pairs) {
+			insertThemePair(id, pair);
+		}
+		return new Theme(id, thname, pairs);
+	}
+
+	public void insertThemePair(int theme_id, ThemePair pair) {
+		ContentValues values = new ContentValues();
+		values.put(DataBase.col_theme_pair[1], theme_id);
+		values.put(DataBase.col_theme_pair[2], pair.inDelved);
+		values.put(DataBase.col_theme_pair[3], pair.inNative);
+		values.put(DataBase.col_theme_pair[4], "");
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		database.insert(DataBase.theme_pair, null, values);
+		database.close();
+	}
+
 	/** ********* Borrados en la BD ************* **/
 	public void removeLanguage(int id) {
 		SQLiteDatabase database = gateway.getWritableDatabase();
@@ -273,6 +355,9 @@ public class ControlDB {
 		// Removing tiempos verbales
 		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
 				+ " = " + id, null);
+		// Removing themes
+		database.delete(DataBase.theme, DataBase.col_theme[1] + " = " + id,
+				null);
 		// Removing language
 		database.delete(DataBase.idioma, DataBase.col_idioma[0] + " = " + id,
 				null);
@@ -303,6 +388,13 @@ public class ControlDB {
 	public void removeTest(int id) {
 		SQLiteDatabase database = gateway.getWritableDatabase();
 		database.delete(DataBase.test, DataBase.col_test[0] + " = " + id, null);
+		database.close();
+	}
+
+	public void removeTheme(int theme_id) {
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		database.delete(DataBase.theme, DataBase.col_theme[0] + " = "
+				+ theme_id, null);
 		database.close();
 	}
 
@@ -392,4 +484,11 @@ public class ControlDB {
 		return new Test(c.getInt(0), c.getString(1), c.getString(3));
 	}
 
+	private Theme cursorToTheme(Cursor c) {
+		return new Theme(c.getInt(0), c.getString(2));
+	}
+
+	private ThemePair cursorToThemePair(Cursor c) {
+		return new ThemePair(c.getString(2), c.getString(3));
+	}
 }

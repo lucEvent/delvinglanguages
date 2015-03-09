@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -15,12 +15,10 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.game.TestGame;
-import com.delvinglanguages.listers.LanguageLister;
+import com.delvinglanguages.listers.StringLister;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class TestActivity1 extends ListActivity implements Runnable {
-
-	private LinearLayout background;
 
 	private TestGame gamecontroller;
 	private ArrayList<DReference> references;
@@ -31,7 +29,7 @@ public class TestActivity1 extends ListActivity implements Runnable {
 	private String[] values, dots = { "", " .", " . .", " . . .", " . . . ." };
 
 	private Handler mHandler = new Handler();
-	private LanguageLister adapter;
+	private StringLister adapter;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -41,7 +39,7 @@ public class TestActivity1 extends ListActivity implements Runnable {
 
 		searchString = getString(R.string.title_searching);
 
-		background = (LinearLayout) findViewById(R.id.tp_bg);
+		View background = findViewById(R.id.tp_bg);
 		int type_bg = Configuraciones.backgroundType();
 		if (type_bg == Configuraciones.BG_IMAGE_ON) {
 			background.setBackgroundDrawable(Configuraciones
@@ -54,10 +52,10 @@ public class TestActivity1 extends ListActivity implements Runnable {
 		int types = getIntent().getExtras().getInt("types");
 		gamecontroller = new TestGame(ControlCore.getReferences());
 		references = gamecontroller.getWords(numero, types);
-		
+
 		if (references.isEmpty()) {
-			Toast.makeText(this, R.string.nowordmatched,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.nowordmatched, Toast.LENGTH_SHORT)
+					.show();
 			finish();
 			return;
 		}
@@ -69,9 +67,9 @@ public class TestActivity1 extends ListActivity implements Runnable {
 		values = new String[references.size()];
 		String com = getString(R.string.searching);
 		for (int i = 0; i < values.length; i++) {
-			values[i] = (i+1) + com;
+			values[i] = (i + 1) + com;
 		}
-		adapter = new LanguageLister(this, values);
+		adapter = new StringLister(this, values);
 		setListAdapter(adapter);
 		new Thread(this).start();
 	}

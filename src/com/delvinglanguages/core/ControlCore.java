@@ -6,6 +6,9 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.util.Log;
 
+import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.core.theme.Theme;
 import com.delvinglanguages.data.ControlDB;
 import com.delvinglanguages.data.ControlDisco;
 
@@ -16,6 +19,7 @@ public class ControlCore {
 	// Codes to send data between Activities
 	public static final String sendDReference = "sendDR";
 	public static final String sendCharacter = "sendChar";
+	public static final String sendTheme = "sendChar";
 
 	// ---------------------------------------------
 	private static ControlDB database;
@@ -33,20 +37,11 @@ public class ControlCore {
 
 	public static Test testActual;
 
-	private static Context context;
-
 	public ControlCore(Context context) {
-		this.context = context;
-		initializeAll();
-
-		// Recover rec = new Recover();
-		// if (getIdiomas().size() == 0) {
-		// rec.recoverDatafromCopy();
-		// }
-		// rec.makeCopy();
+		initializeAll(context);
 	}
 
-	private static void initializeAll() {
+	private static void initializeAll(Context context) {
 		if (database == null) {
 			database = new ControlDB(context);
 		}
@@ -60,7 +55,7 @@ public class ControlCore {
 
 	public static IDDelved getIdiomaActual(Context context) {
 		if (actualLang == null) {
-			new ControlCore(context);
+			initializeAll(context);
 			actualLang = idiomas.get(disco.getLastLanguage());
 		}
 		return actualLang;
@@ -153,7 +148,7 @@ public class ControlCore {
 	public static int addIdioma(String name, int settings) {
 		IDDelved newLang = database.insertLanguage(name, settings);
 		idiomas.add(newLang);
-		return idiomas.size()-1;
+		return idiomas.size() - 1;
 	}
 
 	public static void addPalabra(String nom, String trad, String spell,
@@ -168,7 +163,7 @@ public class ControlCore {
 		}
 		actualLang.addPalabra(database.insertWord(nom, trad,
 				actualLang.getID(), spell, type));
-		Log.d(DEBUG, "size:"+actualLang.getPalabras().size());
+		Log.d(DEBUG, "size:" + actualLang.getPalabras().size());
 	}
 
 	public static void addTest(ArrayList<DReference> words) {
@@ -201,23 +196,7 @@ public class ControlCore {
 			pal = pal.cloneReverse();
 		}
 		database.updateWord(pal);
-/*		ArrayList<String> newword = Word.formatArray(null, pal.getName());
-		newword.addAll(Word.formatArray(null, pal.getTranslation()));
-		for (int i = 0; i < oldword.size(); i++) {
-			String word = oldword.get(i);
-			boolean present = false;
-			b: for (int j = 0; j < newword.size(); j++) {
-				if (word.equals(oldword.get(j))) {
-			d
-					present = true;
-					break b;
-				}
-			}
-			if (!present) {
-				database.removeConjugation(actualLang.getID(), word.hashCode());
-			}
-		}
-*/	}
+	}
 
 	public static void removeLanguage() {
 		database.removeLanguage(actualLang.getID());
@@ -259,7 +238,7 @@ public class ControlCore {
 		for (int i = 0; i < bin.size(); i++) {
 			Word p = bin.get(i);
 			if (p.isVerb()) {
-///				database.removeTenses(actualLang.getID(), p.id);
+				// / database.removeTenses(actualLang.getID(), p.id);
 			}
 		}
 		actualLang.vaciarPapelera();
@@ -328,6 +307,39 @@ public class ControlCore {
 
 	public static ArrayList<DReference> getVerbs() {
 		return actualLang.getVerbs();
+	}
+
+	public static Themes getThemes() {
+		if (actualLang.getThemes() == null) {
+			actualLang.setThemes(database.readThemes(actualLang.getID()));
+		}
+		return actualLang.getThemes();
+	}
+
+	public static Theme getTheme(int theme_id) {
+		Log.d(DEBUG, "Buscando theme " + theme_id);
+		for (Theme theme : actualLang.getThemes()) {
+			Log.d(DEBUG, "..Candidato " + theme.id);
+			if (theme.id == theme_id) {
+				return theme;
+			}
+		}
+		return null;
+	}
+
+	public static void addTheme(String th_name, ThemePairs th_pairs) {
+		Theme theme = database.insertTheme(actualLang.getID(), th_name,
+				th_pairs);
+		actualLang.addTheme(theme);
+	}
+
+	public static void modifyTheme(Theme theme) {
+		database.updateTheme(theme);
+	}
+
+	public static void removeTheme(Theme theme) {
+		actualLang.getThemes().remove(theme);
+		database.removeTheme(theme.id);
 	}
 
 	public static Tense getTense(DReference verb, int tense) {

@@ -4,9 +4,6 @@
     <string-array name="paises">
         <item>(select a language)</item>
         <item>Arabic</item>
-        <item>Azerbaijani</item>
-        <item>Bagheli</item>
-        <item>Bavarian</item>
         <item>Belarusian</item>
         <item>Bengali</item>
         <item>Bulgarian</item>
@@ -16,16 +13,13 @@
         <item>English</item>
         <item>French</item>
         <item>Greek</item>
-        <item>Hindustani</item>
         <item>Hungarian</item>
         <item>Italian</item>
         <item>Japanese</item>
         <item>Korean</item>
         <item>Kurdish</item>
-        <item>Lombard</item>
         <item>Mandarin</item>
         <item>Nepali</item>
-        <item>Northern Berber</item>
         <item>Persian</item>
         <item>Polish</item>
         <item>Portuguese</item>
@@ -40,7 +34,6 @@
         <item>Ukrainian</item>
         <item>Uzbek</item>
         <item>Vietnamese</item>
-        <item>Zulu</item>
     </string-array>
     <string-array name="prac_opt">
         <item>Match</item>
@@ -168,11 +161,13 @@
         <item>He</item>
     </string-array>
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.3.4</b></item>
+        <item><b>Delving Languages version 1.4</b></item>
         <item><b>Develop by Rafael J. Lucena</b></item>
-        <item><b>Contact: rafaa89@gmail(at)com</b></item>
+        <item><b>Contact: rafaa89(at)gmail.com</b></item>
         <item></item>
         <item>News Features and Improvements:</item>
+        <item>Version 1.4 2015&#8211;03&#8211;09\nNew feature:THEMES. Learn faster. Create your own themes and make studing easier :)</item>
+        <item>Version 1.3.4.1 2015&#8211;03&#8211;07\nNow is possible to practise again in both ways.</item>
         <item>Version 1.3.4 2015&#8211;03&#8211;06\nSystem of priority for words improved. Now the tests are certainly randomly chosen and the result shows the errors done, not weird percentages anymore. Special characters and explaining text completion now also available in Writing practise and Writing test section. Some other bugs fixed and improvements.</item>
         <item></item>
         <item>Old improvements:</item>

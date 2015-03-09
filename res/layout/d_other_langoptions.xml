@@ -7,6 +7,11 @@
     <Button
         style="@style/button_list_selector"
         android:layout_width="match_parent"
+        android:onClick="jumptoThemes"
+        android:text="@string/themes" />
+    <Button
+        style="@style/button_list_selector"
+        android:layout_width="match_parent"
         android:onClick="jumptoVerbs"
         android:text="@string/verb" />
 

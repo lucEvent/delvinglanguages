@@ -1,11 +1,8 @@
 package com.delvinglanguages.core;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.TreeSet;
 
-import android.util.Log;
+import com.delvinglanguages.core.set.Themes;
 
 public class Datos {
 
@@ -23,27 +20,29 @@ public class Datos {
 
 	public ArrayList<Test> tests;
 
+	public Themes themes;
+
 	// Settings
 	public int settings;
 
 	public Dictionary dictionary;
-	
+
 	public Datos(int id, String name, String settings) {
 		this.id = id;
 		nombre = name;
 		this.settings = Integer.valueOf(settings);
 
 	}
-	
+
 	public void createDictionary(Character[] indexsD, Character[] indexsN) {
 		dictionary = new Dictionary(indexsD, indexsN);
 		dictionary.addEntries(palabrasDelved);
 	}
-	
+
 	public boolean isDictionaryCreated() {
 		return dictionary.dictionariesCreated;
 	}
-	
+
 	public void indexa(Word enDelv) {
 		// Add to palabras
 		palabrasDelved.add(enDelv);

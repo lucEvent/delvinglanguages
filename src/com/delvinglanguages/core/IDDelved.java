@@ -7,6 +7,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.core.theme.Theme;
 
 public class IDDelved {
 
@@ -41,20 +43,23 @@ public class IDDelved {
 	public static final int SV = 3;
 	public static final int FI = 4;
 	public static final int CA = 5;
-	// public static final int IT = 4;
-	// public static final int FR = 6;
-	// public static final int PO = 7;
 
 	// Setting masks
 	public static final int MASK_PH = 0x1;
 	public static final int MASK_ADJ = 0x2;
 	public static final int MASK_ESP_CHARS = 0x4;
 
-	public final int CODE;
+	public int CODE;
 
 	protected Datos datos;
 
 	protected ArrayList<Nota> almacen;
+
+	protected String[] LANGUAGES = { "español", "spanish", "spanska", "inglés",
+			"ingles", "english", "engelska", "sueco", "swedish", "svenska",
+			"finlandés", "finnish", "suomi", "finska" };
+	protected int[] CODES = { ES, ES, ES, EN, EN, EN, EN, SV, SV, SV, FI, FI,
+			FI, FI };
 
 	/** **************** CREADORAS **************** **/
 	public IDDelved(Datos data) {
@@ -63,21 +68,13 @@ public class IDDelved {
 			datos.delved = this;
 			datos.nativo = new IDNativo(data);
 		}
-		String tn = datos.nombre.toLowerCase();
-		if (tn.equals("español") || tn.equals("spanish")
-				|| tn.equals("spanska")) {
-			CODE = ES;
-		} else if (tn.equals("inglés") || tn.equals("ingles")
-				|| tn.equals("english") || tn.equals("engelska")) {
-			CODE = EN;
-		} else if (tn.equals("sueco") || tn.equals("swedish")
-				|| tn.equals("svenska")) {
-			CODE = SV;
-		} else if (tn.equals("finlandés") || tn.equals("finnish")
-				|| tn.equals("suomi") || tn.equals("finska")) {
-			CODE = FI;
-		} else {
-			CODE = NOTDETECTED;
+		String lang_name = datos.nombre.toLowerCase();
+		CODE = NOTDETECTED;
+		for (int i = 0; i < LANGUAGES.length; i++) {
+			if (lang_name.equals(LANGUAGES[i])) {
+				CODE = CODES[i];
+				break;
+			}
 		}
 	}
 
@@ -141,12 +138,15 @@ public class IDDelved {
 	}
 
 	public ArrayList<DReference> getReferences() {
+		return getReferences(datos.dictionary.dictionary_D_to_N);
+	}
+
+	protected ArrayList<DReference> getReferences(
+			HashMap<Character, TreeSet<DReference>> dictionary) {
 		ArrayList<DReference> res = new ArrayList<DReference>();
-		TreeSet<Character> keys = new TreeSet<Character>(
-				datos.dictionary.dictionary_D_to_N.keySet());
+		TreeSet<Character> keys = new TreeSet<Character>(dictionary.keySet());
 		for (Character key : keys) {
-			TreeSet<DReference> sub = datos.dictionary.dictionary_D_to_N
-					.get(key);
+			TreeSet<DReference> sub = dictionary.get(key);
 			for (DReference ref : sub) {
 				res.add(ref);
 			}
@@ -244,6 +244,10 @@ public class IDDelved {
 		return res;
 	}
 
+	public Themes getThemes() {
+		return datos.themes;
+	}
+
 	public boolean isLoaded() {
 		return !(datos.palabrasDelved == null || almacen == null);
 	}
@@ -294,6 +298,10 @@ public class IDDelved {
 		datos.tests = tests;
 	}
 
+	public void setThemes(Themes themes) {
+		datos.themes = themes;
+	}
+
 	// Parciales
 	public void setSettings(boolean state, int mask) {
 		if (state) {
@@ -332,6 +340,10 @@ public class IDDelved {
 
 	public void addTest(Test t) {
 		datos.tests.add(t);
+	}
+
+	public void addTheme(Theme theme) {
+		datos.themes.add(theme);
 	}
 
 	// Parciales remove
@@ -376,6 +388,7 @@ public class IDDelved {
 	public boolean isbusy() {
 		return !datos.dictionary.dictionariesCreated;
 	}
+
 	/** ******************* NUEVAS A DEBUGGAR **********************/
 
 	private PhrasalVerbs phrasalverbs;

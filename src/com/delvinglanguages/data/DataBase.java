@@ -10,7 +10,7 @@ public class DataBase extends SQLiteOpenHelper {
 	private static final String DEBUG = "##DataBase##";
 	
 	private static final String DATABASE_NAME = "delving.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// Database SQL CREATES 
     public static final String estadisticas = "db_estadisticas"; 
@@ -34,7 +34,7 @@ public class DataBase extends SQLiteOpenHelper {
         col_idioma[0] + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
         col_idioma[1] + " TEXT NOT NULL," + 
         col_idioma[2] + " INTEGER," + 
-        col_idioma[3] + " TEXT NOT NULL," + //Esto es lo nuevo 
+        col_idioma[3] + " TEXT NOT NULL," +
         "FOREIGN KEY(" + col_idioma[2] + ") REFERENCES " + estadisticas + "(" + col_estadisticas[0] + ")" + 
         ");"; 
   
@@ -92,6 +92,31 @@ public class DataBase extends SQLiteOpenHelper {
 			"FOREIGN KEY(" + col_conjugacion[1] + ") REFERENCES " + idioma + "(" + col_idioma[0] + ")" +
 	    ");";
 
+	public static final String theme = "db_theme";
+	public static final String col_theme[] = { "_id", "language_id", "name", "annexs" };
+
+	private static final String CREATE_THEME =
+			"CREATE TABLE " + theme + " (" +
+			col_theme[0] + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+			col_theme[1] + " INTEGER," +
+			col_theme[2] + " TEXT NOT NULL," +
+			col_theme[3] + " TEXT NOT NULL," +
+			"FOREIGN KEY(" + col_theme[1] + ") REFERENCES " + idioma + "(" + col_idioma[0] + ")" +
+	    ");";
+
+	public static final String theme_pair = "db_theme_pair";
+	public static final String col_theme_pair[] = { "_id", "theme_id", "in_delv", "in_nativ", "annexs" };
+
+	private static final String CREATE_THEME_PAIR =
+			"CREATE TABLE " + theme_pair + " (" +
+			col_theme_pair[0] + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+			col_theme_pair[1] + " INTEGER," +
+			col_theme_pair[2] + " TEXT NOT NULL," +
+			col_theme_pair[3] + " TEXT NOT NULL," +
+			col_theme_pair[4] + " TEXT NOT NULL," +
+			"FOREIGN KEY(" + col_theme_pair[1] + ") REFERENCES " + idioma + "(" + col_theme[0] + ")" +
+	    ");";
+	
 	
 	public DataBase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -107,6 +132,8 @@ public class DataBase extends SQLiteOpenHelper {
 		db.execSQL(CREATE_ALMACEN);
 		db.execSQL(CREATE_TEST);
 		db.execSQL(CREATE_CONJUGACION);
+		db.execSQL(CREATE_THEME);
+		db.execSQL(CREATE_THEME_PAIR);		
 	}
 
 	@Override
@@ -115,8 +142,9 @@ public class DataBase extends SQLiteOpenHelper {
 						+ newVersion + ", which will destroy all old data");
 		
 		//Delete all needed tables
-		db.execSQL("DROP TABLE "+ "db_tiempo_verbal");
+//		db.execSQL("DROP TABLE "+ "db_tiempo_verbal");
 		//Create all needed tables
-		db.execSQL(CREATE_CONJUGACION);
+		db.execSQL(CREATE_THEME);
+		db.execSQL(CREATE_THEME_PAIR);
 	}
 }

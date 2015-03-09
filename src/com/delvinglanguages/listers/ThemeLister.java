@@ -1,7 +1,5 @@
 package com.delvinglanguages.listers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +8,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.core.theme.Theme;
 
-public class LanguageLister extends ArrayAdapter<IDDelved> {
+public class ThemeLister extends ArrayAdapter<Theme> {
 
-	private ArrayList<IDDelved> values;
+	private Themes values;
+
 	private LayoutInflater inflater;
 
-	public LanguageLister(Context context, ArrayList<IDDelved> values) {
+	public ThemeLister(Context context, Themes values) {
 		super(context, R.layout.i_language, values);
 		this.values = values;
 		this.inflater = (LayoutInflater) context

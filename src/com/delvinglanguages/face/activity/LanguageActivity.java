@@ -24,6 +24,7 @@ import com.delvinglanguages.face.fragment.LanguageFragment;
 import com.delvinglanguages.face.fragment.PhrasalsFragment;
 import com.delvinglanguages.face.fragment.PractiseFragment;
 import com.delvinglanguages.face.fragment.SearchFragment;
+import com.delvinglanguages.face.fragment.ThemesFragment;
 import com.delvinglanguages.face.fragment.VerbsFragment;
 import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
@@ -35,14 +36,9 @@ public class LanguageActivity extends Activity {
 
 	private static final int REQUEST_REMOVE = 0;
 
-	private static final int LANGUAGE = 0;
-	private static final int PRACTISE = 1;
-	private static final int DICTIONARY = 2;
-	private static final int VERBS = 3;
-	private static final int PHRASAL_VERBS = 4;
-	private static final int WAREHOUSE = 5;
-	private static final int BIN = 6;
-	private static final int SEARCH = 7;
+	private static enum Option {
+		LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES
+	};
 
 	private IDDelved idioma;
 
@@ -112,10 +108,10 @@ public class LanguageActivity extends Activity {
 		return false;
 	}
 
-	private void setFragment(int position) {
+	private void setFragment(Option option) {
 		Fragment fragment = null;
 		String title = null;
-		switch (position) {
+		switch (option) {
 		case LANGUAGE:
 			fragment = new LanguageFragment();
 			title = idioma.getName();
@@ -149,6 +145,10 @@ public class LanguageActivity extends Activity {
 			fragment = new SearchFragment();
 			title = idioma.getName() + " " + getString(R.string.search);
 			break;
+		case THEMES:
+			fragment = new ThemesFragment();
+			title = idioma.getName() + " " + getString(R.string.themes);
+			break;
 		default:
 			fragment = new LanguageFragment();
 			title = idioma.getName();
@@ -165,7 +165,7 @@ public class LanguageActivity extends Activity {
 			showMessage(R.string.mssNoWords);
 			return;
 		}
-		setFragment(PRACTISE);
+		setFragment(Option.PRACTISE);
 		hideOptionsMenu(null);
 	}
 
@@ -174,12 +174,12 @@ public class LanguageActivity extends Activity {
 			showMessage(R.string.mssNoWordsToList);
 			return;
 		}
-		setFragment(DICTIONARY);
+		setFragment(Option.DICTIONARY);
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoLanguageMain(View v) {
-		setFragment(LANGUAGE);
+		setFragment(Option.LANGUAGE);
 	}
 
 	private Dialog dialog;
@@ -187,7 +187,6 @@ public class LanguageActivity extends Activity {
 	public void jumptoOther(View v) {
 		View view = getLayoutInflater().inflate(R.layout.d_other_langoptions,
 				null);
-
 		if (!actualPHMode) {
 			((Button) view.findViewById(R.id.phrasal_verbs))
 					.setVisibility(View.GONE);
@@ -197,18 +196,18 @@ public class LanguageActivity extends Activity {
 	}
 
 	public void jumptoWarehouse(View v) {
-		setFragment(WAREHOUSE);
+		setFragment(Option.WAREHOUSE);
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoVerbs(View v) {
-		setFragment(VERBS);
+		setFragment(Option.VERBS);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoPhrasalVerbs(View v) {
-		setFragment(PHRASAL_VERBS);
+		setFragment(Option.PHRASAL_VERBS);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
@@ -219,13 +218,19 @@ public class LanguageActivity extends Activity {
 			dialog.dismiss();
 			return;
 		}
-		setFragment(BIN);
+		setFragment(Option.BIN);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoSearch(View v) {
-		setFragment(SEARCH);
+		setFragment(Option.SEARCH);
+		dialog.dismiss();
+		hideOptionsMenu(null);
+	}
+
+	public void jumptoThemes(View v) {
+		setFragment(Option.THEMES);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}

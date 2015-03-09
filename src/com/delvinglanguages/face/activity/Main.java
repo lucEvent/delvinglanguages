@@ -57,7 +57,7 @@ public class Main extends ListActivity {
 		} else {
 			toinvis = fsteps;
 			tovisib = list;
-			setListAdapter(new LanguageLister(this, getLanguageStrings()));
+			setListAdapter(new LanguageLister(this, ControlCore.getIdiomas()));
 		}
 		toinvis.setVisibility(View.INVISIBLE);
 		tovisib.setVisibility(View.VISIBLE);
@@ -88,15 +88,6 @@ public class Main extends ListActivity {
 		startActivity(new Intent(this, LanguageActivity.class));
 	}
 
-	private String[] getLanguageStrings() {
-		ArrayList<IDDelved> langs = ControlCore.getIdiomas();
-		String[] values = new String[langs.size()];
-		for (int i = 0; i < langs.size(); ++i) {
-			values[i] = langs.get(i).getName();
-		}
-		return values;
-	}
-
 	public void addLanguage(View v) {
 		startActivity(new Intent(this, AddLanguageActivity.class));
 	}
@@ -104,6 +95,5 @@ public class Main extends ListActivity {
 	public void changeSettings(View v) {
 		startActivity(new Intent(this, SettingsActivity.class));
 	}
-
 
 }
