@@ -4,25 +4,23 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.Tense;
+import com.delvinglanguages.core.TenseKernelControl;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class NewTenseActivity extends Activity implements
-		OnCheckedChangeListener {
+		OnCheckedChangeListener, Messages {
 
 	private static final String DEBUG = "##NewTenseAct##";
 
@@ -36,7 +34,7 @@ public class NewTenseActivity extends Activity implements
 	private EditText[] prons;
 	private CheckBox repite;
 
-	private int tenseId;//ATENCION: ASSIGNAR VALOR A ESTA VARIABLE
+	private int tenseId;// ATENCION: ASSIGNAR VALOR A ESTA VARIABLE
 
 	private DReference reference;
 
@@ -57,7 +55,7 @@ public class NewTenseActivity extends Activity implements
 
 		Bundle bundle = getIntent().getExtras();
 
-		String s = bundle.getString(ControlCore.sendDReference);
+		String s = bundle.getString(DREFERENCE);
 		reference = ControlCore.getIdiomaActual(this).getReference(s);
 
 		tverb = (TextView) findViewById(R.id.tverb);
@@ -94,7 +92,7 @@ public class NewTenseActivity extends Activity implements
 
 		repite = (CheckBox) findViewById(R.id.repiteall);
 		repite.setOnCheckedChangeListener(this);
-	
+
 		repiteAll = false;
 	}
 
@@ -106,8 +104,9 @@ public class NewTenseActivity extends Activity implements
 			form[i] = forms[i].getText().toString();
 			pron[i] = prons[i].getText().toString();
 		}
-		ControlCore.addTense(reference.id, tenseId, reference.name,
-				Tense.queueString(form), Tense.queueString(pron));
+		new TenseKernelControl(this).addTense(reference.id, tenseId,
+				reference.name, Tense.queueString(form),
+				Tense.queueString(pron));
 		finish();
 	}
 

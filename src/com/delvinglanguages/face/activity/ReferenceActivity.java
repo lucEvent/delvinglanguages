@@ -29,15 +29,17 @@ import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Tense;
+import com.delvinglanguages.core.TenseKernelControl;
 import com.delvinglanguages.core.Word;
 import com.delvinglanguages.core.verb.FinnishTense;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.listers.TranslationLister;
 import com.delvinglanguages.listers.WordLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class ReferenceActivity extends Activity {
+public class ReferenceActivity extends Activity implements Messages {
 
 	private static final String DEBUG = "##ReferenceActivity##";
 
@@ -82,8 +84,7 @@ public class ReferenceActivity extends Activity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		String s = getIntent().getExtras()
-				.getString(ControlCore.sendDReference);
+		String s = getIntent().getExtras().getString(DREFERENCE);
 
 		IDDelved idioma = ControlCore.getIdiomaActual(this);
 		reference = idioma.getReference(s);
@@ -195,7 +196,8 @@ public class ReferenceActivity extends Activity {
 		ListView lw = new ListView(this);
 		ArrayList<Word> v = reference.getPureOwners();
 		IDDelved idioma = ControlCore.getIdiomaActual(this);
-		lw.setAdapter(new WordLister(this, v, idioma.getSettings(IDDelved.MASK_PH)));
+		lw.setAdapter(new WordLister(this, v, idioma
+				.getSettings(IDDelved.MASK_PH)));
 		switch (item.getItemId()) {
 		case R.id.m_edit:
 			if (v.size() == 1) {
@@ -280,8 +282,7 @@ public class ReferenceActivity extends Activity {
 	private void navigateTo(int pos) {
 		ControlCore.switchDictionary();
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference,
-				reference.links.get(pos).reference.name);
+		intent.putExtra(DREFERENCE, reference.links.get(pos).reference.name);
 		startActivity(intent);
 	}
 
@@ -297,7 +298,8 @@ public class ReferenceActivity extends Activity {
 				tense = new FinnishTense(Tense.FI_PRESENT, reference.name);
 				break;
 			default:
-				tense = ControlCore.getTense(reference, tenseId);
+				tense = new TenseKernelControl(ReferenceActivity.this)
+						.getTense(reference, tenseId);
 				if (tense == null) {
 					Builder builder = new AlertDialog.Builder(
 							ReferenceActivity.this);
@@ -355,7 +357,7 @@ public class ReferenceActivity extends Activity {
 
 	private void addNewTense(int position) {
 		Intent intent = new Intent(this, NewTenseActivity.class);
-		intent.putExtra(ControlCore.sendDReference, reference.name);
+		intent.putExtra(DREFERENCE, reference.name);
 		intent.putExtra(NewTenseActivity.TENSE, position);
 		startActivity(intent);
 	}

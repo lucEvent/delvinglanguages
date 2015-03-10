@@ -19,8 +19,6 @@ import com.delvinglanguages.settings.Configuraciones;
 
 public class CompleteActivity extends Activity implements OnClickListener {
 
-	private static final String DEBUG = "##CompleteActivity##";
-
 	protected DReference refActual;
 	protected CompleteGame gamecontroller;
 
@@ -36,7 +34,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 
 	protected Thread flash;
 	protected boolean muststop;
-	protected Handler mHandler = new Handler();
+	protected Handler handler;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -52,6 +50,8 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
+
+		handler = new Handler();
 
 		pista = (TextView) findViewById(R.id.word);
 		hidden = (TextView) findViewById(R.id.solution);
@@ -72,7 +72,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		if (!idioma.getSettings(IDDelved.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
-		
+
 		letras = new Button[8];
 		letras[0] = (Button) findViewById(R.id.key_a1);
 		letras[1] = (Button) findViewById(R.id.key_a2);
@@ -179,16 +179,16 @@ public class CompleteActivity extends Activity implements OnClickListener {
 				}
 				new Thread(new Runnable() {
 					public void run() {
-						ControlCore.ejercicio(refActual,intento);
+						ControlCore.ejercicio(refActual, intento);
 						try {
 							Thread.sleep(2000);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
 						}
-						mHandler.post(new Runnable() {
+						handler.post(new Runnable() {
 							@Override
 							public void run() {
-								siguientePregunta(gamecontroller.nextReference());
+								siguientePregunta(gamecontroller
+										.nextReference());
 							}
 						});
 					}
@@ -217,7 +217,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 			public void run() {
 				while ((fcolor & 0xFF000000) != 0 && !muststop) {
 					fcolor -= 0x11000000;
-					mHandler.post(new Runnable() {
+					handler.post(new Runnable() {
 						@Override
 						public void run() {
 							hidden.setBackgroundColor(fcolor);
@@ -227,7 +227,6 @@ public class CompleteActivity extends Activity implements OnClickListener {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
 				}
 			}

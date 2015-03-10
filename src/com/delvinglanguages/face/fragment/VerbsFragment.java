@@ -20,9 +20,11 @@ import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
 import com.delvinglanguages.listers.ReferenceLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class VerbsFragment extends ListFragment implements OnClickListener {
+public class VerbsFragment extends ListFragment implements OnClickListener,
+		Messages {
 
 	private static final int REQUEST_MODIFIED = 0;
 
@@ -63,7 +65,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener {
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		super.onListItemClick(l, v, pos, id);
 		Intent intent = new Intent(getActivity(), ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference, verbslist.get(pos).name);
+		intent.putExtra(DREFERENCE, verbslist.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

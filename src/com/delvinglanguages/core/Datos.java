@@ -2,7 +2,8 @@ package com.delvinglanguages.core;
 
 import java.util.ArrayList;
 
-import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.kernel.set.Themes;
+import com.delvinglanguages.kernel.set.Tests;
 
 public class Datos {
 
@@ -18,7 +19,7 @@ public class Datos {
 	public ArrayList<Word> papelera;
 	public Estadisticas estadistics;
 
-	public ArrayList<Test> tests;
+	public Tests tests;
 
 	public Themes themes;
 

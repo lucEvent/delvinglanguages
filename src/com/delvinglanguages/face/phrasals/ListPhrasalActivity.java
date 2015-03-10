@@ -14,9 +14,11 @@ import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.listers.ReferenceLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class ListPhrasalActivity extends ListActivity implements Runnable {
+public class ListPhrasalActivity extends ListActivity implements Runnable,
+		Messages {
 
 	private ArrayList<DReference> values;
 	private ReferenceLister adapter;
@@ -46,7 +48,7 @@ public class ListPhrasalActivity extends ListActivity implements Runnable {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference, values.get(pos).name);
+		intent.putExtra(DREFERENCE, values.get(pos).name);
 		startActivity(intent);
 	}
 

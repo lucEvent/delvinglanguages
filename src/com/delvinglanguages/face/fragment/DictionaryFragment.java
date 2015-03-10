@@ -17,9 +17,11 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.DictionaryListActivity;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class DictionaryFragment extends Fragment implements OnClickListener {
+public class DictionaryFragment extends Fragment implements OnClickListener,
+		Messages {
 
 	private static final String DEBUG = "##DictionaryFragment##";
 
@@ -140,7 +142,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
 					letras[index].setEnabled(true);
 					letras[index].setOnClickListener(this);
 					letras[index].setTag(cap);
-				}	
+				}
 			} catch (NullPointerException e) {
 				Log.d(DEBUG, "ERROR index->" + index + ", cap->" + cap);
 			}
@@ -152,7 +154,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
 	public void onClick(View button) {
 		button.setOnClickListener(null);
 		Intent intent = new Intent(getActivity(), DictionaryListActivity.class);
-		intent.putExtra(ControlCore.sendCharacter, (Character) button.getTag());
+		intent.putExtra(CHARACTER, (Character) button.getTag());
 		startActivity(intent);
 	}
 

@@ -8,18 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Test;
-import com.delvinglanguages.core.Test.State;
+import com.delvinglanguages.kernel.set.TestReferenceStates;
+import com.delvinglanguages.kernel.test.TestReferenceState;
 
-public class TestStatsLister extends ArrayAdapter<State> {
+public class TestStatsLister extends ArrayAdapter<TestReferenceState> {
 
-	private Test test;
+	private TestReferenceStates values;
 	private LayoutInflater inflater;
 
-	public TestStatsLister(Context context) {
-		super(context, R.layout.i_test_stats, ControlCore.testActual.statistics);
-		this.test = ControlCore.testActual;
+	public TestStatsLister(Context context, TestReferenceStates values) {
+		super(context, R.layout.i_test_stats, values);
+		this.values = values;
 		this.inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -29,20 +28,20 @@ public class TestStatsLister extends ArrayAdapter<State> {
 		if (view == null) {
 			view = inflater.inflate(R.layout.i_test_stats, parent, false);
 		}
-
 		TextView word = (TextView) view.findViewById(R.id.word);
 		TextView pmat = (TextView) view.findViewById(R.id.match);
 		TextView pcom = (TextView) view.findViewById(R.id.complete);
 		TextView pwri = (TextView) view.findViewById(R.id.write);
 		TextView ptot = (TextView) view.findViewById(R.id.total);
 
-		word.setText(test.references.get(position).name);
-		State e = test.statistics.get(position);
-		int tot = e.fallos_match + e.fallos_complete + e.fallos_write;
+		TestReferenceState refstate = values.get(position);
+		word.setText(refstate.reference.name);
+		int tot = refstate.fallos_match + refstate.fallos_complete
+				+ refstate.fallos_write;
 
-		pmat.setText(e.fallos_match + " error(s)");
-		pcom.setText(e.fallos_complete + " error(s)");
-		pwri.setText(e.fallos_write + " error(s)");
+		pmat.setText(refstate.fallos_match + " error(s)");
+		pcom.setText(refstate.fallos_complete + " error(s)");
+		pwri.setText(refstate.fallos_write + " error(s)");
 		ptot.setText(tot + " errors");
 
 		return view;

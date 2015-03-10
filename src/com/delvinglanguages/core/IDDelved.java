@@ -7,7 +7,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.set.Themes;
+import com.delvinglanguages.kernel.set.Tests;
+import com.delvinglanguages.kernel.set.Themes;
+import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.core.theme.Theme;
 
 public class IDDelved {
@@ -174,7 +176,7 @@ public class IDDelved {
 		return datos.dictionary.types;
 	}
 
-	public ArrayList<Test> getTests() {
+	public Tests getTests() {
 		return datos.tests;
 	}
 
@@ -294,7 +296,7 @@ public class IDDelved {
 		datos.nombre = newname;
 	}
 
-	public void setTests(ArrayList<Test> tests) {
+	public void setTests(Tests tests) {
 		datos.tests = tests;
 	}
 

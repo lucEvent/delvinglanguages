@@ -1,6 +1,6 @@
 package com.delvinglanguages.view;
 
-import com.delvinglanguages.communications.NetWork;
+import com.delvinglanguages.net.internal.NetWork;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -38,13 +38,13 @@ public class MatchView extends View implements OnTouchListener {
 	private Coordinate coordinate;
 
 	private NetWork network;
-	
+
 	private ShapeDrawable mDrawable;
 
 	public MatchView(Context context) {
 		super(context);
 
-		coordinate = new Coordinate(0,0);
+		coordinate = new Coordinate(0, 0);
 
 		int x = 10;
 		int y = 10;
@@ -61,7 +61,7 @@ public class MatchView extends View implements OnTouchListener {
 	public void setNetwork(NetWork network) {
 		this.network = network;
 	}
-	
+
 	protected void onDraw(Canvas canvas) {
 		mDrawable.draw(canvas);
 

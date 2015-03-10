@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.core.theme.ThemePair;
 
 public class ThemePairLister extends ArrayAdapter<ThemePair> {

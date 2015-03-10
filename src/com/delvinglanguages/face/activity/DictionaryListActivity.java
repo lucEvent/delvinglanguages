@@ -7,12 +7,10 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
@@ -21,9 +19,10 @@ import com.delvinglanguages.core.DReference;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Word;
 import com.delvinglanguages.listers.ReferenceLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class DictionaryListActivity extends ListActivity {
+public class DictionaryListActivity extends ListActivity implements Messages {
 
 	private static final String DEBUG = "##DictionaryListActivity##";
 
@@ -34,7 +33,7 @@ public class DictionaryListActivity extends ListActivity {
 	private ArrayList<DReference> values;
 
 	private Button[] types;
-	
+
 	private boolean phMode;
 
 	@SuppressWarnings("deprecation")
@@ -52,10 +51,9 @@ public class DictionaryListActivity extends ListActivity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		phMode = ControlCore.getIdiomaActual(this).getSettings(
-				IDDelved.MASK_PH);
+		phMode = ControlCore.getIdiomaActual(this)
+				.getSettings(IDDelved.MASK_PH);
 
-		
 		types = new Button[Configuraciones.NUM_TYPES];
 		int[] ids = { R.id.lab_nn, R.id.lab_vb, R.id.lab_adj, R.id.lab_adv,
 				R.id.lab_phv, R.id.lab_exp, R.id.lab_oth };
@@ -68,7 +66,7 @@ public class DictionaryListActivity extends ListActivity {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
-		capital = getIntent().getExtras().getChar(ControlCore.sendCharacter);
+		capital = getIntent().getExtras().getChar(CHARACTER);
 
 		setTitle(getString(R.string.wordsby) + " " + capital);
 
@@ -132,7 +130,7 @@ public class DictionaryListActivity extends ListActivity {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(ControlCore.sendDReference, values.get(pos).name);
+		intent.putExtra(DREFERENCE, values.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

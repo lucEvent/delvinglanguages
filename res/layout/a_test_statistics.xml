@@ -1,41 +1,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ts_bg"
+    android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".TestActivity6" >
-
-    <LinearLayout
-        android:id="@+id/ll_ts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-
-        <Button
-            android:id="@+id/ts_save"
-            style="@style/button_list_selector"
-            android:text="@string/saveit" />
-
-        <Button
-            android:id="@+id/ts_redo"
-            style="@style/button_list_selector"
-            android:text="@string/doitagain" />
-
-        <Button
-            android:id="@+id/ts_exit"
-            style="@style/button_list_selector"
-            android:text="@string/exit" />
-    </LinearLayout>
+    android:layout_height="match_parent" >
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ll_ts"
+        android:layout_above="@+id/buttons"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" >
+        android:layout_marginLeft="10dip" >
     </ListView>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            style="@style/button_list_selector"
+            android:onClick="save"
+            android:text="@string/saveit" />
+
+        <Button
+            style="@style/button_list_selector"
+            android:onClick="doItAgain"
+            android:text="@string/doitagain" />
+
+        <Button
+            style="@style/button_list_selector"
+            android:onClick="exit"
+            android:text="@string/exit" />
+    </LinearLayout>
 
 </RelativeLayout>

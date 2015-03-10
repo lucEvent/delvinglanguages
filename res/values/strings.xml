@@ -11,11 +11,11 @@
     <string name="renaminglanguage">Renaming language</string>
     <string name="savingtest">Saving test</string>
     <string name="statistics">Statistics</string>
-    <string name="test_title_2">Step 1: Delv</string>
-    <string name="test_title_3">Step 2: Match</string>
-    <string name="test_title_4">Step 3: Complete</string>
-    <string name="test_title_5">Step 4: Write</string>
-    <string name="test_title_6">Test qualification</string>
+    <string name="test_title_3">Step 1: Delve</string>
+    <string name="test_title_4">Step 2: Match</string>
+    <string name="test_title_5">Step 3: Complete</string>
+    <string name="test_title_6">Step 4: Write</string>
+    <string name="test_title_7">Test qualification</string>
     <string name="title_add_phrasals">Adding phrasal verb</string>
     <string name="title_fonetics">Fonetics</string>
     <string name="title_list_phrasal">Phrasals\' list</string>

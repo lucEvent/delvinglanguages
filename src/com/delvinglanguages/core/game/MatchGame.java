@@ -3,6 +3,7 @@ package com.delvinglanguages.core.game;
 import java.util.ArrayList;
 
 import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.kernel.set.TestReferenceStates;
 
 public class MatchGame extends Game {
 
@@ -13,67 +14,61 @@ public class MatchGame extends Game {
 		public String[] answers;
 		public Boolean[] correct;
 	}
-	
-	private QuestionModel preguntaActual;
 
 	public MatchGame(ArrayList<DReference> references) {
 		super(references);
 	}
-	
+
 	public QuestionModel nextQuestion(int nAnswers) {
-		preguntaActual = new QuestionModel();
+		QuestionModel res = new QuestionModel();
 
 		DReference ref = nextReference();
-		preguntaActual.reference = ref;
-		preguntaActual.answers = new String[nAnswers];
-		preguntaActual.correct = new Boolean[nAnswers];
+		res.reference = ref;
+		res.answers = new String[nAnswers];
+		res.correct = new Boolean[nAnswers];
 
 		int randompos = nextInt(nAnswers);
-		preguntaActual.answers[randompos] = ref.getTranslation();
-		preguntaActual.correct[randompos] = true;
+		res.answers[randompos] = ref.getTranslation();
+		res.correct[randompos] = true;
 		for (int i = 0; i < nAnswers; ++i) {
 			if (i != randompos) {
 				DReference resp = references.get(nextInt(references.size()));
 				if (resp == ref) {
-					preguntaActual.correct[i] = true;
+					res.correct[i] = true;
 				} else {
-					preguntaActual.correct[i] = false;
+					res.correct[i] = false;
 				}
-				preguntaActual.answers[i] = resp.getTranslation();
+				res.answers[i] = resp.getTranslation();
 			}
 		}
-		return preguntaActual;
+		return res;
 	}
-	
-	public QuestionModel nextWord(boolean[] aciertos, int nAnswers) {
-		preguntaActual = new QuestionModel();
 
-		int cand = nextInt(references.size());
+	public QuestionModel nextQuestion(TestReferenceStates refstates,
+			int nAnswers) {
+		QuestionModel res = new QuestionModel();
 
-		while (aciertos[cand]) {
-			cand = nextInt(aciertos.length);
-		}
+		int cand = nextPosition(refstates);
 		DReference p = references.get(cand);
-		preguntaActual.reference = p;
-		preguntaActual.answers = new String[nAnswers];
-		preguntaActual.correct = new Boolean[nAnswers];
+		res.reference = p;
+		res.answers = new String[nAnswers];
+		res.correct = new Boolean[nAnswers];
 
 		int cand2 = nextInt(nAnswers);
-		preguntaActual.answers[cand2] = p.getTranslation();
-		preguntaActual.correct[cand2] = true;
+		res.answers[cand2] = p.getTranslation();
+		res.correct[cand2] = true;
 		for (int i = 0; i < nAnswers; ++i) {
 			if (i != cand2) {
-				DReference resp = references.get(nextInt(aciertos.length));
+				DReference resp = references.get(nextInt(refstates.size()));
 				if (resp == p) {
-					preguntaActual.correct[i] = true;
+					res.correct[i] = true;
 				} else {
-					preguntaActual.correct[i] = false;
+					res.correct[i] = false;
 				}
-				preguntaActual.answers[i] = resp.getTranslation();
+				res.answers[i] = resp.getTranslation();
 			}
 		}
-		return preguntaActual;
+		return res;
 	}
-
 
 }

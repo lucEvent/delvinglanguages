@@ -12,13 +12,15 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.core.theme.ThemeKernelControl;
 import com.delvinglanguages.face.activity.theme.CreateThemeActivity;
 import com.delvinglanguages.face.activity.theme.ThemeActivity;
 import com.delvinglanguages.listers.ThemeLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class ThemesFragment extends ListFragment implements OnClickListener {
+public class ThemesFragment extends ListFragment implements OnClickListener,
+		Messages {
 
 	private static final String DEBUG = "##ThemesFragment##";
 	private ThemeLister adapter;
@@ -39,7 +41,8 @@ public class ThemesFragment extends ListFragment implements OnClickListener {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		adapter = new ThemeLister(getActivity(), ControlCore.getThemes());
+		adapter = new ThemeLister(getActivity(), new ThemeKernelControl(
+				getActivity()).getThemes());
 		setListAdapter(adapter);
 
 		Button action = ((Button) view.findViewById(R.id.action));
@@ -53,7 +56,7 @@ public class ThemesFragment extends ListFragment implements OnClickListener {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent(getActivity(), ThemeActivity.class);
-		intent.putExtra(ControlCore.sendTheme, position);
+		intent.putExtra(THEME, position);
 		startActivityForResult(intent, 0);
 	}
 

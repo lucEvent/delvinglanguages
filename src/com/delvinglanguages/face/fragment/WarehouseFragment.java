@@ -22,9 +22,11 @@ import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
 import com.delvinglanguages.listers.StoreWordLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class WarehouseFragment extends ListFragment implements OnClickListener {
+public class WarehouseFragment extends ListFragment implements OnClickListener,
+		Messages {
 
 	private ArrayList<Nota> lista;
 
@@ -74,10 +76,9 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-
-		ControlCore.notaToModify = lista.get(position);
 		Intent intent = new Intent(getActivity(),
 				AddWordFromWarehouseActivity.class);
+		intent.putExtra(STORE_NOTE, position);
 		startActivity(intent);
 	}
 

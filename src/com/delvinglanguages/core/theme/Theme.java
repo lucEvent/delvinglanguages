@@ -1,6 +1,6 @@
 package com.delvinglanguages.core.theme;
 
-import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.kernel.set.ThemePairs;
 
 public class Theme {
 

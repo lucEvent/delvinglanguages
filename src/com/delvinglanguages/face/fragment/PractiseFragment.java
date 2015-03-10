@@ -14,7 +14,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.practice.CompleteActivity;
 import com.delvinglanguages.face.activity.practice.ListeningActivity;
 import com.delvinglanguages.face.activity.practice.PreguntasActivity;
-import com.delvinglanguages.face.activity.practice.SelectTestActivity;
+import com.delvinglanguages.face.activity.test.Test_1_SelectActivity;
 import com.delvinglanguages.face.activity.practice.WriteWordsActivity;
 import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.settings.Configuraciones;
@@ -63,7 +63,7 @@ public class PractiseFragment extends ListFragment {
 			startActivity(new Intent(activity, ListeningActivity.class));
 			break;
 		case 4:// Test you
-			startActivity(new Intent(activity, SelectTestActivity.class));
+			startActivity(new Intent(activity, Test_1_SelectActivity.class));
 			break;
 		}
 	}

@@ -9,7 +9,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.kernel.test.TestKernelControl;
 
 public class InputDialog extends Builder {
 
@@ -37,7 +37,8 @@ public class InputDialog extends Builder {
 						if (s.length() == 0) {
 							showMessage(R.string.nonametest);
 						} else {
-							ControlCore.saveTestActual(s);
+							new TestKernelControl(InputDialog.this.context)
+									.saveRunningTest(s);
 							showMessage(R.string.testsaved);
 						}
 					}

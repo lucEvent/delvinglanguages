@@ -21,12 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.communications.NetWork;
-import com.delvinglanguages.communications.WordReference;
-import com.delvinglanguages.communications.WordReference.WRItem;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromSearchActivity;
+import com.delvinglanguages.net.external.WordReference;
+import com.delvinglanguages.net.external.WordReference.WRItem;
+import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Configuraciones;
 
 public class SearchFragment extends Fragment implements OnClickListener,
@@ -70,7 +70,8 @@ public class SearchFragment extends Fragment implements OnClickListener,
 
 		dictionary = new WordReference(this);
 
-		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (imm != null) {
 			imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
 		}

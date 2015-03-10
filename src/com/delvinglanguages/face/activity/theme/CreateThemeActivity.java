@@ -12,7 +12,8 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.kernel.set.ThemePairs;
+import com.delvinglanguages.core.theme.ThemeKernelControl;
 import com.delvinglanguages.core.theme.ThemePair;
 import com.delvinglanguages.face.listeners.SpecialKeysBar;
 import com.delvinglanguages.listers.ThemePairInputLister;
@@ -97,7 +98,7 @@ public class CreateThemeActivity extends ListActivity implements
 			showMessage(R.string.msgnamenotspecified);
 			return;
 		}
-		ControlCore.addTheme(name, pairs);
+		new ThemeKernelControl(this).addTheme(name, pairs);
 		showMessage(R.string.msgthemecreated);
 		setResult(Activity.RESULT_OK);
 		finish();

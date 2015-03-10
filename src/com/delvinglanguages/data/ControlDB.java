@@ -13,12 +13,13 @@ import com.delvinglanguages.core.Estadisticas;
 import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Nota;
 import com.delvinglanguages.core.Word;
-import com.delvinglanguages.core.Test;
 import com.delvinglanguages.core.Tense;
-import com.delvinglanguages.core.set.ThemePairs;
-import com.delvinglanguages.core.set.Themes;
 import com.delvinglanguages.core.theme.Theme;
 import com.delvinglanguages.core.theme.ThemePair;
+import com.delvinglanguages.kernel.set.Tests;
+import com.delvinglanguages.kernel.set.ThemePairs;
+import com.delvinglanguages.kernel.set.Themes;
+import com.delvinglanguages.kernel.test.Test;
 
 public class ControlDB {
 
@@ -91,9 +92,9 @@ public class ControlDB {
 		return result;
 	}
 
-	public ArrayList<Test> readTests(int langID) {
+	public Tests readTests(int langID) {
 		SQLiteDatabase database = gateway.getReadableDatabase();
-		ArrayList<Test> result = new ArrayList<Test>();
+		Tests result = new Tests();
 		Cursor cursor = database.query(DataBase.test, DataBase.col_test,
 				DataBase.col_test[2] + "=" + langID, null, null, null,
 				DataBase.col_test[1] + " ASC");
@@ -356,6 +357,12 @@ public class ControlDB {
 		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
 				+ " = " + id, null);
 		// Removing themes
+		Themes themes = readThemes(id);
+		for (Theme theme : themes) {
+			// Removing theme pairs
+			database.delete(DataBase.theme_pair, DataBase.col_theme_pair[1]
+					+ " = " + theme.id, null);
+		}
 		database.delete(DataBase.theme, DataBase.col_theme[1] + " = " + id,
 				null);
 		// Removing language

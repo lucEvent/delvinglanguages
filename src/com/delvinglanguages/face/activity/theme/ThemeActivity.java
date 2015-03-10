@@ -2,8 +2,8 @@ package com.delvinglanguages.face.activity.theme;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.AlertDialog.Builder;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
 import com.delvinglanguages.core.theme.Theme;
+import com.delvinglanguages.core.theme.ThemeKernelControl;
 import com.delvinglanguages.listers.ThemePairLister;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Configuraciones;
 
-public class ThemeActivity extends ListActivity {
+public class ThemeActivity extends ListActivity implements Messages {
 
 	private Theme theme;
+	private ThemeKernelControl kernel;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -38,8 +40,9 @@ public class ThemeActivity extends ListActivity {
 			background.setBackgroundColor(Configuraciones.getBackgroundColor());
 		}
 
-		int thpos = getIntent().getExtras().getInt(ControlCore.sendTheme);
-		theme = ControlCore.getThemes().get(thpos);
+		kernel = new ThemeKernelControl(this);
+		int thpos = getIntent().getExtras().getInt(THEME);
+		theme = kernel.getThemes().get(thpos);
 
 		displayThemeName();
 		setListAdapter(new ThemePairLister(this, theme.getPairs()));
@@ -72,7 +75,7 @@ public class ThemeActivity extends ListActivity {
 		int id = item.getItemId();
 		if (id == R.id.m_edit) {
 			Intent intent = new Intent(this, ModifyThemeActivity.class);
-			intent.putExtra(ControlCore.sendTheme, theme.id);
+			intent.putExtra(THEME, theme.id);
 			startActivityForResult(intent, 0);
 			return true;
 		}
@@ -94,7 +97,7 @@ public class ThemeActivity extends ListActivity {
 	}
 
 	private void remove() {
-		ControlCore.removeTheme(theme);
+		kernel.removeTheme(theme);
 		setResult(Activity.RESULT_OK, null);
 		Toast.makeText(this, R.string.toast_themeremoved, Toast.LENGTH_SHORT)
 				.show();

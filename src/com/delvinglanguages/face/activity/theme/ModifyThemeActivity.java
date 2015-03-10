@@ -6,22 +6,26 @@ import android.view.View;
 import android.widget.Button;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.core.theme.Theme;
+import com.delvinglanguages.core.theme.ThemeKernelControl;
 import com.delvinglanguages.listers.ThemePairInputLister;
+import com.delvinglanguages.net.internal.Messages;
 
-public class ModifyThemeActivity extends CreateThemeActivity {
+public class ModifyThemeActivity extends CreateThemeActivity implements
+		Messages {
 
 	private Theme theme;
+	private ThemeKernelControl kernel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		int th_id = getIntent().getExtras().getInt(ControlCore.sendTheme);
+		int th_id = getIntent().getExtras().getInt(THEME);
 
-		theme = ControlCore.getTheme(th_id);
+		kernel = new ThemeKernelControl(this);
+		theme = kernel.getTheme(th_id);
 		pairs = (ThemePairs) theme.getPairs().clone();
 
 		adapter = new ThemePairInputLister(this, pairs, this);
@@ -40,7 +44,7 @@ public class ModifyThemeActivity extends CreateThemeActivity {
 		}
 		theme.setName(name);
 		theme.setPairs(pairs);
-		ControlCore.modifyTheme(theme);
+		kernel.modifyTheme(theme);
 		showMessage(R.string.msgthememodified);
 		setResult(Activity.RESULT_OK);
 		finish();

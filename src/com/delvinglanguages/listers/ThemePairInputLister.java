@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.set.ThemePairs;
+import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.core.theme.ThemePair;
 
 public class ThemePairInputLister extends ArrayAdapter<ThemePair> implements
