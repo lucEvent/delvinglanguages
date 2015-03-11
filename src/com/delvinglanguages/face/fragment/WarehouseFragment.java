@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.core.ControlCore;
+import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.core.Nota;
 import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
@@ -59,6 +60,14 @@ public class WarehouseFragment extends ListFragment implements OnClickListener,
 		edit = (EditText) view.findViewById(R.id.enter);
 		storeword = (ImageButton) view.findViewById(R.id.storeword);
 		storeword.setOnClickListener(this);
+
+		IDDelved idioma = ControlCore.getIdiomaActual(getActivity());
+		String hint_word = getString(R.string.enterwordin);
+		if (idioma.isIdiomaNativo()) {
+			edit.setHint(hint_word + " " + Configuraciones.IdiomaNativo);
+		} else {
+			edit.setHint(hint_word + " " + idioma.getName());
+		}
 
 		auxiliar = new Word(-1, "", "", "", 0, false, 0);
 

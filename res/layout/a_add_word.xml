@@ -9,25 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/options"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip" >
+        android:layout_alignParentTop="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:orientation="vertical" >
 
             <EditText
                 android:id="@+id/word"
                 style="@style/edittext_palabra"
-                android:hint="@string/enterword"
                 android:inputType="textCapSentences" />
 
             <EditText
                 android:id="@+id/translation"
                 style="@style/edittext_palabra"
-                android:hint="@string/translation"
                 android:inputType="textCapSentences" />
 
             <TextView
@@ -42,8 +40,7 @@
 
             <EditText
                 android:id="@+id/pronunciation"
-                style="@style/edittext_palabra"
-                android:hint="@string/pronunciation" />
+                style="@style/edittext_palabra" />
 
             <TextView
                 android:layout_width="match_parent"

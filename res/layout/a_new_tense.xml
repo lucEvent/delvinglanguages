@@ -7,7 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/add"
+        android:layout_above="@+id/button1"
         android:layout_alignParentTop="true"
         android:paddingLeft="@dimen/laymarleft"
         android:paddingRight="@dimen/laymarright"
@@ -210,8 +210,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="2dip"
-        android:onClick="addTense"
         android:background="@drawable/button_backgrounds"
+        android:onClick="addTense"
         android:text="@string/add" />
 
 </RelativeLayout>

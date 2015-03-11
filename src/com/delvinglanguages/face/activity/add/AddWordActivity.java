@@ -68,6 +68,21 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		pronuntiation = (EditText) findViewById(R.id.pronunciation);
 		pronuntiation.setOnFocusChangeListener(this);
 
+		String hint_word = getString(R.string.enterwordin);
+		String hint_trans = getString(R.string.entertranslationin);
+		String hint_pron = getString(R.string.enterpronuntiationin);
+		String native_lang = Configuraciones.IdiomaNativo;
+		String delved_lang = idioma.getName();
+		if (idioma.isIdiomaNativo()) {
+			word.setHint(hint_word + " " + native_lang);
+			tranlation.setHint(hint_trans + " " + delved_lang);
+			pronuntiation.setHint(hint_pron + " " + native_lang);
+		} else {
+			word.setHint(hint_word + " " + delved_lang);
+			tranlation.setHint(hint_trans + " " + native_lang);
+			pronuntiation.setHint(hint_pron + " " + delved_lang);
+		}
+
 		types = new Button[Configuraciones.NUM_TYPES];
 		types[Word.NOUN] = (Button) findViewById(R.id.sel_noun);
 		types[Word.VERB] = (Button) findViewById(R.id.sel_verb);
@@ -82,7 +97,7 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		if (!idioma.getSettings(IDDelved.MASK_PH)) {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
-		
+
 		specialKeys = new SpecialKeysBar(this, null);
 
 		fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation,

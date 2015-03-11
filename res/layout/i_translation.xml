@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:padding="5dip"
-        android:text="@string/pronunciation"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

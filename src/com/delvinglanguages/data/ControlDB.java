@@ -348,16 +348,15 @@ public class ControlDB {
 		// Removing store
 		database.delete(DataBase.almacen, DataBase.col_almacen[2] + " = " + id,
 				null);
-		// Removing statistics
-		database.delete(DataBase.estadisticas, DataBase.col_estadisticas[0]
-				+ " = " + id, null);
 		// Removing tests
 		database.delete(DataBase.test, DataBase.col_test[2] + " = " + id, null);
 		// Removing tiempos verbales
 		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
 				+ " = " + id, null);
 		// Removing themes
+		database.close();
 		Themes themes = readThemes(id);
+		database = gateway.getWritableDatabase();
 		for (Theme theme : themes) {
 			// Removing theme pairs
 			database.delete(DataBase.theme_pair, DataBase.col_theme_pair[1]
@@ -368,6 +367,9 @@ public class ControlDB {
 		// Removing language
 		database.delete(DataBase.idioma, DataBase.col_idioma[0] + " = " + id,
 				null);
+		// Removing statistics
+		database.delete(DataBase.estadisticas, DataBase.col_estadisticas[0]
+				+ " = " + id, null);
 		database.close();
 	}
 
@@ -405,14 +407,12 @@ public class ControlDB {
 		database.close();
 	}
 
-	public Tense getTense(int langId, int verbId, int tense, String verbName) {
+	public Tense getTense(int verbId, int tense, String verbName) {
 		SQLiteDatabase database = gateway.getReadableDatabase();
 		Cursor cursor = database.query(DataBase.conjugacion,
-				DataBase.col_conjugacion, DataBase.col_conjugacion[1] + " = "
-						+ langId + " and " + DataBase.col_conjugacion[2]
-						+ " = " + verbId + " and "
-						+ DataBase.col_conjugacion[3] + " = " + tense, null,
-				null, null, null);
+				DataBase.col_conjugacion, DataBase.col_conjugacion[2] + " = "
+						+ verbId + " and " + DataBase.col_conjugacion[3]
+						+ " = " + tense, null, null, null, null);
 		Tense result = null;
 		cursor.moveToFirst();
 		Log.d(DEBUG, "Encontrados:" + cursor.getCount() + " buscando tense:"
@@ -452,14 +452,10 @@ public class ControlDB {
 		database.close();
 	}
 
-	String col_conjugacion[] = { "_id", "idioma", "verbo", "tiempo", "formas",
-			"pronunciacion" };
-
-	public void removeConjugation(int langId, int verbId) {
+	public void removeAllTenses(int verbID) {
 		SQLiteDatabase database = gateway.getWritableDatabase();
-		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[1]
-				+ " = " + langId + " and " + DataBase.col_conjugacion[2]
-				+ " = " + verbId, null);
+		database.delete(DataBase.conjugacion, DataBase.col_conjugacion[2]
+				+ " = " + verbID, null);
 		database.close();
 	}
 

@@ -6,17 +6,16 @@ public class TenseKernelControl extends ControlCore {
 
 	public TenseKernelControl(Context context) {
 		super(context);
-
 	}
 
 	public Tense getTense(DReference verb, int tense) {
-		return database.getTense(actualLang.getID(), verb.id, tense, verb.name);
+		return database.getTense(verb.getDBID(), tense, verb.name);
 	}
 
-	public void addTense(int verbId, int tenseId, String verbName,
-			String forms, String pronunciations) {
-		database.insertTense(actualLang.getID(), verbId, verbName, tenseId,
-				forms, pronunciations);
+	public void addTense(DReference verb, int tenseId, String forms,
+			String pronunciations) {
+		database.insertTense(actualLang.getID(), verb.getDBID(), verb.name,
+				tenseId, forms, pronunciations);
 	}
 
 }

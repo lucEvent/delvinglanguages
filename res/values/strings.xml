@@ -170,21 +170,20 @@
     <string name="changedirection">Change direction</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="enteranewword">Enter a new word</string>
     <string name="enterlanguage">Enter language</string>
-    <string name="enterword">Enter word:</string>
     <string name="helps">Helps</string>
     <string name="hint_selectlanguage">Select language or type it</string>
     <string name="newword">New word</string>
-    <string name="pronunciation">Enter pronunciation:</string>
     <string name="removelanguage">Remove language</string>
     <string name="save">Save</string>
     <string name="clear">Clear</string>
-    <string name="translation">Enter translation:</string>
     <string name="typeanother">Type another</string>
     <string name="addlanguage">Add language</string>
     <string name="refresh">Refresh</string>
     <string name="integratelang">Integrate</string>
+    <string name="enterwordin">Enter word in</string>
+    <string name="entertranslationin">Enter translation in</string>
+    <string name="enterpronuntiationin">Enter pronuntiation in</string>
 
     <!-- * *************************** Mensajes *************************** * -->
     <string name="testremoved">Test removed</string>

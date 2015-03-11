@@ -140,13 +140,10 @@ public class ControlCore {
 		}
 		actualLang.addPalabra(database.insertWord(nom, trad,
 				actualLang.getID(), spell, type));
-		Log.d(DEBUG, "size:" + actualLang.getPalabras().size());
 	}
 
 	public static void updatePalabra(Word pal, String name, String trad,
 			String spell, int type) {
-		ArrayList<String> oldword = Word.formatArray(null, pal.getName());
-		oldword.addAll(Word.formatArray(null, pal.getTranslation()));
 		actualLang.reindexar(pal, name, trad, spell, type);
 		if (actualLang.isIdiomaNativo()) {
 			pal = pal.cloneReverse();
@@ -194,7 +191,7 @@ public class ControlCore {
 		for (int i = 0; i < bin.size(); i++) {
 			Word p = bin.get(i);
 			if (p.isVerb()) {
-				// / database.removeTenses(actualLang.getID(), p.id);
+				database.removeAllTenses(p.id);
 			}
 		}
 		actualLang.vaciarPapelera();

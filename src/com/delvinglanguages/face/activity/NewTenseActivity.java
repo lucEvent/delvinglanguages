@@ -22,8 +22,6 @@ import com.delvinglanguages.settings.Configuraciones;
 public class NewTenseActivity extends Activity implements
 		OnCheckedChangeListener, Messages {
 
-	private static final String DEBUG = "##NewTenseAct##";
-
 	public final static String TENSE = "tense";
 
 	private int tposition;
@@ -34,7 +32,7 @@ public class NewTenseActivity extends Activity implements
 	private EditText[] prons;
 	private CheckBox repite;
 
-	private int tenseId;// ATENCION: ASSIGNAR VALOR A ESTA VARIABLE
+	private int tenseId;
 
 	private DReference reference;
 
@@ -104,9 +102,8 @@ public class NewTenseActivity extends Activity implements
 			form[i] = forms[i].getText().toString();
 			pron[i] = prons[i].getText().toString();
 		}
-		new TenseKernelControl(this).addTense(reference.id, tenseId,
-				reference.name, Tense.queueString(form),
-				Tense.queueString(pron));
+		new TenseKernelControl(this).addTense(reference, tenseId,
+				Tense.queueString(form), Tense.queueString(pron));
 		finish();
 	}
 

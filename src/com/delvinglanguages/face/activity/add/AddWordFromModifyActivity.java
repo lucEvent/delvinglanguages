@@ -30,14 +30,6 @@ public class AddWordFromModifyActivity extends AddWordActivity {
 		word.setText(name);
 		word.setSelection(name.length());
 
-		{ // Debug.edit for svenska
-			if (palabra.isNoun() || palabra.isAdjective()) {
-				String auxs = name + " [" + name + "en, " + name + "]";
-				word.setText(auxs);
-				word.setSelection(auxs.length() - 1);
-			}
-		} // end debug.edit
-
 		tranlation.setText(palabra.getTranslation());
 		pronuntiation.setText(palabra.getPronunciation());
 		setType(palabra.getType());

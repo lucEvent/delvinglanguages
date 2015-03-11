@@ -134,4 +134,8 @@ public class DReference implements Comparable<DReference> {
 		return res;
 	}
 
+	public int getDBID() {
+		return links.get(0).owner.id;
+	}
+
 }

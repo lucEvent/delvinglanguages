@@ -12,7 +12,6 @@ public class AddWordFromSearchActivity extends AddWordActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.a_add_word);
 
 		Bundle bundle = getIntent().getExtras();
 		get_and_set_Name(bundle);

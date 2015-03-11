@@ -23,40 +23,37 @@ public class Tense {
 	/*
 	 * English tense ids
 	 */
-	public static final int EN_PRESENT = 0;
-	public static final int EN_PAST_SIMPLE = 1;
-	public static final int EN_FUTURE = 2;
-	public static final int EN_PRESENT_CONTINUOUS = 3;
-	public static final int EN_PRESENT_PERFECT = 4;
-	public static final int EN_PRESENT_PERFECT_CONTINUOUS = 5;
-	public static final int EN_PAST_CONTINUOUS = 6;
-	public static final int EN_PAST_PERFECT_CONTINUOUS = 7;
-	public static final int EN_FUTURE_CONTINUOUS = 8;
-	public static final int EN_FUTURE_PERFECT = 9;
-	public static final int EN_FUTURE_GOING_TO = 10;
-	public static final int EN_CONDITIONAL = 11;
-	public static final int EN_IMPERATIVE = 12;
+	public static final int EN_PRESENT = 100;
+	public static final int EN_PAST_SIMPLE = 101;
+	public static final int EN_FUTURE = 102;
+	public static final int EN_PRESENT_CONTINUOUS = 103;
+	public static final int EN_PRESENT_PERFECT = 104;
+	public static final int EN_PRESENT_PERFECT_CONTINUOUS = 105;
+	public static final int EN_PAST_CONTINUOUS = 106;
+	public static final int EN_PAST_PERFECT_CONTINUOUS = 107;
+	public static final int EN_FUTURE_CONTINUOUS = 108;
+	public static final int EN_FUTURE_PERFECT = 109;
+	public static final int EN_FUTURE_GOING_TO = 110;
+	public static final int EN_CONDITIONAL = 111;
+	public static final int EN_IMPERATIVE = 112;
 
 	/*
 	 * 
 	 * Swedish tense ids
 	 */
-	public static final int SV_PRESENT = 0;
-	public static final int SV_SUPINUM = 1;
-	public static final int SV_PRETERITUM = 2;
-	public static final int SV_FUTURE = 3;
-	public static final int SV_IMPERATIV = 4;
+	public static final int SV_PRESENT = 200;
+	public static final int SV_SUPINUM = 201;
+	public static final int SV_PRETERITUM = 202;
+	public static final int SV_FUTURE = 203;
+	public static final int SV_IMPERATIV = 204;
 
 	/*
 	 * Finnish tense ids
 	 */
-	public static final int FI_PRESENT = 0;
-	public static final int FI_IMPERFECT = 1;
-	public static final int FI_CONDITIONAL = 2;
+	public static final int FI_PRESENT = 300;
+	public static final int FI_IMPERFECT = 301;
+	public static final int FI_CONDITIONAL = 302;
 
-
-
-	
 	/*
 	 * Tense variables
 	 */
