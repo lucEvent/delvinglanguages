@@ -8,12 +8,29 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Nota;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Nota;
+import com.delvinglanguages.kernel.Tense;
+import com.delvinglanguages.kernel.TenseKernelControl;
+import com.delvinglanguages.kernel.Translation;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.Languages;
+import com.delvinglanguages.kernel.set.Notas;
+import com.delvinglanguages.kernel.set.Tests;
+import com.delvinglanguages.kernel.set.ThemePairs;
+import com.delvinglanguages.kernel.set.Themes;
+import com.delvinglanguages.kernel.set.Translations;
+import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.kernel.test.Test;
+import com.delvinglanguages.kernel.test.TestKernelControl;
+import com.delvinglanguages.kernel.theme.Theme;
+import com.delvinglanguages.kernel.theme.ThemeKernelControl;
+import com.delvinglanguages.kernel.theme.ThemePair;
 
 public class BackUp extends IOOperations {
 
@@ -25,37 +42,66 @@ public class BackUp extends IOOperations {
 
 	public void createBackUp(Context context) {
 		int nlangs = 0;
-		int nwords = 0;
-		int nstor = 0;
 		try {
 			File file = getBackUpFile();
 			initOutputBuffer(file);
 
-			ArrayList<IDDelved> idiomas = ControlCore.getIdiomas();
-			saveInteger(idiomas.size());
+			Languages idiomas = KernelControl.getLanguages();
+			writeInteger(idiomas.size());
 			// Por cada idioma
 			for (int i = 0; i < idiomas.size(); i++, nlangs++) {
 				IDDelved lang = idiomas.get(i);
-				saveString(lang.getName());
+				writeString(lang.getName());
 				Log.d(DEBUG, lang.getName());
-				ControlCore.setIdiomaActual(i);
-				ArrayList<Word> palabras = ControlCore.getPalabras();
-				saveInteger(palabras.size());
+				KernelControl.setCurrentLanguage(i);
+				Words palabras = LanguageKernelControl.getWords();
+				writeInteger(palabras.size());
 				// Por cada palabra del idioma
-				for (int j = 0; j < palabras.size(); j++, nwords++) {
-					Word p = palabras.get(j);
+				for (Word p : palabras) {
 					Log.d(DEBUG, "---" + p.getName());
-					saveString(p.getName());
-					saveString(p.getTranslation());
-					saveString(p.getPronunciation());
-					saveInteger(p.getType());
+					writeString(p.getName());
+					writeString(p.getPronunciation());
+					// Por cada traduccion de P
+					Translations Ts = p.getTranslations();
+					writeInteger(Ts.size());
+					for (Translation T : Ts) {
+						writeString(T.name);
+						writeInteger(T.type);
+					}
 				}
-				ArrayList<Nota> notas = ControlCore.getStore();
 				// Por cada entrada del store
-				saveInteger(notas.size());
-				for (int j = 0; j < notas.size(); j++, nstor++) {
-					Nota n = notas.get(j);
-					saveString(n.get());
+				Notas notas = LanguageKernelControl.getDrawerWords();
+				writeInteger(notas.size());
+				for (Nota n : notas) {
+					writeString(n.get());
+				}
+				// Por cada theme
+				Themes themes = new ThemeKernelControl(context).getThemes();
+				writeInteger(themes.size());
+				for (Theme theme : themes) {
+					writeString(theme.getName());
+					// Por cada themepair del theme
+					writeInteger(theme.getPairs().size());
+					for (ThemePair pair : theme.getPairs()) {
+						writeString(pair.inDelved);
+						writeString(pair.inNative);
+					}
+				}
+				// Por cada Tense
+				ArrayList<Pair<Integer, Tense>> tenses = new TenseKernelControl(context).getTenses();
+				writeInteger(tenses.size());
+				for (Pair<Integer, Tense> tense : tenses) {
+					writeInteger(tense.first); // verbId
+					writeInteger(tense.second.tense);
+					writeString(tense.second.getFormsString());
+					writeString(tense.second.getPronuntiationsString());
+				}
+				// Por cada Test
+				Tests tests = new TestKernelControl(context).getTests();
+				writeInteger(tests.size());
+				for (Test test : tests) {
+					writeString(test.name);
+					writeString(test.encapsulate());
 				}
 			}
 			bufferOut.flush();
@@ -63,12 +109,7 @@ public class BackUp extends IOOperations {
 		} catch (IOException e) {
 			Log.d(DEBUG, "IOException: " + e.toString());
 		}
-		String s1 = nlangs + " languages saved";
-		Toast.makeText(context, s1, Toast.LENGTH_SHORT).show();
-		String s2 = nwords + " words saved";
-		Toast.makeText(context, s2, Toast.LENGTH_SHORT).show();
-		String s3 = nstor + " stored words saved";
-		Toast.makeText(context, s3, Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, nlangs + " languages saved", Toast.LENGTH_SHORT).show();
 	}
 
 	public void recoverBackUp(Context context) {
@@ -80,31 +121,64 @@ public class BackUp extends IOOperations {
 			// Por cada idioma
 			for (int i = 0; i < nIdiomas; i++) {
 				String idName = readString();
-				ControlCore.setIdiomaActual(ControlCore.addIdioma(idName, 0));
-				ControlCore.loadLanguage(true);
-				ControlCore.getPalabras();
-				while(ControlCore.getIdiomaActual(context).isbusy());
-				Log.d	(DEBUG, (i + 1) + ". " + idName);
+				KernelControl.setCurrentLanguage(KernelControl.addLanguage(idName, 0));
+				LanguageKernelControl.getWords();
+				while (!LanguageKernelControl.isDictionaryCreated());
+				Log.d(DEBUG, (i + 1) + ". " + idName);
 				// Por cada palabra del idioma
 				int nPalabras = readInteger();
 				for (int j = 0; j < nPalabras; j++) {
 					String name = readString();
-					String tran = readString();
+					Log.d(DEBUG, "---" + name);
 					String pron = readString();
-					int type = readInteger();
-
-					ControlCore.addPalabra(name, tran, pron, type);
-	//				Log.d(DEBUG, "(w) " + name);
+					int nTrans = readInteger();
+					Translations trans = new Translations();
+					for (int t = 0; t < nTrans; t++) {
+						String ntrans = readString();
+						int ntype = readInteger();
+						trans.add(new Translation(ntrans, ntype));
+					}
+					KernelControl.addWord(name, trans, pron);
 				}
 				// Por cada entrada del store
 				int nNotas = readInteger();
 				for (int j = 0; j < nNotas; j++) {
 					String nota = readString();
-					ControlCore.addToStore(nota);
-				//	Log.d(DEBUG, "(sw) " + nota);
+					KernelControl.addToStore(nota);
+				}
+				// Por cada theme
+				ThemeKernelControl thKernel = new ThemeKernelControl(context);
+				int nThemes = readInteger();
+				for (int j = 0; j < nThemes; j++) {
+					String thName = readString();
+					ThemePairs thPairs = new ThemePairs();
+					int nthPairs = readInteger();
+					for (int k = 0; k < nthPairs; k++) {
+						String thpDelv = readString();
+						String thpNatv = readString();
+						thPairs.add(new ThemePair(thpDelv, thpNatv));
+					}
+					thKernel.addTheme(thName, thPairs);
+				}
+				// Por cada Tense
+				TenseKernelControl tenKernel = new TenseKernelControl(context);
+				int nTenses = readInteger();
+				for (int j = 0; j < nTenses; j++) {
+					int vId = readInteger();
+					int teId = readInteger();
+					String forms = readString();
+					String prons = readString();
+					tenKernel.addTense(vId, "", teId, forms, prons);
+				}
+				// Por cada Test
+				TestKernelControl tesKernel = new TestKernelControl(context);
+				int nTests = readInteger();
+				for (int j = 0; j < nTests; j++) {
+					String tName = readString();
+					String tContent = readString();
+					tesKernel.addTest(tName, tContent);
 				}
 			}
-
 			bufferIn.close();
 		} catch (FileNotFoundException e) {
 			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
@@ -121,8 +195,7 @@ public class BackUp extends IOOperations {
 		}
 		File externalDir = Environment.getExternalStorageDirectory();
 
-		File folder = new File(externalDir.getAbsolutePath() + File.separator
-				+ "Delving");
+		File folder = new File(externalDir.getAbsolutePath() + File.separator + "Delving");
 		folder.mkdirs();
 		return new File(folder, backupfile);
 	}

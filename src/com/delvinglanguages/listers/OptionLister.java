@@ -17,8 +17,7 @@ public class OptionLister extends ArrayAdapter<String> {
 	public OptionLister(Context context, String[] values) {
 		super(context, R.layout.i_option, values);
 		this.values = values;
-		this.inflater = (LayoutInflater) getContext().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override

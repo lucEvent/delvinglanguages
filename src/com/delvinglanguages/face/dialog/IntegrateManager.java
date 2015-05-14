@@ -16,11 +16,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.IntegrateRepeatedActivity;
-import com.delvinglanguages.listers.TranslationLister;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.set.Languages;
+import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.listers.StringLister;
 
 public class IntegrateManager extends Builder implements OnItemClickListener {
 
@@ -33,21 +33,20 @@ public class IntegrateManager extends Builder implements OnItemClickListener {
 		super(context);
 		this.context = context;
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.d_integrate_1, null, false);
-		// setBackground(view);
+
 		ListView list = (ListView) view.findViewById(R.id.langlist);
 
-		ArrayList<IDDelved> langs = ControlCore.getIdiomas();
+		Languages langs = KernelControl.getLanguages();
 		ArrayList<String> values = new ArrayList<String>();
 		for (int i = 0; i < langs.size(); ++i) {
-			if (ControlCore.getIdiomaActual(null) != langs.get(i)) {
+			if (KernelControl.getCurrentLanguage() != langs.get(i)) {
 				values.add(langs.get(i).getName());
 			}
 		}
 
-		list.setAdapter(new TranslationLister(context, values));
+		list.setAdapter(new StringLister(context, values));
 		list.setOnItemClickListener(this);
 
 		setTitle(R.string.integratinglang);
@@ -66,19 +65,17 @@ public class IntegrateManager extends Builder implements OnItemClickListener {
 
 		setMessage(R.string.exp_integrate2);
 		setView(null);
-		setPositiveButton(R.string.confirm,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						int poslang = pos;
-						if (pos >= ControlCore.getIdiomas().indexOf(
-								ControlCore.getIdiomaActual(null))) {
-							poslang = pos + 1;
-						}
-						startintegration(poslang);
-					}
+		setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				int poslang = pos;
+				if (pos >= KernelControl.getLanguages().indexOf(KernelControl.getCurrentLanguage())) {
+					poslang = pos + 1;
+				}
+				startintegration(poslang);
+			}
 
-				});
+		});
 		setNegativeButton(R.string.cancel, null);
 		currentDialog = show();
 	}
@@ -86,29 +83,26 @@ public class IntegrateManager extends Builder implements OnItemClickListener {
 	private void startintegration(int position) {
 		currentDialog.dismiss();
 
-		ArrayList<Word> repited = ControlCore.integrateLanguage(position);
+		Words repited = KernelControl.integrateLanguage(position);
 
 		if (repited.size() == 0) {
 			// Cerrar dialog y acabar activity y eliminar idioma
 			showMessage(R.string.languageintegrated);
-			ControlCore.removeLanguage();
+			KernelControl.deleteLanguage();
 			context.finish();
 			return;
 		}
 
 		// Cambiar el mensage
-		String message = context.getResources().getString(
-				R.string.exp_integrate3);
-		setMessage((repited.size()>>1) + " " + message);
-		setPositiveButton(R.string.handle,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						context.startActivity(new Intent(context,
-								IntegrateRepeatedActivity.class));
-						context.finish();
-					}
-				});
+		String message = context.getResources().getString(R.string.exp_integrate3);
+		setMessage((repited.size() >> 1) + " " + message);
+		setPositiveButton(R.string.handle, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				context.startActivity(new Intent(context, IntegrateRepeatedActivity.class));
+				context.finish();
+			}
+		});
 		setNegativeButton(R.string.ignore, null);
 		show();
 

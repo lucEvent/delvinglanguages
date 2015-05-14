@@ -1,57 +1,41 @@
 package com.delvinglanguages.face.fragment;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
+import android.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class VerbsFragment extends ListFragment implements OnClickListener,
-		Messages {
+public class VerbsFragment extends ListFragment implements OnClickListener, Messages {
 
-	private static final int REQUEST_MODIFIED = 0;
-
-	private ArrayList<DReference> verbslist;
+	private DReferences verbslist;
 
 	private boolean phMode;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.a_list_with_button, container,
-				false);
+		View view = inflater.inflate(R.layout.a_list_with_button, container, false);
 
-		View background = view.findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(view);
 
-		verbslist = ControlCore.getVerbs();
-		phMode = ControlCore.getIdiomaActual(getActivity()).getSettings(
-				IDDelved.MASK_PH);
+		verbslist = LanguageKernelControl.getVerbs();
+		phMode = LanguageKernelControl.getLanguageSettings(IDDelved.MASK_PH);
 		setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
 
 		Button action = ((Button) view.findViewById(R.id.action));
@@ -65,7 +49,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener,
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		super.onListItemClick(l, v, pos, id);
 		Intent intent = new Intent(getActivity(), ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, verbslist.get(pos).name);
+		intent.putExtra(DREFERENCE, verbslist.get(pos).getName());
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
@@ -74,9 +58,8 @@ public class VerbsFragment extends ListFragment implements OnClickListener,
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_MODIFIED) {
 			if (resultCode == Activity.RESULT_OK) {
-				verbslist = ControlCore.getVerbs();
-				setListAdapter(new ReferenceLister(getActivity(), verbslist,
-						phMode));
+				verbslist = LanguageKernelControl.getVerbs();
+				setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
 			}
 		}
 	}

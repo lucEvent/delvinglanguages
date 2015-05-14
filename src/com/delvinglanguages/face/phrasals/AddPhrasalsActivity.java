@@ -16,14 +16,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.listers.PhrasalLister;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.net.internal.Messages;
+import com.delvinglanguages.settings.Settings;
 
-public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocusChangeListener {
+public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocusChangeListener, Messages {
 
 	private String[] bases;
 	private Integer[] m_bases, m_preps;
@@ -34,20 +34,12 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 
 	private EditText inputbase, inputprep;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_add_phrasals);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_add_phrasals, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		ListView preplist = (ListView) findViewById(R.id.prep_list);
 		m_preps = new Integer[IDDelved.preps.length];
@@ -58,7 +50,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 		preplist.setAdapter(prepadapter);
 		preplist.setOnItemClickListener(new PrepositionListListener());
 
-		phrasals = ControlCore.getIdiomaActual(this).getPhrasals();
+		phrasals = LanguageKernelControl.getPhrasals();
 
 		ListView verblist = (ListView) findViewById(R.id.verb_list);
 		bases = phrasals.keySet().toArray(new String[0]);
@@ -80,8 +72,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 
 	private class VerbListListener implements OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> ad, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> ad, View view, int position, long id) {
 			// Lista de las bases
 			if (m_bases[position] == PhrasalLister.STAT_MARKED) {
 				String p = inputprep.getText().toString().toLowerCase();
@@ -164,8 +155,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -210,7 +200,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 			}
 		}
 		Intent intent = new Intent(this, AddWordFromPhrasalActivity.class);
-		intent.putExtra(AddWordActivity.SEND_NAME, base + " " + prep);
+		intent.putExtra(SEND_NAME, base + " " + prep);
 		startActivity(intent);
 		finish();
 	}

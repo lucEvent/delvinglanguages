@@ -11,14 +11,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.game.WriteGame;
 import com.delvinglanguages.face.activity.practice.WriteWordsActivity;
 import com.delvinglanguages.face.dialog.InputDialog;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.game.WriteGame;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestKernelControl;
 import com.delvinglanguages.kernel.test.TestReferenceState;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class Test_6_WriteActivity extends WriteWordsActivity {
 
@@ -52,15 +52,15 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 		posicionPalabra = gamecontroller.nextPosition(test.references);
 		refActual = test.references.get(posicionPalabra).reference;
 
-		int type = refActual.type;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+		int type = refActual.getType();
+		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
 			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Configuraciones.type_colors[i]);
+				labels[i].setBackgroundColor(Settings.type_colors[i]);
 			} else {
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
-		progress.setMax(refActual.name.length());
+		progress.setMax(refActual.getName().length());
 		progress.setProgress(0);
 		input.setText("");
 		palabra.setText(refActual.getTranslation().toUpperCase());
@@ -71,22 +71,19 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 	@Override
 	public void afterTextChanged(Editable s) {
 		String answer = input.getText().toString();
-		if (refActual.name.toLowerCase().startsWith(answer.toLowerCase())) {
+		if (refActual.getName().toLowerCase().startsWith(answer.toLowerCase())) {
 
 			progress.setProgress(answer.length());
-			progress.getProgressDrawable().setColorFilter(0xFF33CC00,
-					PorterDuff.Mode.MULTIPLY);
-			if (answer.length() < refActual.name.length()) {
+			progress.getProgressDrawable().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
+			if (answer.length() < refActual.getName().length()) {
 				fullfill();
-			} else if (refActual.name.toLowerCase()
-					.equals(answer.toLowerCase())) {
+			} else if (refActual.getName().toLowerCase().equals(answer.toLowerCase())) {
 				succesCounter++;
 				if (succesCounter == test.references.size()) {
 					// Modificar prioridades segun resultados
 					for (TestReferenceState refstate : test.references) {
-						if (refstate.fallos_match + refstate.fallos_complete
-								+ refstate.fallos_write == 0) {
-							ControlCore.ejercicio(refstate.reference, 1);
+						if (refstate.fallos_match + refstate.fallos_complete + refstate.fallos_write == 0) {
+							KernelControl.exercise(refstate.reference, 1);
 						}
 					}
 					//
@@ -115,9 +112,8 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 			}
 		} else {
 			test.references.get(posicionPalabra).fallos_write++;
-			progress.setProgress(refActual.name.length());
-			progress.getProgressDrawable().setColorFilter(0xFFFF0000,
-					PorterDuff.Mode.SRC_IN);
+			progress.setProgress(refActual.getName().length());
+			progress.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.SRC_IN);
 		}
 	}
 
@@ -150,15 +146,14 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.title_removingtest);
 			builder.setMessage(R.string.removetestquestion);
-			builder.setPositiveButton(R.string.confirm,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							kernel.removeTest(test);
-							showMessage(R.string.testremoved);
-							finish();
-						}
-					});
+			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					kernel.removeTest(test);
+					showMessage(R.string.testremoved);
+					finish();
+				}
+			});
 			builder.setNegativeButton(R.string.cancel, null);
 			builder.create().show();
 

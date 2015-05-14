@@ -1,20 +1,14 @@
 package com.delvinglanguages.face.settings;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.data.BackUp;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class SettingsActivity extends Activity {
 
@@ -24,25 +18,17 @@ public class SettingsActivity extends Activity {
 		setContentView(R.layout.a_app_settings);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		int type_bg = Configuraciones.backgroundType();
-		View background = findViewById(R.id.background);
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(findViewById(android.R.id.content));
 
 		CheckedTextView dm = (CheckedTextView) findViewById(R.id.doublemode);
 		CheckedTextView vkb = (CheckedTextView) findViewById(R.id.vibratekb_state);
 
-		dm.setChecked(Configuraciones.doubleMode());
-		vkb.setChecked(Configuraciones.vibration());
+		dm.setChecked(Settings.doubleMode());
+		vkb.setChecked(Settings.vibration());
 	}
 
 	public void changeNativeLanguage(View v) {
@@ -52,12 +38,12 @@ public class SettingsActivity extends Activity {
 
 	public void double_mode_state(View v) {
 		((CheckedTextView) v).toggle();
-		Configuraciones.toggleDoubleMode();
+		Settings.toggleDoubleMode();
 	}
 
 	public void vibratekb_state(View v) {
 		((CheckedTextView) v).toggle();
-		Configuraciones.toggleVibration();
+		Settings.toggleVibration();
 
 	}
 
@@ -83,7 +69,7 @@ public class SettingsActivity extends Activity {
 
 	public void recoverBackup(View v) {
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				new BackUp().recoverBackUp(SettingsActivity.this);

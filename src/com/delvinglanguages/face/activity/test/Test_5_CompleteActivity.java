@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.game.CompleteGame;
+import com.delvinglanguages.kernel.game.CompleteGame;
 import com.delvinglanguages.face.activity.practice.CompleteActivity;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.kernel.test.Test;

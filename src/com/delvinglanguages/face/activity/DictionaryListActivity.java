@@ -1,12 +1,12 @@
 package com.delvinglanguages.face.activity;
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,13 +14,14 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class DictionaryListActivity extends ListActivity implements Messages {
 
@@ -30,39 +31,29 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 
 	private Character capital;
 
-	private ArrayList<DReference> values;
+	private DReferences values;
 
 	private Button[] types;
 
 	private boolean phMode;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle state) {
 		super.onCreate(state);
-		setContentView(R.layout.a_dictionary_list);
+		View view = getLayoutInflater().inflate(R.layout.a_dictionary_list, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		phMode = LanguageKernelControl.getLanguageSettings(IDDelved.MASK_PH);
 
-		phMode = ControlCore.getIdiomaActual(this)
-				.getSettings(IDDelved.MASK_PH);
-
-		types = new Button[Configuraciones.NUM_TYPES];
-		int[] ids = { R.id.lab_nn, R.id.lab_vb, R.id.lab_adj, R.id.lab_adv,
-				R.id.lab_phv, R.id.lab_exp, R.id.lab_oth };
+		types = new Button[Settings.NUM_TYPES];
+		int[] ids = { R.id.lab_nn, R.id.lab_vb, R.id.lab_adj, R.id.lab_adv, R.id.lab_phv, R.id.lab_exp, R.id.lab_oth };
 
 		for (int i = 0; i < types.length; i++) {
 			types[i] = (Button) findViewById(ids[i]);
 			types[i].setSelected(true);
 		}
-		if (!ControlCore.getIdiomaActual(this).getSettings(IDDelved.MASK_PH)) {
+		if (!phMode) {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
@@ -86,24 +77,25 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 	private void setList() {
 		int type = getType();
 
-		TreeSet<DReference> sub = ControlCore.getSubdiccionario(capital);
+		TreeSet<DReference> sub = LanguageKernelControl.getSubdictionary(capital);
 		if (type == 0) {
-			values = new ArrayList<DReference>(sub);
+			values = new DReferences(sub);
 		} else {
-			values = new ArrayList<DReference>();
+			values = new DReferences();
 			for (DReference ref : sub) {
-				if ((type & ref.type) != 0) {
+				if ((type & ref.getType()) != 0) {
 					values.add(ref);
 				}
 			}
 		}
+		Log.d(DEBUG, "values length es:" + values.size());
 		setListAdapter(new ReferenceLister(this, values, phMode));
 		// Se podria actualizar en lugar de crear cada vez de nuevo
 	}
 
 	private int getType() {
 		int type = 0;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; i++) {
+		for (int i = 0; i < types.length; i++) {
 			if (types[i].isSelected()) {
 				type += (1 << i);
 			}
@@ -130,7 +122,7 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, values.get(pos).name);
+		intent.putExtra(DREFERENCE, values.get(pos).getName());
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

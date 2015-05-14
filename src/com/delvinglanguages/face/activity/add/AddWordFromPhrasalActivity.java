@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Word;
-import com.delvinglanguages.face.activity.add.AddWordActivity;
 
 public class AddWordFromPhrasalActivity extends AddWordActivity {
 
@@ -17,10 +15,6 @@ public class AddWordFromPhrasalActivity extends AddWordActivity {
 		get_and_set_Name(getIntent().getExtras());
 		((Button) findViewById(R.id.addmore)).setVisibility(View.GONE);
 
-		for (int i = 0; i < types.length; i++) {
-			types[i].setClickable(false);
-		}
-		types[Word.PHRASAL].setSelected(true);
 	}
 
 }

@@ -16,13 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.game.MatchGame;
-import com.delvinglanguages.core.game.MatchGame.QuestionModel;
 import com.delvinglanguages.face.dialog.InputDialog;
+import com.delvinglanguages.kernel.game.MatchGame;
+import com.delvinglanguages.kernel.game.MatchGame.QuestionModel;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestKernelControl;
 import com.delvinglanguages.kernel.test.TestReferenceState;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class Test_4_MatchActivity extends Activity implements OnClickListener {
 
@@ -42,22 +42,15 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_match);
+		View view = getLayoutInflater().inflate(R.layout.a_match, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		kernel = new TestKernelControl(this);
 		test = TestKernelControl.runningTest;
 		test.state = Test.PHASE_MATCH;
 		gamecontroller = new MatchGame(test.getReferences());
 		handler = new Handler();
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
 
 		// Iniciamos elementos graficos
 		palabra = (TextView) findViewById(R.id.palabra);
@@ -94,8 +87,7 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 			}
 			for (int i = 0; i < NUM_RESP; i++) {
 				if (pActual.correct[i]) {
-					resps[i].getBackground().setColorFilter(0xFF33CC00,
-							PorterDuff.Mode.MULTIPLY);
+					resps[i].getBackground().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
 				}
 				resps[i].setClickable(false);
 			}
@@ -107,12 +99,10 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 			}
 		} else {
 			test.references.get(positionActual).fallos_match++;
-			v.getBackground().setColorFilter(0xFFFF0000,
-					PorterDuff.Mode.MULTIPLY);
+			v.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
 			for (int i = 0; i < NUM_RESP; i++) {
 				if (pActual.correct[i]) {
-					resps[i].getBackground().setColorFilter(0xFF33CC00,
-							PorterDuff.Mode.MULTIPLY);
+					resps[i].getBackground().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
 				}
 				resps[i].setClickable(false);
 			}
@@ -143,12 +133,11 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 	private void siguientePalabra() {
 		pActual = gamecontroller.nextQuestion(test.references, NUM_RESP);
 		positionActual = test.indexOf(pActual.reference);
-		palabra.setText(pActual.reference.name);
+		palabra.setText(pActual.reference.getName());
 		pregunta.setText(pActual.reference.getPronunciation());
 
 		for (int i = 0; i < NUM_RESP; i++) {
-			resps[i].getBackground().setColorFilter(0xFFFFFFFF,
-					PorterDuff.Mode.MULTIPLY);
+			resps[i].getBackground().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);
 			resps[i].setText(pActual.answers[i]);
 			resps[i].setClickable(true);
 			resps[i].setTag(pActual.correct[i]);
@@ -169,8 +158,7 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 					@Override
 					public void run() {
 						test.nextStat();
-						startActivity(new Intent(getApplicationContext(),
-								Test_5_CompleteActivity.class));
+						startActivity(new Intent(getApplicationContext(), Test_5_CompleteActivity.class));
 						finish();
 					}
 				});
@@ -207,15 +195,14 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.title_removingtest);
 			builder.setMessage(R.string.removetestquestion);
-			builder.setPositiveButton(R.string.confirm,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							kernel.removeTest(test);
-							showMessage(R.string.testremoved);
-							finish();
-						}
-					});
+			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					kernel.removeTest(test);
+					showMessage(R.string.testremoved);
+					finish();
+				}
+			});
 			builder.setNegativeButton(R.string.cancel, null);
 			builder.create().show();
 

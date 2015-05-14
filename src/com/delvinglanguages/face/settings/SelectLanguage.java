@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.AddLanguageActivity;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class SelectLanguage extends AddLanguageActivity {
 
@@ -13,7 +13,7 @@ public class SelectLanguage extends AddLanguageActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String idiomanativo = Configuraciones.IdiomaNativo;
+		String idiomanativo = Settings.IdiomaNativo;
 		input.setText(idiomanativo);
 		input.setSelection(idiomanativo.length());
 
@@ -27,7 +27,7 @@ public class SelectLanguage extends AddLanguageActivity {
 			showMessage(R.string.msgnolangname);
 			return;
 		}
-		Configuraciones.setIdiomaNativo(name);
+		Settings.setIdiomaNativo(name);
 		finish();
 	}
 

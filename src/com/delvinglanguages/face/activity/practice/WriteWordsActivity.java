@@ -7,20 +7,20 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
-import com.delvinglanguages.core.game.WriteGame;
-import com.delvinglanguages.face.listeners.SpecialKeysBar;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.face.view.SpecialKeysBar;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.game.WriteGame;
+import com.delvinglanguages.settings.Settings;
 
 public class WriteWordsActivity extends Activity implements TextWatcher {
 
@@ -39,22 +39,12 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 	private int intento;
 	protected Handler mHandler = new Handler();
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_write);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
-		new SpecialKeysBar(this, null);
+		View view = getLayoutInflater().inflate(R.layout.a_write, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		help = (ImageButton) findViewById(R.id.help);
 		swap = (ImageButton) findViewById(R.id.swap);
@@ -62,18 +52,17 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 		palabra = (TextView) findViewById(R.id.word);
 		input = (EditText) findViewById(R.id.input);
 		progress = (ProgressBar) findViewById(R.id.progress);
-		progress.getProgressDrawable().setColorFilter(0xFF33CC00,
-				PorterDuff.Mode.MULTIPLY);
+		progress.getProgressDrawable().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
 
 		input.addTextChangedListener(this);
 
 		if (this.getClass() == WriteWordsActivity.class) {
-			gamecontroller = new WriteGame(ControlCore.getReferences());
+			gamecontroller = new WriteGame(LanguageKernelControl.getReferences());
 			String temp = getString(R.string.title_practising);
-			setTitle(temp + " " + ControlCore.getIdiomaActual(this).getName());
+			setTitle(temp + " " + LanguageKernelControl.getLanguageName());
 		}
 
-		labels = new TextView[Configuraciones.NUM_TYPES];
+		labels = new TextView[Settings.NUM_TYPES];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
@@ -82,10 +71,12 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
-		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		IDDelved idioma = KernelControl.getCurrentLanguage();
 		if (!idioma.getSettings(IDDelved.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
+
+		new SpecialKeysBar(findViewById(R.id.letrasespeciales), new EditText[] { input });
 
 		siguientePalabra();
 	}
@@ -94,22 +85,22 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 	protected void onPause() {
 		super.onPause();
 		if (this.getClass() == WriteWordsActivity.class) {
-			ControlCore.saveStatistics();
+			KernelControl.saveStatistics();
 		}
 	}
 
 	protected void siguientePalabra() {
 		intento = 1;
 		refActual = gamecontroller.nextReference();
-		int type = refActual.type;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+		int type = refActual.getType();
+		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
 			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Configuraciones.type_colors[i]);
+				labels[i].setBackgroundColor(Settings.type_colors[i]);
 			} else {
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
 		}
-		progress.setMax(refActual.name.length());
+		progress.setMax(refActual.getName().length());
 		progress.setProgress(0);
 		iswrong = false;
 		input.setText("");
@@ -132,8 +123,8 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				answer = answer.substring(0, len - 1);
 			}
 		} else {
-			if (len != refActual.name.length()) {
-				answer += refActual.name.charAt(len);
+			if (len != refActual.getName().length()) {
+				answer += refActual.getName().charAt(len);
 			}
 		}
 		input.setText(answer);
@@ -153,18 +144,17 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 	@Override
 	public void afterTextChanged(Editable s) {
 		String answer = input.getText().toString();
-		if (refActual.name.toLowerCase().startsWith(answer.toLowerCase())) {
+		if (refActual.getName().toLowerCase().startsWith(answer.toLowerCase())) {
 
 			progress.setProgress(answer.length());
 			if (iswrong) {
-				progress.getProgressDrawable().setColorFilter(0xFF33CC00,
-						PorterDuff.Mode.MULTIPLY);
+				progress.getProgressDrawable().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
 				iswrong = false;
 			}
 
-			if (answer.length() < refActual.name.length()) {
+			if (answer.length() < refActual.getName().length()) {
 				fullfill();
-			} else if (refActual.name.equalsIgnoreCase(answer)) {
+			} else if (refActual.getName().equalsIgnoreCase(answer)) {
 				help.setEnabled(false);
 				swap.setEnabled(false);
 				next.setEnabled(false);
@@ -172,7 +162,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				swap.setClickable(false);
 				next.setClickable(false);
 
-				ControlCore.ejercicio(refActual, intento);
+				KernelControl.exercise(refActual, intento);
 
 				new Thread(new Runnable() {
 					public void run() {
@@ -197,18 +187,16 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 			}
 		} else {
 			intento++;
-			progress.setProgress(refActual.name.length());
+			progress.setProgress(refActual.getName().length());
 			if (!iswrong) {
-				progress.getProgressDrawable().setColorFilter(0xFFFF0000,
-						PorterDuff.Mode.SRC_IN);
+				progress.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.SRC_IN);
 				iswrong = true;
 			}
 		}
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -219,16 +207,16 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 		String answer = input.getText().toString();
 		StringBuilder toAdd = new StringBuilder();
 		int index = answer.length();
-		int length = refActual.name.length();
+		int length = refActual.getName().length();
 		loop: while (true) {
-			char c = refActual.name.charAt(index);
+			char c = refActual.getName().charAt(index);
 			while (c == ' ') {
 				toAdd.append(c);
 				index++;
 				if (index == length) {
 					break loop;
 				}
-				c = refActual.name.charAt(index);
+				c = refActual.getName().charAt(index);
 			}
 			char end;
 			if (c == '(') {
@@ -246,7 +234,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				if (index == length) {
 					break loop;
 				}
-				c = refActual.name.charAt(index);
+				c = refActual.getName().charAt(index);
 			}
 			toAdd.append(c);
 		}
@@ -255,18 +243,6 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 			input.setText(t);
 			input.setSelection(t.length());
 		}
-	}
-
-	public void specialKeyAction(View v) {
-		String t = input.getText().toString();
-		if (t.length() == 0) {
-			t = t + v.getTag();
-		} else {
-			Button b = (Button) v;
-			t = t + b.getText();
-		}
-		input.setText(t);
-		input.setSelection(t.length());
 	}
 
 }

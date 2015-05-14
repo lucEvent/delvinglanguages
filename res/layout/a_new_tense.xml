@@ -1,13 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/button"
         android:layout_alignParentTop="true"
         android:paddingLeft="@dimen/laymarleft"
         android:paddingRight="@dimen/laymarright"
@@ -52,14 +51,14 @@
 
                 <TextView
                     android:id="@+id/tjag"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="Jag"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_njag"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" >
 
                     <requestFocus />
@@ -67,7 +66,7 @@
 
                 <EditText
                     android:id="@+id/edit_pjag"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -79,19 +78,19 @@
 
                 <TextView
                     android:id="@+id/tdu"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="Du"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_ndu"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" />
 
                 <EditText
                     android:id="@+id/edit_pdu"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -103,19 +102,19 @@
 
                 <TextView
                     android:id="@+id/thanhon"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="Han/Hon"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_nhanhon"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" />
 
                 <EditText
                     android:id="@+id/edit_phanhon"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -127,19 +126,19 @@
 
                 <TextView
                     android:id="@+id/tvi"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="Vi"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_nvi"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" />
 
                 <EditText
                     android:id="@+id/edit_pvi"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -151,19 +150,19 @@
 
                 <TextView
                     android:id="@+id/tni"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="Ni"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_nni"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" />
 
                 <EditText
                     android:id="@+id/edit_pni"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -176,19 +175,19 @@
 
                 <TextView
                     android:id="@+id/tde"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:layout_weight="1"
                     android:text="De"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/edit_nde"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="@string/verb" />
 
                 <EditText
                     android:id="@+id/edit_pde"
-                    style="@style/layout_0w1_ems10"
+                    style="@style/layout_0w1"
                     android:hint="Pronunciation" >
                 </EditText>
             </LinearLayout>
@@ -206,6 +205,7 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

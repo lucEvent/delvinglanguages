@@ -20,8 +20,7 @@ public class InputDialog extends Builder {
 		this.context = context;
 
 		final EditText input = new EditText(context);
-		input.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.WRAP_CONTENT));
+		input.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		input.setPadding(10, 10, 10, 10);
 		input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		input.requestFocus();
@@ -29,20 +28,18 @@ public class InputDialog extends Builder {
 		setTitle(R.string.savingtest);
 		setMessage(R.string.questionsavetest);
 		setView(input);
-		setPositiveButton(R.string.confirm,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						String s = input.getText().toString();
-						if (s.length() == 0) {
-							showMessage(R.string.nonametest);
-						} else {
-							new TestKernelControl(InputDialog.this.context)
-									.saveRunningTest(s);
-							showMessage(R.string.testsaved);
-						}
-					}
-				});
+		setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				String s = input.getText().toString();
+				if (s.length() == 0) {
+					showMessage(R.string.nonametest);
+				} else {
+					new TestKernelControl(InputDialog.this.context).saveRunningTest(s);
+					showMessage(R.string.testsaved);
+				}
+			}
+		});
 		setNegativeButton(R.string.cancel, null);
 	}
 

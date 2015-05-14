@@ -1,9 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".IntegrateRepeatedActivity" >
+    android:layout_height="wrap_content" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -54,7 +52,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Button" />
-
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -146,7 +143,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Button" />
-
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -193,8 +189,7 @@
                         style="@style/button_type_word_close"
                         android:background="@drawable/type_phrasal_backgrounds"
                         android:text="@string/ph.v" />
-                    
-     
+
                     <Button
                         android:id="@+id/air_new_expression"
                         style="@style/button_type_word_close"

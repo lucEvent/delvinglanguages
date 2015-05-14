@@ -1,7 +1,5 @@
 package com.delvinglanguages.listers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Nota;
+import com.delvinglanguages.kernel.Nota;
+import com.delvinglanguages.kernel.set.Notas;
 
 public class StoreWordLister extends ArrayAdapter<Nota> {
 
-	private ArrayList<Nota> values;
+	private Notas values;
 	private LayoutInflater inflater;
 
-	public StoreWordLister(Context context, ArrayList<Nota> values) {
+	public StoreWordLister(Context context, Notas values) {
 		super(context, R.layout.i_stored_word, values);
 		this.values = values;
 		inflater = (LayoutInflater) context

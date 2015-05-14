@@ -11,19 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.game.MatchGame;
-import com.delvinglanguages.core.game.MatchGame.QuestionModel;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.game.MatchGame;
+import com.delvinglanguages.kernel.game.MatchGame.QuestionModel;
+import com.delvinglanguages.settings.Settings;
 
 public class PreguntasActivity extends Activity implements OnClickListener {
 
 	private static final String DEBUG = "##PreguntaActivity##";
-	
+
 	protected final int NUM_RESP = 6;
 
-	// Elementos del core
+	// Elementos del kernel
 	protected IDDelved idioma;
 	protected MatchGame gamecontroller;
 
@@ -35,23 +36,16 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	protected TextView palabra, pregunta;
 	protected Button resps[];
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_match);
+		View view = getLayoutInflater().inflate(R.layout.a_match, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
-		// Iniciamos elementos del core
-		idioma = ControlCore.getIdiomaActual(this);
-		gamecontroller = new MatchGame(ControlCore.getReferences());
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		// Iniciamos elementos del kernel
+		idioma = KernelControl.getCurrentLanguage();
+		gamecontroller = new MatchGame(LanguageKernelControl.getReferences());
 
 		palabra = (TextView) findViewById(R.id.palabra);
 		pregunta = (TextView) findViewById(R.id.quesignifica);
@@ -75,7 +69,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	protected void onPause() {
 		super.onPause();
 		Log.d(DEBUG, "Guardando estadisticas en disco");
-		ControlCore.saveStatistics();
+		KernelControl.saveStatistics();
 	}
 
 	/** *************** METODOS ONCLICK **************************** **/
@@ -102,7 +96,7 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 		new Thread(new Runnable() {
 
 			public void run() {
-				ControlCore.ejercicio(pActual.reference, intento);
+				KernelControl.exercise(pActual.reference, intento);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -135,12 +129,11 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	private void nuevaPregunta() {
 		intento = 1;
 		pActual = gamecontroller.nextQuestion(NUM_RESP);
-		palabra.setText(pActual.reference.name);
+		palabra.setText(pActual.reference.getName());
 		pregunta.setText(pActual.reference.getPronunciation());
 
 		for (int i = 0; i < NUM_RESP; i++) {
-			resps[i].getBackground().setColorFilter(0xFFFFFFFF,
-					PorterDuff.Mode.MULTIPLY);
+			resps[i].getBackground().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);
 			resps[i].setText(pActual.answers[i]);
 			resps[i].setClickable(true);
 			resps[i].setTag(pActual.correct[i]);

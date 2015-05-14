@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import android.os.Environment;
 import android.util.Log;
 
-import com.delvinglanguages.core.HistorialItem;
+import com.delvinglanguages.kernel.HistorialItem;
 
 public class ControlDisco extends IOOperations {
 
@@ -29,8 +29,7 @@ public class ControlDisco extends IOOperations {
 		}
 		File extDir = Environment.getExternalStorageDirectory();
 
-		folder = new File(extDir.getAbsolutePath() + File.separator
-				+ FOLDERNAME);
+		folder = new File(extDir.getAbsolutePath() + File.separator + FOLDERNAME);
 		folder.mkdirs();
 	}
 
@@ -54,7 +53,7 @@ public class ControlDisco extends IOOperations {
 	public void saveLastLaguage(int position) {
 		try {
 			initOutputBuffer(new File(folder, STATE));
-			saveInteger(position);
+			writeInteger(position);
 			bufferOut.close();
 		} catch (IOException e) {
 			Log.d(DEBUG, "IOException: " + e.toString());
@@ -86,7 +85,7 @@ public class ControlDisco extends IOOperations {
 			initOutputBuffer(new File(folder, settings));
 
 			for (int i = 0; i < params.length; i++) {
-				saveString(params[i]);
+				writeString(params[i]);
 			}
 
 			bufferOut.close();
@@ -123,9 +122,9 @@ public class ControlDisco extends IOOperations {
 			initOutputBuffer(new File(folder, "historial.dat"));
 
 			int elems = H.size();
-			saveInteger(elems);
+			writeInteger(elems);
 			for (int i = 0; i < elems; i++) {
-				saveString(H.get(i).toString());
+				writeString(H.get(i).toString());
 			}
 
 			bufferIn.close();
@@ -164,8 +163,7 @@ public class ControlDisco extends IOOperations {
 		try {
 			initInputBuffer(forig);
 
-			bufferOut = new BufferedOutputStream(new FileOutputStream(
-					fcopy.getAbsolutePath()));
+			bufferOut = new BufferedOutputStream(new FileOutputStream(fcopy.getAbsolutePath()));
 
 			int len;
 			byte[] buffer = new byte[1024];

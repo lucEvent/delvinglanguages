@@ -1,51 +1,36 @@
 package com.delvinglanguages.face.fragment;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.settings.Configuraciones;
-import com.delvinglanguages.face.phrasals.*;
+import com.delvinglanguages.face.phrasals.AddPhrasalsActivity;
+import com.delvinglanguages.face.phrasals.ListPhrasalActivity;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.listers.OptionLister;
+import com.delvinglanguages.settings.Settings;
 
 public class PhrasalsFragment extends ListFragment {
 
 	private IDDelved idioma;
-	private String[] options;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Activity activity = getActivity();
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.a_simple_list, container, false);
 
-		FrameLayout background = (FrameLayout) view
-				.findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(view);
 
-		options = getResources().getStringArray(R.array.phv_opt);
-
-		idioma = ControlCore.getIdiomaActual(activity);
+		idioma = KernelControl.getCurrentLanguage();
 		idioma.analizePhrasals();
 
-		setListAdapter(new OptionLister(activity, options));
+		setListAdapter(new OptionLister(getActivity(), getResources().getStringArray(R.array.phv_opt)));
 
 		return view;
 	}

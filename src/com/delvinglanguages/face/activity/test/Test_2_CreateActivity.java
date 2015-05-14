@@ -1,7 +1,5 @@
 package com.delvinglanguages.face.activity.test;
 
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -12,19 +10,18 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.game.TestGame;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.game.TestGame;
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.test.TestKernelControl;
 import com.delvinglanguages.listers.StringLister;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class Test_2_CreateActivity extends ListActivity implements Runnable,
-		Messages {
+public class Test_2_CreateActivity extends ListActivity implements Runnable, Messages {
 
 	private TestGame gamecontroller;
-	private ArrayList<DReference> references;
+	private DReferences references;
 
 	private ProgressBar progreso;
 
@@ -34,38 +31,28 @@ public class Test_2_CreateActivity extends ListActivity implements Runnable,
 	private Handler mHandler = new Handler();
 	private StringLister adapter;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_test_preview);
+		View view = getLayoutInflater().inflate(R.layout.a_test_preview, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		searchString = getString(R.string.title_searching);
 
-		View background = findViewById(R.id.tp_bg);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
 		int numero = getIntent().getExtras().getInt(NUMBER);
 		int types = getIntent().getExtras().getInt(TYPES);
-		gamecontroller = new TestGame(ControlCore.getReferences());
+		gamecontroller = new TestGame(LanguageKernelControl.getReferences());
 		references = gamecontroller.getWords(numero, types);
 
 		if (references.isEmpty()) {
-			Toast.makeText(this, R.string.nowordmatched, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, R.string.nowordmatched, Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
 
 		progreso = (ProgressBar) findViewById(R.id.tp_progress);
-		progreso.getProgressDrawable().setColorFilter(0xFF33CC00,
-				PorterDuff.Mode.MULTIPLY);
+		progreso.getProgressDrawable().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
 
 		values = new String[references.size()];
 		String com = getString(R.string.searching);
@@ -93,10 +80,8 @@ public class Test_2_CreateActivity extends ListActivity implements Runnable,
 						@Override
 						public void run() {
 							progreso.setProgress(progressi);
-							setTitle(searchString
-									+ dots[progressi % dots.length]);
-							values[index - 1] = index + ". "
-									+ references.get(index - 1).name;
+							setTitle(searchString + dots[progressi % dots.length]);
+							values[index - 1] = index + ". " + references.get(index - 1).getName();
 							adapter.notifyDataSetChanged();
 						}
 					});
@@ -106,11 +91,8 @@ public class Test_2_CreateActivity extends ListActivity implements Runnable,
 						@Override
 						public void run() {
 							progreso.setProgress(progressi);
-							setTitle(searchString
-									+ dots[progressi % dots.length]);
-							values[index] = (index + 1)
-									+ getString(R.string.searching)
-									+ dots[progressi % dots.length];
+							setTitle(searchString + dots[progressi % dots.length]);
+							values[index] = (index + 1) + getString(R.string.searching) + dots[progressi % dots.length];
 							adapter.notifyDataSetChanged();
 						}
 					});

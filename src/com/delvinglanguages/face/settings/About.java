@@ -2,32 +2,22 @@ package com.delvinglanguages.face.settings;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class About extends ListActivity {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_simple_list);
+		View view = getLayoutInflater().inflate(R.layout.a_simple_list, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
-		FrameLayout background = (FrameLayout) findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
-		setListAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, getResources()
-						.getStringArray(R.array.about_content)));
+		setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.about_content)));
 	}
 
 }

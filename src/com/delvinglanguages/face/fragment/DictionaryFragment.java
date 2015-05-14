@@ -1,27 +1,23 @@
 package com.delvinglanguages.face.fragment;
 
-import java.util.Set;
-
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableLayout;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.activity.DictionaryListActivity;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class DictionaryFragment extends Fragment implements OnClickListener,
-		Messages {
+public class DictionaryFragment extends Fragment implements OnClickListener, Messages {
 
 	private static final String DEBUG = "##DictionaryFragment##";
 
@@ -30,12 +26,10 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 	private IDDelved idioma;
 	private Button[] letras;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		idioma = ControlCore.getIdiomaActual(getActivity());
+		idioma = KernelControl.getCurrentLanguage();
 
 		View view;
 		switch (idioma.CODE) {
@@ -49,15 +43,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 			view = inflater.inflate(R.layout.a_dictionary, container, false);
 		}
 
-		TableLayout background = (TableLayout) view
-				.findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(view);
 
 		letras = new Button[NUM_LETRAS];
 		letras[0] = (Button) view.findViewById(R.id.dic_a);
@@ -97,7 +83,6 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 			break;
 		}
 		letras[30] = (Button) view.findViewById(R.id.dic_others);
-
 		return view;
 	}
 
@@ -108,29 +93,24 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 			try {
 				letras[i].setEnabled(false);
 			} catch (NullPointerException e) {
-
 			}
 		}
 
-		Set<Character> keys = idioma.getDiccionario().keySet();
+		Character[] keys = idioma.getDictionaryIndexs();
 		for (Character cap : keys) {
 			int index = cap - 'A';
 			if (index > 26 || index < 0) {
 				switch (cap) {
-				case 'å':
 				case 'Å':
 					index = 26;
 					break;
-				case 'ä':
 				case 'Ä':
 					index = 27;
 					break;
-				case 'ö':
 				case 'Ö':
 					index = 28;
 					break;
 				case 'Ñ':
-				case 'ñ':
 					index = 29;
 					break;
 				default:
@@ -138,7 +118,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 				}
 			}
 			try {
-				if (!idioma.getDiccionario().get(cap).isEmpty()) {
+				if (!idioma.getDiccionaryAt(cap).isEmpty()) {
 					letras[index].setEnabled(true);
 					letras[index].setOnClickListener(this);
 					letras[index].setTag(cap);
@@ -147,7 +127,6 @@ public class DictionaryFragment extends Fragment implements OnClickListener,
 				Log.d(DEBUG, "ERROR index->" + index + ", cap->" + cap);
 			}
 		}
-
 	}
 
 	@Override

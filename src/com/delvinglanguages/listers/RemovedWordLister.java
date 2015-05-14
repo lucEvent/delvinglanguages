@@ -1,7 +1,5 @@
 package com.delvinglanguages.listers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +10,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.Words;
 
-public class RemovedWordLister extends ArrayAdapter<Word> implements
-		OnClickListener {
+public class RemovedWordLister extends ArrayAdapter<Word> implements OnClickListener {
 
-	private ArrayList<Word> values;
+	private Words values;
 	private LayoutInflater inflater;
 
-	public RemovedWordLister(Context context) {
-		super(context, R.layout.i_bin, ControlCore.getPapelera());
-		this.values = ControlCore.getPapelera();
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public RemovedWordLister(Context context, Words values) {
+		super(context, R.layout.i_bin, values);
+		this.values = values;
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -42,7 +39,7 @@ public class RemovedWordLister extends ArrayAdapter<Word> implements
 		restore.setOnClickListener(this);
 
 		word.setText(pal.getName());
-		tranlation.setText(pal.getTranslation());
+		tranlation.setText(pal.getTranslationString());
 		return view;
 	}
 
@@ -64,7 +61,7 @@ public class RemovedWordLister extends ArrayAdapter<Word> implements
 	}
 
 	private void restoreWord(int position) {
-		ControlCore.restorePalabra(position);
+		KernelControl.restoreWord(position);
 		notifyDataSetChanged();
 	}
 

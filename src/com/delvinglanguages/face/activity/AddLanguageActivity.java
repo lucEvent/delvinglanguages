@@ -11,31 +11,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.settings.Settings;
 
-public class AddLanguageActivity extends Activity implements
-		OnItemSelectedListener {
+public class AddLanguageActivity extends Activity implements OnItemSelectedListener {
 
 	protected Spinner selector;
 
 	protected EditText input;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_select_language);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_select_language, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		selector = (Spinner) findViewById(R.id.selector);
 		selector.setOnItemSelectedListener(this);
@@ -46,8 +37,7 @@ public class AddLanguageActivity extends Activity implements
 
 	/** *************** METODOS ONITEMSELECTEDLISTENER *************** **/
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		String[] idiomas = getResources().getStringArray(R.array.paises);
 		if (pos != 0) {
 			input.setText(idiomas[pos]);
@@ -69,15 +59,12 @@ public class AddLanguageActivity extends Activity implements
 			showMessage(R.string.msgnolangname);
 			return;
 		}
-		boolean ph = ((CheckedTextView) findViewById(R.id.phrasalsenabled))
-				.isChecked();
-		boolean adj = ((CheckedTextView) findViewById(R.id.adjectsenabled))
-				.isChecked();
-		boolean spe = ((CheckedTextView) findViewById(R.id.special_chars_enabled))
-				.isChecked();
+		boolean ph = ((CheckedTextView) findViewById(R.id.phrasalsenabled)).isChecked();
+		boolean adj = ((CheckedTextView) findViewById(R.id.adjectsenabled)).isChecked();
+		boolean spe = ((CheckedTextView) findViewById(R.id.special_chars_enabled)).isChecked();
 		int settings = IDDelved.configure(ph, adj, spe);
 
-		ControlCore.addIdioma(name, settings);
+		KernelControl.addLanguage(name, settings);
 		finish();
 	}
 

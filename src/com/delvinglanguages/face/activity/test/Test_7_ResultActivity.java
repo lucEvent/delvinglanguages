@@ -15,27 +15,19 @@ import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestKernelControl;
 import com.delvinglanguages.listers.TestStatsLister;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class Test_7_ResultActivity extends ListActivity {
 
 	private Test test;
 	private TestKernelControl kernel;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_test_statistics);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_test_statistics, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		kernel = new TestKernelControl(this);
 		test = TestKernelControl.runningTest;
@@ -80,15 +72,14 @@ public class Test_7_ResultActivity extends ListActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.title_removingtest);
 			builder.setMessage(R.string.removetestquestion);
-			builder.setPositiveButton(R.string.confirm,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							kernel.removeTest(test);
-							showMessage(R.string.testremoved);
-							finish();
-						}
-					});
+			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					kernel.removeTest(test);
+					showMessage(R.string.testremoved);
+					finish();
+				}
+			});
 			builder.setNegativeButton(R.string.cancel, null);
 			builder.create().show();
 

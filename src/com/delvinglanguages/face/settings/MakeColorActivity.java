@@ -14,10 +14,9 @@ import android.widget.Button;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.settings.ColorPickerView.OnColorChangedListener;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class MakeColorActivity extends Activity implements
-		OnColorChangedListener {
+public class MakeColorActivity extends Activity implements OnColorChangedListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +26,10 @@ public class MakeColorActivity extends Activity implements
 		int height = getIntent().getExtras().getInt("height");
 
 		int backgroundcolor = Color.GRAY;
-		if (Configuraciones.backgroundType() == Configuraciones.BG_COLOR_ON) {
-			backgroundcolor = Configuraciones.getBackgroundColor();
+		if (Settings.getBackgroundType() == Settings.BG_COLOR_ON) {
+			backgroundcolor = Settings.getBackgroundColor();
 		}
-		setContentView(new ColorPickerView(this, this, 0xFFFF0000, backgroundcolor,
-				width, height));
+		setContentView(new ColorPickerView(this, this, 0xFFFF0000, backgroundcolor, width, height));
 
 		setTitle(R.string.makecolor);
 	}
@@ -39,7 +37,7 @@ public class MakeColorActivity extends Activity implements
 	@Override
 	public void colorChanged(int button, int color) {
 		if (button == ColorPickerView.OK) {
-			Configuraciones.setBackground(null, color, false);
+			Settings.setBackground(null, color, false);
 		}
 		finish();
 	}
@@ -57,7 +55,6 @@ class ColorPickerView extends View {
 	private final static int BUTTONLEFT = 3;
 	private final int RGB_MAX = 256;
 
-	
 	private final int marginLeft = 15;
 	private final int marginTop = 10;
 	private final int marginRight = 15;
@@ -70,13 +67,9 @@ class ColorPickerView extends View {
 	private int buttonWidth = 118;
 	private final int buttonSpace = 5;
 	private final float textsize;
-	
-	
-	private int MODE = -1;
-	
 
-	
-	
+	private int MODE = -1;
+
 	private Paint mPaint;
 	private float mCurrentHue = 0;
 	private int mCurrentX = 0, mCurrentY = 0;
@@ -87,8 +80,7 @@ class ColorPickerView extends View {
 
 	private int wwidth, hheight, hueWidth;
 
-	ColorPickerView(Context c, OnColorChangedListener l, int initialcolor,
-			int defaultColor, int width, int height) {
+	ColorPickerView(Context c, OnColorChangedListener l, int initialcolor, int defaultColor, int width, int height) {
 		super(c);
 		mListener = l;
 		mDefaultColor = defaultColor;
@@ -102,7 +94,7 @@ class ColorPickerView extends View {
 		// Initialize the colors of the hue slider bar
 		float increment = (float) (6.0 * RGB_MAX / (float) hueWidth);
 		int index = 0;
-		int offset = (int)(RGB_MAX/increment);
+		int offset = (int) (RGB_MAX / increment);
 		for (float i = 0; i < RGB_MAX; i += increment) {
 			// Red (#f00) to pink (#f0f)
 			mHueBarColors[index] = Color.rgb(255, 0, (int) i);
@@ -142,26 +134,27 @@ class ColorPickerView extends View {
 		updateMainColors();
 
 		mCurrentColor = initialcolor;
-		
+
 		textsize = new Button(c).getTextSize();
 		// Initializes the Paint that will draw the View
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setTextAlign(Paint.Align.CENTER);
 		mPaint.setTextSize(textsize);
-		
+
 		// Configure elements sizes
-		mCurrentX = wwidth/2;
-		mCurrentY = hheight/2;
+		mCurrentX = wwidth / 2;
+		mCurrentY = hheight / 2;
 		buttonWidth = (wwidth - marginLeft - marginRight - buttonSpace) >> 1;
-		mainHeight = hheight - space*2 - marginTop - marginBottom - hueHeight - buttonHeight;
+		mainHeight = hheight - space * 2 - marginTop - marginBottom - hueHeight - buttonHeight;
 	}
 
 	// Get the current selected color from the hue bar
 	private int getCurrentMainColor() {
 		int index = hueWidth - 1 - (int) (mCurrentHue * hueWidth / 360);
-		if (index < 0 || index > hueWidth -1)
+		if (index < 0 || index > hueWidth - 1)
 			return mCurrentColor;
-		else return mHueBarColors[index];
+		else
+			return mHueBarColors[index];
 	}
 
 	// Update the main field colors depending on the current selected hue
@@ -172,14 +165,13 @@ class ColorPickerView extends View {
 		float blueincrement = (float) (255 - Color.blue(mainColor)) / (float) (hueWidth - 1);
 		float red = 0, green = 0, blue = 0;
 		for (int x = 0; x < hueWidth; x++) {
-			mMainColors[x] = Color.rgb(255 - (int) red, 255 - (int) green,
-					255 - (int) blue);
+			mMainColors[x] = Color.rgb(255 - (int) red, 255 - (int) green, 255 - (int) blue);
 			red += redincrement;
 			green += greenincrement;
 			blue += blueincrement;
 		}
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		int translatedHue = hueWidth - 1 - (int) (mCurrentHue * hueWidth / 360);
@@ -194,8 +186,7 @@ class ColorPickerView extends View {
 				mPaint.setColor(Color.BLACK);
 				mPaint.setStrokeWidth(3);
 			}
-			canvas.drawLine(x + marginLeft, marginTop, x + marginLeft,
-					marginTop + hueHeight, mPaint);
+			canvas.drawLine(x + marginLeft, marginTop, x + marginLeft, marginTop + hueHeight, mPaint);
 		}
 
 		// Display the main field colors using LinearGradient
@@ -205,10 +196,8 @@ class ColorPickerView extends View {
 		colors[1] = Color.BLACK;
 		for (int x = 0; x < hueWidth; x++) {
 			colors[0] = mMainColors[x];
-			mPaint.setShader(new LinearGradient(0, lineTop, 0, lineBottom,
-					colors, null, Shader.TileMode.MIRROR));
-			canvas.drawLine(x + marginLeft, lineTop, x + marginLeft,
-					lineBottom, mPaint);
+			mPaint.setShader(new LinearGradient(0, lineTop, 0, lineBottom, colors, null, Shader.TileMode.MIRROR));
+			canvas.drawLine(x + marginLeft, lineTop, x + marginLeft, lineBottom, mPaint);
 		}
 		mPaint.setShader(null);
 
@@ -227,26 +216,24 @@ class ColorPickerView extends View {
 		canvas.drawRect(marginLeft, lineTop, buttonWidth + marginLeft, lineTop + buttonHeight, mPaint);
 
 		// Set the text color according to the brightness of the color
-		if (Color.red(mCurrentColor) + Color.green(mCurrentColor)
-				+ Color.blue(mCurrentColor) < 384)
+		if (Color.red(mCurrentColor) + Color.green(mCurrentColor) + Color.blue(mCurrentColor) < 384)
 			mPaint.setColor(Color.WHITE);
 		else
 			mPaint.setColor(Color.BLACK);
-		canvas.drawText("Make this up!", marginLeft + (buttonWidth/2), lineTop + (buttonHeight/2)+textsize/4, mPaint);
+		canvas.drawText("Make this up!", marginLeft + (buttonWidth / 2), lineTop + (buttonHeight / 2) + textsize / 4, mPaint);
 
 		// Draw a 'button' with the default color
 		mPaint.setStyle(Paint.Style.FILL);
 		mPaint.setColor(mDefaultColor);
-		int lineLeft = marginLeft+ buttonWidth+buttonSpace;
+		int lineLeft = marginLeft + buttonWidth + buttonSpace;
 		canvas.drawRect(lineLeft, lineTop, lineLeft + buttonWidth, lineTop + buttonHeight, mPaint);
 
 		// Set the text color according to the brightness of the color
-		if (Color.red(mDefaultColor) + Color.green(mDefaultColor)
-				+ Color.blue(mDefaultColor) < 384)
+		if (Color.red(mDefaultColor) + Color.green(mDefaultColor) + Color.blue(mDefaultColor) < 384)
 			mPaint.setColor(Color.WHITE);
 		else
 			mPaint.setColor(Color.BLACK);
-		canvas.drawText("Cancel", lineLeft + (buttonWidth/2), lineTop + ((buttonHeight+textsize/2)/2), mPaint);
+		canvas.drawText("Cancel", lineLeft + (buttonWidth / 2), lineTop + ((buttonHeight + textsize / 2) / 2), mPaint);
 	}
 
 	@Override
@@ -258,42 +245,40 @@ class ColorPickerView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
-		
+
 		int rightlimit = wwidth - marginRight - 1;
 		int huebottomlimit = marginTop + hueHeight;
-		
+
 		int topmain = huebottomlimit + space;
 		int bottommain = hheight - marginBottom - space - buttonHeight;
-		
+
 		int topbuttons = bottommain + space;
 		int bottombuttons = hheight - marginBottom;
 
-		int lineMedium = marginLeft+ buttonWidth+buttonSpace;
+		int lineMedium = marginLeft + buttonWidth + buttonSpace;
 
 		switch (event.getAction()) {
 
 		case MotionEvent.ACTION_DOWN:
-			if (x >= marginLeft && x < rightlimit && y >= marginTop
-					&& y < huebottomlimit) {
+			if (x >= marginLeft && x < rightlimit && y >= marginTop && y < huebottomlimit) {
 				MODE = HUEBAR;
-			} else if (x >= marginLeft && x < rightlimit && y >= topmain
-					&& y < bottommain) {
+			} else if (x >= marginLeft && x < rightlimit && y >= topmain && y < bottommain) {
 				MODE = MAINFIELD;
-			} else if (x >= marginLeft && x < (buttonWidth + marginLeft)
-					&& y >= topbuttons && y < bottombuttons) {
+			} else if (x >= marginLeft && x < (buttonWidth + marginLeft) && y >= topbuttons && y < bottombuttons) {
 				MODE = BUTTONLEFT;
-			} else if (x >= lineMedium && x < (wwidth - marginRight)
-					&& y >= topbuttons && y < bottombuttons) {
+			} else if (x >= lineMedium && x < (wwidth - marginRight) && y >= topbuttons && y < bottombuttons) {
 				MODE = BUTTONRIGHT;
-			}		
-		
+			}
+
 		case MotionEvent.ACTION_MOVE:
 
 			// If the touch event is located in the hue bar
 			if (MODE == HUEBAR) {
-				if (x < marginLeft) x = marginLeft;
-				else if (x > rightlimit) x = rightlimit;
-				
+				if (x < marginLeft)
+					x = marginLeft;
+				else if (x > rightlimit)
+					x = rightlimit;
+
 				// Update the main field colors
 				mCurrentHue = (hueWidth - (x - marginLeft)) * 360 / hueWidth;
 				updateMainColors();
@@ -301,37 +286,38 @@ class ColorPickerView extends View {
 				// Update the current selected color
 				int transX = mCurrentX - marginLeft;
 				int transY = mainHeight - 1 - (mCurrentY - topmain);
-				mCurrentColor = Color.rgb(
-						transY * Color.red(mMainColors[transX]) / (mainHeight-1),
-						transY * Color.green(mMainColors[transX]) / (mainHeight-1),
-						transY * Color.blue(mMainColors[transX]) / (mainHeight-1));
+				mCurrentColor = Color.rgb(transY * Color.red(mMainColors[transX]) / (mainHeight - 1), transY * Color.green(mMainColors[transX])
+						/ (mainHeight - 1), transY * Color.blue(mMainColors[transX]) / (mainHeight - 1));
 
 				// Force the redraw of the dialog
 				invalidate();
 			}
-			
+
 			// If the touch event is located in the main field
 			if (MODE == MAINFIELD) {
-				if (y < topmain) mCurrentY = topmain;
-				else if (y >= bottommain) mCurrentY = bottommain;
-				else mCurrentY = y;
-				if (x < marginLeft) mCurrentX = marginLeft;
-				else if (x >= rightlimit) mCurrentX = rightlimit;
-				else mCurrentX = x;
-				
+				if (y < topmain)
+					mCurrentY = topmain;
+				else if (y >= bottommain)
+					mCurrentY = bottommain;
+				else
+					mCurrentY = y;
+				if (x < marginLeft)
+					mCurrentX = marginLeft;
+				else if (x >= rightlimit)
+					mCurrentX = rightlimit;
+				else
+					mCurrentX = x;
+
 				int transX = mCurrentX - marginLeft;
 				int transY = mainHeight - 1 - (mCurrentY - topmain);
 				// Update the current color
-				mCurrentColor = Color.rgb(
-						transY * Color.red(mMainColors[transX]) / (mainHeight-1),
-						transY * Color.green(mMainColors[transX]) / (mainHeight-1),
-						transY * Color.blue(mMainColors[transX]) / (mainHeight-1));
+				mCurrentColor = Color.rgb(transY * Color.red(mMainColors[transX]) / (mainHeight - 1), transY * Color.green(mMainColors[transX])
+						/ (mainHeight - 1), transY * Color.blue(mMainColors[transX]) / (mainHeight - 1));
 
 				// Force the redraw of the dialog
 				invalidate();
 			}
 
-			
 			break;
 		case MotionEvent.ACTION_UP:
 
@@ -343,15 +329,14 @@ class ColorPickerView extends View {
 			// If the touch event is located in the right button, notify the
 			// listener with the default color
 			if (MODE == BUTTONRIGHT)
-				mListener.colorChanged(CANCEL,mDefaultColor);
+				mListener.colorChanged(CANCEL, mDefaultColor);
 
-			
 		}
 
 		return true;
 	}
-	
+
 	public static final int OK = 1;
 	public static final int CANCEL = 0;
-	
+
 }

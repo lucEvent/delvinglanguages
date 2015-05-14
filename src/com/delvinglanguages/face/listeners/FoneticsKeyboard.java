@@ -12,18 +12,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.settings.Settings;
 
-public class FoneticsKeyboard implements OnKeyboardActionListener,
-		OnFocusChangeListener, OnClickListener, OnLongClickListener,
-		OnTouchListener {
+public class FoneticsKeyboard implements OnKeyboardActionListener, OnFocusChangeListener, OnClickListener, OnTouchListener {
 
 	private Activity context;
 
@@ -38,11 +35,9 @@ public class FoneticsKeyboard implements OnKeyboardActionListener,
 
 	private Vibrator vibrator;
 
-	public FoneticsKeyboard(Activity context, int kbViewID, EditText edittext,
-			int langCode) {
+	public FoneticsKeyboard(Activity context, int kbViewID, EditText edittext, int langCode) {
 		this.context = context;
 
-		// Create the Keyboard
 		puntuation = new Keyboard(context, R.xml.puntuation_kb);
 		empty = new Keyboard(context, R.xml.empty_kb);
 		switch (langCode) {
@@ -64,11 +59,9 @@ public class FoneticsKeyboard implements OnKeyboardActionListener,
 
 		input.setOnFocusChangeListener(this);
 		input.setOnClickListener(this);
-		input.setOnLongClickListener(this);
 		input.setOnTouchListener(this);
 
-		vibrator = (Vibrator) context
-				.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void hideCustomKeyboard() {
@@ -78,8 +71,7 @@ public class FoneticsKeyboard implements OnKeyboardActionListener,
 	private Handler mHandler = new Handler();
 
 	public void showCustomKeyboard(View v) {
-		InputMethodManager imm = (InputMethodManager) context
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
 		if (view.getKeyboard() != empty) {
@@ -114,7 +106,7 @@ public class FoneticsKeyboard implements OnKeyboardActionListener,
 
 	@Override
 	public void onKey(int primaryCode, int[] keyCodes) {
-		if (Configuraciones.vibration()) {
+		if (Settings.vibration()) {
 			vibrator.vibrate(15);
 		}
 		// Get the EditText and its Editable
@@ -195,11 +187,6 @@ public class FoneticsKeyboard implements OnKeyboardActionListener,
 	@Override
 	public void onClick(View v) {
 		showCustomKeyboard(v);
-	}
-
-	@Override
-	public boolean onLongClick(View v) {
-		return true;
 	}
 
 	@Override

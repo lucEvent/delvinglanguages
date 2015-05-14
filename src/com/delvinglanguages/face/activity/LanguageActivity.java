@@ -11,12 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.debug.Debug;
 import com.delvinglanguages.face.fragment.BinFragment;
 import com.delvinglanguages.face.fragment.DictionaryFragment;
@@ -28,7 +25,9 @@ import com.delvinglanguages.face.fragment.ThemesFragment;
 import com.delvinglanguages.face.fragment.VerbsFragment;
 import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.settings.Settings;
 
 public class LanguageActivity extends Activity {
 
@@ -46,28 +45,16 @@ public class LanguageActivity extends Activity {
 
 	private View options, show_options;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_language_main);
+		Settings.setBackgroundTo(findViewById(R.id.langoptions));
 
 		options = findViewById(R.id.langoptions);
 		show_options = findViewById(R.id.open_opts);
 
-		FrameLayout background = (FrameLayout) findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-			options.setBackgroundDrawable(Configuraciones.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-			options.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
-		idioma = ControlCore.getIdiomaActual(this);
-		ControlCore.loadLanguage(true);
+		idioma = KernelControl.getCurrentLanguage();
 
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		ft.replace(R.id.fragment, new LanguageFragment());
@@ -91,7 +78,7 @@ public class LanguageActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_REMOVE) {
-			if (resultCode == Activity.RESULT_OK) {
+			if (resultCode == RESULT_OK) {
 				finish();
 			}
 		}
@@ -101,8 +88,7 @@ public class LanguageActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_langsettings:
-			startActivityForResult(new Intent(this,
-					LanguageSettingsActivity.class), REQUEST_REMOVE);
+			startActivityForResult(new Intent(this, LanguageSettingsActivity.class), REQUEST_REMOVE);
 			return true;
 		}
 		return false;
@@ -118,8 +104,7 @@ public class LanguageActivity extends Activity {
 			break;
 		case PRACTISE:
 			fragment = new PractiseFragment();
-			title = getString(R.string.title_practising) + " "
-					+ idioma.getName();
+			title = getString(R.string.title_practising) + " " + idioma.getName();
 			break;
 		case DICTIONARY:
 			fragment = new DictionaryFragment();
@@ -161,6 +146,10 @@ public class LanguageActivity extends Activity {
 	}
 
 	public void jumptoPractise(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		if (!idioma.hasEntries()) {
 			showMessage(R.string.mssNoWords);
 			return;
@@ -170,6 +159,10 @@ public class LanguageActivity extends Activity {
 	}
 
 	public void jumptoDictionary(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		if (!idioma.hasEntries()) {
 			showMessage(R.string.mssNoWordsToList);
 			return;
@@ -185,35 +178,49 @@ public class LanguageActivity extends Activity {
 	private Dialog dialog;
 
 	public void jumptoOther(View v) {
-		View view = getLayoutInflater().inflate(R.layout.d_other_langoptions,
-				null);
+		View view = getLayoutInflater().inflate(R.layout.d_other_langoptions, null);
 		if (!actualPHMode) {
-			((Button) view.findViewById(R.id.phrasal_verbs))
-					.setVisibility(View.GONE);
+			((Button) view.findViewById(R.id.phrasal_verbs)).setVisibility(View.GONE);
 		}
 		dialog = new AlertDialog.Builder(this).setView(view).show();
 		return;
 	}
 
 	public void jumptoWarehouse(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		setFragment(Option.WAREHOUSE);
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoVerbs(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		setFragment(Option.VERBS);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoPhrasalVerbs(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		setFragment(Option.PHRASAL_VERBS);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoBin(View v) {
-		if (idioma.getPapelera().size() <= 0) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
+		if (idioma.getRemovedWords().size() <= 0) {
 			showMessage(R.string.mssNoTrash);
 			dialog.dismiss();
 			return;
@@ -230,12 +237,20 @@ public class LanguageActivity extends Activity {
 	}
 
 	public void jumptoThemes(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		setFragment(Option.THEMES);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
 
 	public void jumptoDebug(View v) {
+		if (!idioma.isLoaded()) {
+			showMessage(R.string.languageloading);
+			return;
+		}
 		dialog.dismiss();
 		hideOptionsMenu(null);
 		startActivity(new Intent(this, Debug.class));

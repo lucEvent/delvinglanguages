@@ -5,22 +5,20 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.face.view.SpecialKeysBar;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.set.ThemePairs;
-import com.delvinglanguages.core.theme.ThemeKernelControl;
-import com.delvinglanguages.core.theme.ThemePair;
-import com.delvinglanguages.face.listeners.SpecialKeysBar;
+import com.delvinglanguages.kernel.theme.ThemeKernelControl;
+import com.delvinglanguages.kernel.theme.ThemePair;
 import com.delvinglanguages.listers.ThemePairInputLister;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class CreateThemeActivity extends ListActivity implements
-		OnClickListener {
+public class CreateThemeActivity extends ListActivity implements OnClickListener {
 
 	private static final String DEBUG = "##CreateThemeActivity##";
 
@@ -33,20 +31,12 @@ public class CreateThemeActivity extends ListActivity implements
 	private boolean editing;
 	private int editing_pos;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_theme_create);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_theme_create, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		pairs = new ThemePairs();
 		adapter = new ThemePairInputLister(this, pairs, this);
@@ -56,16 +46,16 @@ public class CreateThemeActivity extends ListActivity implements
 		in_delv = (EditText) findViewById(R.id.in_delv);
 		in_nativ = (EditText) findViewById(R.id.in_nativ);
 
-		IDDelved language = ControlCore.getIdiomaActual(this);
-		if (language.isIdiomaNativo()) {
-			in_delv.setHint("in " + Configuraciones.IdiomaNativo);
+		IDDelved language = KernelControl.getCurrentLanguage();
+		if (language.isNativeLanguage()) {
+			in_delv.setHint("in " + Settings.IdiomaNativo);
 			in_nativ.setHint("in " + language.getName());
 		} else {
 			in_delv.setHint("in " + language.getName());
-			in_nativ.setHint("in " + Configuraciones.IdiomaNativo);
+			in_nativ.setHint("in " + Settings.IdiomaNativo);
 		}
 
-		new SpecialKeysBar(this, null);
+		new SpecialKeysBar(findViewById(R.id.letrasespeciales), new EditText[] { in_name, in_delv, in_nativ });
 	}
 
 	public void addPair(View v) {
@@ -106,25 +96,6 @@ public class CreateThemeActivity extends ListActivity implements
 
 	public void cancel(View v) {
 		finish();
-	}
-
-	public void specialKeyAction(View v) {
-		EditText focused = null;
-		if (in_delv.isFocused()) {
-			focused = in_delv;
-		} else if (in_nativ.isFocused()) {
-			focused = in_nativ;
-		} else if (in_name.isFocused()) {
-			focused = in_name;
-		}
-		String in = focused.getText().toString();
-		if (in.isEmpty()) {
-			in = (String) v.getTag();
-		} else {
-			in = in + ((Button) v).getText();
-		}
-		focused.setText(in);
-		focused.setSelection(in.length());
 	}
 
 	protected void showMessage(int text) {

@@ -14,31 +14,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.theme.Theme;
-import com.delvinglanguages.core.theme.ThemeKernelControl;
+import com.delvinglanguages.kernel.theme.Theme;
+import com.delvinglanguages.kernel.theme.ThemeKernelControl;
 import com.delvinglanguages.listers.ThemePairLister;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class ThemeActivity extends ListActivity implements Messages {
 
 	private Theme theme;
 	private ThemeKernelControl kernel;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_theme);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_theme, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		kernel = new ThemeKernelControl(this);
 		int thpos = getIntent().getExtras().getInt(THEME);
@@ -83,13 +75,12 @@ public class ThemeActivity extends ListActivity implements Messages {
 			Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.title_removing));
 			builder.setMessage(R.string.removethemequestion);
-			builder.setPositiveButton(R.string.confirm,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							remove();
-						}
-					});
+			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					remove();
+				}
+			});
 			builder.setNegativeButton(R.string.cancel, null);
 			builder.create().show();
 		}
@@ -99,8 +90,7 @@ public class ThemeActivity extends ListActivity implements Messages {
 	private void remove() {
 		kernel.removeTheme(theme);
 		setResult(Activity.RESULT_OK, null);
-		Toast.makeText(this, R.string.toast_themeremoved, Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(this, R.string.toast_themeremoved, Toast.LENGTH_SHORT).show();
 		finish();
 	}
 }

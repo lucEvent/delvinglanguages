@@ -1,10 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.delvinglanguages.face.activity.theme.CreateThemeActivity" >
+    android:orientation="vertical" >
 
     <EditText
         android:id="@+id/input"
@@ -112,44 +110,11 @@
             android:text="@string/create" />
     </LinearLayout>
 
-    <LinearLayout
+    <include
         android:id="@+id/letrasespeciales"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/sv_ao"
-            style="@style/button_list_selector"
-            android:onClick="specialKeyAction"
-            android:tag="@string/sv_ao_cap"
-            android:text="@string/sv_ao"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/sv_ae"
-            style="@style/button_list_selector"
-            android:onClick="specialKeyAction"
-            android:tag="@string/sv_ae_cap"
-            android:text="@string/sv_ae"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/sv_oe"
-            style="@style/button_list_selector"
-            android:onClick="specialKeyAction"
-            android:tag="@string/sv_oe_cap"
-            android:text="@string/sv_oe"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/es_ene"
-            style="@style/button_list_selector"
-            android:onClick="specialKeyAction"
-            android:tag="@string/es_n_cap"
-            android:text="@string/es_n"
-            android:visibility="gone" />
-    </LinearLayout>
+        layout="@layout/v_special_letters" />
 
 </RelativeLayout>

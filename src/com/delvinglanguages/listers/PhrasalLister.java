@@ -23,8 +23,7 @@ public class PhrasalLister extends ArrayAdapter<String> {
 		super(context, R.layout.i_stored_word, values);
 		this.values = values;
 		this.marks = marks;
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override

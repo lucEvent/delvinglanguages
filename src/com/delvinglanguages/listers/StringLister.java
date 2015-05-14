@@ -1,5 +1,7 @@
 package com.delvinglanguages.listers;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +18,17 @@ public class StringLister extends ArrayAdapter<String> {
 
 	public StringLister(Context context, String[] values) {
 		super(context, R.layout.i_language, values);
+		setFields(context, values);
+	}
+
+	public StringLister(Context context, ArrayList<String> values) {
+		super(context, R.layout.i_language, values);
+		setFields(context, values.toArray(new String[values.size()]));
+	}
+
+	private void setFields(Context context, String[] values) {
 		this.values = values;
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public View getView(int position, View view, ViewGroup parent) {

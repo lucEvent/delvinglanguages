@@ -198,6 +198,7 @@
     <string name="nonamelang">No name entered. Changes did not save.</string>
     <string name="renamedsuccessfully">Renamed successfully</string>
     <string name="mssNoWords">There are no words to practise. Please add some.</string>
+    <string name="languageloading">Language is loading</string>
     <string name="mssNoWordsToList">There are no words to list. Please add some.</string>
     <string name="mssNoTrash">Bin is empty.</string>
     <string name="msswordadded">Word added successfully</string>

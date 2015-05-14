@@ -2,7 +2,7 @@ package com.delvinglanguages.kernel.set;
 
 import java.util.ArrayList;
 
-import com.delvinglanguages.core.theme.ThemePair;
+import com.delvinglanguages.kernel.theme.ThemePair;
 
 public class ThemePairs extends ArrayList<ThemePair> {
 

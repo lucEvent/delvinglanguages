@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/input"
+            style="@style/edittext_palabra" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/sel_noun"
+                style="@style/button_type_word"
+                android:background="@drawable/type_noun_backgrounds"
+                android:paddingLeft="10dip"
+                android:text="@string/noun" />
+
+            <Button
+                android:id="@+id/sel_verb"
+                style="@style/button_type_word"
+                android:background="@drawable/type_verb_backgrounds"
+                android:text="@string/verb" />
+
+            <Button
+                android:id="@+id/sel_adj"
+                style="@style/button_type_word"
+                android:background="@drawable/type_adjective_backgrounds"
+                android:text="@string/adjective" />
+
+            <Button
+                android:id="@+id/sel_adv"
+                style="@style/button_type_word"
+                android:background="@drawable/type_adverb_backgrounds"
+                android:text="@string/adverb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/sel_phrasal"
+                style="@style/button_type_word"
+                android:background="@drawable/type_phrasal_backgrounds"
+                android:text="@string/phrasalverb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/sel_expression"
+                style="@style/button_type_word"
+                android:background="@drawable/type_expression_backgrounds"
+                android:text="@string/expression" />
+
+            <Button
+                android:id="@+id/sel_other"
+                style="@style/button_type_word"
+                android:background="@drawable/type_other_backgrounds"
+                android:text="@string/other" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

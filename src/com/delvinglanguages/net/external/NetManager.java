@@ -11,7 +11,7 @@ import java.net.URL;
 
 import android.util.Log;
 
-import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.data.ControlDisco;
 import com.delvinglanguages.net.internal.NetWork;
 

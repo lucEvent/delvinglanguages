@@ -5,13 +5,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Nota;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Nota;
+import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.net.internal.Messages;
 
-public class AddWordFromWarehouseActivity extends AddWordActivity implements
-		Messages {
+public class AddWordFromWarehouseActivity extends AddWordActivity implements Messages {
 
 	private Nota nota;
 
@@ -21,27 +22,25 @@ public class AddWordFromWarehouseActivity extends AddWordActivity implements
 
 		remove = ((Button) findViewById(R.id.addmore));
 		remove.setText(R.string.remove);
-		nota = ControlCore.getStore().get(
-				getIntent().getExtras().getInt(STORE_NOTE));
+		nota = LanguageKernelControl.getDrawerWords().get(getIntent().getExtras().getInt(STORE_NOTE));
 		word.setText(nota.get());
-		tranlation.requestFocus();
 	}
 
 	@Override
 	public void secondOption(View v) {
-		ControlCore.removeFromStore(nota);
+		KernelControl.removeFromStore(nota);
 		finish();
 	}
 
 	@Override
-	protected void saveWord(String nombre, String trans, String pron, int type) {
+	protected void saveWord(String nombre, Translations translations, String pron) {
 		if (autocomplete) {
-			ControlCore.removeFromStore(nota);
-			ControlCore.updatePalabra(modifiedWord, nombre, trans, pron, type);
+			KernelControl.removeFromStore(nota);
+			KernelControl.updateWord(modifiedWord, nombre, translations, pron);
 			showMessage(R.string.msswordmodified);
 			return;
 		}
-		ControlCore.addWordFromStore(nota, nombre, trans, pron, type);
+		KernelControl.addWordFromStore(nota, nombre, translations, pron);
 		showMessage(R.string.msswordadded);
 	}
 

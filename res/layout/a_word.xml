@@ -1,60 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/lab_noun"
-            style="@style/textview_label_types_top"
-            android:text="@string/nn" />
-
-        <TextView
-            android:id="@+id/lab_verb"
-            style="@style/textview_label_types_top"
-            android:text="@string/vb" />
-
-        <TextView
-            android:id="@+id/lab_adj"
-            style="@style/textview_label_types_top"
-            android:text="@string/adj" />
-
-        <TextView
-            android:id="@+id/lab_adv"
-            style="@style/textview_label_types_top"
-            android:text="@string/adv" />
-
-        <TextView
-            android:id="@+id/lab_phrasal"
-            style="@style/textview_label_types_top"
-            android:text="@string/ph.v" />
-
-        <TextView
-            android:id="@+id/lab_expression"
-            style="@style/textview_label_types_top"
-            android:text="@string/exp" />
-
-        <TextView
-            android:id="@+id/lab_other"
-            style="@style/textview_label_types_top"
-            android:text="@string/oth" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/word"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/laymar"
-        android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
         android:text="Palabra"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="35sp"
         android:textStyle="bold" />
 
     <TextView
@@ -62,60 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/laymar"
-        android:gravity="center"
+        android:gravity="right"
         android:text="Pronunciacion"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="italic" />
 
-    <TabHost
-        android:id="@+id/tabhost"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <ListView
-                    android:id="@+id/transl_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/laymarleft"
-                    android:layout_marginRight="@dimen/laymarright"
-                    android:choiceMode="none"
-                    android:divider="@android:color/transparent" >
-                </ListView>
-
-                <ListView
-                    android:id="@+id/tenses_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/laymarleft"
-                    android:layout_marginRight="@dimen/laymarright"
-                    android:choiceMode="none"
-                    android:divider="@android:color/transparent" >
-                </ListView>
-
-                <TableLayout
-                    android:id="@+id/tense_table"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip" >
-                </TableLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1sp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:padding="5dip" >
+    </ListView>
 
 </LinearLayout>

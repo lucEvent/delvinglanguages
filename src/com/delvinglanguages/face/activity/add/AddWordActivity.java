@@ -1,6 +1,6 @@
 package com.delvinglanguages.face.activity.add;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,95 +13,67 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.face.dialog.AddTranslationDialog;
 import com.delvinglanguages.face.listeners.FoneticsKeyboard;
-import com.delvinglanguages.face.listeners.SpecialKeysBar;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.face.view.SpecialKeysBar;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Translation;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.Translations;
+import com.delvinglanguages.listers.TranslationLister;
+import com.delvinglanguages.net.internal.Messages;
+import com.delvinglanguages.net.internal.NetWork;
+import com.delvinglanguages.settings.Settings;
 
-public class AddWordActivity extends Activity implements TextWatcher,
-		OnFocusChangeListener {
-
-	public static final String SEND_NAME = "sendName";
-	public static final String SEND_ID = "sendID";
-	public static final String SEND_TRANSLATION = "sendTranslation";
-	public static final String SEND_PRONUNTIATION = "sendPronuntiation";
-	public static final String SEND_TYPE = "sendType";
-	public static final String SEND_WORD = "sendWord";
-	public static final String EDITED = "edited";
+public class AddWordActivity extends ListActivity implements TextWatcher, OnFocusChangeListener, Messages, NetWork {
 
 	protected IDDelved idioma;
 
-	protected EditText word, tranlation, pronuntiation;
-
-	protected Button[] types;
+	protected EditText word, pronuntiation;
 
 	protected Button remove;
 
 	protected FoneticsKeyboard fonetickb;
 
-	protected SpecialKeysBar specialKeys;
+	protected Translations translations;
+	protected TranslationLister adapter;
 
-	@SuppressWarnings("deprecation")
+	protected AddTranslationDialog translationManager;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_add_word);
+		View view = getLayoutInflater().inflate(R.layout.a_add_word, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
-		idioma = ControlCore.getIdiomaActual(this);
+		idioma = KernelControl.getCurrentLanguage();
 
 		word = (EditText) findViewById(R.id.word);
 		word.addTextChangedListener(this);
 		word.setOnFocusChangeListener(this);
-		tranlation = (EditText) findViewById(R.id.translation);
-		tranlation.setOnFocusChangeListener(this);
 		pronuntiation = (EditText) findViewById(R.id.pronunciation);
 		pronuntiation.setOnFocusChangeListener(this);
 
 		String hint_word = getString(R.string.enterwordin);
-		String hint_trans = getString(R.string.entertranslationin);
 		String hint_pron = getString(R.string.enterpronuntiationin);
-		String native_lang = Configuraciones.IdiomaNativo;
+		String native_lang = Settings.IdiomaNativo;
 		String delved_lang = idioma.getName();
-		if (idioma.isIdiomaNativo()) {
+		if (idioma.isNativeLanguage()) {
 			word.setHint(hint_word + " " + native_lang);
-			tranlation.setHint(hint_trans + " " + delved_lang);
 			pronuntiation.setHint(hint_pron + " " + native_lang);
 		} else {
 			word.setHint(hint_word + " " + delved_lang);
-			tranlation.setHint(hint_trans + " " + native_lang);
 			pronuntiation.setHint(hint_pron + " " + delved_lang);
 		}
 
-		types = new Button[Configuraciones.NUM_TYPES];
-		types[Word.NOUN] = (Button) findViewById(R.id.sel_noun);
-		types[Word.VERB] = (Button) findViewById(R.id.sel_verb);
-		types[Word.ADJECTIVE] = (Button) findViewById(R.id.sel_adj);
-		types[Word.ADVERB] = (Button) findViewById(R.id.sel_adv);
-		types[Word.PHRASAL] = (Button) findViewById(R.id.sel_phrasal);
-		types[Word.EXPRESSION] = (Button) findViewById(R.id.sel_expression);
-		types[Word.OTHER] = (Button) findViewById(R.id.sel_other);
-		for (int i = 0; i < types.length; i++) {
-			types[i].setSelected(false);
-		}
-		if (!idioma.getSettings(IDDelved.MASK_PH)) {
-			types[Word.PHRASAL].setVisibility(View.GONE);
-		}
+		new SpecialKeysBar(findViewById(R.id.letrasespeciales), new EditText[] { word, pronuntiation });
 
-		specialKeys = new SpecialKeysBar(this, null);
+		fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation, idioma.CODE);
 
-		fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation,
-				idioma.CODE);
+		setTranslationsList(new Translations());
+		translationManager = new AddTranslationDialog(this, this);
 
 		setTitle(R.string.addingnewword);
 	}
@@ -122,13 +94,6 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		}
 	}
 
-	protected void get_and_set_Translation(Bundle bundle) {
-		String value = bundle.getString(SEND_TRANSLATION);
-		if (value != null) {
-			tranlation.setText(value);
-		}
-	}
-
 	protected void get_and_set_Pronuntiation(Bundle bundle) {
 		String value = bundle.getString(SEND_PRONUNTIATION);
 		if (value != null) {
@@ -136,15 +101,16 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		}
 	}
 
-	protected void get_and_set_Type(Bundle bundle) {
-		Integer value = bundle.getInt(SEND_TYPE);
-		if (value != null) {
-			setType(value);
-		}
+	protected void setTranslationsList(Translations list) {
+		translations = list;
+		adapter = new TranslationLister(this, list, true, this);
+		setListAdapter(adapter);
 	}
 
-	public void changeState(View v) {
-		v.setSelected(!v.isSelected());
+	public void addTranslation(View v) {
+		editing = false;
+		fonetickb.hideCustomKeyboard();
+		translationManager.show();
 	}
 
 	public void cancel(View v) {
@@ -154,9 +120,8 @@ public class AddWordActivity extends Activity implements TextWatcher,
 	public void secondOption(View v) {
 		if (addWord()) {
 			word.setText("");
-			tranlation.setText("");
+			adapter.clear();
 			pronuntiation.setText("");
-			setType(0);
 			word.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			if (imm != null) {
@@ -173,85 +138,33 @@ public class AddWordActivity extends Activity implements TextWatcher,
 
 	protected boolean addWord() {
 		String nombre = word.getText().toString();
-		if (nombre.length() == 0) {
+		if (nombre.isEmpty()) {
 			showMessage(R.string.noword);
 			return false;
 		}
-		String trans = tranlation.getText().toString();
-		if (trans.length() == 0) {
+		if (translations.isEmpty()) {
 			showMessage(R.string.notrans);
 			return false;
 		}
 		String pron = pronuntiation.getText().toString();
-		if (pron.length() == 0) {
+		if (pron.isEmpty()) {
 			showMessage(R.string.nopron);
 			return false;
 		}
-		int type = getType();
-		if (type == 0) {
-			showMessage(R.string.notype);
-			return false;
-		}
-		saveWord(nombre, trans, pron, type);
+		saveWord(nombre, translations, pron);
 		return true;
 	}
 
-	protected int getType() {
-		int type = 0;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; i++) {
-			if (types[i].isSelected()) {
-				type += (1 << i);
-			}
-		}
-		return type;
-	}
-
-	protected void setType(int type) {
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				types[i].setSelected(true);
-			} else if (types[i].isSelected()) {
-				types[i].setSelected(false);
-			}
-		}
-	}
-
-	protected void showMessage(int text) {
-		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-	}
-
-	protected void saveWord(String nombre, String trans, String pron, int type) {
+	protected void saveWord(String nombre, Translations translations, String pron) {
 		if (autocomplete) {
-			ControlCore.updatePalabra(modifiedWord, nombre, trans, pron, type);
+			KernelControl.updateWord(modifiedWord, nombre, translations, pron);
 			showMessage(R.string.msswordmodified);
 			return;
 		}
-		ControlCore.addPalabra(nombre, trans, pron, type);
+		KernelControl.addWord(nombre, translations, pron);
 		showMessage(R.string.msswordadded);
 	}
 
-	public void specialKeyAction(View v) {
-		EditText foc;
-		if (word.isFocused()) {
-			foc = word;
-		} else if (tranlation.isFocused()) {
-			foc = tranlation;
-		} else if (pronuntiation.isFocused()) {
-			foc = pronuntiation;
-		} else {
-			return;
-		}
-		String t = foc.getText().toString();
-		if (t.isEmpty()) {
-			t = (String) v.getTag();
-		} else {
-			t = t + ((Button) v).getText();
-		}
-		foc.setText(t);
-		foc.setSelection(t.length());
-	}
-
-	// ********** LISTENERS *************************************************
 	@Override
 	public void onFocusChange(View view, boolean hasfocus) {
 		if (hasfocus) {
@@ -260,20 +173,17 @@ public class AddWordActivity extends Activity implements TextWatcher,
 		}
 	}
 
-	/** ** METODOS TEXT WATCHER ** **/
 	protected boolean autocomplete = false;
 	protected Word modifiedWord = null;
-	private Editable savedTranlation = null;
+	private Translations savedTranlations = null;
 	private Editable savedPronuntiation = null;
-	private int savedType = 0;
 
 	@Override
 	public void afterTextChanged(Editable s) {
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -284,8 +194,7 @@ public class AddWordActivity extends Activity implements TextWatcher,
 			}
 			autocomplete = false;
 			pronuntiation.setText(savedPronuntiation);
-			tranlation.setText(savedTranlation);
-			setType(savedType);
+			translations = savedTranlations;
 		}
 		modifiedWord = null;
 		if (s.length() > 0) {
@@ -298,13 +207,55 @@ public class AddWordActivity extends Activity implements TextWatcher,
 			autocomplete = true;
 
 			savedPronuntiation = pronuntiation.getText();
-			savedTranlation = tranlation.getText();
-			savedType = getType();
+			savedTranlations = translations;
 
 			pronuntiation.setText(modifiedWord.getPronunciation());
-			tranlation.setText(modifiedWord.getTranslation());
-			setType(modifiedWord.getType());
+			translations = modifiedWord.getTranslations();
 		}
+	}
+
+	protected void showMessage(int text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	private boolean editing = false;
+	private Translation t_editing;
+
+	@Override
+	public void datagram(int code, String message, Object packet) {
+		switch (code) {
+		case NetWork.ERROR:
+			showMessage((Integer) packet);
+			translationManager.show();
+			break;
+		case NetWork.ACTION:
+			Translation translation = translations.get((Integer) packet);
+			if (message == ACTION_EDIT) {
+				editing = true;
+				t_editing = translation;
+				fonetickb.hideCustomKeyboard();
+				translationManager.show(translation);
+			} else if (message == ACTION_REMOVE) {
+				adapter.remove(translation);
+			}
+			break;
+		case NetWork.OK:
+			Translation t = (Translation) packet;
+			if (editing) {
+				editing = false;
+				t_editing.name = t.name;
+				t_editing.type = t.type;
+			} else {
+				translations.add(t);
+			}
+			adapter.notifyDataSetChanged();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			if (imm != null) {
+				imm.hideSoftInputFromWindow(pronuntiation.getWindowToken(), 0);
+			}
+			break;
+		}
+
 	}
 
 }

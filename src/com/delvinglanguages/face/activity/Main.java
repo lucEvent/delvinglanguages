@@ -1,63 +1,52 @@
 package com.delvinglanguages.face.activity;
 
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
 import com.delvinglanguages.face.settings.SettingsActivity;
+import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.listers.LanguageLister;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class Main extends ListActivity {
 
 	private static final String DEBUG = "##Main##";
 
-	private static ControlCore core;
-	private static Configuraciones settings;
+	private static KernelControl kernel;
+	private static Settings settings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_main);
 
-		core = new ControlCore(this);
-		settings = new Configuraciones();
+		kernel = new KernelControl(this);
+		settings = new Settings();
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();
-		int type_bg = Configuraciones.backgroundType();
-		View background = findViewById(R.id.background);
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(findViewById(android.R.id.content));
+
 		ListView list = getListView();
 		View fsteps = findViewById(R.id.firststeps);
 		View toinvis, tovisib = null;
 
-		if (ControlCore.getCount() == 0) {
+		if (KernelControl.getNumLanguages() == 0) {
 			toinvis = list;
 			tovisib = fsteps;
 		} else {
 			toinvis = fsteps;
 			tovisib = list;
-			setListAdapter(new LanguageLister(this, ControlCore.getIdiomas()));
+			setListAdapter(new LanguageLister(this, KernelControl.getLanguages()));
 		}
 		toinvis.setVisibility(View.INVISIBLE);
 		tovisib.setVisibility(View.VISIBLE);
@@ -84,7 +73,7 @@ public class Main extends ListActivity {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		ControlCore.setIdiomaActual(position);
+		KernelControl.setCurrentLanguage(position);
 		startActivity(new Intent(this, LanguageActivity.class));
 	}
 

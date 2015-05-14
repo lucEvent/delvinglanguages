@@ -2,39 +2,31 @@ package com.delvinglanguages.face.settings;
 
 import java.util.ArrayList;
 
-import com.delvinglanguages.R;
-import com.delvinglanguages.core.Historial;
-import com.delvinglanguages.core.HistorialItem;
-import com.delvinglanguages.data.ControlDisco;
-import com.delvinglanguages.listers.HistorialLister;
-import com.delvinglanguages.settings.Configuraciones;
-
-import android.os.Bundle;
 import android.app.ListActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import com.delvinglanguages.R;
+import com.delvinglanguages.data.ControlDisco;
+import com.delvinglanguages.kernel.Historial;
+import com.delvinglanguages.kernel.HistorialItem;
+import com.delvinglanguages.listers.HistorialLister;
+import com.delvinglanguages.settings.Settings;
 
 public class HistorialActivity extends ListActivity {
 
 	private ArrayList<HistorialItem> items;
 	private ControlDisco disco;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_simple_list);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_simple_list, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		disco = new ControlDisco();
 		items = disco.getHistorial();

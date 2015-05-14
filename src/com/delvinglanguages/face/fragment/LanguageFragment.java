@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,44 +14,45 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Estadisticas;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.Estadisticas;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.net.internal.BackgroundTaskMessenger;
+import com.delvinglanguages.net.internal.ProgressHandler;
+import com.delvinglanguages.settings.Settings;
 
-public class LanguageFragment extends Fragment implements OnClickListener {
+public class LanguageFragment extends Fragment implements OnClickListener, BackgroundTaskMessenger {
 
 	private static final String DEBUG = "##LanguageFragment##";
 
 	private IDDelved idioma;
 
 	private TextView labels[];
-
 	private Button addword;
 	private ImageButton toggle_dic;
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	private Handler handler;
 
-		idioma = ControlCore.getIdiomaActual(getActivity());
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		handler = new Handler();
+
+		idioma = KernelControl.getCurrentLanguage();
 
 		View view = inflater.inflate(R.layout.a_language, container, false);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			view.setBackgroundDrawable(Configuraciones.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			view.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
 
-		labels = new TextView[Configuraciones.NUM_TYPES];
+		KernelControl.loadLanguage(idioma, new ProgressHandler((ProgressBar) view.findViewById(R.id.progressbar)), this);
+
+		Settings.setBackgroundTo(view);
+
+		labels = new TextView[Settings.NUM_TYPES];
 		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adjective);
@@ -67,9 +69,12 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		super.onResume();
 		Activity view = getActivity();
 
-		int values[] = idioma.getNumTypes();
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
-			labels[i].setText("" + values[i]);
+		if (idioma.isLoaded()) {
+			updateTypeCounters();
+		} else {
+			for (int i = 0; i < labels.length; ++i) {
+				labels[i].setText("0");
+			}
 		}
 
 		View phtitle = view.findViewById(R.id.phrasal_title);
@@ -77,6 +82,7 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 			labels[Word.PHRASAL].setVisibility(View.VISIBLE);
 			phtitle.setVisibility(View.VISIBLE);
 		} else {
+			Log.d(DEBUG, "Quitando la visibilidad");
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 			phtitle.setVisibility(View.GONE);
 		}
@@ -97,7 +103,7 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 		TextView psucces3 = (TextView) view.findViewById(R.id.as_ns3p);
 		TextView pfailures = (TextView) view.findViewById(R.id.as_nfp);
 
-		Estadisticas stats = idioma.getEstadisticas();
+		Estadisticas stats = idioma.getStatistics();
 		TextView attempts = (TextView) view.findViewById(R.id.as_na);
 		attempts.setText("" + stats.intentos);
 		succes1.setText("" + stats.aciertos1);
@@ -115,22 +121,55 @@ public class LanguageFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View button) {
+
 		if (button == addword) {
 			Intent intent = new Intent(getActivity(), AddWordActivity.class);
 			startActivity(intent);
 		} else if (button == toggle_dic) {
-			ControlCore.switchDictionary();
-			idioma = ControlCore.getIdiomaActual(getActivity());
+			KernelControl.switchDictionary();
+			idioma = KernelControl.getCurrentLanguage();
 			String lang1, lang2;
-			if (idioma.isIdiomaNativo()) {
-				lang1 = Configuraciones.IdiomaNativo;
+			if (idioma.isNativeLanguage()) {
+				lang1 = Settings.IdiomaNativo;
 				lang2 = idioma.getName();
 			} else {
 				lang1 = idioma.getName();
-				lang2 = Configuraciones.IdiomaNativo;
+				lang2 = Settings.IdiomaNativo;
 			}
-			Toast.makeText(getActivity(), lang1 + " to " + lang2,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), lang1 + " to " + lang2, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public void onTaskStart() {
+	}
+
+	@Override
+	public void onTaskDone(int codePetition, int codeResult, Object result) {
+		if (codeResult == TASK_DONE) {
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					do {
+						updateTypeCounters();
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					} while (!idioma.isDictionaryCreated());
+					updateTypeCounters();
+				}
+
+			});
+		}
+	}
+
+	private void updateTypeCounters() {
+		int values[] = idioma.getTypeCounter();
+		for (int i = 0; i < values.length; ++i) {
+			labels[i].setText("" + values[i]);
 		}
 	}
 

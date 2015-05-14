@@ -1,8 +1,9 @@
 package com.delvinglanguages.face.activity.add;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 
 import android.os.Bundle;
@@ -30,16 +31,15 @@ public class AddWordFromModifyActivity extends AddWordActivity {
 		word.setText(name);
 		word.setSelection(name.length());
 
-		tranlation.setText(palabra.getTranslation());
+		translations.addAll(palabra.getTranslations());
 		pronuntiation.setText(palabra.getPronunciation());
-		setType(palabra.getType());
 		setTitle(R.string.modifyingword);
 
 	}
 
 	@Override
-	protected void saveWord(String nombre, String trans, String pron, int type) {
-		ControlCore.updatePalabra(palabra, nombre, trans, pron, type);
+	protected void saveWord(String nombre, Translations translations, String pron) {
+		KernelControl.updateWord(palabra, nombre, translations, pron);
 		Intent resultIntent = new Intent();
 		resultIntent.putExtra(EDITED, nombre);
 		setResult(Activity.RESULT_OK, resultIntent);

@@ -1,14 +1,12 @@
 package com.delvinglanguages.kernel.test;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.Tests;
 
-public class TestKernelControl extends ControlCore {
+public class TestKernelControl extends KernelControl {
 
 	public static Test runningTest;
 
@@ -17,15 +15,15 @@ public class TestKernelControl extends ControlCore {
 	}
 
 	public Tests getTests() {
-		Tests result = actualLang.getTests();
+		Tests result = currentLanguage.getTests();
 		if (result == null) {
-			result = database.readTests(actualLang.getID());
-			actualLang.setTests(result);
+			result = database.readTests(currentLanguage.getID());
+			currentLanguage.setTests(result);
 		}
 		return result;
 	}
 
-	public void runTest(ArrayList<DReference> words) {
+	public void runTest(DReferences words) {
 		runningTest = new Test(words);
 	}
 
@@ -34,16 +32,19 @@ public class TestKernelControl extends ControlCore {
 	}
 
 	public void saveRunningTest(String name) {
-		int tid = database.insertTest(name, actualLang.getID(),
-				runningTest.encapsulate());
+		int tid = addTest(name, runningTest.encapsulate());
 		runningTest.id = tid;
 		runningTest.name = name;
-		actualLang.addTest(runningTest);
+		currentLanguage.addTest(runningTest);
+	}
+
+	public int addTest(String name, String content) {
+		return database.insertTest(name, currentLanguage.getID(), content);
 	}
 
 	public void removeTest(Test test) {
-		actualLang.getTests().remove(test);
-		database.removeTest(test.id);
+		currentLanguage.getTests().remove(test);
+		database.deleteTest(test.id);
 	}
 
 }

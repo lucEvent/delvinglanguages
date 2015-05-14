@@ -12,15 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.Tense;
-import com.delvinglanguages.core.TenseKernelControl;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Tense;
+import com.delvinglanguages.kernel.TenseKernelControl;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class NewTenseActivity extends Activity implements
-		OnCheckedChangeListener, Messages {
+public class NewTenseActivity extends Activity implements OnCheckedChangeListener, Messages {
 
 	public final static String TENSE = "tense";
 
@@ -36,44 +35,33 @@ public class NewTenseActivity extends Activity implements
 
 	private DReference reference;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_new_tense);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_new_tense, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		Bundle bundle = getIntent().getExtras();
 
 		String s = bundle.getString(DREFERENCE);
-		reference = ControlCore.getIdiomaActual(this).getReference(s);
+		reference = LanguageKernelControl.getReference(s);
 
 		tverb = (TextView) findViewById(R.id.tverb);
 
-		tverb.setText(reference.name);
+		tverb.setText(reference.getName());
 
 		ttense = (TextView) findViewById(R.id.ttense);
-		int arrayid = ControlCore.getIdiomaActual(this).getTensesArray();
+		int arrayid = LanguageKernelControl.getTensesArrayResId();
 		String[] tenses = getResources().getStringArray(arrayid);
 		tposition = bundle.getInt(NewTenseActivity.TENSE);
 		ttense.setText(tenses[tposition]);
 
-		int[] subjectsIds = { R.id.tjag, R.id.tdu, R.id.thanhon, R.id.tvi,
-				R.id.tni, R.id.tde };
-		int[] formsIds = { R.id.edit_njag, R.id.edit_ndu, R.id.edit_nhanhon,
-				R.id.edit_nvi, R.id.edit_nni, R.id.edit_nde };
-		int[] pronsIds = { R.id.edit_pjag, R.id.edit_pdu, R.id.edit_phanhon,
-				R.id.edit_pvi, R.id.edit_pni, R.id.edit_pde };
+		int[] subjectsIds = { R.id.tjag, R.id.tdu, R.id.thanhon, R.id.tvi, R.id.tni, R.id.tde };
+		int[] formsIds = { R.id.edit_njag, R.id.edit_ndu, R.id.edit_nhanhon, R.id.edit_nvi, R.id.edit_nni, R.id.edit_nde };
+		int[] pronsIds = { R.id.edit_pjag, R.id.edit_pdu, R.id.edit_phanhon, R.id.edit_pvi, R.id.edit_pni, R.id.edit_pde };
 
-		arrayid = ControlCore.getIdiomaActual(this).getSubjectArray();
+		arrayid = LanguageKernelControl.getSubjectArrayResId();
 		String[] subcont = getResources().getStringArray(arrayid);
 
 		TextView[] subjects = new TextView[6];
@@ -102,8 +90,7 @@ public class NewTenseActivity extends Activity implements
 			form[i] = forms[i].getText().toString();
 			pron[i] = prons[i].getText().toString();
 		}
-		new TenseKernelControl(this).addTense(reference, tenseId,
-				Tense.queueString(form), Tense.queueString(pron));
+		new TenseKernelControl(this).addTense(reference, tenseId, Tense.queueString(form), Tense.queueString(pron));
 		finish();
 	}
 
@@ -122,13 +109,11 @@ public class NewTenseActivity extends Activity implements
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
+		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			if (repiteAll) {
 				completeRepiteAll(forms);
 			}
@@ -142,13 +127,11 @@ public class NewTenseActivity extends Activity implements
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
+		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			if (repiteAll) {
 				completeRepiteAll(prons);
 			}

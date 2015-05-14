@@ -19,8 +19,7 @@ public class TestStatsLister extends ArrayAdapter<TestReferenceState> {
 	public TestStatsLister(Context context, TestReferenceStates values) {
 		super(context, R.layout.i_test_stats, values);
 		this.values = values;
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -35,9 +34,8 @@ public class TestStatsLister extends ArrayAdapter<TestReferenceState> {
 		TextView ptot = (TextView) view.findViewById(R.id.total);
 
 		TestReferenceState refstate = values.get(position);
-		word.setText(refstate.reference.name);
-		int tot = refstate.fallos_match + refstate.fallos_complete
-				+ refstate.fallos_write;
+		word.setText(refstate.reference.getName());
+		int tot = refstate.fallos_match + refstate.fallos_complete + refstate.fallos_write;
 
 		pmat.setText(refstate.fallos_match + " error(s)");
 		pcom.setText(refstate.fallos_complete + " error(s)");

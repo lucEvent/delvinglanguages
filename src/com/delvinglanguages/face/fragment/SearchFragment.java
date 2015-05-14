@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -21,16 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.face.activity.add.AddWordActivity;
-import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromSearchActivity;
+import com.delvinglanguages.kernel.Translation;
 import com.delvinglanguages.net.external.WordReference;
 import com.delvinglanguages.net.external.WordReference.WRItem;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.net.internal.NetWork;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class SearchFragment extends Fragment implements OnClickListener,
-		NetWork, TextWatcher {
+public class SearchFragment extends Fragment implements OnClickListener, NetWork, TextWatcher, Messages {
 
 	private static final String DEBUG = "##SearchActivity##";
 
@@ -43,19 +41,12 @@ public class SearchFragment extends Fragment implements OnClickListener,
 
 	private LayoutInflater inflater;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.a_search, container, false);
 
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			view.setBackgroundDrawable(Configuraciones.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			view.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		Settings.setBackgroundTo(view);
 
 		this.inflater = inflater;
 		input = (EditText) view.findViewById(R.id.input);
@@ -70,8 +61,7 @@ public class SearchFragment extends Fragment implements OnClickListener,
 
 		dictionary = new WordReference(this);
 
-		InputMethodManager imm = (InputMethodManager) getActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (imm != null) {
 			imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
 		}
@@ -85,32 +75,23 @@ public class SearchFragment extends Fragment implements OnClickListener,
 			searchedWord = input.getText().toString();
 			dictionary.getContent(searchedWord);
 
-			InputMethodManager imm = (InputMethodManager) getActivity()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			if (imm != null) {
 				imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 		} else if (v == add) {
-			StringBuilder trans = new StringBuilder("");
-			int type = 0;
+			ArrayList<Translation> translations = new ArrayList<Translation>();
 			for (int i = 0; i < list.getChildCount(); i++) {
 				View view = list.getChildAt(i);
-				CheckedTextView ctw = (CheckedTextView) view
-						.findViewById(R.id.text);
+				CheckedTextView ctw = (CheckedTextView) view.findViewById(R.id.text);
 				if (ctw.isChecked()) {
 					WRItem d = data.get(i);
-					if (trans.length() != 0) {
-						trans.append(", ");
-					}
-					trans.append(d.name);
-					type |= d.type;
+					translations.add(new Translation(d.name, d.type));
 				}
 			}
-			Intent intent = new Intent(getActivity(),
-					AddWordFromSearchActivity.class);
-			intent.putExtra(AddWordActivity.SEND_NAME, searchedWord);
-			intent.putExtra(AddWordActivity.SEND_TRANSLATION, trans.toString());
-			intent.putExtra(AddWordActivity.SEND_TYPE, type);
+			Intent intent = new Intent(getActivity(), AddWordFromSearchActivity.class);
+			intent.putExtra(SEND_NAME, searchedWord);
+			intent.putExtra(SEND_TRANSLATION, translations);
 			startActivity(intent);
 
 		} else {
@@ -129,22 +110,15 @@ public class SearchFragment extends Fragment implements OnClickListener,
 			data = (ArrayList<WRItem>) packet;
 			for (WRItem item : data) {
 				list.addView(getRow(item.type, item.name));
-				Log.d(DEBUG, "Added ->" + item.name);
 			}
 			add.setEnabled(true);
 		}
 	}
 
-	private int[] bgtypes = { R.drawable.type_noun_backgrounds,
-			R.drawable.type_verb_backgrounds,
-			R.drawable.type_adjective_backgrounds,
-			R.drawable.type_adverb_backgrounds,
-			R.drawable.type_phrasal_backgrounds,
-			R.drawable.type_expression_backgrounds,
-			R.drawable.type_other_backgrounds };
+	private int[] bgtypes = { R.drawable.button_bg_noun, R.drawable.button_bg_vb, R.drawable.button_bg_adj, R.drawable.button_bg_adv,
+			R.drawable.button_bg_phr_v, R.drawable.button_bg_expr, R.drawable.button_bg_oth };
 
-	private int[] ttypes = { R.string.nn, R.string.vb, R.string.adj,
-			R.string.adv, R.string.ph_v, R.string.exp, R.string.oth };
+	private int[] ttypes = { R.string.nn, R.string.vb, R.string.adj, R.string.adv, R.string.ph_v, R.string.exp, R.string.oth };
 
 	private View getRow(int type, String content) {
 		View view = inflater.inflate(R.layout.i_search_row, null);
@@ -153,7 +127,7 @@ public class SearchFragment extends Fragment implements OnClickListener,
 		CheckedTextView ttext = (CheckedTextView) view.findViewById(R.id.text);
 		ttext.setOnClickListener(this);
 
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
 			if ((type & (1 << i)) != 0) {
 				btype.setBackgroundResource(bgtypes[i]);
 				btype.setText(ttypes[i]);
@@ -171,8 +145,7 @@ public class SearchFragment extends Fragment implements OnClickListener,
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		add.setEnabled(false);
 	}
 

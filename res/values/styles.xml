@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -18,6 +18,18 @@
     </style>
 
     <!-- ******************** BUTTONS ******************** -->
+    <style name="ww_tm">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="ww_tl">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
     <style name="button_list_selector">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -39,12 +51,9 @@
     </style>
 
     <!-- ******************** TEXTVIEWS ******************* -->
-    <style name="textview_statistics">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="textview_statistics" parent="ww_tl">
         <item name="android:paddingBottom">@dimen/margenlabels</item>
         <item name="android:paddingTop">@dimen/margenlabels</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
     <style name="textview_title">
@@ -88,9 +97,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
-    <style name="text_ww1_center_medium">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="text_ww1_center_medium" parent="ww_tm">
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">3dip</item>
@@ -118,29 +125,29 @@
     <style name="edittext_palabra">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:ems">10</item>
-        <item name="android:layout_marginLeft">10dip</item>
-        <item name="android:layout_marginRight">10dip</item>
-        <item name="android:layout_marginTop">10dip</item>
-        <item name="android:layout_marginBottom">5dip</item>
+        <item name="android:layout_margin">7dip</item>
+        <item name="android:padding">7dip</item>
+        <item name="android:paddingLeft">15dip</item>
+        <item name="android:paddingRight">15dip</item>
+        <item name="android:background">#88FFFFFF</item>
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="layout_0w1_ems10">
+    <style name="layout_0w1">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">2</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:ems">10</item>
         <item name="android:maxLines">1</item>
     </style>
 
     <style name="button_type_word">
-        <item name="android:layout_weight">1</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">2dip</item>
         <item name="android:padding">2dip</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 

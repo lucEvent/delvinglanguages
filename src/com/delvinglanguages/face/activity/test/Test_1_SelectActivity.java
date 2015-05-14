@@ -13,18 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.Tests;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestKernelControl;
 import com.delvinglanguages.listers.TestLister;
 import com.delvinglanguages.net.internal.Messages;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
-public class Test_1_SelectActivity extends ListActivity implements
-		OnClickListener, OnLongClickListener, Messages {
+public class Test_1_SelectActivity extends ListActivity implements OnClickListener, OnLongClickListener, Messages {
 
 	private int minimum = 2;
 	private int maximum = 10;
@@ -39,20 +39,13 @@ public class Test_1_SelectActivity extends ListActivity implements
 	private TestLister adapter;
 	private TestKernelControl kernel;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_select_test);
 
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_select_test, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		kernel = new TestKernelControl(this);
 
@@ -67,7 +60,7 @@ public class Test_1_SelectActivity extends ListActivity implements
 		mas.setOnLongClickListener(this);
 		menos.setOnLongClickListener(this);
 
-		types = new Button[Configuraciones.NUM_TYPES];
+		types = new Button[Settings.NUM_TYPES];
 		types[0] = (Button) findViewById(R.id.noun);
 		types[1] = (Button) findViewById(R.id.verb);
 		types[2] = (Button) findViewById(R.id.adjective);
@@ -79,7 +72,7 @@ public class Test_1_SelectActivity extends ListActivity implements
 			types[i].setOnClickListener(this);
 			types[i].setSelected(true);
 		}
-		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		IDDelved idioma = KernelControl.getCurrentLanguage();
 		if (!idioma.getSettings(IDDelved.MASK_PH)) {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
@@ -98,7 +91,7 @@ public class Test_1_SelectActivity extends ListActivity implements
 		setListAdapter(adapter);
 
 		String temp = getString(R.string.title_test);
-		setTitle(temp + " " + ControlCore.getIdiomaActual(this).getName());
+		setTitle(temp + " " + LanguageKernelControl.getLanguageName());
 	}
 
 	@Override
@@ -110,8 +103,7 @@ public class Test_1_SelectActivity extends ListActivity implements
 			ListView listView = getListView();
 			View listItem = adapter.getView(0, null, listView);
 			listItem.measure(0, 0);
-			int totalHeight = listItem.getMeasuredHeight() * tests.size()
-					+ (listView.getDividerHeight() * (tests.size() - 1));
+			int totalHeight = listItem.getMeasuredHeight() * tests.size() + (listView.getDividerHeight() * (tests.size() - 1));
 			LayoutParams params = listView.getLayoutParams();
 			params.height = totalHeight;
 			listView.setLayoutParams(params);
@@ -151,14 +143,13 @@ public class Test_1_SelectActivity extends ListActivity implements
 
 	public void createTest(View v) {
 		int types = 0;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; i++) {
+		for (int i = 0; i < Settings.NUM_TYPES; i++) {
 			if (this.types[i].isSelected()) {
 				types += (1 << i);
 			}
 		}
 		if (types == 0) {
-			Toast.makeText(this, R.string.notypesselected, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, R.string.notypesselected, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		Intent intent = new Intent(this, Test_2_CreateActivity.class);

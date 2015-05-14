@@ -1,6 +1,6 @@
 package com.delvinglanguages.kernel.test;
 
-import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.kernel.DReference;
 
 public class TestReferenceState {
 

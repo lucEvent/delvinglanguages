@@ -1,26 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_margin="5dip"
+    android:background="@drawable/button_bg_noun"
+    android:paddingLeft="5dip" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingBottom="5dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="5dip"
-        android:paddingTop="5dip"
-        android:text="·"
-        android:textSize="40sp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:paddingRight="10dip" >
 
-    <TextView
-        android:id="@+id/translation"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg_noun"
+            android:paddingBottom="1dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="1dip"
+            android:text="EXPRESSION"
+            android:textSize="10sp" />
+
+        <ImageButton
+            android:id="@+id/remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dip"
+            android:padding="5dip"
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:src="@android:drawable/ic_menu_edit"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:padding="5dip"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dip"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/title_translations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="TRANSLATIONS"
+                android:textColor="#99999999"
+                android:textSize="10sp" />
+
+            <View
+                style="@style/divisor"
+                android:background="#99999999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/translations_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/title_forms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="FORMS"
+                android:textColor="#99999999"
+                android:textSize="10sp" />
+
+            <View
+                style="@style/divisor"
+                android:background="#99999999" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dip" >
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab1"
+                        style="@style/ww_tm"
+                        android:text="Imperative:" />
+
+                    <TextView
+                        android:id="@+id/form1"
+                        style="@style/ww_tl"
+                        android:text="Lämna" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab2"
+                        style="@style/ww_tm"
+                        android:text="Infinitive:" />
+
+                    <TextView
+                        android:id="@+id/form2"
+                        style="@style/ww_tl"
+                        android:text="Lämna" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab3"
+                        style="@style/ww_tm"
+                        android:text="Preteritum:" />
+
+                    <TextView
+                        android:id="@+id/form3"
+                        style="@style/ww_tl"
+                        android:text="Lämnade" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab4"
+                        style="@style/ww_tm"
+                        android:text="Supinum:" />
+
+                    <TextView
+                        android:id="@+id/form4"
+                        style="@style/ww_tl"
+                        android:text="Lämnat" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab5"
+                        style="@style/ww_tm"
+                        android:text="Imperative:" />
+
+                    <TextView
+                        android:id="@+id/form5"
+                        style="@style/ww_tl"
+                        android:text="Lämna" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab6"
+                        style="@style/ww_tm"
+                        android:text="Imperative:" />
+
+                    <TextView
+                        android:id="@+id/form6"
+                        style="@style/ww_tl"
+                        android:text="Lämna" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dip" >
+
+                    <TextView
+                        android:id="@+id/lab7"
+                        style="@style/ww_tm"
+                        android:text="Imperative:" />
+
+                    <TextView
+                        android:id="@+id/form7"
+                        style="@style/ww_tl"
+                        android:text="Lämna" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

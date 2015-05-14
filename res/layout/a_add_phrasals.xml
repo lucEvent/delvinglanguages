@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -23,12 +22,12 @@
 
     <Button
         android:id="@+id/continue_"
-        android:onClick="addPhrasal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="2dip"
         android:background="@drawable/button_backgrounds"
+        android:onClick="addPhrasal"
         android:text="@string/continue_"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

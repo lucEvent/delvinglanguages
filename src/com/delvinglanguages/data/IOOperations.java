@@ -30,7 +30,7 @@ public abstract class IOOperations {
 
 	}
 
-	protected void saveInteger(int i) throws IOException {
+	protected void writeInteger(int i) throws IOException {
 		byte[] buff = new byte[4];
 		buff[3] = (byte) (i);
 		buff[2] = (byte) (i >> 8);
@@ -49,7 +49,7 @@ public abstract class IOOperations {
 		return "";
 	}
 
-	protected void saveString(String n) throws IOException {
+	protected void writeString(String n) throws IOException {
 		byte[] aux = n.getBytes();
 		bufferOut.write(aux.length);
 		if (aux.length > 0) {
@@ -70,7 +70,7 @@ public abstract class IOOperations {
 
 	}
 
-	protected void saveLong(long i) throws IOException {
+	protected void writeLong(long i) throws IOException {
 		byte[] buff = new byte[8];
 		buff[7] = (byte) (i);
 		buff[6] = (byte) (i >> 8);

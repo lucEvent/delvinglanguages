@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import android.os.Handler;
 import android.util.Log;
 
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.net.internal.NetWork;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.settings.Settings;
 
 public class WordReference implements Runnable {
 
@@ -53,17 +53,16 @@ public class WordReference implements Runnable {
 	private NetWork network;
 
 	public WordReference(NetWork network) {
-		IDDelved idiomaAct = ControlCore.getIdiomaActual(null);
-		if (idiomaAct.isIdiomaNativo()) {
-			lang_from = getCode(Configuraciones.IdiomaNativo);
+		IDDelved idiomaAct = KernelControl.getCurrentLanguage();
+		if (idiomaAct.isNativeLanguage()) {
+			lang_from = getCode(Settings.IdiomaNativo);
 			lang_to = getCode(idiomaAct.getName());
 		} else {
 			lang_from = getCode(idiomaAct.getName());
-			lang_to = getCode(Configuraciones.IdiomaNativo);
+			lang_to = getCode(Settings.IdiomaNativo);
 		}
 		this.network = network;
-		address = URL_BASE + API_VERSION + "/" + API_KEY + "/json/" + lang_from
-				+ lang_to + "/";
+		address = URL_BASE + API_VERSION + "/" + API_KEY + "/json/" + lang_from + lang_to + "/";
 		net = new NetManager(null);
 	}
 
@@ -105,11 +104,8 @@ public class WordReference implements Runnable {
 		try {
 			JSONObject data = new JSONObject(content.toString());
 
-			String[] keys = { "term0", "PrincipalTranslations",
-					"AdditionalTranslations" };
-			String[] subkeys = { "OriginalTerm", "FirstTranslation",
-					"SecondTranslation", "ThirdTranslation",
-					"FourthTranslation" };
+			String[] keys = { "term0", "PrincipalTranslations", "AdditionalTranslations" };
+			String[] subkeys = { "OriginalTerm", "FirstTranslation", "SecondTranslation", "ThirdTranslation", "FourthTranslation" };
 
 			JSONObject allData = data.getJSONObject(keys[0]);
 			JSONObject translations = allData.getJSONObject(keys[1]);
@@ -142,8 +138,7 @@ public class WordReference implements Runnable {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				network.datagram(NetWork.OK, wordName, new ArrayList<WRItem>(
-						res));
+				network.datagram(NetWork.OK, wordName, new ArrayList<WRItem>(res));
 			}
 		});
 
@@ -154,36 +149,24 @@ public class WordReference implements Runnable {
 		String typeCode = data.getString("POS");
 		int type;
 
-		if (typeCode.equals(typeN) || typeCode.equals(typeNF)
-				|| typeCode.equals(typeNM) || typeCode.equals(typeNFPL)
-				|| typeCode.equals(typeNMPL) || typeCode.equals(typeLOCNM)
-				|| typeCode.equals(typeLOCNOMF)
-				|| typeCode.equals(typeGRUPONOM)
-				|| typeCode.equals(typeLOCNOMM) || typeCode.equals(typeNINVM_F)
-				|| typeCode.equals(typeNCOMUN) || typeCode.equals(typeNPL)) {
+		if (typeCode.equals(typeN) || typeCode.equals(typeNF) || typeCode.equals(typeNM) || typeCode.equals(typeNFPL) || typeCode.equals(typeNMPL)
+				|| typeCode.equals(typeLOCNM) || typeCode.equals(typeLOCNOMF) || typeCode.equals(typeGRUPONOM) || typeCode.equals(typeLOCNOMM)
+				|| typeCode.equals(typeNINVM_F) || typeCode.equals(typeNCOMUN) || typeCode.equals(typeNPL)) {
 			type = 1;
-		} else if (typeCode.equals(typeVTR) || typeCode.equals(typeVI)
-				|| typeCode.equals(typeVPRNL) || typeCode.equals(typeVI_PREP)
-				|| typeCode.equals(typeV) || typeCode.equals(typeVTR_PREP)
-				|| typeCode.equals(typeVPRNL_PREP)
-				|| typeCode.equals(typeVI_ADV) || typeCode.equals(typeVI_ADJ)
-				|| typeCode.equals(typeVAUX) || typeCode.equals(typeVI_N)) {
+		} else if (typeCode.equals(typeVTR) || typeCode.equals(typeVI) || typeCode.equals(typeVPRNL) || typeCode.equals(typeVI_PREP)
+				|| typeCode.equals(typeV) || typeCode.equals(typeVTR_PREP) || typeCode.equals(typeVPRNL_PREP) || typeCode.equals(typeVI_ADV)
+				|| typeCode.equals(typeVI_ADJ) || typeCode.equals(typeVAUX) || typeCode.equals(typeVI_N)) {
 			type = 2;
-		} else if (typeCode.equals(typeADJ) || typeCode.equals(typeADJMF)
-				|| typeCode.equals(typeLOCADJ)
-				|| typeCode.equals(typePARTICIPIO)) {
+		} else if (typeCode.equals(typeADJ) || typeCode.equals(typeADJMF) || typeCode.equals(typeLOCADJ) || typeCode.equals(typePARTICIPIO)) {
 			type = 4;
 		} else if (typeCode.equals(typeADV) || typeCode.equals(typeLOCADV)) {
 			type = 8;
 		} else if (typeCode.equals(typeVTRPHRASALSEP)) {
 			type = 16;
-		} else if (typeCode.equals(typeLOCVB) || typeCode.equals(typeFR)
-				|| typeCode.equals(typeVEXPR) || typeCode.equals(typeEXPR)) { // EXP
+		} else if (typeCode.equals(typeLOCVB) || typeCode.equals(typeFR) || typeCode.equals(typeVEXPR) || typeCode.equals(typeEXPR)) { // EXP
 			type = 32;
-		} else if (typeCode.equals(typeINT) || typeCode.equals(typeLOCINT)
-				|| typeCode.equals(typePRON) || typeCode.equals(typeLOCPREP)
-				|| typeCode.equals(typePREFIJO) || typeCode.equals(typeCONJ)
-				|| typeCode.equals(typeLOCPRNL) || typeCode.equals(typePREP)) {
+		} else if (typeCode.equals(typeINT) || typeCode.equals(typeLOCINT) || typeCode.equals(typePRON) || typeCode.equals(typeLOCPREP)
+				|| typeCode.equals(typePREFIJO) || typeCode.equals(typeCONJ) || typeCode.equals(typeLOCPRNL) || typeCode.equals(typePREP)) {
 			type = 64;
 		} else {
 			Log.d(DEBUG, "HEYYY!!!! no tengo este tipo:" + typeCode);

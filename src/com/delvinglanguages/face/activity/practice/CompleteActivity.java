@@ -9,13 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.game.CompleteGame;
-import com.delvinglanguages.core.game.CompleteGame.Action;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.game.CompleteGame;
+import com.delvinglanguages.kernel.game.CompleteGame.Action;
+import com.delvinglanguages.settings.Settings;
 
 public class CompleteActivity extends Activity implements OnClickListener {
 
@@ -36,20 +37,12 @@ public class CompleteActivity extends Activity implements OnClickListener {
 	protected boolean muststop;
 	protected Handler handler;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_complete);
-
-		View background = findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
+		View view = getLayoutInflater().inflate(R.layout.a_complete, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
 		handler = new Handler();
 
@@ -57,9 +50,9 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		hidden = (TextView) findViewById(R.id.solution);
 		pronounce = (TextView) findViewById(R.id.pronounce);
 
-		gamecontroller = new CompleteGame(ControlCore.getReferences());
+		gamecontroller = new CompleteGame(LanguageKernelControl.getReferences());
 
-		labels = new TextView[Configuraciones.NUM_TYPES];
+		labels = new TextView[Settings.NUM_TYPES];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
@@ -68,7 +61,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
-		IDDelved idioma = ControlCore.getIdiomaActual(this);
+		IDDelved idioma = KernelControl.getCurrentLanguage();
 		if (!idioma.getSettings(IDDelved.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
@@ -88,7 +81,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		}
 
 		String temp = getString(R.string.title_practising);
-		setTitle(temp + " " + ControlCore.getIdiomaActual(this).getName());
+		setTitle(temp + " " + LanguageKernelControl.getLanguageName());
 
 		siguientePregunta(gamecontroller.nextReference());
 	}
@@ -96,19 +89,19 @@ public class CompleteActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		ControlCore.saveStatistics();
+		KernelControl.saveStatistics();
 	}
 
 	protected void siguientePregunta(DReference ref) {
 		intento = 1;
 		refActual = ref;
-		palabraUpp = ref.name.toUpperCase();
+		palabraUpp = ref.getName().toUpperCase();
 
 		position = 0;
-		int type = refActual.type;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+		int type = refActual.getType();
+		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
 			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Configuraciones.type_colors[i]);
+				labels[i].setBackgroundColor(Settings.type_colors[i]);
 			} else {
 				labels[i].setBackgroundColor(0xFFCCCCCC);
 			}
@@ -163,8 +156,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 			flashcolor(0xFF00FF00);
 
 			String toappend = teclas[tecla].string;
-			descubierta.replace(cursor, cursor + (toappend.length() << 1),
-					toappend);
+			descubierta.replace(cursor, cursor + (toappend.length() << 1), toappend);
 
 			cursor += toappend.length();
 			position++;
@@ -179,7 +171,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 				}
 				new Thread(new Runnable() {
 					public void run() {
-						ControlCore.ejercicio(refActual, intento);
+						KernelControl.exercise(refActual, intento);
 						try {
 							Thread.sleep(2000);
 						} catch (InterruptedException e) {
@@ -187,8 +179,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 						handler.post(new Runnable() {
 							@Override
 							public void run() {
-								siguientePregunta(gamecontroller
-										.nextReference());
+								siguientePregunta(gamecontroller.nextReference());
 							}
 						});
 					}

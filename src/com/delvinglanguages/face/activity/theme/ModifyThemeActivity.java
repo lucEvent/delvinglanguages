@@ -7,8 +7,8 @@ import android.widget.Button;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.set.ThemePairs;
-import com.delvinglanguages.core.theme.Theme;
-import com.delvinglanguages.core.theme.ThemeKernelControl;
+import com.delvinglanguages.kernel.theme.Theme;
+import com.delvinglanguages.kernel.theme.ThemeKernelControl;
 import com.delvinglanguages.listers.ThemePairInputLister;
 import com.delvinglanguages.net.internal.Messages;
 

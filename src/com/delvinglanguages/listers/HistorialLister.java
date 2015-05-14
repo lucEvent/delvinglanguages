@@ -11,22 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.Historial;
-import com.delvinglanguages.core.HistorialItem;
+import com.delvinglanguages.kernel.Historial;
+import com.delvinglanguages.kernel.HistorialItem;
 
 public class HistorialLister extends ArrayAdapter<HistorialItem> {
 
-	private static final int[] titles = { R.string.langcreated,
-			R.string.langerased, R.string.langintegrated,
-			R.string.wordaddedtostore, R.string.wordadded,
-			R.string.wordconsulted, R.string.wordmodified,
-			R.string.wordremoved, R.string.bincleared, R.string.tenseadded,
-			R.string.tensemodified, R.string.testcreated, R.string.testdone,
-			R.string.testremoved, R.string.practisedmatch,
-			R.string.practisedcomplete, R.string.practisedwrite,
-			R.string.nativenamechanged, R.string.backgroundchanged,
-			R.string.changedoubledirection, R.string.langnamechanged,
-			R.string.enablephrasalchanged, R.string.enableadjectivechange,
+	private static final int[] titles = { R.string.langcreated, R.string.langerased, R.string.langintegrated, R.string.wordaddedtostore,
+			R.string.wordadded, R.string.wordconsulted, R.string.wordmodified, R.string.wordremoved, R.string.bincleared, R.string.tenseadded,
+			R.string.tensemodified, R.string.testcreated, R.string.testdone, R.string.testremoved, R.string.practisedmatch,
+			R.string.practisedcomplete, R.string.practisedwrite, R.string.nativenamechanged, R.string.backgroundchanged,
+			R.string.changedoubledirection, R.string.langnamechanged, R.string.enablephrasalchanged, R.string.enableadjectivechange,
 			R.string.statisticscleared };
 
 	private ArrayList<HistorialItem> values;
@@ -35,8 +29,7 @@ public class HistorialLister extends ArrayAdapter<HistorialItem> {
 	public HistorialLister(Context context, ArrayList<HistorialItem> values) {
 		super(context, R.layout.i_word, values);
 		this.values = values;
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -58,8 +51,7 @@ public class HistorialLister extends ArrayAdapter<HistorialItem> {
 			// en descriptions[1] guardar el fichero .backup para recuperar
 			break;
 		case Historial.ITEM_LANG_INTEGRATED:
-			content = item.descriptions[0] + " integrated in "
-					+ item.descriptions[1];
+			content = item.descriptions[0] + " integrated in " + item.descriptions[1];
 			break;
 		case Historial.ITEM_STORE_ADDED:
 			content = item.descriptions[0];
@@ -71,8 +63,7 @@ public class HistorialLister extends ArrayAdapter<HistorialItem> {
 			content = item.descriptions[0];
 			break;
 		case Historial.ITEM_WORD_MODIFIED:
-			content = item.descriptions[0] + " changed by "
-					+ item.descriptions[1];
+			content = item.descriptions[0] + " changed by " + item.descriptions[1];
 			break;
 		case Historial.ITEM_WORD_REMOVED:
 			content = item.descriptions[0];
@@ -105,12 +96,10 @@ public class HistorialLister extends ArrayAdapter<HistorialItem> {
 			content = item.descriptions[0];
 			break;
 		case Historial.ITEM_SET_CHANGE_NATIVE_NAME:
-			content = item.descriptions[0] + " renamed as "
-					+ item.descriptions[1];
+			content = item.descriptions[0] + " renamed as " + item.descriptions[1];
 			break;
 		case Historial.ITEM_CHANGE_LANGNAME:
-			content = item.descriptions[0] + " renamed as "
-					+ item.descriptions[1];
+			content = item.descriptions[0] + " renamed as " + item.descriptions[1];
 			break;
 		case Historial.ITEM_SET_CHANGE_BACKGROUND:
 			content = item.descriptions[0];

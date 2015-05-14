@@ -10,20 +10,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.IDDelved;
-import com.delvinglanguages.core.Word;
-import com.delvinglanguages.settings.Configuraciones;
+import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.settings.Settings;
 
-public class IntegrateRepeatedActivity extends Activity implements
-		OnClickListener {
+public class IntegrateRepeatedActivity extends Activity implements OnClickListener {
 
-	private ArrayList<Word> words;
+	private Words words;
 
 	private TextView name, pronOrig, pronNew;
 	private Button[] translateOrig, translateNew, types, typesNew;
@@ -33,22 +32,14 @@ public class IntegrateRepeatedActivity extends Activity implements
 
 	private int index;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.a_integrate_repeated);
+		View view = getLayoutInflater().inflate(R.layout.a_integrate_repeated, null);
+		Settings.setBackgroundTo(view);
+		setContentView(view);
 
-		RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
-		int type_bg = Configuraciones.backgroundType();
-		if (type_bg == Configuraciones.BG_IMAGE_ON) {
-			background.setBackgroundDrawable(Configuraciones
-					.getBackgroundImage());
-		} else if (type_bg == Configuraciones.BG_COLOR_ON) {
-			background.setBackgroundColor(Configuraciones.getBackgroundColor());
-		}
-
-		words = ControlCore.integrateWords;
+		words = KernelControl.integrateWords;
 		index = 0;
 
 		integrate = (Button) findViewById(R.id.air_integrate);
@@ -63,7 +54,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 		// Pronunciacion original
 		pronOrig = (TextView) findViewById(R.id.air_pron);
 		// Types original
-		types = new Button[Configuraciones.NUM_TYPES];
+		types = new Button[Settings.NUM_TYPES];
 		types[0] = (Button) findViewById(R.id.air_nn);
 		types[1] = (Button) findViewById(R.id.air_vb);
 		types[2] = (Button) findViewById(R.id.air_adj);
@@ -80,7 +71,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 		// Pronunciacion new
 		pronNew = (TextView) findViewById(R.id.air_newpron);
 		// Types new
-		typesNew = new Button[Configuraciones.NUM_TYPES];
+		typesNew = new Button[Settings.NUM_TYPES];
 		typesNew[0] = (Button) findViewById(R.id.air_new_nn);
 		typesNew[1] = (Button) findViewById(R.id.air_new_vb);
 		typesNew[2] = (Button) findViewById(R.id.air_new_adj);
@@ -107,7 +98,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 		name.setText(orig.getName());
 		// Tranducciones original
 		layOrig.removeAllViews();
-		ArrayList<String> trans = orig.getTranslationArray(null);
+		ArrayList<String> trans = orig.getTranslationArray();
 		translateOrig = new Button[trans.size()];
 		for (int i = 0; i < trans.size(); ++i) {
 			Button tmp = getLabelView();
@@ -126,7 +117,8 @@ public class IntegrateRepeatedActivity extends Activity implements
 
 		// Tranducciones new
 		layNew.removeAllViews();
-		trans = pnew.getTranslationArray(trans);
+		trans.clear();
+		trans = pnew.getTranslationArray();
 		translateNew = new Button[trans.size()];
 		for (int i = 0; i < trans.size(); ++i) {
 			Button tmp = getLabelView();
@@ -142,13 +134,12 @@ public class IntegrateRepeatedActivity extends Activity implements
 		setType(typesNew, pnew.getType());
 
 		String intregrating = getResources().getString(R.string.integratelang);
-		setTitle(intregrating + " " + ((index >> 1) + 1) + "/"
-				+ (words.size() >> 1));
+		setTitle(intregrating + " " + ((index >> 1) + 1) + "/" + (words.size() >> 1));
 	}
 
 	private int getType() {
 		int type = 0;
-		for (int i = 0; i < Configuraciones.NUM_TYPES; i++) {
+		for (int i = 0; i < Settings.NUM_TYPES; i++) {
 			if (types[i].isSelected()) {
 				type += (1 << i);
 			}
@@ -157,7 +148,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 	}
 
 	private void setType(Button[] set, int type) {
-		for (int i = 0; i < Configuraciones.NUM_TYPES; ++i) {
+		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
 			if ((type & (1 << i)) != 0) {
 				set[i].setSelected(true);
 			} else if (set[i].isSelected()) {
@@ -189,11 +180,11 @@ public class IntegrateRepeatedActivity extends Activity implements
 			}
 
 			Word p = words.get(index);
-			IDDelved tmp = ControlCore.getIdiomaActual(this);
-			ControlCore.setIdiomaActual(ControlCore.integrateLanguage);
-			ControlCore.updatePalabra(p, p.getName(), trads.toString(),
-					p.getPronunciation(), type);
-			ControlCore.setIdiomaActual(tmp);
+			IDDelved tmp = KernelControl.getCurrentLanguage();
+			KernelControl.setCurrentLanguage(KernelControl.integrateLanguage);
+			// KernelControl.updateWord(p, p.getName(), trads.toString(),
+			// p.getPronunciation(), type);
+			KernelControl.setCurrentLanguage(tmp);
 		} else if (v == ignore) {
 		} else {
 			v.setSelected(!v.isSelected());
@@ -204,7 +195,7 @@ public class IntegrateRepeatedActivity extends Activity implements
 		if (words.size() == index) {
 
 			showMessage(R.string.languageintegrated);
-			ControlCore.removeLanguage();
+			KernelControl.deleteLanguage();
 			finish();
 
 		} else {

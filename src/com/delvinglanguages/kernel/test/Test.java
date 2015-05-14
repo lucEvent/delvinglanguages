@@ -1,9 +1,8 @@
 package com.delvinglanguages.kernel.test;
 
-import java.util.ArrayList;
-
-import com.delvinglanguages.core.ControlCore;
-import com.delvinglanguages.core.DReference;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.TestReferenceStates;
 
 public class Test {
@@ -22,7 +21,7 @@ public class Test {
 
 	public TestReferenceStates references;
 
-	public Test(ArrayList<DReference> references) {
+	public Test(DReferences references) {
 		id = -1;
 		this.references = new TestReferenceStates();
 		for (DReference ref : references) {
@@ -43,7 +42,7 @@ public class Test {
 		int size = Integer.parseInt(elems[index++]);
 		// Por cada palabra (con su estado y passed)
 		for (int i = 0; i < size; i++) {
-			DReference ref = ControlCore.getReference(elems[index++]);
+			DReference ref = LanguageKernelControl.getReference(elems[index++]);
 			boolean passed = Boolean.parseBoolean(elems[index++]);
 			int fallos_match = Integer.parseInt(elems[index++]);
 			int fallos_complete = Integer.parseInt(elems[index++]);
@@ -68,7 +67,7 @@ public class Test {
 		res.append(references.size()).append(p);
 		// Por cada palabra (con su estado y passed)
 		for (TestReferenceState refstate : references) {
-			res.append(refstate.reference.name).append(p);
+			res.append(refstate.reference.getName()).append(p);
 			res.append(refstate.passed).append(p);
 			res.append(refstate.fallos_match).append(p);
 			res.append(refstate.fallos_complete).append(p);
@@ -96,8 +95,8 @@ public class Test {
 		return id == -1 ? false : true;
 	}
 
-	public ArrayList<DReference> getReferences() {
-		ArrayList<DReference> res = new ArrayList<DReference>();
+	public DReferences getReferences() {
+		DReferences res = new DReferences();
 		for (TestReferenceState refstate : references) {
 			res.add(refstate.reference);
 		}
@@ -115,8 +114,8 @@ public class Test {
 
 	public void check() {
 		for (int i = 0; i < references.size(); i++) {
-			String name = references.get(i).reference.name;
-			if (ControlCore.getReference(name) == null) {
+			String name = references.get(i).reference.getName();
+			if (LanguageKernelControl.getReference(name) == null) {
 				references.remove(i);
 				i--;
 			}
