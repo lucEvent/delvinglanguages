@@ -24,7 +24,6 @@ public class Game extends Random {
 	}
 
 	private void createPriorityMap() {
-		// Log.d(DEBUG, "############ Creating map #############");
 		running = true;
 		new Thread(new Runnable() {
 
@@ -39,18 +38,15 @@ public class Game extends Random {
 						set = new DReferences();
 						priorityMap.put(ref.priority, set);
 					}
-					// Log.v(DEBUG, "...."+ref.name+": "+ref.priority);
 					set.add(ref);
 				}
 				running = false;
-				// Log.d(DEBUG, "############ Map created #############");
 			}
 		}).start();
 	}
 
 	public DReference nextReference() {
-		while (running)
-			;
+		while (running);
 
 		Integer priority = priorityMap.getMaxKey();
 		DReferences set = priorityMap.get(priority);

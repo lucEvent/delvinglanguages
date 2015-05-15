@@ -47,7 +47,6 @@ public class DReference implements Comparable<DReference> {
 
 	public void addReference(DReference reference, Word owner) {
 		links.add(new Link(reference, owner));
-		// type |= owner.getType();
 		if (owner.getPriority() > priority) {
 			priority = owner.getPriority();
 		}

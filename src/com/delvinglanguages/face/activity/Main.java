@@ -26,8 +26,8 @@ public class Main extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_main);
 
-		kernel = new KernelControl(this);
 		settings = new Settings();
+		kernel = new KernelControl(this);
 
 	}
 

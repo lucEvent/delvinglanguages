@@ -77,12 +77,15 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 			}
 		}
 
+		Log.d(DEBUG, "En onRESUME");
+
 		View phtitle = view.findViewById(R.id.phrasal_title);
 		if (idioma.getSettings(IDDelved.MASK_PH)) {
+			Log.d(DEBUG, "Mostrando PHV etiquete");
 			labels[Word.PHRASAL].setVisibility(View.VISIBLE);
 			phtitle.setVisibility(View.VISIBLE);
 		} else {
-			Log.d(DEBUG, "Quitando la visibilidad");
+			Log.d(DEBUG, "Ocultando PHV etiquete");
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 			phtitle.setVisibility(View.GONE);
 		}
@@ -128,15 +131,16 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 		} else if (button == toggle_dic) {
 			KernelControl.switchDictionary();
 			idioma = KernelControl.getCurrentLanguage();
-			String lang1, lang2;
+			String lang2;
 			if (idioma.isNativeLanguage()) {
-				lang1 = Settings.IdiomaNativo;
-				lang2 = idioma.getName();
+				lang2 = idioma.getDelved().getName();
 			} else {
-				lang1 = idioma.getName();
-				lang2 = Settings.IdiomaNativo;
+				lang2 = idioma.getNative().getName();
 			}
-			Toast.makeText(getActivity(), lang1 + " to " + lang2, Toast.LENGTH_SHORT).show();
+			Log.d(DEBUG, "[] lang1: " + idioma.getName());
+			Log.d(DEBUG, "[] lang2: " + lang2);
+			String msg = idioma.getName() + " to " + lang2;
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 		}
 	}
 

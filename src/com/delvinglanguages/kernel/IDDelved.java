@@ -58,15 +58,11 @@ public class IDDelved {
 
 	public IDDelved(Datos data) {
 		datos = data;
-
 		if (datos.delved == null) {
-
 			datos.delved = this;
 			setCodeAndLocale(datos.language_delved_name);
-
 			datos.nativo = new IDNativo(datos);
 		}
-
 	}
 
 	protected void setCodeAndLocale(String langName) {
@@ -193,6 +189,10 @@ public class IDDelved {
 			res = false;
 		}
 		return res;
+	}
+
+	public Locale getLocale() {
+		return locale;
 	}
 
 	public DReferences getVerbs() {

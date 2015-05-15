@@ -161,11 +161,13 @@
         <item>He</item>
     </string-array>
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.4.1</b></item>
-        <item><b>Develop by Rafael J. Lucena</b></item>
+        <item><b>Delving Languages version 1.5.1</b></item>
+        <item><b>Developed by Rafael J. Lucena</b></item>
         <item><b>Contact: rafaa89(at)gmail.com</b></item>
         <item></item>
         <item>News Features and Improvements:</item>
+        <item>Version 1.5.1 2015&#8211;05&#8211;16\nPronunciation for words added. Also added a section to listen pronunciation of texts. Also added a section to practise listening and pronunciation</item>
+        <item>Version 1.5.0.2 2015&#8211;05&#8211;14\nBig error when changing orientation in Language View solved. Some small bugs fixed and improvements</item>
         <item>Version 1.5 2015&#8211;05&#8211;14\nNew Translation organization (inputing, storing and displaying), now you can specify the type of each translation. New Database format.</item>
         <item>Version 1.4.1 2015&#8211;03&#8211;11\nNew kernel. More structure. Improvement on sending messages between activities</item>
         <item>Version 1.4.0.3 2015&#8211;03&#8211;11\nRemove tenses asociated a removed words implemented. Better hints at introducing new words and stored words.</item>

@@ -7,6 +7,9 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +30,7 @@ import com.delvinglanguages.listers.WordLister;
 import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class ReferenceActivity extends ListActivity implements Messages {
+public class ReferenceActivity extends ListActivity implements Messages, OnInitListener {
 
 	private static final String DEBUG = "##ReferenceActivity##";
 
@@ -46,6 +49,7 @@ public class ReferenceActivity extends ListActivity implements Messages {
 
 		IDDelved idioma = KernelControl.getCurrentLanguage();
 		reference = idioma.getReference(s);
+
 	}
 
 	@Override
@@ -68,8 +72,16 @@ public class ReferenceActivity extends ListActivity implements Messages {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		speechEngine = new TextToSpeech(this, this);
 
 		displayReference();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		speechEngine.stop();
+		speechEngine.shutdown();
 	}
 
 	private void displayReference() {
@@ -203,6 +215,20 @@ public class ReferenceActivity extends ListActivity implements Messages {
 		intent.putExtra(DREFERENCE, reference.getName());
 		intent.putExtra(NewTenseActivity.TENSE, position);
 		startActivity(intent);
+	}
+
+	private TextToSpeech speechEngine;
+
+	@Override
+	public void onInit(int status) {
+		if (status == TextToSpeech.SUCCESS) {
+			int r = speechEngine.setLanguage(KernelControl.getCurrentLanguage().getLocale());
+
+		}
+	}
+
+	public void onSpeech(View view) {
+		speechEngine.speak(reference.getName(), TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 }

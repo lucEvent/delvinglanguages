@@ -4,12 +4,11 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true" >
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
-        android:name="com.delvinglanguages.face.fragment.NullFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </fragment>
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/open_opts"

@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:onClick="jumptoThemes"
         android:text="@string/themes" />
-    <Button
+
+    <Button
         style="@style/button_list_selector"
         android:layout_width="match_parent"
         android:onClick="jumptoVerbs"
@@ -27,6 +28,12 @@
         android:layout_width="match_parent"
         android:onClick="jumptoSearch"
         android:text="@string/search" />
+
+    <Button
+        style="@style/button_list_selector"
+        android:layout_width="match_parent"
+        android:onClick="jumptoPronunciation"
+        android:text="@string/pronunciation" />
 
     <Button
         style="@style/button_list_selector"

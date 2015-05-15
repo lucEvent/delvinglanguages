@@ -20,6 +20,7 @@ import com.delvinglanguages.face.fragment.DictionaryFragment;
 import com.delvinglanguages.face.fragment.LanguageFragment;
 import com.delvinglanguages.face.fragment.PhrasalsFragment;
 import com.delvinglanguages.face.fragment.PractiseFragment;
+import com.delvinglanguages.face.fragment.PronunciationFragment;
 import com.delvinglanguages.face.fragment.SearchFragment;
 import com.delvinglanguages.face.fragment.ThemesFragment;
 import com.delvinglanguages.face.fragment.VerbsFragment;
@@ -36,7 +37,7 @@ public class LanguageActivity extends Activity {
 	private static final int REQUEST_REMOVE = 0;
 
 	private static enum Option {
-		LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES
+		LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES, PRONUNCIATION
 	};
 
 	private IDDelved idioma;
@@ -44,6 +45,7 @@ public class LanguageActivity extends Activity {
 	private boolean actualPHMode;
 
 	private View options, show_options;
+	private Option currentFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,25 @@ public class LanguageActivity extends Activity {
 		show_options = findViewById(R.id.open_opts);
 
 		idioma = KernelControl.getCurrentLanguage();
+		//
+		// Mejorar el rendimiento usando attach and dettach fragment????
+		//
 
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.replace(R.id.fragment, new LanguageFragment());
-		ft.commit();
+		if (savedInstanceState != null) {
+			setFragment((Option) savedInstanceState.get("fragment"));
+			hideOptionsMenu(null);
+		} else {
+			currentFragment = Option.LANGUAGE;
+			getFragmentManager().beginTransaction().add(R.id.fragment, new LanguageFragment()).commit();
+		}
+
 		setTitle(idioma.getName());
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("fragment", currentFragment);
 	}
 
 	@Override
@@ -130,6 +146,10 @@ public class LanguageActivity extends Activity {
 			fragment = new SearchFragment();
 			title = idioma.getName() + " " + getString(R.string.search);
 			break;
+		case PRONUNCIATION:
+			fragment = new PronunciationFragment();
+			title = idioma.getName() + " " + getString(R.string.pronunciation);
+			break;
 		case THEMES:
 			fragment = new ThemesFragment();
 			title = idioma.getName() + " " + getString(R.string.themes);
@@ -138,7 +158,7 @@ public class LanguageActivity extends Activity {
 			fragment = new LanguageFragment();
 			title = idioma.getName();
 		}
-
+		currentFragment = option;
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		ft.replace(R.id.fragment, fragment);
 		ft.commit();
@@ -232,6 +252,12 @@ public class LanguageActivity extends Activity {
 
 	public void jumptoSearch(View v) {
 		setFragment(Option.SEARCH);
+		dialog.dismiss();
+		hideOptionsMenu(null);
+	}
+
+	public void jumptoPronunciation(View v) {
+		setFragment(Option.PRONUNCIATION);
 		dialog.dismiss();
 		hideOptionsMenu(null);
 	}
