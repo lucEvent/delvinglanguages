@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +20,11 @@ import android.widget.TextView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.Translation;
+import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.listers.TranslationLister;
 import com.delvinglanguages.listers.WordLister;
@@ -31,8 +32,6 @@ import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
 public class ReferenceActivity extends ListActivity implements Messages, OnInitListener {
-
-	private static final String DEBUG = "##ReferenceActivity##";
 
 	private static final int REQUEST_MODIFIED = 0;
 
@@ -45,10 +44,8 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 		Settings.setBackgroundTo(view);
 		setContentView(view);
 
-		String s = getIntent().getExtras().getString(DREFERENCE);
-
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		reference = idioma.getReference(s);
+		Language idioma = KernelControl.getCurrentLanguage();
+		reference = idioma.getReference(getIntent().getExtras().getString(DREFERENCE));
 
 	}
 
@@ -85,29 +82,11 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 	}
 
 	private void displayReference() {
-		setTitle(reference.getName());
+		setTitle(reference.name);
 
-		((TextView) findViewById(R.id.word)).setText(reference.getName());
-		((TextView) findViewById(R.id.pronuntiation)).setText("[ " + reference.getPronunciation() + " ]");
+		((TextView) findViewById(R.id.word)).setText(reference.name);
+		((TextView) findViewById(R.id.pronuntiation)).setText("[ " + reference.pronunciation + " ]");
 		setListAdapter(new TranslationLister(this, reference.getTranslations(), false, null));
-
-		/*
-		 * ReferenceTypeView contentMaker = new ReferenceTypeView(this); if
-		 * (reference.isNoun()) {
-		 * content.addView(contentMaker.create(Word.NOUN)); } if
-		 * (reference.isVerb()) {
-		 * content.addView(contentMaker.create(Word.VERB)); } if
-		 * (reference.isAdjective()) {
-		 * content.addView(contentMaker.create(Word.ADJECTIVE)); } if
-		 * (reference.isAdverb()) {
-		 * content.addView(contentMaker.create(Word.ADVERB)); } if
-		 * (reference.isPhrasalVerb()) {
-		 * content.addView(contentMaker.create(Word.PHRASAL)); } if
-		 * (reference.isExpression()) {
-		 * content.addView(contentMaker.create(Word.EXPRESSION)); } if
-		 * (reference.isOther()) {
-		 * content.addView(contentMaker.create(Word.OTHER)); }
-		 */
 	}
 
 	@Override
@@ -118,7 +97,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Words words = reference.getPureOwners();
+		Words words = reference.words;
 		switch (item.getItemId()) {
 		case R.id.m_edit:
 			if (words.size() == 1) {
@@ -140,7 +119,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 		return true;
 	}
 
-	private void chooseReferenceToEdit(Words words) {
+	private void chooseReferenceToEdit(final Words words) {
 		ListView view = new ListView(this);
 		view.setAdapter(new WordLister(this, words));
 		view.setOnItemClickListener(new OnItemClickListener() {
@@ -157,7 +136,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 		builder.create().show();
 	}
 
-	private void chooseReferenceToRemove(Words words) {
+	private void chooseReferenceToRemove(final Words words) {
 		ListView view = new ListView(this);
 		view.setAdapter(new WordLister(this, words));
 		view.setOnItemClickListener(new OnItemClickListener() {
@@ -176,7 +155,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 
 	private void editAction(int pos) {
 		Intent intent = new Intent(this, AddWordFromModifyActivity.class);
-		intent.putExtra(SEND_WORD, reference.links.get(pos).owner.id);
+		intent.putExtra(SEND_WORD, reference.words.get(pos).id);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
@@ -195,7 +174,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 	}
 
 	private void remove(int pos) {
-		KernelControl.deleteWordTemporarily(reference.links.get(pos).owner);
+		KernelControl.deleteWordTemporarily(reference.words.get(pos));
 		setResult(Activity.RESULT_OK, null);
 		finish();
 	}
@@ -206,14 +185,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 
 		KernelControl.switchDictionary();
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, reference.links.get(position).reference.getName());
-		startActivity(intent);
-	}
-
-	private void addNewTense(int position) {
-		Intent intent = new Intent(this, NewTenseActivity.class);
-		intent.putExtra(DREFERENCE, reference.getName());
-		intent.putExtra(NewTenseActivity.TENSE, position);
+		intent.putExtra(DREFERENCE, reference.links.get(position).name);
 		startActivity(intent);
 	}
 
@@ -222,13 +194,17 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
-			int r = speechEngine.setLanguage(KernelControl.getCurrentLanguage().getLocale());
-
+			speechEngine.setLanguage(KernelControl.getCurrentLanguage().getLocale());
 		}
 	}
 
 	public void onSpeech(View view) {
-		speechEngine.speak(reference.getName(), TextToSpeech.QUEUE_FLUSH, null);
+		speechEngine.speak(reference.name, TextToSpeech.QUEUE_FLUSH, null);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##ReferenceActivity##", text);
 	}
 
 }

@@ -2,19 +2,15 @@ package com.delvinglanguages.data;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.os.Environment;
-import android.util.Log;
 
 import com.delvinglanguages.kernel.HistorialItem;
+import com.delvinglanguages.settings.Settings;
 
 public class ControlDisco extends IOOperations {
-
-	private static final String DEBUG = "##ControlDisco##";
 
 	private static final String FOLDERNAME = "Delving";
 	private static final String STATE = "state.dat";
@@ -24,7 +20,7 @@ public class ControlDisco extends IOOperations {
 	public ControlDisco() {
 		String estado = Environment.getExternalStorageState();
 		if (!estado.equals(Environment.MEDIA_MOUNTED)) {
-			Log.d(DEBUG, "No nay media montada\n");
+			debug("No nay media montada\n");
 			return;
 		}
 		File extDir = Environment.getExternalStorageDirectory();
@@ -42,10 +38,8 @@ public class ControlDisco extends IOOperations {
 			initInputBuffer(file);
 			result = readInteger();
 			bufferIn.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 		return result;
 	}
@@ -55,8 +49,8 @@ public class ControlDisco extends IOOperations {
 			initOutputBuffer(new File(folder, STATE));
 			writeInteger(position);
 			bufferOut.close();
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 	}
 
@@ -70,11 +64,8 @@ public class ControlDisco extends IOOperations {
 			}
 
 			bufferIn.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-			params = null;
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 			params = null;
 		}
 		return params;
@@ -89,10 +80,8 @@ public class ControlDisco extends IOOperations {
 			}
 
 			bufferOut.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 
 	}
@@ -109,10 +98,8 @@ public class ControlDisco extends IOOperations {
 			}
 
 			bufferIn.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 		return res;
 	}
@@ -128,10 +115,8 @@ public class ControlDisco extends IOOperations {
 			}
 
 			bufferIn.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 	}
 
@@ -151,10 +136,8 @@ public class ControlDisco extends IOOperations {
 			byte[] buffer = data.toString().getBytes();
 			bufferOut.write(buffer, 0, buffer.length);
 			bufferOut.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 		return file;
 	}
@@ -172,10 +155,8 @@ public class ControlDisco extends IOOperations {
 			}
 			bufferIn.close();
 			bufferOut.close();
-		} catch (FileNotFoundException e) {
-			Log.d(DEBUG, "FileNotFoundException: " + e.toString());
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException: " + e.toString());
+		} catch (Exception e) {
+			debug("Exception: " + e.toString());
 		}
 	}
 
@@ -183,10 +164,15 @@ public class ControlDisco extends IOOperations {
 		File tempFile = null;
 		try {
 			tempFile = File.createTempFile(prefix, sufix, folder);
-		} catch (IOException e) {
-			Log.d(DEBUG, "IOException en locationForImage");
+		} catch (Exception e) {
+			debug("Exception en locationForImage: " + e.toString());
 		}
 		return tempFile;
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##ControlDisco##", text);
 	}
 
 }

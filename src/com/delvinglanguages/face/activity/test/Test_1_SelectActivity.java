@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
@@ -60,7 +60,7 @@ public class Test_1_SelectActivity extends ListActivity implements OnClickListen
 		mas.setOnLongClickListener(this);
 		menos.setOnLongClickListener(this);
 
-		types = new Button[Settings.NUM_TYPES];
+		types = new Button[7];
 		types[0] = (Button) findViewById(R.id.noun);
 		types[1] = (Button) findViewById(R.id.verb);
 		types[2] = (Button) findViewById(R.id.adjective);
@@ -72,8 +72,8 @@ public class Test_1_SelectActivity extends ListActivity implements OnClickListen
 			types[i].setOnClickListener(this);
 			types[i].setSelected(true);
 		}
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+		Language idioma = KernelControl.getCurrentLanguage();
+		if (!idioma.getSettings(Language.MASK_PH)) {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
@@ -142,19 +142,19 @@ public class Test_1_SelectActivity extends ListActivity implements OnClickListen
 	}
 
 	public void createTest(View v) {
-		int types = 0;
-		for (int i = 0; i < Settings.NUM_TYPES; i++) {
-			if (this.types[i].isSelected()) {
-				types += (1 << i);
+		int type = 0;
+		for (int i = 0; i < types.length; i++) {
+			if (types[i].isSelected()) {
+				type += (1 << i);
 			}
 		}
-		if (types == 0) {
+		if (type == 0) {
 			Toast.makeText(this, R.string.notypesselected, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		Intent intent = new Intent(this, Test_2_CreateActivity.class);
 		intent.putExtra(NUMBER, numero);
-		intent.putExtra(TYPES, types);
+		intent.putExtra(TYPES, type);
 		startActivity(intent);
 	}
 

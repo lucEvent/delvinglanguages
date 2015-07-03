@@ -1,14 +1,13 @@
 package com.delvinglanguages.data;
 
+import com.delvinglanguages.settings.Settings;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DataBase extends SQLiteOpenHelper {
 
-	private static final String DEBUG = "##DataBase##";
-	
 	private static final String DATABASE_NAME = "delving.db";
 	private static final int DATABASE_VERSION = 1;
 
@@ -40,18 +39,20 @@ public class DataBase extends SQLiteOpenHelper {
     	public static String db = "language";
     	
     	public static String id = "_id";
+    	public static String code = "code";
     	public static String name = "name";
     	public static String statistics = "statistics";
     	public static String settings = "settings";
 
-    	public static String[] cols = { id, name, statistics, settings };
+    	public static String[] cols = { id, code, name, statistics, settings };
 
     	public static String creator = 
 	        "CREATE TABLE " + db + " (" + 
                 id + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
+                code + " INTEGER," + 
                 name + " TEXT NOT NULL," + 
                 statistics + " INTEGER," + 
-                settings + " TEXT NOT NULL," +
+                settings + " INTEGER," +
                 "FOREIGN KEY(" + statistics + ") REFERENCES " + DBStatistics.db + "(" + DBStatistics.id + ")" + 
             ");"; 
     }
@@ -133,7 +134,7 @@ public class DataBase extends SQLiteOpenHelper {
 		        name + " TEXT NOT NULL," + 
 		        lang_id + " INTEGER," + 
 		        type + " INTEGER," + 
-		        "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBWord.db + "(" + DBWord.id + ")" + 
+		        "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" + 
 			");";
     }
            
@@ -153,34 +154,10 @@ public class DataBase extends SQLiteOpenHelper {
 		        name + " TEXT NOT NULL," + 
 		        lang_id + " INTEGER," + 
 		        content + " TEXT NOT NULL," + 
-		        "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBWord.db + "(" + DBWord.id + ")" + 
+		        "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" + 
 			");";
     }
 	
-    public static final class DBTense {
-    	public static String db = "tense";
-    	
-    	public static String id = "_id";
-    	public static String lang_id = "lang_id";
-    	public static String verb_id = "verb";
-    	public static String tense = "tense";
-    	public static String forms = "forms";
-    	public static String pronunciations = "pronunciations";
-    	
-    	public static String[] cols = { id, lang_id, verb_id, tense, forms, pronunciations };
-
-    	public static String creator = 
-			"CREATE TABLE " + db + " (" +
-				id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-				lang_id + " INTEGER," +
-				verb_id + " INTEGER," +
-				tense + " INTEGER," +
-				forms + " TEXT NOT NULL," +
-				pronunciations + " TEXT NOT NULL," +
-		        "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBWord.db + "(" + DBWord.id + ")" + 
-			");";
-    }
-
     public static final class DBTheme {
     	public static String db = "theme";
     	
@@ -195,7 +172,7 @@ public class DataBase extends SQLiteOpenHelper {
 				id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 				lang_id + " INTEGER," +
 				name + " TEXT NOT NULL," +
-			    "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBWord.db + "(" + DBWord.id + ")" + 
+			    "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" + 
 			");";
     }
 
@@ -218,15 +195,42 @@ public class DataBase extends SQLiteOpenHelper {
 				"FOREIGN KEY(" + theme_id + ") REFERENCES " + DBTheme.db + "(" + DBTheme.id + ")" +
 			");";
     }
-	
+    
+    public static final class DBSwedishForm {
+    	public static String db = "swword";
+    	
+    	public static String id = "_id";
+    	public static String translation_id = "trans_id";
+    	public static String form1 = "form1";
+    	public static String form2 = "form2";
+    	public static String form3 = "form3";
+    	public static String form4 = "form4";
+    	public static String form5 = "form5";
+    	public static String form6 = "form6";
+    	
+    	public static String[] cols = { id, translation_id, form1, form2, form3, form4, form5, form6 };
+
+    	public static String creator = 
+			"CREATE TABLE " + db + " (" +
+				id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				translation_id + " INTEGER," +
+				form1 + " TEXT NOT NULL," +
+				form2 + " TEXT NOT NULL," +
+				form3 + " TEXT NOT NULL," +
+				form4 + " TEXT NOT NULL," +
+				form5 + " TEXT NOT NULL," +
+				form6 + " TEXT NOT NULL," +
+				"FOREIGN KEY(" + translation_id + ") REFERENCES " + DBTranslation.db + "(" + DBTranslation.id + ")" +
+			");";
+    }
 	
 	public DataBase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.d(DEBUG, "En onCreate");
+		debug("En onCreate");
 
 		db.execSQL(DBStatistics.creator);
 		db.execSQL(DBLanguage.creator);
@@ -235,19 +239,23 @@ public class DataBase extends SQLiteOpenHelper {
 		db.execSQL(DBRemovedWord.creator);
 		db.execSQL(DBDrawerWord.creator);
 		db.execSQL(DBTest.creator);
-		db.execSQL(DBTense.creator);
 		db.execSQL(DBTheme.creator);
-		db.execSQL(DBThemePair.creator);		
+		db.execSQL(DBThemePair.creator);
+		db.execSQL(DBSwedishForm.creator);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(DEBUG,"Upgrading DB from VERS: " + oldVersion + " to "
-						+ newVersion + ", which will destroy all old data");
-		
-		//Delete all needed tables
-//		db.execSQL("DROP TABLE "+ "db_tiempo_verbal");
-		//Create all needed tables
-//		db.execSQL(CREATE_THEME);
+		debug("Upgrading DB from VERS: " + oldVersion + " to " + newVersion);
+
+		// Delete all needed tables
+		// db.execSQL("DROP TABLE "+ "db_tiempo_verbal");
+		// Create all needed tables
+		// db.execSQL(CREATE_THEME);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##DataBase##", text);
 	}
 }

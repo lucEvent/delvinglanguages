@@ -24,7 +24,6 @@ import com.delvinglanguages.listers.StringLister;
 
 public class IntegrateManager extends Builder implements OnItemClickListener {
 
-	private static final String DEBUG = "##IntegrateM##";
 	private Activity context;
 
 	private AlertDialog currentDialog;

@@ -2,13 +2,10 @@ package com.delvinglanguages.kernel;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 import com.delvinglanguages.kernel.set.Translations;
+import com.delvinglanguages.settings.Settings;
 
 public class Word implements Comparable<Word> {
-
-	private static final String DEBUG = "##Word##";
 
 	public static final int INITIAL_PRIORITY = 100;
 	public static final int NOUN = 0;
@@ -95,7 +92,7 @@ public class Word implements Comparable<Word> {
 
 			ArrayList<String> s_translations = getNameArray();
 			for (int i = 0; i < s_translations.size(); i++) {
-				translations.add(new Translation(s_translations.get(i), traducciones.get(i).type));
+				translations.add(new Translation(-1, s_translations.get(i), traducciones.get(i).type));
 			}
 		} else {
 			for (int i = 0; i < traducciones.size(); i++) {
@@ -104,7 +101,7 @@ public class Word implements Comparable<Word> {
 					name.append(", ");
 				}
 				name.append(traduccion.name);
-				translations.add(new Translation(nombre, traduccion.type));
+				translations.add(new Translation(-1, nombre, traduccion.type));
 			}
 		}
 		return new Word(id, name.toString(), translations, pronunciacion, prioridad);
@@ -151,7 +148,7 @@ public class Word implements Comparable<Word> {
 					}
 				}
 			} catch (StringIndexOutOfBoundsException e) {
-				Log.d(DEBUG, "StringIndexOutOfBoundsException con:" + s);
+				debug("StringIndexOutOfBoundsException con:" + s);
 				char car;
 				int size = res.length();
 				do {
@@ -163,6 +160,11 @@ public class Word implements Comparable<Word> {
 			index = res.indexOf(",", index + 1);
 		}
 		return res.toString();
+	}
+
+	private static void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##Word##", text);
 	}
 
 }

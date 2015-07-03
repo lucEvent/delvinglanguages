@@ -1,29 +1,29 @@
 package com.delvinglanguages.kernel;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.delvinglanguages.data.ControlDB;
 import com.delvinglanguages.data.ControlDisco;
+import com.delvinglanguages.kernel.set.DrawerWords;
 import com.delvinglanguages.kernel.set.Languages;
-import com.delvinglanguages.kernel.set.Notas;
 import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.kernel.svenska.SwedishTranslation;
 import com.delvinglanguages.net.internal.BackgroundTaskMessenger;
 import com.delvinglanguages.net.internal.ProgressHandler;
+import com.delvinglanguages.settings.Settings;
 
 public class KernelControl {
 
-	private static final String DEBUG = "##KernelControl##";
 	private static Context context;
 	protected static ControlDB database;
 	private static ControlDisco sdcard;
 	private static Languages languages;
-	protected static IDDelved currentLanguage;
+	protected static Language currentLanguage;
 
 	//
 	public static Words integrateWords;
-	public static IDDelved integrateLanguage;
+	public static Language integrateLanguage;
 
 	public KernelControl(Context context) {
 		KernelControl.context = context;
@@ -42,7 +42,7 @@ public class KernelControl {
 		}
 	}
 
-	public static IDDelved getCurrentLanguage() {
+	public static Language getCurrentLanguage() {
 		if (currentLanguage == null) {
 			initializeAll();
 			currentLanguage = languages.get(sdcard.getLastLanguage());
@@ -56,7 +56,7 @@ public class KernelControl {
 		sdcard.saveLastLaguage(position);
 	}
 
-	public static void setCurrentLanguage(IDDelved language) {
+	public static void setCurrentLanguage(Language language) {
 		setCurrentLanguage(languages.indexOf(language));
 	}
 
@@ -68,13 +68,13 @@ public class KernelControl {
 		return languages;
 	}
 
-	public static void loadLanguage(IDDelved language) {
+	public static void loadLanguage(Language language) {
 		if (!language.isLoaded()) {
 			database.readLanguage(language, new ProgressHandler(null));
 		}
 	}
 
-	public static void loadLanguage(final IDDelved language, final ProgressHandler progress, final BackgroundTaskMessenger comm) {
+	public static void loadLanguage(final Language language, final ProgressHandler progress, final BackgroundTaskMessenger comm) {
 		if (!language.isLoaded()) {
 			new Thread(new Runnable() {
 
@@ -95,13 +95,13 @@ public class KernelControl {
 		}
 	}
 
-	public static int addLanguage(String name, int settings) {
-		IDDelved newLang = database.insertLanguage(name, settings);
-		languages.add(newLang);
+	public static int addLanguage(int code, String name, int settings) {
+		Language newlanguage = database.insertLanguage(code, name, settings);
+		languages.add(newlanguage);
 		return languages.size() - 1;
 	}
 
-	public static void addWord(String name, Translations translations, String pronunciation) {
+	public static void addWord(String name, Translations translations, String pronunciation, int priority) {
 		name = Word.format(name);
 		if (currentLanguage.isNativeLanguage()) {
 			Word temp = new Word(-1, name, translations, pronunciation, 0).getInverse(false);
@@ -109,13 +109,20 @@ public class KernelControl {
 			translations = temp.traducciones;
 			pronunciation = "";
 		}
-		currentLanguage.addWord(database.insertWord(name, translations, currentLanguage.getID(), pronunciation));
+		Word W = database.insertWord(name, translations, currentLanguage.getID(), pronunciation, priority);
+		if (currentLanguage.CODE == Language.SV) {
+			for (int i = 0; i < W.traducciones.size(); i++) {
+				SwedishTranslation SVT = (SwedishTranslation) translations.get(i);
+				database.insertSwedishForm(W.traducciones.get(i), SVT.forms);
+			}
+		}
+		currentLanguage.addWord(W);
 	}
 
 	public static void updateWord(Word word, String name, Translations translation, String pronunciation) {
 		currentLanguage.updateWord(word, name, translation, pronunciation);
 		if (currentLanguage.isNativeLanguage()) {
-			Log.d(DEBUG, "Word:" + word.nombre + ", trans:" + word.getTranslationString());
+			debug("Word:" + word.nombre + ", trans:" + word.getTranslationString());
 			word = word.getInverse(true);
 		}
 		database.updateWord(word);
@@ -157,35 +164,32 @@ public class KernelControl {
 	}
 
 	public static void deleteAllRemovedWords() {
-		for (Word word : currentLanguage.getRemovedWords()) {
-			database.deleteVerbTenses(word.id);
-		}
 		currentLanguage.deleteAllRemovedWords();
 		database.deleteAllRemovedWords(currentLanguage.getID());
 	}
 
 	public static void addToStore(String note) {
 		int type = currentLanguage.isNativeLanguage() ? 1 : 0;
-
 		currentLanguage.addWord(database.insertStoreWord(note, currentLanguage.getID(), type));
 	}
 
-	public static void addWordFromStore(Nota sword, String name, Translations translations, String pronuntiation) {
-		addWord(name, translations, pronuntiation);
+	public static void addWord(DrawerWord sword, String name, Translations translations, String pronuntiation) {
+		addWord(name, translations, pronuntiation, Word.INITIAL_PRIORITY);
 		removeFromStore(sword);
 	}
 
-	public static void removeFromStore(Nota sword) {
+	public static void removeFromStore(DrawerWord sword) {
 		currentLanguage.deleteDrawerWord(sword);
 		database.deleteStoredWord(sword.id);
 	}
 
-	public static void renameLanguage(String newname) {
+	public static void updateLanguage(int code, String newname) {
+		currentLanguage.CODE = code;
 		currentLanguage.setName(newname);
 		database.updateLanguage(currentLanguage);
 	}
 
-	public static void setLanguageSettings(boolean status, int mask) {
+	public static void updateLanguageSettings(boolean status, int mask) {
 		currentLanguage.setSettings(status, mask);
 		database.updateLanguage(currentLanguage);
 	}
@@ -193,16 +197,15 @@ public class KernelControl {
 	public static Words integrateLanguage(int destinyLanguagePosition) {
 		integrateWords = new Words();
 		integrateLanguage = languages.get(destinyLanguagePosition);
-		IDDelved destino = integrateLanguage;
+		Language destino = integrateLanguage;
 		loadLanguage(destino);
 		while (!destino.isDictionaryCreated()) {
 		}
 
 		// Copiando el Diccionario
-		Words fuentes = currentLanguage.getWords(); // Necesario
-		for (int i = 0; i < fuentes.size(); ++i) {
-			Word pinsert = fuentes.get(i);
-			Word porig = destino.getPalabra(pinsert.getName());// Necesario
+		Words fuentes = currentLanguage.getWords();
+		for (Word pinsert : fuentes) {
+			Word porig = destino.getPalabra(pinsert.getName());
 			if (porig == null) {
 				destino.addWord(pinsert);
 				database.updateWordLanguage(pinsert, destino.getID());
@@ -213,7 +216,7 @@ public class KernelControl {
 		}
 
 		// Copiando la warehouse
-		Notas notafuente = currentLanguage.getDrawerWords();
+		DrawerWords notafuente = currentLanguage.getDrawerWords();
 		for (int i = 0; i < notafuente.size(); ++i) {
 			destino.addWord(notafuente.get(i));
 		}
@@ -226,10 +229,19 @@ public class KernelControl {
 		if (intento == 1) {
 			ref.priority += -1;
 		}
-		for (Link link : ref.links) {
-			link.owner.updatePriority(ref.priority);
-			database.updateWordPriority(link.owner);
+		for (Word word : ref.words) {
+			word.updatePriority(ref.priority);
+			database.updateWordPriority(word);
 		}
+	}
+
+	public static SwedishTranslation getSwedishForm(Translation t) {
+		return database.readSwedishForm(t);
+	}
+
+	private static void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##KernelControl##", text);
 	}
 
 }

@@ -9,26 +9,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.delvinglanguages.kernel.KernelControl;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Settings;
 
 public class WordReference implements Runnable {
 
-	private static final String DEBUG = "##WordReference##";
-
 	private final static String CODE_ENGLISH = "en";
 	private final static String CODE_SPANISH = "es";
-	private final static String CODE_FRENCH = "fr";
-	private final static String CODE_ITALIAN = "it";
-	private final static String CODE_CZECH = "cz";
-	private final static String CODE_GREEK = "gr";
-	private final static String CODE_POLISH = "pl";
-	private final static String CODE_PORTUGUESE = "pt";
-
+	/*
+	 * private final static String CODE_FRENCH = "fr";
+	 * 
+	 * private final static String CODE_ITALIAN = "it";
+	 * 
+	 * private final static String CODE_CZECH = "cz";
+	 * 
+	 * private final static String CODE_GREEK = "gr";
+	 * 
+	 * private final static String CODE_PORTUGUESE = "pt";
+	 */
 	// http://api.wordreference.com/a51d4/enes/welcome
 
 	// {api_version}/{API_key}/json/{dictionary}/{term}
@@ -53,13 +54,13 @@ public class WordReference implements Runnable {
 	private NetWork network;
 
 	public WordReference(NetWork network) {
-		IDDelved idiomaAct = KernelControl.getCurrentLanguage();
+		Language idiomaAct = KernelControl.getCurrentLanguage();
 		if (idiomaAct.isNativeLanguage()) {
-			lang_from = getCode(Settings.IdiomaNativo);
+			lang_from = getCode(Settings.NativeLanguage);
 			lang_to = getCode(idiomaAct.getName());
 		} else {
 			lang_from = getCode(idiomaAct.getName());
-			lang_to = getCode(Settings.IdiomaNativo);
+			lang_to = getCode(Settings.NativeLanguage);
 		}
 		this.network = network;
 		address = URL_BASE + API_VERSION + "/" + API_KEY + "/json/" + lang_from + lang_to + "/";
@@ -88,7 +89,7 @@ public class WordReference implements Runnable {
 			wordName = search;
 			pagina = new URL(address + search);
 		} catch (MalformedURLException e) {
-			Log.d(DEBUG, "Error en getContent");
+			debug("Error en getContent");
 			e.printStackTrace();
 		}
 		new Thread(this).start();
@@ -132,7 +133,7 @@ public class WordReference implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			Log.d(DEBUG, "Exception: " + e.toString());
+			debug("Exception: " + e.toString());
 
 		}
 		handler.post(new Runnable() {
@@ -169,7 +170,7 @@ public class WordReference implements Runnable {
 				|| typeCode.equals(typePREFIJO) || typeCode.equals(typeCONJ) || typeCode.equals(typeLOCPRNL) || typeCode.equals(typePREP)) {
 			type = 64;
 		} else {
-			Log.d(DEBUG, "HEYYY!!!! no tengo este tipo:" + typeCode);
+			debug("HEYYY!!!! no tengo este tipo:" + typeCode);
 			type = 0;
 		}
 		String[] words = name.split(",");
@@ -253,6 +254,11 @@ public class WordReference implements Runnable {
 			return name.compareTo(another.name);
 		}
 
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##WordReference##", text);
 	}
 
 }

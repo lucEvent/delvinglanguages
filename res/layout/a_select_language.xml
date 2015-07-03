@@ -20,9 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:entries="@array/paises"
                 android:gravity="center_horizontal"
-                android:padding="20dip"
                 android:spinnerMode="dialog" />
 
             <EditText
@@ -30,11 +28,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dip"
+                android:background="@drawable/input"
                 android:ems="10"
                 android:gravity="center_horizontal"
-                android:hint="@string/hint_selectlanguage"
+                android:hint="@string/thelanguagename"
                 android:inputType="textCapSentences"
-                android:maxLines="1" >
+                android:maxLines="1"
+                android:padding="10dip" >
 
                 <requestFocus />
             </EditText>
@@ -47,18 +47,14 @@
 
                 <TextView
                     style="@style/settings_indexs"
-                    android:text="@string/parameters" />
+                    android:text="@string/langfeatures" />
 
                 <View style="@style/divisor" />
 
                 <CheckedTextView
                     android:id="@+id/phrasalsenabled"
-                    style="@style/settings_option"
-                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
+                    style="@style/option_lang_features"
                     android:onClick="toggle"
-                    android:paddingRight="20dip"
                     android:text="@string/phrasalsenabled" />
 
                 <View
@@ -68,12 +64,8 @@
 
                 <CheckedTextView
                     android:id="@+id/adjectsenabled"
-                    style="@style/settings_option"
-                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
+                    style="@style/option_lang_features"
                     android:onClick="toggle"
-                    android:paddingRight="20dip"
                     android:text="@string/adjectsenabled" />
 
                 <View
@@ -83,12 +75,8 @@
 
                 <CheckedTextView
                     android:id="@+id/special_chars_enabled"
-                    style="@style/settings_option"
-                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
+                    style="@style/option_lang_features"
                     android:onClick="toggle"
-                    android:paddingRight="20dip"
                     android:text="@string/special_chars_enabled" />
             </LinearLayout>
         </LinearLayout>

@@ -17,7 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.settings.Settings;
 
 public class FoneticsKeyboard implements OnKeyboardActionListener, OnFocusChangeListener, OnClickListener, OnTouchListener {
@@ -41,10 +41,9 @@ public class FoneticsKeyboard implements OnKeyboardActionListener, OnFocusChange
 		puntuation = new Keyboard(context, R.xml.puntuation_kb);
 		empty = new Keyboard(context, R.xml.empty_kb);
 		switch (langCode) {
-		case IDDelved.SV:
+		case Language.SV:
 			symbols = new Keyboard(context, R.xml.kb_phon_sv);
 			break;
-		case IDDelved.EN:
 		default:
 			symbols = new Keyboard(context, R.xml.kb_phon_en);
 		}

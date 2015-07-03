@@ -36,7 +36,7 @@
             android:id="@+id/storeword"
             android:layout_width="60dip"
             android:layout_height="match_parent"
-            android:background="@drawable/button_backgrounds"
+            android:background="@drawable/button"
             android:contentDescription="@string/add"
             android:src="@android:drawable/ic_menu_add" />
     </LinearLayout>

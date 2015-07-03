@@ -26,13 +26,11 @@ import com.delvinglanguages.face.fragment.ThemesFragment;
 import com.delvinglanguages.face.fragment.VerbsFragment;
 import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.settings.Settings;
 
 public class LanguageActivity extends Activity {
-
-	private static final String DEBUG = "##LanguageActivity##";
 
 	private static final int REQUEST_REMOVE = 0;
 
@@ -40,7 +38,7 @@ public class LanguageActivity extends Activity {
 		LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES, PRONUNCIATION
 	};
 
-	private IDDelved idioma;
+	private Language idioma;
 
 	private boolean actualPHMode;
 
@@ -81,7 +79,7 @@ public class LanguageActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		actualPHMode = idioma.getSettings(IDDelved.MASK_PH);
+		actualPHMode = idioma.getSettings(Language.MASK_PH);
 	}
 
 	@Override
@@ -294,6 +292,11 @@ public class LanguageActivity extends Activity {
 	public void hideOptionsMenu(View v) {
 		options.setVisibility(View.GONE);
 		show_options.setVisibility(View.VISIBLE);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##LanguageActivity##", text);
 	}
 
 }

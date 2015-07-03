@@ -11,15 +11,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.listers.AvailableLanguageLister;
 import com.delvinglanguages.settings.Settings;
 
 public class AddLanguageActivity extends Activity implements OnItemSelectedListener {
 
-	protected Spinner selector;
+	private String[] languages;
 
-	protected EditText input;
+	private Spinner spinner;
+	private EditText input;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,12 @@ public class AddLanguageActivity extends Activity implements OnItemSelectedListe
 		Settings.setBackgroundTo(view);
 		setContentView(view);
 
-		selector = (Spinner) findViewById(R.id.selector);
-		selector.setOnItemSelectedListener(this);
-		selector.setSelection(0);
+		languages = getResources().getStringArray(R.array.languages);
+
+		spinner = (Spinner) findViewById(R.id.selector);
+		spinner.setAdapter(new AvailableLanguageLister(this, languages));
+		spinner.setOnItemSelectedListener(this);
+		spinner.setSelection(0);
 
 		input = (EditText) findViewById(R.id.input);
 	}
@@ -38,10 +43,19 @@ public class AddLanguageActivity extends Activity implements OnItemSelectedListe
 	/** *************** METODOS ONITEMSELECTEDLISTENER *************** **/
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		String[] idiomas = getResources().getStringArray(R.array.paises);
-		if (pos != 0) {
-			input.setText(idiomas[pos]);
-			input.setSelection(idiomas[pos].length());
+		String in = input.getText().toString();
+		boolean update = in.length() == 0;
+		if (!update) {
+			for (String s : languages) {
+				if (s.equals(in)) {
+					update = true;
+					break;
+				}
+			}
+		}
+		if (update) {
+			input.setText(languages[pos]);
+			input.setSelection(languages[pos].length());
 		}
 	}
 
@@ -59,12 +73,14 @@ public class AddLanguageActivity extends Activity implements OnItemSelectedListe
 			showMessage(R.string.msgnolangname);
 			return;
 		}
+		int code = spinner.getSelectedItemPosition();
+
 		boolean ph = ((CheckedTextView) findViewById(R.id.phrasalsenabled)).isChecked();
 		boolean adj = ((CheckedTextView) findViewById(R.id.adjectsenabled)).isChecked();
 		boolean spe = ((CheckedTextView) findViewById(R.id.special_chars_enabled)).isChecked();
-		int settings = IDDelved.configure(ph, adj, spe);
+		int settings = Language.configure(ph, adj, spe);
 
-		KernelControl.addLanguage(name, settings);
+		KernelControl.addLanguage(code, name, settings);
 		finish();
 	}
 
@@ -75,4 +91,5 @@ public class AddLanguageActivity extends Activity implements OnItemSelectedListe
 	protected void showMessage(int text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
+
 }

@@ -81,7 +81,7 @@ public class Test_2_CreateActivity extends ListActivity implements Runnable, Mes
 						public void run() {
 							progreso.setProgress(progressi);
 							setTitle(searchString + dots[progressi % dots.length]);
-							values[index - 1] = index + ". " + references.get(index - 1).getName();
+							values[index - 1] = index + ". " + references.get(index - 1).name;
 							adapter.notifyDataSetChanged();
 						}
 					});

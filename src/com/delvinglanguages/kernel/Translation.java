@@ -3,17 +3,18 @@ package com.delvinglanguages.kernel;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import android.util.Log;
+import com.delvinglanguages.settings.Settings;
 
 public class Translation implements Serializable {
 
 	private static final long serialVersionUID = 8040926703240665247L;
 
-	private static final String DEBUG = "##Translation##";
+	public final int id;
 	public String name;
 	public int type;
 
-	public Translation(String translation, int type) {
+	public Translation(int id, String translation, int type) {
+		this.id = id;
 		this.name = translation;
 		this.type = type;
 	}
@@ -51,11 +52,16 @@ public class Translation implements Serializable {
 					indi++;
 				}
 			} catch (IndexOutOfBoundsException e) {
-				Log.d(DEBUG, "##Error por:" + string + "##");
+				debug("##Error por:" + string + "##");
 			}
 			list.add(string.substring(indi, indf));
 		}
 		return list;
+	}
+
+	private static void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##Translation##", text);
 	}
 
 }

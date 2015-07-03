@@ -17,10 +17,13 @@
 
         <View style="@style/divisor" />
 
-        <Button
-            style="@style/settings_option"
-            android:onClick="changeNativeLanguage"
-            android:text="@string/nativelanguage" />
+        <Spinner
+            android:id="@+id/selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/option"
+            android:gravity="left"
+            android:spinnerMode="dialog" />
 
         <View
             style="@style/divisor"

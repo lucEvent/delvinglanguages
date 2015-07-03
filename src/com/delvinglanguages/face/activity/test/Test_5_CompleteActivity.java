@@ -57,8 +57,7 @@ public class Test_5_CompleteActivity extends CompleteActivity {
 			flashcolor(0xFF00FF00);
 
 			String toappend = teclas[tecla].string;
-			descubierta.replace(cursor, cursor + (toappend.length() << 1),
-					toappend);
+			descubierta.replace(cursor, cursor + (toappend.length() << 1), toappend);
 
 			cursor += toappend.length();
 			position++;
@@ -67,7 +66,7 @@ public class Test_5_CompleteActivity extends CompleteActivity {
 
 			// Si se ha completado la palabra
 			if (cursor == palabraUpp.length()) {
-				pronounce.setText("[" + refActual.getPronunciation() + "]");
+				pronounce.setText("[" + refActual.pronunciation + "]");
 				succesCounter++;
 				if (succesCounter == test.references.size()) {
 					test.nextStat();
@@ -157,15 +156,14 @@ public class Test_5_CompleteActivity extends CompleteActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.title_removingtest);
 			builder.setMessage(R.string.removetestquestion);
-			builder.setPositiveButton(R.string.confirm,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							kernel.removeTest(test);
-							showMessage(R.string.testremoved);
-							finish();
-						}
-					});
+			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					kernel.removeTest(test);
+					showMessage(R.string.testremoved);
+					finish();
+				}
+			});
 			builder.setNegativeButton(R.string.cancel, null);
 			builder.create().show();
 

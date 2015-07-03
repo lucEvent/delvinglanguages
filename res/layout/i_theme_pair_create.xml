@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:layout_toLeftOf="@+id/middle"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:contentDescription="@string/edit"
         android:src="@android:drawable/ic_menu_edit" />
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dip"
         android:layout_toRightOf="@+id/middle"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:contentDescription="@string/remove"
         android:src="@android:drawable/ic_menu_delete" />
 

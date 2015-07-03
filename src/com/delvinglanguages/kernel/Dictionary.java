@@ -3,8 +3,6 @@ package com.delvinglanguages.kernel;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import android.util.Log;
-
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
@@ -12,14 +10,12 @@ import com.delvinglanguages.settings.Settings;
 
 public class Dictionary {
 
-	private static final String DEBUG = "##Dictionary##";
-
 	private int[] type_counter;
 	private TreeSet<DReference> dictionary, dictionary_inverse;
 	public boolean dictionaryCreated;
 
-	public Dictionary(Character[] indexsD, Character[] indexsN) {
-		type_counter = new int[Settings.NUM_TYPES];
+	public Dictionary() {
+		type_counter = new int[7];
 		dictionary = new TreeSet<DReference>();
 		dictionary_inverse = new TreeSet<DReference>();
 		for (int i = 0; i < type_counter.length; i++) {
@@ -51,38 +47,27 @@ public class Dictionary {
 
 		ArrayList<String> refsD = entry.getNameArray();
 		Translations refsN = entry.getTranslations();
-		DReferences tempD = new DReferences();
-		for (String refD : refsD) {
-			if (refD.length() == 0) {
+		for (String refDS : refsD) {
+			if (refDS.length() == 0) {
 				continue;
 			}
-			DReference ref = new DReference(refD);
-			DReference temp = dictionary.ceiling(ref);
-			if (temp == null || !temp.getName().equals(refD)) {
-				temp = ref;
-				dictionary.add(temp);
+			DReference refD = new DReference(refDS, entry.pronunciacion, entry.prioridad);
+			if (!dictionary.add(refD)) {
+				refD = dictionary.ceiling(refD);
 			}
-			tempD.add(temp);
-		}
-		DReferences tempN = new DReferences();
-		for (Translation transN : refsN) {
-			for (String refN : transN.getItems()) {
-				if (refN.length() == 0) {
-					continue;
+
+			for (Translation transN : refsN) {
+				for (String refNS : transN.getItems()) {
+					if (refNS.length() == 0) {
+						continue;
+					}
+					DReference refN = new DReference(transN.id, refNS, "", entry.prioridad, transN.type);
+					if (!dictionary_inverse.add(refN)) {
+						refN = dictionary_inverse.ceiling(refN);
+					}
+					refD.linkTo(entry, refN);
+					refN.linkTo(entry, refD);
 				}
-				DReference ref = new DReference(refN, transN.type);
-				DReference temp = dictionary_inverse.ceiling(ref);
-				if (temp == null || !temp.getName().equals(refN)) {
-					temp = ref;
-					dictionary_inverse.add(temp);
-				}
-				tempN.add(temp);
-			}
-		}
-		for (DReference refD : tempD) {
-			for (DReference refN : tempN) {
-				refD.addReference(refN, entry, refN.getType());
-				refN.addReference(refD, entry);
 			}
 		}
 	}
@@ -95,36 +80,29 @@ public class Dictionary {
 			}
 		}
 
-		{ // debug
-			Log.d(DEBUG, "DESINDEXANDO: " + entry.nombre);
-			Log.d(DEBUG, " el contenido del diccionario es:");
-			for (DReference R : dictionary) {
-				Log.d(DEBUG, " --->" + R.getName());
-			}
-			Log.d(DEBUG, "el contenido del diccionario INVERSO es:");
-			for (DReference R : dictionary_inverse) {
-				Log.d(DEBUG, " --->" + R.getName());
-			}
-		}// end debug
-
 		ArrayList<String> refsD = entry.getNameArray();
-		ArrayList<String> refsN = entry.getTranslationArray();
-		for (String refD : refsD) {
-			DReference temp = dictionary.ceiling(new DReference(refD));
-			temp.removeReferencesto(entry);
-			if (temp.links.isEmpty()) {
-				dictionary.remove(temp);
+		Translations refsN = entry.getTranslations();
+		for (String refDS : refsD) {
+			DReference refD = dictionary.ceiling(new DReference(refDS, -1));
+
+			for (Translation transN : refsN) {
+				for (String refNS : transN.getItems()) {
+					DReference refN = dictionary_inverse.ceiling(new DReference(refNS, transN.type));
+
+					refD.unlink(entry, refN);
+					refN.unlink(entry, refD);
+
+					if (refN.links.isEmpty()) {
+						dictionary_inverse.remove(refN);
+					}
+
+				}
 			}
-		}
-		for (String refN : refsN) {
-			DReference temp = dictionary_inverse.ceiling(new DReference(refN));
-			if (temp == null) {
-				Log.d(DEBUG, "refN es " + refN + " y word es: " + entry.nombre);
+
+			if (refD.links.isEmpty()) {
+				dictionary.remove(refD);
 			}
-			temp.removeReferencesto(entry);
-			if (temp.links.isEmpty()) {
-				dictionary_inverse.remove(temp);
-			}
+
 		}
 	}
 
@@ -180,8 +158,8 @@ public class Dictionary {
 		if (inverse) {
 			dictionary = this.dictionary_inverse;
 		}
-		DReference ceiling = dictionary.ceiling(new DReference("" + at));
-		if (ceiling == null || IDDelved.collator.compare(at + "", ceiling.getName().charAt(0) + "") != 0) {
+		DReference ceiling = dictionary.ceiling(new DReference("" + at, -1));
+		if (ceiling == null || Language.collator.compare(at + "", ceiling.name.charAt(0) + "") != 0) {
 			return new TreeSet<DReference>();
 		}
 		String next = "" + (char) (at + 1);
@@ -204,7 +182,7 @@ public class Dictionary {
 				break;
 			}
 		}
-		DReference floor = dictionary.floor(new DReference(next));
+		DReference floor = dictionary.floor(new DReference(next, -1));
 		if (floor == null) {
 			return new TreeSet<DReference>();
 		}
@@ -216,10 +194,16 @@ public class Dictionary {
 		if (inverse) {
 			dictionary = this.dictionary_inverse;
 		}
-		DReference candidate = dictionary.ceiling(new DReference(name));
-		if (candidate != null && IDDelved.collator.compare(candidate.getName(), name) == 0) {
+		DReference candidate = dictionary.ceiling(new DReference(name, -1));
+		if (candidate != null && Language.collator.compare(candidate.name, name) == 0) {
 			return candidate;
 		}
 		return null;
 	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##Dictionary##", text);
+	}
+
 }

@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.view.SpecialKeysBar;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.kernel.theme.ThemeKernelControl;
@@ -19,8 +19,6 @@ import com.delvinglanguages.listers.ThemePairInputLister;
 import com.delvinglanguages.settings.Settings;
 
 public class CreateThemeActivity extends ListActivity implements OnClickListener {
-
-	private static final String DEBUG = "##CreateThemeActivity##";
 
 	protected ThemePairInputLister adapter;
 
@@ -46,13 +44,13 @@ public class CreateThemeActivity extends ListActivity implements OnClickListener
 		in_delv = (EditText) findViewById(R.id.in_delv);
 		in_nativ = (EditText) findViewById(R.id.in_nativ);
 
-		IDDelved language = KernelControl.getCurrentLanguage();
+		Language language = KernelControl.getCurrentLanguage();
 		if (language.isNativeLanguage()) {
-			in_delv.setHint("in " + Settings.IdiomaNativo);
+			in_delv.setHint("in " + Settings.NativeLanguage);
 			in_nativ.setHint("in " + language.getName());
 		} else {
 			in_delv.setHint("in " + language.getName());
-			in_nativ.setHint("in " + Settings.IdiomaNativo);
+			in_nativ.setHint("in " + Settings.NativeLanguage);
 		}
 
 		new SpecialKeysBar(findViewById(R.id.letrasespeciales), new EditText[] { in_name, in_delv, in_nativ });
@@ -108,6 +106,11 @@ public class CreateThemeActivity extends ListActivity implements OnClickListener
 		editing = true;
 		in_delv.setText(pairs.get(editing_pos).inDelved);
 		in_nativ.setText(pairs.get(editing_pos).inNative);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##CreateThemeActivity##", text);
 	}
 
 }

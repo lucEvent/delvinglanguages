@@ -1,9 +1,8 @@
 package com.delvinglanguages.face.fragment;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,18 +11,16 @@ import android.widget.Button;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.DictionaryListActivity;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
 public class DictionaryFragment extends Fragment implements OnClickListener, Messages {
 
-	private static final String DEBUG = "##DictionaryFragment##";
-
 	private final int NUM_LETRAS = 31;
 
-	private IDDelved idioma;
+	private Language idioma;
 	private Button[] letras;
 
 	@Override
@@ -33,10 +30,10 @@ public class DictionaryFragment extends Fragment implements OnClickListener, Mes
 
 		View view;
 		switch (idioma.CODE) {
-		case IDDelved.SV:
+		case Language.SV:
 			view = inflater.inflate(R.layout.a_dictionary_sv, container, false);
 			break;
-		case IDDelved.ES:
+		case Language.ES:
 			view = inflater.inflate(R.layout.a_dictionary_es, container, false);
 			break;
 		default:
@@ -73,12 +70,12 @@ public class DictionaryFragment extends Fragment implements OnClickListener, Mes
 		letras[24] = (Button) view.findViewById(R.id.dic_y);
 		letras[25] = (Button) view.findViewById(R.id.dic_z);
 		switch (idioma.CODE) {
-		case IDDelved.SV:
+		case Language.SV:
 			letras[26] = (Button) view.findViewById(R.id.dic_sv_ao);
 			letras[27] = (Button) view.findViewById(R.id.dic_sv_ae);
 			letras[28] = (Button) view.findViewById(R.id.dic_sv_oe);
 			break;
-		case IDDelved.ES:
+		case Language.ES:
 			letras[29] = (Button) view.findViewById(R.id.dic_es_n);
 			break;
 		}
@@ -124,7 +121,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener, Mes
 					letras[index].setTag(cap);
 				}
 			} catch (NullPointerException e) {
-				Log.d(DEBUG, "ERROR index->" + index + ", cap->" + cap);
+				debug("ERROR index->" + index + ", cap->" + cap);
 			}
 		}
 	}
@@ -135,6 +132,11 @@ public class DictionaryFragment extends Fragment implements OnClickListener, Mes
 		Intent intent = new Intent(getActivity(), DictionaryListActivity.class);
 		intent.putExtra(CHARACTER, (Character) button.getTag());
 		startActivity(intent);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##DictionaryFragment##", text);
 	}
 
 }

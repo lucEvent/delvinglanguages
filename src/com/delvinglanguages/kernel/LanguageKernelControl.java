@@ -4,7 +4,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.Notas;
+import com.delvinglanguages.kernel.set.DrawerWords;
 import com.delvinglanguages.kernel.set.Words;
 
 import android.content.Context;
@@ -24,16 +24,12 @@ public class LanguageKernelControl extends KernelControl {
 		return currentLanguage.getReferences();
 	}
 
-	/*
-	 * public static Word getWord(int id) { return
-	 * currentLanguage.getPalabra(id); }
-	 */
 	public static Words getRemovedWords() {
 		loadLanguage(currentLanguage);
 		return currentLanguage.getRemovedWords();
 	}
 
-	public static Notas getDrawerWords() {
+	public static DrawerWords getDrawerWords() {
 		loadLanguage(currentLanguage);
 		return currentLanguage.getDrawerWords();
 	}

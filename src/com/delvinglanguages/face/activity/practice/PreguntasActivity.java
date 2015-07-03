@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.game.MatchGame;
 import com.delvinglanguages.kernel.game.MatchGame.QuestionModel;
@@ -20,19 +19,14 @@ import com.delvinglanguages.settings.Settings;
 
 public class PreguntasActivity extends Activity implements OnClickListener {
 
-	private static final String DEBUG = "##PreguntaActivity##";
-
 	protected final int NUM_RESP = 6;
 
-	// Elementos del kernel
-	protected IDDelved idioma;
+	protected Language idioma;
 	protected MatchGame gamecontroller;
 
-	// Elementos de la activity
 	protected QuestionModel pActual;
 	protected int intento;
 
-	// Elementos graficos
 	protected TextView palabra, pregunta;
 	protected Button resps[];
 
@@ -68,7 +62,6 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.d(DEBUG, "Guardando estadisticas en disco");
 		KernelControl.saveStatistics();
 	}
 
@@ -100,7 +93,6 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					Log.d(DEBUG, "ERROR EN EL SLEEP");
 				}
 				mHandler.post(new Runnable() {
 					@Override
@@ -129,8 +121,8 @@ public class PreguntasActivity extends Activity implements OnClickListener {
 	private void nuevaPregunta() {
 		intento = 1;
 		pActual = gamecontroller.nextQuestion(NUM_RESP);
-		palabra.setText(pActual.reference.getName());
-		pregunta.setText(pActual.reference.getPronunciation());
+		palabra.setText(pActual.reference.name);
+		pregunta.setText(pActual.reference.pronunciation);
 
 		for (int i = 0; i < NUM_RESP; i++) {
 			resps[i].getBackground().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);

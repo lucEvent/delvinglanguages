@@ -30,8 +30,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class SearchFragment extends Fragment implements OnClickListener, NetWork, TextWatcher, Messages {
 
-	private static final String DEBUG = "##SearchActivity##";
-
 	private EditText input;
 	private Button search, add;
 
@@ -86,7 +84,7 @@ public class SearchFragment extends Fragment implements OnClickListener, NetWork
 				CheckedTextView ctw = (CheckedTextView) view.findViewById(R.id.text);
 				if (ctw.isChecked()) {
 					WRItem d = data.get(i);
-					translations.add(new Translation(d.name, d.type));
+					translations.add(new Translation(-1, d.name, d.type));
 				}
 			}
 			Intent intent = new Intent(getActivity(), AddWordFromSearchActivity.class);
@@ -115,8 +113,9 @@ public class SearchFragment extends Fragment implements OnClickListener, NetWork
 		}
 	}
 
-	private int[] bgtypes = { R.drawable.button_bg_noun, R.drawable.button_bg_vb, R.drawable.button_bg_adj, R.drawable.button_bg_adv,
-			R.drawable.button_bg_phr_v, R.drawable.button_bg_expr, R.drawable.button_bg_oth };
+	private int[] bgtypes = { R.drawable.button_noun_pressed, R.drawable.button_verb_pressed, R.drawable.button_adjective_pressed,
+			R.drawable.button_adverb_pressed, R.drawable.button_phrasals_pressed, R.drawable.button_expression_pressed,
+			R.drawable.button_other_pressed };
 
 	private int[] ttypes = { R.string.nn, R.string.vb, R.string.adj, R.string.adv, R.string.ph_v, R.string.exp, R.string.oth };
 
@@ -127,7 +126,7 @@ public class SearchFragment extends Fragment implements OnClickListener, NetWork
 		CheckedTextView ttext = (CheckedTextView) view.findViewById(R.id.text);
 		ttext.setOnClickListener(this);
 
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
+		for (int i = 0; i < ttypes.length; ++i) {
 			if ((type & (1 << i)) != 0) {
 				btype.setBackgroundResource(bgtypes[i]);
 				btype.setText(ttypes[i]);

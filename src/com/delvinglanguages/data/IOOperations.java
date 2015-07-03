@@ -57,6 +57,14 @@ public abstract class IOOperations {
 		}
 	}
 
+	protected Boolean readBoolean() throws IOException {
+		return Boolean.parseBoolean(readString());
+	}
+
+	protected void writeBoolean(boolean b) throws IOException {
+		writeString(Boolean.toString(b));
+	}
+
 	protected long readLong() throws IOException {
 		long result = bufferIn.read();
 		result = (result << 8) + bufferIn.read();

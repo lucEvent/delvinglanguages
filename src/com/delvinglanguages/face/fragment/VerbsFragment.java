@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
@@ -35,7 +35,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener, Mess
 		Settings.setBackgroundTo(view);
 
 		verbslist = LanguageKernelControl.getVerbs();
-		phMode = LanguageKernelControl.getLanguageSettings(IDDelved.MASK_PH);
+		phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
 		setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
 
 		Button action = ((Button) view.findViewById(R.id.action));
@@ -49,7 +49,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener, Mess
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		super.onListItemClick(l, v, pos, id);
 		Intent intent = new Intent(getActivity(), ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, verbslist.get(pos).getName());
+		intent.putExtra(DREFERENCE, verbslist.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

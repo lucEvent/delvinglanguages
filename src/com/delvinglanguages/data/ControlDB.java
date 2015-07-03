@@ -1,39 +1,36 @@
 package com.delvinglanguages.data;
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.util.Pair;
 
 import com.delvinglanguages.data.DataBase.DBDrawerWord;
 import com.delvinglanguages.data.DataBase.DBLanguage;
 import com.delvinglanguages.data.DataBase.DBRemovedWord;
 import com.delvinglanguages.data.DataBase.DBStatistics;
-import com.delvinglanguages.data.DataBase.DBTense;
+import com.delvinglanguages.data.DataBase.DBSwedishForm;
 import com.delvinglanguages.data.DataBase.DBTest;
 import com.delvinglanguages.data.DataBase.DBTheme;
 import com.delvinglanguages.data.DataBase.DBThemePair;
 import com.delvinglanguages.data.DataBase.DBTranslation;
 import com.delvinglanguages.data.DataBase.DBWord;
 import com.delvinglanguages.kernel.Datos;
+import com.delvinglanguages.kernel.DrawerWord;
 import com.delvinglanguages.kernel.Estadisticas;
-import com.delvinglanguages.kernel.IDDelved;
-import com.delvinglanguages.kernel.Nota;
-import com.delvinglanguages.kernel.Tense;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.Translation;
 import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.kernel.set.DrawerWords;
 import com.delvinglanguages.kernel.set.Languages;
-import com.delvinglanguages.kernel.set.Notas;
 import com.delvinglanguages.kernel.set.Tests;
 import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.kernel.set.Themes;
 import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.kernel.svenska.SwedishTranslation;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemePair;
@@ -42,7 +39,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class ControlDB {
 
-	private static final String DEBUG = "##ControlDB##";
 	private DataBase gateway;
 
 	public ControlDB(Context context) {
@@ -60,7 +56,7 @@ public class ControlDB {
 		cursorID.moveToFirst();
 		cursorES.moveToFirst();
 		while (!cursorID.isAfterLast()) {
-			IDDelved language = cursorToLanguage(cursorID);
+			Language language = cursorToLanguage(cursorID);
 			language.setStatistics(cursorToStatitics(cursorES));
 			result.add(language);
 			cursorID.moveToNext();
@@ -69,11 +65,11 @@ public class ControlDB {
 		cursorID.close();
 		cursorES.close();
 		database.close();
-		Log.d(DEBUG, result.size() + " Idiomas leidos");
+		debug(result.size() + " Idiomas leidos");
 		return result;
 	}
 
-	public void readLanguage(IDDelved language, ProgressHandler progress) {
+	public void readLanguage(Language language, ProgressHandler progress) {
 		language.setWords(readWords(language.getID(), progress));
 		language.setDrawerWords(readDrawerWords(language.getID()));
 		language.setRemovedWords(readRemovedWords(language.getID()));
@@ -101,14 +97,14 @@ public class ControlDB {
 
 		progress.finish();
 
-		Log.d(DEBUG, "Palabras leidas: " + result.size());
+		debug("Palabras leidas: " + result.size());
 		database.close();
 		return result;
 	}
 
-	private Notas readDrawerWords(int langID) {
+	private DrawerWords readDrawerWords(int langID) {
 		SQLiteDatabase database = gateway.getReadableDatabase();
-		Notas result = new Notas();
+		DrawerWords result = new DrawerWords();
 		Cursor cursor = database.query(DBDrawerWord.db, DBDrawerWord.cols, DBDrawerWord.lang_id + "=" + langID, null, null, null, DBDrawerWord.name
 				+ " ASC");
 
@@ -118,7 +114,7 @@ public class ControlDB {
 			cursor.moveToNext();
 		}
 		cursor.close();
-		Log.d(DEBUG, "Almacen leidas: " + result.size());
+		debug("Almacen leidas: " + result.size());
 		database.close();
 		return result;
 	}
@@ -153,7 +149,7 @@ public class ControlDB {
 			result.add(word);
 		}
 
-		Log.d(DEBUG, "Palabras eliminadas leidas: " + result.size());
+		debug("Palabras eliminadas leidas: " + result.size());
 		database.close();
 		return result;
 	}
@@ -183,22 +179,7 @@ public class ControlDB {
 			cursor.moveToNext();
 		}
 		cursor.close();
-		Log.d(DEBUG, "Test leidos: " + result.size());
-		database.close();
-		return result;
-	}
-
-	public Tense readTense(int verbId, int tense, String verbName) {
-		SQLiteDatabase database = gateway.getReadableDatabase();
-		Cursor cursor = database.query(DBTense.db, DBTense.cols, DBTense.verb_id + " = " + verbId + " and " + DBTense.tense + " = " + tense, null,
-				null, null, null);
-		Tense result = null;
-		cursor.moveToFirst();
-		Log.d(DEBUG, "Encontrados:" + cursor.getCount() + " buscando tense:" + tense + " en verbid:" + verbId);
-		if (!cursor.isAfterLast()) {
-			result = new Tense(cursor.getInt(0), tense, verbName, cursor.getString(4), cursor.getString(5));
-		}
-		cursor.close();
+		debug("Test leidos: " + result.size());
 		database.close();
 		return result;
 	}
@@ -216,7 +197,7 @@ public class ControlDB {
 			cursor.moveToNext();
 		}
 		cursor.close();
-		Log.d(DEBUG, "Themes leidos: " + result.size());
+		debug("Themes leidos: " + result.size());
 		database.close();
 		return result;
 	}
@@ -236,24 +217,25 @@ public class ControlDB {
 		return result;
 	}
 
-	public ArrayList<Pair<Integer, Tense>> readTenses(int langId) {
+	public SwedishTranslation readSwedishForm(Translation T) {
+		debug("Buscando SVT con id:" + T.id);
 		SQLiteDatabase database = gateway.getReadableDatabase();
-		Cursor cursor = database.query(DBTense.db, DBTense.cols, DBTense.lang_id + " = " + langId, null, null, null, null);
+		Cursor cursor = database.query(DBSwedishForm.db, DBSwedishForm.cols, DBSwedishForm.translation_id + "=" + T.id, null, null, null, null);
+		String[] forms = null;
 
-		ArrayList<Pair<Integer, Tense>> result = new ArrayList<Pair<Integer, Tense>>();
 		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			result.add(new Pair<Integer, Tense>(cursor.getInt(2), new Tense(-1, cursor.getInt(3), "", cursor.getString(4), cursor.getString(5))));
-			cursor.moveToNext();
+		if (!cursor.isAfterLast()) {
+			forms = cursorToSwedishForm(cursor);
 		}
 		cursor.close();
 		database.close();
-		return result;
+		return new SwedishTranslation(T, forms);
 	}
 
 	/** ********* UPDATES ************* **/
-	public void updateLanguage(IDDelved lang) {
+	public void updateLanguage(Language lang) {
 		ContentValues values = new ContentValues();
+		values.put(DBLanguage.code, lang.CODE);
 		values.put(DBLanguage.name, lang.getName());
 		values.put(DBLanguage.settings, lang.getSettings());
 		SQLiteDatabase database = gateway.getWritableDatabase();
@@ -307,15 +289,6 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void updateTense(Tense tense) {
-		ContentValues values = new ContentValues();
-		values.put(DBTense.forms, tense.getFormsString());
-		values.put(DBTense.pronunciations, tense.getPronuntiationsString());
-		SQLiteDatabase database = gateway.getWritableDatabase();
-		database.update(DBTense.db, values, DBTense.id + " = " + tense.id, null);
-		database.close();
-	}
-
 	public void updateStatistics(Estadisticas e) {
 		ContentValues values = new ContentValues();
 		values.put(DBStatistics.tries, e.intentos);
@@ -341,8 +314,22 @@ public class ControlDB {
 		}
 	}
 
+	public void updateSwedishForm(Translation T, String[] forms) {
+		ContentValues values = new ContentValues();
+		values.put(DBSwedishForm.form1, forms[0]);
+		values.put(DBSwedishForm.form2, forms[1]);
+		values.put(DBSwedishForm.form3, forms[2]);
+		values.put(DBSwedishForm.form4, forms[3]);
+		values.put(DBSwedishForm.form5, forms[4]);
+		values.put(DBSwedishForm.form6, forms[5]);
+
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		database.update(DBSwedishForm.db, values, DBSwedishForm.translation_id + " = " + T.id, null);
+		database.close();
+	}
+
 	/** ************************ INSERTS ************************ **/
-	public IDDelved insertLanguage(String name, int isettings) {
+	public Language insertLanguage(int code, String name, int settings) {
 		// Inserting stadistics
 		ContentValues values = new ContentValues();
 		values.put(DBStatistics.tries, 0);
@@ -354,33 +341,34 @@ public class ControlDB {
 		long stats_id = database.insert(DBStatistics.db, null, values);
 
 		// Inserting language
-		String settings = Integer.toString(isettings);
 
 		values = new ContentValues();
+		values.put(DBLanguage.code, code);
 		values.put(DBLanguage.name, name);
 		values.put(DBLanguage.statistics, stats_id);
 		values.put(DBLanguage.settings, settings);
 		int lang_id = (int) database.insert(DBLanguage.db, null, values);
-		IDDelved language = new IDDelved(new Datos(lang_id, name, Settings.IdiomaNativo, settings));
+		Language language = new Language(code, new Datos(lang_id, name, Settings.NativeLanguage, settings));
 		language.setStatistics(new Estadisticas((int) stats_id));
 		database.close();
 		return language;
 	}
 
-	public Word insertWord(String name, Translations translations, int langID, String pronunciation) {
+	public Word insertWord(String name, Translations translations, int langID, String pronunciation, int priority) {
 		ContentValues values = new ContentValues();
 		values.put(DBWord.name, name);
 		values.put(DBWord.lang_id, langID);
 		values.put(DBWord.pronunciation, pronunciation);
-		values.put(DBWord.priority, Word.INITIAL_PRIORITY);
+		values.put(DBWord.priority, priority);
 		SQLiteDatabase database = gateway.getWritableDatabase();
 		int word_id = (int) database.insert(DBWord.db, null, values);
 		database.close();
 
+		Translations finalTrans = new Translations();
 		for (Translation translation : translations) {
-			insertTranslation(translation, word_id);
+			finalTrans.add(insertTranslation(translation, word_id));
 		}
-		return new Word(word_id, name, translations, pronunciation, Word.INITIAL_PRIORITY);
+		return new Word(word_id, name, finalTrans, pronunciation, Word.INITIAL_PRIORITY);
 	}
 
 	public void insertRemovedWord(int langID, int word_id) {
@@ -392,17 +380,18 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void insertTranslation(Translation translation, int word_id) {
+	public Translation insertTranslation(Translation translation, int word_id) {
 		ContentValues values = new ContentValues();
 		values.put(DBTranslation.word_id, word_id);
 		values.put(DBTranslation.type, translation.type);
 		values.put(DBTranslation.translation, translation.name);
 		SQLiteDatabase database = gateway.getWritableDatabase();
-		database.insert(DBTranslation.db, null, values);
+		int id = (int) database.insert(DBTranslation.db, null, values);
 		database.close();
+		return new Translation(id, translation.name, translation.type);
 	}
 
-	public Nota insertStoreWord(String note, int langID, int type) {
+	public DrawerWord insertStoreWord(String note, int langID, int type) {
 		ContentValues values = new ContentValues();
 		values.put(DBDrawerWord.name, note);
 		values.put(DBDrawerWord.lang_id, langID);
@@ -410,7 +399,7 @@ public class ControlDB {
 		SQLiteDatabase database = gateway.getWritableDatabase();
 		long note_id = database.insert(DBDrawerWord.db, null, values);
 		database.close();
-		return new Nota((int) note_id, note, type);
+		return new DrawerWord((int) note_id, note, type);
 	}
 
 	public int insertTest(String name, int langID, String content) {
@@ -422,19 +411,6 @@ public class ControlDB {
 		long tid = database.insert(DBTest.db, null, values);
 		database.close();
 		return (int) tid;
-	}
-
-	public void insertTense(int langId, int verbId, String verbName, int tense, String forms, String pronunciations) {
-		ContentValues values = new ContentValues();
-		values.put(DBTense.lang_id, langId);
-		values.put(DBTense.verb_id, verbId);
-		values.put(DBTense.tense, tense);
-		values.put(DBTense.forms, forms);
-		values.put(DBTense.pronunciations, pronunciations);
-		SQLiteDatabase database = gateway.getWritableDatabase();
-		int cid = (int) database.insert(DBTense.db, null, values);
-		database.close();
-		Log.d(DEBUG, "Result:" + cid + " insertando tense:" + tense + " en verbid:" + verbId);
 	}
 
 	public Theme insertTheme(int langID, String thname, ThemePairs pairs) {
@@ -461,8 +437,24 @@ public class ControlDB {
 		database.close();
 	}
 
+	public SwedishTranslation insertSwedishForm(Translation T, String[] forms) {
+		ContentValues values = new ContentValues();
+		values.put(DBSwedishForm.translation_id, T.id);
+		values.put(DBSwedishForm.form1, forms[0]);
+		values.put(DBSwedishForm.form2, forms[1]);
+		values.put(DBSwedishForm.form3, forms[2]);
+		values.put(DBSwedishForm.form4, forms[3]);
+		values.put(DBSwedishForm.form5, forms[4]);
+		values.put(DBSwedishForm.form6, forms[5]);
+
+		SQLiteDatabase database = gateway.getWritableDatabase();
+		database.insert(DBSwedishForm.db, null, values);
+		database.close();
+		return new SwedishTranslation(T, forms);
+	}
+
 	/** ********************* DELETES ********************* **/
-	public void deleteLanguage(IDDelved lang) {
+	public void deleteLanguage(Language lang) {
 		SQLiteDatabase database = gateway.getWritableDatabase();
 		// Removing translations
 		for (Word word : lang.getWords()) {
@@ -476,8 +468,6 @@ public class ControlDB {
 		database.delete(DBDrawerWord.db, DBDrawerWord.lang_id + " = " + lang.getID(), null);
 		// Removing tests
 		database.delete(DBTest.db, DBTest.lang_id + " = " + lang.getID(), null);
-		// Removing tiempos verbales
-		database.delete(DBTense.db, DBTense.lang_id + " = " + lang.getID(), null);
 		// Removing themes
 		database.close();
 		Themes themes = readThemes(lang.getID());
@@ -504,7 +494,6 @@ public class ControlDB {
 		database.delete(DBRemovedWord.db, DBRemovedWord.lang_id + " = " + lang_id, null);
 		for (Integer word_id : ids) {
 			database.delete(DBTranslation.db, DBTranslation.word_id + " = " + word_id, null);
-			database.delete(DBTense.db, DBTense.verb_id + " = " + word_id, null);
 			database.delete(DBWord.db, DBWord.id + " = " + word_id, null);
 		}
 		database.close();
@@ -529,9 +518,9 @@ public class ControlDB {
 		database.close();
 	}
 
-	public void deleteVerbTenses(int verb_id) {
+	public void deleteSwedishForm(Translation T) {
 		SQLiteDatabase database = gateway.getWritableDatabase();
-		database.delete(DBTense.db, DBTense.verb_id + " = " + verb_id, null);
+		database.delete(DBSwedishForm.db, DBSwedishForm.translation_id + " = " + T.id, null);
 		database.close();
 	}
 
@@ -543,8 +532,8 @@ public class ControlDB {
 	}
 
 	/** ********************* Funciones privadas ********************* **/
-	private IDDelved cursorToLanguage(Cursor c) {
-		return new IDDelved(new Datos(c.getInt(0), c.getString(1), Settings.IdiomaNativo, c.getString(3)));
+	private Language cursorToLanguage(Cursor c) {
+		return new Language(c.getInt(1), new Datos(c.getInt(0), c.getString(2), Settings.NativeLanguage, c.getInt(4)));
 	}
 
 	private Word cursorToWord(Cursor c) {
@@ -552,15 +541,15 @@ public class ControlDB {
 	}
 
 	private Translation cursorToTranslation(Cursor c) {
-		return new Translation(c.getString(3), c.getInt(2));
+		return new Translation(c.getInt(0), c.getString(3), c.getInt(2));
 	}
 
 	private Estadisticas cursorToStatitics(Cursor c) {
 		return new Estadisticas(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
 	}
 
-	private Nota cursorToDrawerWord(Cursor c) {
-		return new Nota(c.getInt(0), c.getString(1), c.getInt(3));
+	private DrawerWord cursorToDrawerWord(Cursor c) {
+		return new DrawerWord(c.getInt(0), c.getString(1), c.getInt(3));
 	}
 
 	private Test cursorToTest(Cursor c) {
@@ -573,6 +562,19 @@ public class ControlDB {
 
 	private ThemePair cursorToThemePair(Cursor c) {
 		return new ThemePair(c.getString(2), c.getString(3));
+	}
+
+	private String[] cursorToSwedishForm(Cursor c) {
+		String[] forms = new String[6];
+		for (int i = 0; i < forms.length; i++) {
+			forms[i] = c.getString(i + 2);
+		}
+		return forms;
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##ControlDB##", text);
 	}
 
 }

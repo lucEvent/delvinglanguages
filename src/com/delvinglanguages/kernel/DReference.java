@@ -2,127 +2,67 @@ package com.delvinglanguages.kernel;
 
 import java.util.ArrayList;
 
+import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.settings.Settings;
 
 public class DReference implements Comparable<DReference> {
 
-	private static final String DEBUG = "##DReference##";
+	/** ****************** Variables ****************** **/
+	public final int translationID;
 
-	public final int id;
-
-	private Translation ref;
-
-	public ArrayList<Link> links;
-
+	public String name;
+	public String pronunciation;
 	public int priority;
 
-	public DReference(String ref) {
-		id = ref.hashCode();
-		this.ref = new Translation(ref, 0);
-		priority = Integer.MIN_VALUE;
-		links = new ArrayList<Link>();
+	private int type;
+
+	public Words words;
+	public DReferences links;
+
+	/** ****************** Creadoras ****************** **/
+	public DReference(String name, int type) {
+		this(-1, name, "", -1, type);
 	}
 
-	public DReference(String ref, int type) {
-		this(ref);
-		this.ref.type = type;
+	public DReference(String name, String pronunciation, int priority) {
+		this(-1, name, pronunciation, priority, -1);
 	}
 
-	public String getName() {
-		return ref.name;
+	public DReference(int translationID, String name, String pronunciation, int priority, int type) {
+		this.translationID = translationID;
+		this.name = name;
+		this.pronunciation = pronunciation;
+		this.priority = priority;
+		this.type = type;
+		words = new Words();
+		links = new DReferences();
 	}
 
+	/** ****************** Getters ****************** **/
 	public int getType() {
-		return ref.type;
-	}
-
-	public Translations getTranslations() {
-		Translations res = new Translations();
-		for (Link link : links) {
-			res.add(link.reference.ref);
-		}
-		return res;
-	}
-
-	public void addReference(DReference reference, Word owner) {
-		links.add(new Link(reference, owner));
-		if (owner.getPriority() > priority) {
-			priority = owner.getPriority();
-		}
-	}
-
-	public void addReference(DReference reference, Word owner, int type) {
-		addReference(reference, owner);
-		ref.type |= type;
-	}
-
-	public void removeReferencesto(Word enDelv) {
-		for (int i = 0; i < links.size(); i++) {
-			if (links.get(i).owner.id == enDelv.id) {
-				links.remove(i).reference.removeReference(this);
-				i--;
+		int t = this.type;
+		if (t == -1) {
+			t = 0;
+			for (DReference ref : links) {
+				t |= ref.type;
 			}
 		}
-		// type = 0;
-		priority = Integer.MIN_VALUE;
-		for (Link link : links) {
-			// type |= link.owner.getType();
-			if (link.owner.getPriority() > priority) {
-				priority = link.owner.getPriority();
-			}
-		}
-	}
-
-	public void removeReference(DReference ref) {
-		for (int i = 0; i < links.size(); i++) {
-			if (ref.id == links.get(i).reference.id) {
-				links.remove(i);
-				return;
-			}
-		}
+		return t;
 	}
 
 	public Character getCap() {
-		return ref.name.charAt(0);
-	}
-
-	public boolean isNoun() {
-		return (ref.type & 0x1) != 0;
-	}
-
-	public boolean isVerb() {
-		return (ref.type & 0x2) != 0;
-	}
-
-	public boolean isAdjective() {
-		return (ref.type & 0x4) != 0;
-	}
-
-	public boolean isAdverb() {
-		return (ref.type & 0x8) != 0;
-	}
-
-	public boolean isPhrasalVerb() {
-		return (ref.type & 0x10) != 0;
-	}
-
-	public boolean isExpression() {
-		return (ref.type & 0x20) != 0;
-	}
-
-	public boolean isOther() {
-		return (ref.type & 0x40) != 0;
+		return name.charAt(0);
 	}
 
 	public String getTranslation() {
 		StringBuilder res = new StringBuilder();
 		for (int i = 0; i < links.size(); i++) {
-			DReference ref = links.get(i).reference;
 			if (i != 0) {
 				res.append(", ");
 			}
-			res.append(ref.ref.name);
+			res.append(links.get(i).name);
 		}
 		return res.toString();
 	}
@@ -133,40 +73,73 @@ public class DReference implements Comparable<DReference> {
 		} else {
 			list.clear();
 		}
-
-		for (Link link : links) {
-			list.add(link.reference.ref.name);
+		for (DReference ref : links) {
+			list.add(ref.name);
 		}
 		return list;
 	}
 
-	public String getPronunciation() {
-		return links.get(0).owner.getPronunciation();
-	}
-
-	public Words getPureOwners() {
-		Words res = new Words();
-		res.add(links.get(0).owner);
-		for (int i = 1; i < links.size(); i++) {
-			Word p = links.get(i).owner;
-			if (!res.contains(p)) {
-				res.add(p);
-			}
+	public Translations getTranslations() {
+		Translations res = new Translations();
+		for (DReference ref : links) {
+			res.add(new Translation(ref.translationID, ref.name, ref.type));
 		}
 		return res;
 	}
 
-	public int getDBID() {
-		return links.get(0).owner.id;
+	/** ****************** Askers ****************** **/
+	public boolean isNoun() {
+		return (getType() & 0x1) != 0;
+	}
+
+	public boolean isVerb() {
+		return (getType() & 0x2) != 0;
+	}
+
+	public boolean isAdjective() {
+		return (getType() & 0x4) != 0;
+	}
+
+	public boolean isAdverb() {
+		return (getType() & 0x8) != 0;
+	}
+
+	public boolean isPhrasalVerb() {
+		return (getType() & 0x10) != 0;
+	}
+
+	public boolean isExpression() {
+		return (getType() & 0x20) != 0;
+	}
+
+	public boolean isOther() {
+		return (getType() & 0x40) != 0;
 	}
 
 	@Override
 	public int compareTo(DReference another) {
-		int comp = IDDelved.collator.compare(ref.name, another.ref.name);
-		if (comp != 0) {
-			return comp;
-		}
-		return Integer.valueOf(this.ref.type).compareTo(another.ref.type);
+		int comp = Language.collator.compare(this.name, another.name);
+		return comp != 0 ? comp : Integer.valueOf(this.type).compareTo(another.type);
+	}
+
+	/** ****************** Modificadoras ****************** **/
+	public void linkTo(Word word, DReference ref) {
+		words.add(word);
+		links.add(ref);
+	}
+
+	public void unlink(Word word, DReference ref) {
+		boolean w = words.remove(word);
+		boolean b = links.remove(ref);
+		// debug START
+		debug("Unlinkeando: [" + name + "] Link" + (b ? "SUCCESS :)" : "FATAL ERROR :("));
+		debug("Unlinkeando: [" + name + "] Word" + (w ? "SUCCESS :)" : "FATAL ERROR :("));
+		// debug END
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##DReference##", text);
 	}
 
 }

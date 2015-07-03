@@ -13,7 +13,7 @@ public class Test {
 	public final static int PHASE_WRITE = 4;
 	public final static int PHASE_STATISTICS = 5;
 
-	private String p = "-_-";
+	private final static String p = "-_-";
 
 	public int id;
 	public String name;
@@ -67,7 +67,7 @@ public class Test {
 		res.append(references.size()).append(p);
 		// Por cada palabra (con su estado y passed)
 		for (TestReferenceState refstate : references) {
-			res.append(refstate.reference.getName()).append(p);
+			res.append(refstate.reference.name).append(p);
 			res.append(refstate.passed).append(p);
 			res.append(refstate.fallos_match).append(p);
 			res.append(refstate.fallos_complete).append(p);
@@ -114,7 +114,7 @@ public class Test {
 
 	public void check() {
 		for (int i = 0; i < references.size(); i++) {
-			String name = references.get(i).reference.getName();
+			String name = references.get(i).reference.name;
 			if (LanguageKernelControl.getReference(name) == null) {
 				references.remove(i);
 				i--;

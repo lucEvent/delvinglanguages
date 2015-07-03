@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.set.Languages;
 
-public class LanguageLister extends ArrayAdapter<IDDelved> {
+public class LanguageLister extends ArrayAdapter<Language> {
 
 	private Languages values;
 	private LayoutInflater inflater;

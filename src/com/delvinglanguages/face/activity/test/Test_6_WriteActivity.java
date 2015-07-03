@@ -1,5 +1,7 @@
 package com.delvinglanguages.face.activity.test;
 
+import java.util.Locale;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +29,8 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 
 	private int succesCounter, posicionPalabra;
 
+	private Locale locale;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		test = TestKernelControl.runningTest;
@@ -45,6 +49,8 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 
 		help.setEnabled(false);
 		swap.setEnabled(false);
+
+		locale = TestKernelControl.getCurrentLanguage().getLocale();
 	}
 
 	@Override
@@ -52,18 +58,11 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 		posicionPalabra = gamecontroller.nextPosition(test.references);
 		refActual = test.references.get(posicionPalabra).reference;
 
-		int type = refActual.getType();
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
-		progress.setMax(refActual.getName().length());
+		Settings.setBackgroundColorsforType(labels, refActual.getType());
+		progress.setMax(refActual.name.length());
 		progress.setProgress(0);
 		input.setText("");
-		palabra.setText(refActual.getTranslation().toUpperCase());
+		palabra.setText(refActual.getTranslation().toUpperCase(locale));
 	}
 
 	/** **************** TEXTWATCHER ******************* **/
@@ -71,13 +70,13 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 	@Override
 	public void afterTextChanged(Editable s) {
 		String answer = input.getText().toString();
-		if (refActual.getName().toLowerCase().startsWith(answer.toLowerCase())) {
+		if (refActual.name.toLowerCase(locale).startsWith(answer.toLowerCase(locale))) {
 
 			progress.setProgress(answer.length());
 			progress.getProgressDrawable().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
-			if (answer.length() < refActual.getName().length()) {
+			if (answer.length() < refActual.name.length()) {
 				fullfill();
-			} else if (refActual.getName().toLowerCase().equals(answer.toLowerCase())) {
+			} else if (refActual.name.toLowerCase(locale).equals(answer.toLowerCase(locale))) {
 				succesCounter++;
 				if (succesCounter == test.references.size()) {
 					// Modificar prioridades segun resultados
@@ -112,7 +111,7 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
 			}
 		} else {
 			test.references.get(posicionPalabra).fallos_write++;
-			progress.setProgress(refActual.getName().length());
+			progress.setProgress(refActual.name.length());
 			progress.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.SRC_IN);
 		}
 	}

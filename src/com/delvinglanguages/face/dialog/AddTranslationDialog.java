@@ -20,8 +20,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class AddTranslationDialog extends Builder implements android.view.View.OnClickListener, OnFocusChangeListener {
 
-	private static final String DEBUG = "##AddTranslationDialog##";
-
 	private AlertDialog dialog;
 
 	private EditText input;
@@ -59,7 +57,7 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 					imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
 				}
 				input.setSelection(input.getText().length());
-				
+
 				dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
 					@Override
@@ -82,18 +80,18 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 	private View getView(Context context) {
 		View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.d_add_translation, null);
 		Settings.setBackgroundTo(view);
-		
+
 		input = (EditText) view.findViewById(R.id.input);
 		input.setOnFocusChangeListener(this);
 		String hint = context.getString(R.string.entertranslationin);
 		if (LanguageKernelControl.isNativeLanguage()) {
 			input.setHint(hint + " " + LanguageKernelControl.getLanguageName());
 		} else {
-			input.setHint(hint + " " + Settings.IdiomaNativo);
+			input.setHint(hint + " " + Settings.NativeLanguage);
 		}
 
 		int[] i_types = new int[] { R.id.sel_noun, R.id.sel_verb, R.id.sel_adj, R.id.sel_adv, R.id.sel_phrasal, R.id.sel_expression, R.id.sel_other };
-		types = new Button[Settings.NUM_TYPES];
+		types = new Button[i_types.length];
 
 		for (int i = 0; i < types.length; i++) {
 			types[i] = (Button) view.findViewById(i_types[i]);
@@ -129,14 +127,14 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 			net.datagram(NetWork.ERROR, "", R.string.notype);
 			return false;
 		}
-		net.datagram(NetWork.OK, "", new Translation(translation, type));
+		net.datagram(NetWork.OK, "", new Translation(-1, translation, type));
 
 		clearFields();
 		return true;
 	}
 
 	private void setType(int type) {
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
+		for (int i = 0; i < types.length; ++i) {
 			if ((type & (1 << i)) != 0) {
 				types[i].setSelected(true);
 			} else if (types[i].isSelected()) {
@@ -177,6 +175,11 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 			EditText e = (EditText) v;
 			e.setSelection(e.getText().length());
 		}
+	}
+
+	private static void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##AddTranslationDialog##", text);
 	}
 
 }

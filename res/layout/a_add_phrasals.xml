@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="2dip"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:onClick="addPhrasal"
         android:text="@string/continue_"
         android:textAppearance="?android:attr/textAppearanceLarge" />

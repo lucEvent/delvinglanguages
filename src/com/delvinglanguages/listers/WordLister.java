@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.Words;
@@ -23,7 +23,7 @@ public class WordLister extends ArrayAdapter<Word> {
 	public WordLister(Context context, Words values) {
 		super(context, R.layout.i_word, values);
 		this.values = values;
-		this.phMode = LanguageKernelControl.getLanguageSettings(IDDelved.MASK_PH);
+		this.phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -37,7 +37,7 @@ public class WordLister extends ArrayAdapter<Word> {
 		TextView tranlation = (TextView) view.findViewById(R.id.translation);
 
 		// Tipos
-		TextView labels[] = new TextView[Settings.NUM_TYPES];
+		TextView labels[] = new TextView[7];
 		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adj);
@@ -46,14 +46,7 @@ public class WordLister extends ArrayAdapter<Word> {
 		labels[Word.EXPRESSION] = (TextView) view.findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) view.findViewById(R.id.other);
 
-		int type = pal.getType();
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
+		Settings.setBackgroundColorsforType(labels, pal.getType());
 		if (!phMode) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
@@ -62,5 +55,4 @@ public class WordLister extends ArrayAdapter<Word> {
 		tranlation.setText(pal.getTranslationString());
 		return view;
 	}
-
 }

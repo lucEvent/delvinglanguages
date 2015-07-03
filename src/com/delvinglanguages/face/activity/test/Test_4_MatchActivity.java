@@ -38,7 +38,6 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 	private Button resps[];
 	private Handler handler;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,8 +132,8 @@ public class Test_4_MatchActivity extends Activity implements OnClickListener {
 	private void siguientePalabra() {
 		pActual = gamecontroller.nextQuestion(test.references, NUM_RESP);
 		positionActual = test.indexOf(pActual.reference);
-		palabra.setText(pActual.reference.getName());
-		pregunta.setText(pActual.reference.getPronunciation());
+		palabra.setText(pActual.reference.name);
+		pregunta.setText(pActual.reference.pronunciation);
 
 		for (int i = 0; i < NUM_RESP; i++) {
 			resps[i].getBackground().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);

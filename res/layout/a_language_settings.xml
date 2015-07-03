@@ -18,6 +18,14 @@
 
         <View style="@style/divisor" />
 
+        <Spinner
+            android:id="@+id/selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/option"
+            android:gravity="left"
+            android:spinnerMode="dialog" />
+
         <Button
             style="@style/settings_option"
             android:onClick="changeLanguageName"
@@ -25,18 +33,14 @@
 
         <TextView
             style="@style/settings_indexs"
-            android:text="@string/parameters" />
+            android:text="@string/features" />
 
         <View style="@style/divisor" />
 
         <CheckedTextView
             android:id="@+id/phrasal_state"
-            style="@style/settings_option"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:clickable="true"
-            android:gravity="center_vertical"
+            style="@style/option_lang_features"
             android:onClick="togglePhrasalState"
-            android:paddingRight="20dip"
             android:text="@string/phrasalsenabled" />
 
         <View
@@ -46,12 +50,8 @@
 
         <CheckedTextView
             android:id="@+id/adjective_state"
-            style="@style/settings_option"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:clickable="true"
-            android:gravity="center_vertical"
+            style="@style/option_lang_features"
             android:onClick="toggleAdjectiveState"
-            android:paddingRight="20dip"
             android:text="@string/adjectsenabled" />
 
         <View
@@ -61,12 +61,8 @@
 
         <CheckedTextView
             android:id="@+id/special_chars_state"
-            style="@style/settings_option"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:clickable="true"
-            android:gravity="center_vertical"
+            style="@style/option_lang_features"
             android:onClick="toggleSpecialCharacterState"
-            android:paddingRight="20dip"
             android:text="@string/special_chars_enabled" />
 
         <TextView

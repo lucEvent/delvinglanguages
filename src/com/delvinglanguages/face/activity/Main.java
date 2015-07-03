@@ -16,8 +16,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class Main extends ListActivity {
 
-	private static final String DEBUG = "##Main##";
-
 	private static KernelControl kernel;
 	private static Settings settings;
 
@@ -26,7 +24,7 @@ public class Main extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_main);
 
-		settings = new Settings();
+		settings = new Settings(this);
 		kernel = new KernelControl(this);
 
 	}

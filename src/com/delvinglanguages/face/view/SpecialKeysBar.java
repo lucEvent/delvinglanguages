@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 
 public class SpecialKeysBar implements OnClickListener {
@@ -15,18 +15,18 @@ public class SpecialKeysBar implements OnClickListener {
 
 	public SpecialKeysBar(View parent, EditText[] inputs) {
 		this.inputs = inputs;
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		if (!idioma.getSettings(IDDelved.MASK_ESP_CHARS)) {
+		Language idioma = KernelControl.getCurrentLanguage();
+		if (!idioma.getSettings(Language.MASK_ESP_CHARS)) {
 			return;
 		}
 		switch (idioma.CODE) {
-		case IDDelved.SV:
-		case IDDelved.FI:
+		case Language.SV:
+		case Language.FI:
 			setUpButton(parent, R.id.sv_ao);
 			setUpButton(parent, R.id.sv_ae);
 			setUpButton(parent, R.id.sv_oe);
 			break;
-		case IDDelved.ES:
+		case Language.ES:
 			setUpButton(parent, R.id.es_ene);
 			break;
 		}

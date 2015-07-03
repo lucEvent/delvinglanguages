@@ -28,7 +28,6 @@
     <string name="title_searching">Searching words</string>
     <string name="title_select_background">Select background</string>
     <string name="title_language_settings">Language settings</string>
-    <string name="title_select_language">Select native language</string>
     <string name="title_test">Test</string>
     <string name="warehouse">warehouse</string>
     <string name="wordsby">Words by</string>
@@ -94,6 +93,7 @@
     <string name="languagename">Language name</string>
     <string name="nativelanguage">Native Language</string>
     <string name="phrasalsenabled">Enable Phrasal Verbs</string>
+    <string name="features">FEATURES</string>
     <string name="adjectsenabled">Enable Adjectives</string>
     <string name="special_chars_enabled">Enable special characters</string>
 
@@ -173,7 +173,7 @@
     <string name="edit">Edit</string>
     <string name="enterlanguage">Enter language</string>
     <string name="helps">Helps</string>
-    <string name="hint_selectlanguage">Select language or type it</string>
+    <string name="thelanguagename">Write the language name</string>
     <string name="newword">New word</string>
     <string name="removelanguage">Remove language</string>
     <string name="save">Save</string>
@@ -240,7 +240,7 @@
     <string name="title_activity_new_tense">New Tense</string>
     <string name="options">Options</string>
     <string name="actions">ACTIONS</string>
-    <string name="parameters">PARAMETERS</string>
+    <string name="langfeatures">LANGUAGE FEATURES</string>
     <string name="hint_search">Type word to search</string>
     <string name="langcreated">Language created</string>
     <string name="langerased">Language erased</string>

@@ -45,10 +45,14 @@ public class SelectBackground extends Activity implements OnClickListener {
 		colores[7] = (Button) findViewById(R.id.sb_blue);
 		colores[8] = (Button) findViewById(R.id.sb_cyan);
 
+		int[] COLORCODE = {
+		/** RED , ORANGE, YELLOW, PINK, WHITE, GREEN, PURPLE, DARK BLUE, CYAN **/
+		0xFFFF0000, 0xFFFF8000, 0xFFFFFF00, 0xFFFF00FF, 0xFFFFFFFF, 0xFF00FF00, 0xFF8000FF, 0xFF0000FF, 0xFF00FFFF };
+
 		for (int i = 0; i < 9; ++i) {
-			colores[i].getBackground().setColorFilter(Settings.COLORCODE[i], PorterDuff.Mode.MULTIPLY);
+			colores[i].getBackground().setColorFilter(COLORCODE[i], PorterDuff.Mode.MULTIPLY);
 			colores[i].setOnClickListener(this);
-			colores[i].setTag((Integer) Settings.COLORCODE[i]);
+			colores[i].setTag((Integer) COLORCODE[i]);
 		}
 
 		makeitup = (Button) findViewById(R.id.sb_makeit);

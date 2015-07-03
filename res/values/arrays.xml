@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string-array name="paises">
-        <item>(select a language)</item>
-        <item>Arabic</item>
-        <item>Belarusian</item>
-        <item>Bengali</item>
-        <item>Bulgarian</item>
-        <item>Catalan</item>
-        <item>Czech</item>
-        <item>Dutch</item>
-        <item>English</item>
-        <item>French</item>
-        <item>Greek</item>
-        <item>Hungarian</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Korean</item>
-        <item>Kurdish</item>
-        <item>Mandarin</item>
-        <item>Nepali</item>
-        <item>Persian</item>
-        <item>Polish</item>
-        <item>Portuguese</item>
-        <item>Romanian</item>
-        <item>Russian</item>
-        <item>Serbo-Croatian</item>
-        <item>Somali</item>
-        <item>Spanish</item>
+    <string-array name="languages">
+        <item>English UK</item>
+        <item>English US</item>
         <item>Swedish</item>
-        <item>Thai</item>
-        <item>Turkish</item>
-        <item>Ukrainian</item>
-        <item>Uzbek</item>
-        <item>Vietnamese</item>
+        <item>Finnish</item>
+        <item>Spanish</item>
+        <item>Catalan</item>
+        <item>Basque</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>Dutch</item>
+        <item>Estonian</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Italian</item>
+        <item>Norwegian</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
     </string-array>
     <string-array name="prac_opt">
         <item>Match</item>
@@ -160,13 +146,25 @@
         <item>Te</item>
         <item>He</item>
     </string-array>
+
+    <integer-array name="colors">
+        <item>@color/noun</item>
+        <item>@color/verb</item>
+        <item>@color/adjective</item>
+        <item>@color/adverb</item>
+        <item>@color/phrasal</item>
+        <item>@color/expression</item>
+        <item>@color/other</item>
+    </integer-array>
+
     <string-array name="about_content">
-        <item><b>Delving Languages version 1.5.1</b></item>
+        <item><b>Delving Languages version 1.6.0</b></item>
         <item><b>Developed by Rafael J. Lucena</b></item>
         <item><b>Contact: rafaa89(at)gmail.com</b></item>
         <item></item>
         <item>News Features and Improvements:</item>
-        <item>Version 1.5.1 2015&#8211;05&#8211;16\nPronunciation for words added. Also added a section to listen pronunciation of texts. Also added a section to practise listening and pronunciation</item>
+        <item>Version 1.6 2015&#8211;07&#8211;03\nNEW: Support for Swedish word declinations, selection of language appart from the language name assigned. Kernel changes on Dictionary and other small things improved. Some icons changed and color button</item>
+        <item>Version 1.5.1 2015&#8211;05&#8211;16\nNEW: Pronunciation for words, section to listen pronunciation of texts and section to practise listening and pronunciation</item>
         <item>Version 1.5.0.2 2015&#8211;05&#8211;14\nBig error when changing orientation in Language View solved. Some small bugs fixed and improvements</item>
         <item>Version 1.5 2015&#8211;05&#8211;14\nNew Translation organization (inputing, storing and displaying), now you can specify the type of each translation. New Database format.</item>
         <item>Version 1.4.1 2015&#8211;03&#8211;11\nNew kernel. More structure. Improvement on sending messages between activities</item>

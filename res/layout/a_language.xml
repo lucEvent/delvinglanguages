@@ -10,7 +10,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/table"
         android:layout_margin="5dip"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:clickable="true"
         android:contentDescription="Toggle dictionary"
         android:focusable="true"
@@ -30,38 +30,38 @@
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_noun"
+                android:background="@color/noun"
                 android:text="@string/nn" />
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_verb"
+                android:background="@color/verb"
                 android:text="@string/vb" />
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_adj"
+                android:background="@color/adjective"
                 android:text="@string/adj" />
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_adv"
+                android:background="@color/adverb"
                 android:text="@string/adv" />
 
             <TextView
                 android:id="@+id/phrasal_title"
                 style="@style/label_types_idiom"
-                android:background="@color/label_phrasal"
+                android:background="@color/phrasal"
                 android:text="@string/ph.v" />
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_expression"
+                android:background="@color/expression"
                 android:text="@string/exp" />
 
             <TextView
                 style="@style/label_types_idiom"
-                android:background="@color/label_other"
+                android:background="@color/other"
                 android:text="@string/oth" />
         </TableRow>
 
@@ -72,37 +72,37 @@
             <TextView
                 android:id="@+id/noun"
                 style="@style/label_types_idiom"
-                android:background="@color/label_noun" />
+                android:background="@color/noun" />
 
             <TextView
                 android:id="@+id/verb"
                 style="@style/label_types_idiom"
-                android:background="@color/label_verb" />
+                android:background="@color/verb" />
 
             <TextView
                 android:id="@+id/adjective"
                 style="@style/label_types_idiom"
-                android:background="@color/label_adj" />
+                android:background="@color/adjective" />
 
             <TextView
                 android:id="@+id/adverb"
                 style="@style/label_types_idiom"
-                android:background="@color/label_adv" />
+                android:background="@color/adverb" />
 
             <TextView
                 android:id="@+id/phrasal"
                 style="@style/label_types_idiom"
-                android:background="@color/label_phrasal" />
+                android:background="@color/phrasal" />
 
             <TextView
                 android:id="@+id/expression"
                 style="@style/label_types_idiom"
-                android:background="@color/label_expression" />
+                android:background="@color/expression" />
 
             <TextView
                 android:id="@+id/other"
                 style="@style/label_types_idiom"
-                android:background="@color/label_other" />
+                android:background="@color/other" />
         </TableRow>
     </TableLayout>
 

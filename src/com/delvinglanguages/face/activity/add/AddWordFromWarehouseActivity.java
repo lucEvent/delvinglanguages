@@ -7,14 +7,14 @@ import android.widget.Button;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
-import com.delvinglanguages.kernel.Nota;
+import com.delvinglanguages.kernel.DrawerWord;
 import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.net.internal.Messages;
 
 public class AddWordFromWarehouseActivity extends AddWordActivity implements Messages {
 
-	private Nota nota;
+	private DrawerWord nota;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class AddWordFromWarehouseActivity extends AddWordActivity implements Mes
 			showMessage(R.string.msswordmodified);
 			return;
 		}
-		KernelControl.addWordFromStore(nota, nombre, translations, pron);
+		KernelControl.addWord(nota, nombre, translations, pron);
 		showMessage(R.string.msswordadded);
 	}
 

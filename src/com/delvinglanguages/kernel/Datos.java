@@ -1,19 +1,18 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.kernel.set.Themes;
 import com.delvinglanguages.kernel.set.Tests;
+import com.delvinglanguages.kernel.set.Themes;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.settings.Settings;
 
 public class Datos {
-
-	private String DEBUG = "##Datos##";
 
 	public final int id;
 	public String language_delved_name;
 	public String language_native_name;
 
-	public IDDelved delved;
-	public IDNativo nativo;
+	public Language delved;
+	public LanguageR nativo;
 
 	public Words words;
 	public Words removed_words;
@@ -25,15 +24,15 @@ public class Datos {
 
 	public Dictionary dictionary;
 
-	public Datos(int id, String delved_name, String native_name, String settings) {
+	public Datos(int id, String delved_name, String native_name, int settings) {
 		this.id = id;
 		this.language_delved_name = delved_name;
 		this.language_native_name = native_name;
-		this.settings = Integer.valueOf(settings);
+		this.settings = settings;
 	}
 
-	public void createDictionary(Character[] indexsD, Character[] indexsN) {
-		dictionary = new Dictionary(indexsD, indexsN);
+	public void createDictionary() {
+		dictionary = new Dictionary();
 		dictionary.addEntries(words);
 	}
 
@@ -45,6 +44,11 @@ public class Datos {
 	public void unindexWord(Word enDelv) {
 		words.remove(enDelv);
 		dictionary.removeEntry(enDelv);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##Datos##", text);
 	}
 
 }

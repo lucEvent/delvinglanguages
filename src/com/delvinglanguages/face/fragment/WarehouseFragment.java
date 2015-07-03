@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.view.SpecialKeysBar;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.listers.StoreWordLister;
@@ -42,10 +42,10 @@ public class WarehouseFragment extends ListFragment implements OnClickListener, 
 		storeword = (ImageButton) view.findViewById(R.id.storeword);
 		storeword.setOnClickListener(this);
 
-		IDDelved idioma = KernelControl.getCurrentLanguage();
+		Language idioma = KernelControl.getCurrentLanguage();
 		String hint_word = getString(R.string.enterwordin);
 		if (idioma.isNativeLanguage()) {
-			edit.setHint(hint_word + " " + Settings.IdiomaNativo);
+			edit.setHint(hint_word + " " + Settings.NativeLanguage);
 		} else {
 			edit.setHint(hint_word + " " + idioma.getName());
 		}

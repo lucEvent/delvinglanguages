@@ -8,15 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Nota;
-import com.delvinglanguages.kernel.set.Notas;
+import com.delvinglanguages.kernel.DrawerWord;
+import com.delvinglanguages.kernel.set.DrawerWords;
 
-public class StoreWordLister extends ArrayAdapter<Nota> {
+public class StoreWordLister extends ArrayAdapter<DrawerWord> {
 
-	private Notas values;
+	private DrawerWords values;
 	private LayoutInflater inflater;
 
-	public StoreWordLister(Context context, Notas values) {
+	public StoreWordLister(Context context, DrawerWords values) {
 		super(context, R.layout.i_stored_word, values);
 		this.values = values;
 		inflater = (LayoutInflater) context

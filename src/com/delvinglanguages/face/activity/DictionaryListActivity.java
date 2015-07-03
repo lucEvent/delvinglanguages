@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.ListView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.DReferences;
@@ -24,8 +23,6 @@ import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
 public class DictionaryListActivity extends ListActivity implements Messages {
-
-	private static final String DEBUG = "##DictionaryListActivity##";
 
 	private static final int REQUEST_MODIFIED = 0;
 
@@ -44,10 +41,10 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 		Settings.setBackgroundTo(view);
 		setContentView(view);
 
-		phMode = LanguageKernelControl.getLanguageSettings(IDDelved.MASK_PH);
+		phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
 
-		types = new Button[Settings.NUM_TYPES];
 		int[] ids = { R.id.lab_nn, R.id.lab_vb, R.id.lab_adj, R.id.lab_adv, R.id.lab_phv, R.id.lab_exp, R.id.lab_oth };
+		types = new Button[ids.length];
 
 		for (int i = 0; i < types.length; i++) {
 			types[i] = (Button) findViewById(ids[i]);
@@ -88,7 +85,7 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 				}
 			}
 		}
-		Log.d(DEBUG, "values length es:" + values.size());
+		debug("values length es:" + values.size());
 		setListAdapter(new ReferenceLister(this, values, phMode));
 		// Se podria actualizar en lugar de crear cada vez de nuevo
 	}
@@ -122,12 +119,17 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, values.get(pos).getName());
+		intent.putExtra(DREFERENCE, values.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 
 	public void changeState(View v) {
 		v.setSelected(!v.isSelected());
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##DictionaryListActivity##", text);
 	}
 
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
@@ -52,7 +52,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 
 		gamecontroller = new CompleteGame(LanguageKernelControl.getReferences());
 
-		labels = new TextView[Settings.NUM_TYPES];
+		labels = new TextView[7];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
@@ -61,8 +61,8 @@ public class CompleteActivity extends Activity implements OnClickListener {
 		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+		Language idioma = KernelControl.getCurrentLanguage();
+		if (!idioma.getSettings(Language.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
@@ -95,17 +95,10 @@ public class CompleteActivity extends Activity implements OnClickListener {
 	protected void siguientePregunta(DReference ref) {
 		intento = 1;
 		refActual = ref;
-		palabraUpp = ref.getName().toUpperCase();
+		palabraUpp = ref.name.toUpperCase();
 
 		position = 0;
-		int type = refActual.getType();
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
+		Settings.setBackgroundColorsforType(labels, refActual.getType());
 		char c = palabraUpp.charAt(0);
 		int pos = 1;
 		if (!Character.isLetter(c)) {
@@ -164,7 +157,7 @@ public class CompleteActivity extends Activity implements OnClickListener {
 			hidden.setText(descubierta);
 
 			if (cursor == palabraUpp.length()) {
-				pronounce.setText("[" + refActual.getPronunciation() + "]");
+				pronounce.setText("[" + refActual.pronunciation + "]");
 				for (int i = 0; i < letras.length; i++) {
 					letras[i].setClickable(false);
 					letras[i].setEnabled(false);

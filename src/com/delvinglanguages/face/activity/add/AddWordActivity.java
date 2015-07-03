@@ -16,7 +16,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.face.dialog.AddTranslationDialog;
 import com.delvinglanguages.face.listeners.FoneticsKeyboard;
 import com.delvinglanguages.face.view.SpecialKeysBar;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Translation;
 import com.delvinglanguages.kernel.Word;
@@ -28,7 +28,7 @@ import com.delvinglanguages.settings.Settings;
 
 public class AddWordActivity extends ListActivity implements TextWatcher, OnFocusChangeListener, Messages, NetWork {
 
-	protected IDDelved idioma;
+	protected Language idioma;
 
 	protected EditText word, pronuntiation;
 
@@ -58,7 +58,7 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnFocu
 
 		String hint_word = getString(R.string.enterwordin);
 		String hint_pron = getString(R.string.enterpronuntiationin);
-		String native_lang = Settings.IdiomaNativo;
+		String native_lang = Settings.NativeLanguage;
 		String delved_lang = idioma.getName();
 		if (idioma.isNativeLanguage()) {
 			word.setHint(hint_word + " " + native_lang);
@@ -161,7 +161,7 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnFocu
 			showMessage(R.string.msswordmodified);
 			return;
 		}
-		KernelControl.addWord(nombre, translations, pron);
+		KernelControl.addWord(nombre, translations, pron, Word.INITIAL_PRIORITY);
 		showMessage(R.string.msswordadded);
 	}
 

@@ -11,21 +11,16 @@ public class Estadisticas {
 	public int fallos;
 
 	public Estadisticas(int id) {
-		this.id = id;
-		intentos = 0;
-		aciertos1 = 0;
-		aciertos2 = 0;
-		aciertos3 = 0;
-		fallos = 0;
+		this(id, 0, 0, 0, 0, 0);
 	}
 
-	public Estadisticas(int id, int nPI, int nPA1, int nPA2, int nPA3, int nPF) {
+	public Estadisticas(int id, int intentos, int aciertos1, int aciertos2, int aciertos3, int fallos) {
 		this.id = id;
-		intentos = nPI;
-		aciertos1 = nPA1;
-		aciertos2 = nPA2;
-		aciertos3 = nPA3;
-		fallos = nPF;
+		this.intentos = intentos;
+		this.aciertos1 = aciertos1;
+		this.aciertos2 = aciertos2;
+		this.aciertos3 = aciertos3;
+		this.fallos = fallos;
 	}
 
 	public float porcentageAcertadas1() {

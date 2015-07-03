@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,8 +20,8 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.add.AddWordActivity;
 import com.delvinglanguages.kernel.Estadisticas;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.net.internal.BackgroundTaskMessenger;
 import com.delvinglanguages.net.internal.ProgressHandler;
@@ -30,9 +29,7 @@ import com.delvinglanguages.settings.Settings;
 
 public class LanguageFragment extends Fragment implements OnClickListener, BackgroundTaskMessenger {
 
-	private static final String DEBUG = "##LanguageFragment##";
-
-	private IDDelved idioma;
+	private Language idioma;
 
 	private TextView labels[];
 	private Button addword;
@@ -52,7 +49,7 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 
 		Settings.setBackgroundTo(view);
 
-		labels = new TextView[Settings.NUM_TYPES];
+		labels = new TextView[7];
 		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adjective);
@@ -77,15 +74,11 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 			}
 		}
 
-		Log.d(DEBUG, "En onRESUME");
-
 		View phtitle = view.findViewById(R.id.phrasal_title);
-		if (idioma.getSettings(IDDelved.MASK_PH)) {
-			Log.d(DEBUG, "Mostrando PHV etiquete");
+		if (idioma.getSettings(Language.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.VISIBLE);
 			phtitle.setVisibility(View.VISIBLE);
 		} else {
-			Log.d(DEBUG, "Ocultando PHV etiquete");
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 			phtitle.setVisibility(View.GONE);
 		}
@@ -137,8 +130,6 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 			} else {
 				lang2 = idioma.getNative().getName();
 			}
-			Log.d(DEBUG, "[] lang1: " + idioma.getName());
-			Log.d(DEBUG, "[] lang2: " + lang2);
 			String msg = idioma.getName() + " to " + lang2;
 			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 		}
@@ -175,6 +166,11 @@ public class LanguageFragment extends Fragment implements OnClickListener, Backg
 		for (int i = 0; i < values.length; ++i) {
 			labels[i].setText("" + values[i]);
 		}
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##LanguageFragment##", text);
 	}
 
 }

@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:onClick="onNext"
         android:text="@string/next"
         android:layout_margin="3dip"
@@ -55,7 +55,7 @@
         android:layout_above="@+id/next"
         android:layout_alignParentRight="true"
         android:layout_margin="15dip"
-        android:background="@drawable/button_backgrounds"
+        android:background="@drawable/button"
         android:onClick="onSpeech"
         android:padding="15dip"
         android:src="@android:drawable/ic_lock_silent_mode_off" />

@@ -35,9 +35,9 @@ public class PhrasalLister extends ArrayAdapter<String> {
 
 		word.setText(values[position]);
 		if (marks[position] == STAT_PRESSED) {
-			view.setBackgroundResource(R.drawable.button_bg_pressed);
+			view.setBackgroundResource(R.drawable.button_pressed);
 		} else if (marks[position] == STAT_MARKED) {
-			view.setBackgroundResource(R.drawable.button_bg_marked);
+			view.setBackgroundResource(R.drawable.button_marked);
 		}
 		return view;
 	}

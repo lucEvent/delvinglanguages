@@ -37,7 +37,7 @@ public class ListPhrasalActivity extends ListActivity implements Runnable, Messa
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, values.get(pos).getName());
+		intent.putExtra(DREFERENCE, values.get(pos).name);
 		startActivity(intent);
 	}
 

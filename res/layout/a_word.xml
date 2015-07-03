@@ -14,7 +14,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_backgrounds"
+            android:background="@drawable/button"
             android:onClick="onSpeech"
             android:padding="7dip"
             android:src="@android:drawable/ic_lock_silent_mode_off" />

@@ -38,7 +38,7 @@ public class ReferenceLister extends ArrayAdapter<DReference> {
 		TextView tran = (TextView) view.findViewById(R.id.translation);
 
 		// Tipos
-		TextView labels[] = new TextView[Settings.NUM_TYPES];
+		TextView labels[] = new TextView[7];
 		labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adj);
@@ -47,21 +47,12 @@ public class ReferenceLister extends ArrayAdapter<DReference> {
 		labels[Word.EXPRESSION] = (TextView) view.findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) view.findViewById(R.id.other);
 
-		int type = ref.getType();
-
-		for (int i = 0; i < labels.length; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
-
+		Settings.setBackgroundColorsforType(labels, ref.getType());
 		if (!phMode) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
-		word.setText(ref.getName());
+		word.setText(ref.name);
 		tran.setText(ref.getTranslation());
 		return view;
 	}

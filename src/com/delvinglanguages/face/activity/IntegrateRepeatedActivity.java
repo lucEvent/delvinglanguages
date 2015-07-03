@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.IDDelved;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.settings.Settings;
@@ -54,7 +54,7 @@ public class IntegrateRepeatedActivity extends Activity implements OnClickListen
 		// Pronunciacion original
 		pronOrig = (TextView) findViewById(R.id.air_pron);
 		// Types original
-		types = new Button[Settings.NUM_TYPES];
+		types = new Button[7];
 		types[0] = (Button) findViewById(R.id.air_nn);
 		types[1] = (Button) findViewById(R.id.air_vb);
 		types[2] = (Button) findViewById(R.id.air_adj);
@@ -71,7 +71,7 @@ public class IntegrateRepeatedActivity extends Activity implements OnClickListen
 		// Pronunciacion new
 		pronNew = (TextView) findViewById(R.id.air_newpron);
 		// Types new
-		typesNew = new Button[Settings.NUM_TYPES];
+		typesNew = new Button[7];
 		typesNew[0] = (Button) findViewById(R.id.air_new_nn);
 		typesNew[1] = (Button) findViewById(R.id.air_new_vb);
 		typesNew[2] = (Button) findViewById(R.id.air_new_adj);
@@ -139,7 +139,7 @@ public class IntegrateRepeatedActivity extends Activity implements OnClickListen
 
 	private int getType() {
 		int type = 0;
-		for (int i = 0; i < Settings.NUM_TYPES; i++) {
+		for (int i = 0; i < types.length; i++) {
 			if (types[i].isSelected()) {
 				type += (1 << i);
 			}
@@ -148,7 +148,7 @@ public class IntegrateRepeatedActivity extends Activity implements OnClickListen
 	}
 
 	private void setType(Button[] set, int type) {
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
+		for (int i = 0; i < set.length; ++i) {
 			if ((type & (1 << i)) != 0) {
 				set[i].setSelected(true);
 			} else if (set[i].isSelected()) {
@@ -180,7 +180,7 @@ public class IntegrateRepeatedActivity extends Activity implements OnClickListen
 			}
 
 			Word p = words.get(index);
-			IDDelved tmp = KernelControl.getCurrentLanguage();
+			Language tmp = KernelControl.getCurrentLanguage();
 			KernelControl.setCurrentLanguage(KernelControl.integrateLanguage);
 			// KernelControl.updateWord(p, p.getName(), trads.toString(),
 			// p.getPronunciation(), type);

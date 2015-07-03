@@ -12,14 +12,14 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.phrasals.AddPhrasalsActivity;
 import com.delvinglanguages.face.phrasals.ListPhrasalActivity;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.settings.Settings;
 
 public class PhrasalsFragment extends ListFragment {
 
-	private IDDelved idioma;
+	private Language idioma;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

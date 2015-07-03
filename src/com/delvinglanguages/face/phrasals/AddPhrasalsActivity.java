@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.listers.PhrasalLister;
 import com.delvinglanguages.net.internal.Messages;
@@ -42,11 +42,11 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 		setContentView(view);
 
 		ListView preplist = (ListView) findViewById(R.id.prep_list);
-		m_preps = new Integer[IDDelved.preps.length];
+		m_preps = new Integer[Language.preps.length];
 		for (int i = 0; i < m_preps.length; i++) {
 			m_preps[i] = PhrasalLister.STAT_NORMAL;
 		}
-		prepadapter = new PhrasalLister(this, IDDelved.preps, m_preps);
+		prepadapter = new PhrasalLister(this, Language.preps, m_preps);
 		preplist.setAdapter(prepadapter);
 		preplist.setOnItemClickListener(new PrepositionListListener());
 
@@ -76,7 +76,7 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 			// Lista de las bases
 			if (m_bases[position] == PhrasalLister.STAT_MARKED) {
 				String p = inputprep.getText().toString().toLowerCase();
-				int pos = position(p, IDDelved.preps);
+				int pos = position(p, Language.preps);
 				if (pos != -1 && phrasals.get(bases[position])[pos]) {
 					String pv = bases[position] + " " + p;
 					showMessage(pv);
@@ -111,13 +111,13 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 				String p = inputbase.getText().toString();
 				int position = position(p.toLowerCase(), bases);
 				if (pos != -1 && phrasals.get(bases[position])[pos]) {
-					String pv = p + " " + IDDelved.preps[pos].toLowerCase();
+					String pv = p + " " + Language.preps[pos].toLowerCase();
 					showMessage(pv);
 					return;
 				}
 			}
 
-			String t = IDDelved.preps[pos].toLowerCase();
+			String t = Language.preps[pos].toLowerCase();
 			inputprep.setText(t);
 			inputprep.setSelection(t.length());
 			inputprep.requestFocus();
@@ -187,8 +187,8 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 		for (int i = 0; i < bases.length; i++) {
 			if (lowb.equals(bases[i].toLowerCase())) {
 				String lowp = prep.toLowerCase();
-				for (int j = 0; j < IDDelved.preps.length; j++) {
-					if (lowp.equals(IDDelved.preps[j].toLowerCase())) {
+				for (int j = 0; j < Language.preps.length; j++) {
+					if (lowp.equals(Language.preps[j].toLowerCase())) {
 						if (phrasals.get(bases[i])[j]) {
 							showMessage(base + " " + lowp);
 							return;
@@ -234,4 +234,10 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 		String temp = text + " " + getString(R.string.alreadyindb);
 		Toast.makeText(this, temp, Toast.LENGTH_SHORT).show();
 	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##AddPhrasalsActivity##", text);
+	}
+
 }

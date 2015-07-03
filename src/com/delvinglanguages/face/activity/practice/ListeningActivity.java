@@ -15,8 +15,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class ListeningActivity extends Activity implements OnInitListener {
 
-	private static final String DEBUG = "##ListeningActivity##";
-
 	private TextView word, pron, tran;
 
 	private TextToSpeech speechEngine;
@@ -55,16 +53,16 @@ public class ListeningActivity extends Activity implements OnInitListener {
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
-			int r = speechEngine.setLanguage(LanguageKernelControl.getCurrentLanguage().getLocale());
+			speechEngine.setLanguage(LanguageKernelControl.getCurrentLanguage().getLocale());
 		}
 	}
 
 	public void onNext(View v) {
 		DReference ref = game.nextReference();
 
-		word.setText(ref.getName());
+		word.setText(ref.name);
 		tran.setText(ref.getTranslation());
-		pron.setText(ref.getPronunciation());
+		pron.setText(ref.pronunciation);
 
 		new Thread(new Runnable() {
 

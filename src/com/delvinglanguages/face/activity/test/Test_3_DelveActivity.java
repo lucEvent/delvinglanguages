@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.dialog.InputDialog;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
@@ -49,7 +49,7 @@ public class Test_3_DelveActivity extends Activity implements Messages {
 		next = (Button) findViewById(R.id.next);
 		previous = (Button) findViewById(R.id.previous);
 
-		labels = new TextView[Settings.NUM_TYPES];
+		labels = new TextView[7];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
@@ -58,8 +58,8 @@ public class Test_3_DelveActivity extends Activity implements Messages {
 		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+		Language idioma = KernelControl.getCurrentLanguage();
+		if (!idioma.getSettings(Language.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
@@ -92,21 +92,13 @@ public class Test_3_DelveActivity extends Activity implements Messages {
 	private void actualiza() {
 		DReference ref = test.references.get(index).reference;
 
-		int type = ref.getType();
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
-
-		delv.setText(ref.getName());
+		Settings.setBackgroundColorsforType(labels, ref.getType());
+		delv.setText(ref.name);
 		nativ.setText(ref.getTranslation());
 		if (LanguageKernelControl.isNativeLanguage()) {
-			nativ_p.setText("[ " + ref.getPronunciation() + " ]");
+			nativ_p.setText("[ " + ref.pronunciation + " ]");
 		} else {
-			delv_p.setText("[ " + ref.getPronunciation() + " ]");
+			delv_p.setText("[ " + ref.pronunciation + " ]");
 		}
 
 		if (index == 0) {

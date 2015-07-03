@@ -34,7 +34,7 @@ public class TestStatsLister extends ArrayAdapter<TestReferenceState> {
 		TextView ptot = (TextView) view.findViewById(R.id.total);
 
 		TestReferenceState refstate = values.get(position);
-		word.setText(refstate.reference.getName());
+		word.setText(refstate.reference.name);
 		int tot = refstate.fallos_match + refstate.fallos_complete + refstate.fallos_write;
 
 		pmat.setText(refstate.fallos_match + " error(s)");

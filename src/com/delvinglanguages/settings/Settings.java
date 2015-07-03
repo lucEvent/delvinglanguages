@@ -3,8 +3,10 @@ package com.delvinglanguages.settings;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -12,11 +14,12 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.delvinglanguages.R;
 import com.delvinglanguages.data.ControlDisco;
 
 public class Settings {
 
-	private static final String DEBUG = "##Settings##";
+	public static final boolean DEBUG = true;
 
 	private static final String settings = "settings.dat";
 
@@ -31,28 +34,25 @@ public class Settings {
 	private static Drawable backgroundimage;
 
 	// Tipos de palabras
-	public static final int NUM_TYPES = 7;
-	public static final int[] type_colors = { 0xFFFF9933, 0xFF33FF33, 0xFF3399FF, 0xFFFFFF33, 0xFFFF3333, 0xFF9933FF, 0xFFFF3399 };
+	public static int[] colors;
 
 	// Settings idioma materno
-	public static String IdiomaNativo = ""; // (Se guarda) \\
+	public static String NativeLanguage = ""; // (Se guarda) \\
+	public static int NativeLanguageCode = 0; // (Se guarda) \\
 	private static boolean doubleMode, vibration;
-
-	public static final int[] COLORCODE = {
-	/** RED , ORANGE, YELLOW, PINK, WHITE, GREEN, PURPLE, DARK BLUE, CYAN **/
-	0xFFFF0000, 0xFFFF8000, 0xFFFFFF00, 0xFFFF00FF, 0xFFFFFFFF, 0xFF00FF00, 0xFF8000FF, 0xFF0000FF, 0xFF00FFFF };
 
 	private static ControlDisco disco;
 
 	/** ************************ CREADORA ************************ **/
-	public Settings() {
+	public Settings(Context context) {
 		disco = new ControlDisco();
 		readSettings();
+		colors = context.getResources().getIntArray(R.array.colors);
 	}
 
 	/** ************************ ESTADO ************************ **/
 	private static void readSettings() {
-		String[] params = disco.readParams(settings, 6);
+		String[] params = disco.readParams(settings, 7);
 
 		if (params == null) {
 			setDefault();
@@ -65,14 +65,15 @@ public class Settings {
 		bg_type = Integer.parseInt(params[2]);
 
 		// 2. Se lee el idioma materno
-		IdiomaNativo = params[3];
-		doubleMode = Boolean.parseBoolean(params[4]);
-		vibration = Boolean.parseBoolean(params[5]);
+		NativeLanguage = params[3];
+		NativeLanguageCode = Integer.parseInt(params[4]);
 
+		doubleMode = Boolean.parseBoolean(params[5]);
+		vibration = Boolean.parseBoolean(params[6]);
 	}
 
 	private static void saveSettings() {
-		String[] params = new String[6];
+		String[] params = new String[7];
 
 		// 1. Se guardan las variables de BACKGROUND
 		params[0] = bg_imagePath;
@@ -80,9 +81,10 @@ public class Settings {
 		params[2] = Integer.toString(bg_type);
 
 		// 2. Se guarda las settings de la app
-		params[3] = IdiomaNativo;
-		params[4] = Boolean.toString(doubleMode);
-		params[5] = Boolean.toString(vibration);
+		params[3] = NativeLanguage;
+		params[4] = Integer.toString(NativeLanguageCode);
+		params[5] = Boolean.toString(doubleMode);
+		params[6] = Boolean.toString(vibration);
 
 		disco.saveParams(settings, params);
 	}
@@ -92,15 +94,17 @@ public class Settings {
 		bg_color = 0;
 		bg_type = BG_NO_BG;
 
-		IdiomaNativo = "Native";
+		NativeLanguage = "Native Language";
+		NativeLanguageCode = 0;
 		doubleMode = true;
 		vibration = true;
 	}
 
 	/** ***************** DIFERENTES CONFIGURACIONES ******************* **/
 
-	public static void setIdiomaNativo(String nm) {
-		IdiomaNativo = nm;
+	public static void setNativeLanguage(int code, String name) {
+		NativeLanguage = name;
+		NativeLanguageCode = code;
 		saveSettings();
 	}
 
@@ -169,7 +173,7 @@ public class Settings {
 
 	public static File locationForImage() {
 		File image = null;
-		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String time = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
 		String imageFileName = time + "_";
 		image = disco.createTempFile(imageFileName, ".delving");
 
@@ -191,6 +195,21 @@ public class Settings {
 		File forig = new File(photopath);
 		File fcopy = locationForImage();
 		disco.copyFile(forig, fcopy);
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##Settings##", text);
+	}
+
+	public static void setBackgroundColorsforType(View[] labels, int type) {
+		for (int i = 0; i < labels.length; ++i) {
+			if ((type & (1 << i)) != 0) {
+				labels[i].setBackgroundColor(colors[i]);
+			} else {
+				labels[i].setBackgroundColor(0xFFCCCCCC);
+			}
+		}
 	}
 
 }

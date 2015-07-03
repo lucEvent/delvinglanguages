@@ -41,10 +41,6 @@
             android:label="@string/title_add_idiom" >
         </activity>
         <activity
-            android:name=".face.settings.SelectLanguage"
-            android:label="@string/title_select_language" >
-        </activity>
-        <activity
             android:name=".face.settings.LanguageSettingsActivity"
             android:label="@string/title_language_settings" >
         </activity>

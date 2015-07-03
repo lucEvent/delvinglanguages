@@ -8,20 +8,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.dialog.IntegrateManager;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.listers.AvailableLanguageLister;
 import com.delvinglanguages.settings.Settings;
 
-public class LanguageSettingsActivity extends Activity {
+public class LanguageSettingsActivity extends Activity implements OnItemSelectedListener {
 
-	private static final String DEBUG = "##LanguageSettingsActivity##";
+	private Spinner spinner;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,14 +33,15 @@ public class LanguageSettingsActivity extends Activity {
 		Settings.setBackgroundTo(view);
 		setContentView(view);
 
-		CheckedTextView ph = (CheckedTextView) findViewById(R.id.phrasal_state);
-		CheckedTextView ad = (CheckedTextView) findViewById(R.id.adjective_state);
-		CheckedTextView sp = (CheckedTextView) findViewById(R.id.special_chars_state);
+		Language idioma = KernelControl.getCurrentLanguage();
+		((CheckedTextView) findViewById(R.id.phrasal_state)).setChecked(idioma.getSettings(Language.MASK_PH));
+		((CheckedTextView) findViewById(R.id.adjective_state)).setChecked(idioma.getSettings(Language.MASK_ADJ));
+		((CheckedTextView) findViewById(R.id.special_chars_state)).setChecked(idioma.getSettings(Language.MASK_ESP_CHARS));
 
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		ph.setChecked(idioma.getSettings(IDDelved.MASK_PH));
-		ad.setChecked(idioma.getSettings(IDDelved.MASK_ADJ));
-		sp.setChecked(idioma.getSettings(IDDelved.MASK_ESP_CHARS));
+		spinner = (Spinner) findViewById(R.id.selector);
+		spinner.setAdapter(new AvailableLanguageLister(this, getResources().getStringArray(R.array.languages)));
+		spinner.setOnItemSelectedListener(this);
+		spinner.setSelection(idioma.CODE);
 	}
 
 	public void changeLanguageName(View v) {
@@ -56,7 +61,7 @@ public class LanguageSettingsActivity extends Activity {
 						if (s.length() == 0) {
 							showMessage(R.string.nonamelang);
 						} else {
-							KernelControl.renameLanguage(s);
+							KernelControl.updateLanguage(KernelControl.getCurrentLanguage().CODE, s);
 							showMessage(R.string.renamedsuccessfully);
 						}
 					}
@@ -68,19 +73,19 @@ public class LanguageSettingsActivity extends Activity {
 	public void togglePhrasalState(View v) {
 		CheckedTextView ctv = (CheckedTextView) v;
 		ctv.toggle();
-		KernelControl.setLanguageSettings(ctv.isChecked(), IDDelved.MASK_PH);
+		KernelControl.updateLanguageSettings(ctv.isChecked(), Language.MASK_PH);
 	}
 
 	public void toggleAdjectiveState(View v) {
 		CheckedTextView ctv = (CheckedTextView) v;
 		ctv.toggle();
-		KernelControl.setLanguageSettings(ctv.isChecked(), IDDelved.MASK_ADJ);
+		KernelControl.updateLanguageSettings(ctv.isChecked(), Language.MASK_ADJ);
 	}
 
 	public void toggleSpecialCharacterState(View v) {
 		CheckedTextView ctv = (CheckedTextView) v;
 		ctv.toggle();
-		KernelControl.setLanguageSettings(ctv.isChecked(), IDDelved.MASK_ESP_CHARS);
+		KernelControl.updateLanguageSettings(ctv.isChecked(), Language.MASK_ESP_CHARS);
 	}
 
 	public void integrate(View v) {
@@ -123,6 +128,27 @@ public class LanguageSettingsActivity extends Activity {
 
 	private void showMessage(String text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	private void debug(String text) {
+		if (Settings.DEBUG)
+			android.util.Log.d("##LanguageSettingsActivity##", text);
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+		String[] languages = getResources().getStringArray(R.array.languages);
+		Language language = KernelControl.getCurrentLanguage();
+
+		if (language.getName().equals(languages[language.CODE])) {
+			KernelControl.updateLanguage(pos, languages[pos]);
+		} else {
+			KernelControl.updateLanguage(pos, language.getName());
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> av) {
 	}
 
 }

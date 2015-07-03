@@ -6,7 +6,7 @@ import com.delvinglanguages.kernel.Word;
 
 public class Words extends ArrayList<Word> {
 
-	private static final long serialVersionUID = 9073603191985130827L;
+	private static final long serialVersionUID = 5273894329356808055L;
 
 	public Words() {
 		super();

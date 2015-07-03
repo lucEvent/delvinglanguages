@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.view.SpecialKeysBar;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.IDDelved;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
@@ -62,7 +62,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 			setTitle(temp + " " + LanguageKernelControl.getLanguageName());
 		}
 
-		labels = new TextView[Settings.NUM_TYPES];
+		labels = new TextView[7];
 		labels[Word.NOUN] = (TextView) findViewById(R.id.noun);
 		labels[Word.VERB] = (TextView) findViewById(R.id.verb);
 		labels[Word.ADJECTIVE] = (TextView) findViewById(R.id.adjective);
@@ -71,8 +71,8 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 		labels[Word.EXPRESSION] = (TextView) findViewById(R.id.expression);
 		labels[Word.OTHER] = (TextView) findViewById(R.id.other);
 
-		IDDelved idioma = KernelControl.getCurrentLanguage();
-		if (!idioma.getSettings(IDDelved.MASK_PH)) {
+		Language idioma = KernelControl.getCurrentLanguage();
+		if (!idioma.getSettings(Language.MASK_PH)) {
 			labels[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
@@ -92,15 +92,8 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 	protected void siguientePalabra() {
 		intento = 1;
 		refActual = gamecontroller.nextReference();
-		int type = refActual.getType();
-		for (int i = 0; i < Settings.NUM_TYPES; ++i) {
-			if ((type & (1 << i)) != 0) {
-				labels[i].setBackgroundColor(Settings.type_colors[i]);
-			} else {
-				labels[i].setBackgroundColor(0xFFCCCCCC);
-			}
-		}
-		progress.setMax(refActual.getName().length());
+		Settings.setBackgroundColorsforType(labels, refActual.getType());
+		progress.setMax(refActual.name.length());
 		progress.setProgress(0);
 		iswrong = false;
 		input.setText("");
@@ -123,8 +116,8 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				answer = answer.substring(0, len - 1);
 			}
 		} else {
-			if (len != refActual.getName().length()) {
-				answer += refActual.getName().charAt(len);
+			if (len != refActual.name.length()) {
+				answer += refActual.name.charAt(len);
 			}
 		}
 		input.setText(answer);
@@ -144,7 +137,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 	@Override
 	public void afterTextChanged(Editable s) {
 		String answer = input.getText().toString();
-		if (refActual.getName().toLowerCase().startsWith(answer.toLowerCase())) {
+		if (refActual.name.toLowerCase().startsWith(answer.toLowerCase())) {
 
 			progress.setProgress(answer.length());
 			if (iswrong) {
@@ -152,9 +145,9 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				iswrong = false;
 			}
 
-			if (answer.length() < refActual.getName().length()) {
+			if (answer.length() < refActual.name.length()) {
 				fullfill();
-			} else if (refActual.getName().equalsIgnoreCase(answer)) {
+			} else if (refActual.name.equalsIgnoreCase(answer)) {
 				help.setEnabled(false);
 				swap.setEnabled(false);
 				next.setEnabled(false);
@@ -187,7 +180,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 			}
 		} else {
 			intento++;
-			progress.setProgress(refActual.getName().length());
+			progress.setProgress(refActual.name.length());
 			if (!iswrong) {
 				progress.getProgressDrawable().setColorFilter(0xFFFF0000, PorterDuff.Mode.SRC_IN);
 				iswrong = true;
@@ -207,16 +200,16 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 		String answer = input.getText().toString();
 		StringBuilder toAdd = new StringBuilder();
 		int index = answer.length();
-		int length = refActual.getName().length();
+		int length = refActual.name.length();
 		loop: while (true) {
-			char c = refActual.getName().charAt(index);
+			char c = refActual.name.charAt(index);
 			while (c == ' ') {
 				toAdd.append(c);
 				index++;
 				if (index == length) {
 					break loop;
 				}
-				c = refActual.getName().charAt(index);
+				c = refActual.name.charAt(index);
 			}
 			char end;
 			if (c == '(') {
@@ -234,7 +227,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
 				if (index == length) {
 					break loop;
 				}
-				c = refActual.getName().charAt(index);
+				c = refActual.name.charAt(index);
 			}
 			toAdd.append(c);
 		}

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dip"
-    android:background="@drawable/button_bg_noun"
+    android:background="@drawable/button_noun_pressed"
     android:paddingLeft="5dip" >
 
     <LinearLayout
@@ -13,13 +13,14 @@
         android:layout_alignParentTop="true"
         android:gravity="right"
         android:orientation="vertical"
-        android:paddingRight="10dip" >
+        android:paddingRight="10dip"
+       >
 
         <TextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_bg_noun"
+            android:background="@drawable/button_noun_pressed"
             android:paddingBottom="1dip"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
@@ -30,19 +31,17 @@
         <ImageButton
             android:id="@+id/remove"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+           android:visibility="gone"   android:layout_height="wrap_content"
             android:layout_margin="0dip"
             android:padding="5dip"
-            android:src="@android:drawable/ic_menu_delete"
-            android:visibility="gone" />
+            android:src="@android:drawable/ic_menu_delete" />
 
         <ImageButton
             android:id="@+id/edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+         android:visibility="gone"     android:layout_height="wrap_content"
             android:padding="5dip"
-            android:src="@android:drawable/ic_menu_edit"
-            android:visibility="gone" />
+            android:src="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,20 +56,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:orientation="vertical"
-            android:visibility="gone" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
                 android:text="TRANSLATIONS"
-                android:textColor="#99999999"
+                android:textColor="#AA000000"
                 android:textSize="10sp" />
 
             <View
                 style="@style/divisor"
-                android:background="#99999999" />
+                android:background="#AA000000" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,20 +84,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:orientation="vertical"
-            android:visibility="gone" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
                 android:text="FORMS"
-                android:textColor="#99999999"
+                android:textColor="#AA000000"
                 android:textSize="10sp" />
 
             <View
                 style="@style/divisor"
-                android:background="#99999999" />
+                android:background="#AA000000" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -198,22 +195,6 @@
 
                     <TextView
                         android:id="@+id/form6"
-                        style="@style/ww_tl"
-                        android:text="Lämna" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip" >
-
-                    <TextView
-                        android:id="@+id/lab7"
-                        style="@style/ww_tm"
-                        android:text="Imperative:" />
-
-                    <TextView
-                        android:id="@+id/form7"
                         style="@style/ww_tl"
                         android:text="Lämna" />
                 </TableRow>
