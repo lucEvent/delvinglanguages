@@ -1,13 +1,14 @@
 package com.delvinglanguages.kernel;
 
-import java.util.TreeMap;
 import java.util.TreeSet;
 
+import android.content.Context;
+
+import com.delvinglanguages.kernel.phrasals.PhrasalVerbs;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.DrawerWords;
 import com.delvinglanguages.kernel.set.Words;
-
-import android.content.Context;
+import com.delvinglanguages.net.internal.BackgroundTaskMessenger;
 
 public class LanguageKernelControl extends KernelControl {
 
@@ -50,10 +51,6 @@ public class LanguageKernelControl extends KernelControl {
 		return currentLanguage.isNativeLanguage();
 	}
 
-	public static TreeMap<String, Boolean[]> getPhrasals() {
-		return currentLanguage.getPhrasals();
-	}
-
 	public static DReference getReference(String name) {
 		return currentLanguage.getReference(name);
 	}
@@ -80,6 +77,10 @@ public class LanguageKernelControl extends KernelControl {
 
 	public static DReferences getPhrasalVerbs() {
 		return currentLanguage.getPhrasalVerbs();
+	}
+
+	public static PhrasalVerbs getPhrasalVerbsManager(BackgroundTaskMessenger handler) {
+		return new PhrasalVerbs(currentLanguage.CODE, currentLanguage.getPhrasalVerbs(), handler);
 	}
 
 	public static DReferences getVerbs() {

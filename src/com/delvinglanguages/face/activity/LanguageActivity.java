@@ -9,8 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
@@ -26,8 +31,8 @@ import com.delvinglanguages.face.fragment.ThemesFragment;
 import com.delvinglanguages.face.fragment.VerbsFragment;
 import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.LanguageSettingsActivity;
-import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.settings.Settings;
 
 public class LanguageActivity extends Activity {
@@ -42,17 +47,17 @@ public class LanguageActivity extends Activity {
 
 	private boolean actualPHMode;
 
-	private View options, show_options;
 	private Option currentFragment;
+
+	private OptionsPadManager optionsPadManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_language_main);
-		Settings.setBackgroundTo(findViewById(R.id.langoptions));
+		Settings.setBackgroundTo(findViewById(R.id.options));
 
-		options = findViewById(R.id.langoptions);
-		show_options = findViewById(R.id.open_opts);
+		optionsPadManager = new OptionsPadManager();
 
 		idioma = KernelControl.getCurrentLanguage();
 		//
@@ -61,7 +66,7 @@ public class LanguageActivity extends Activity {
 
 		if (savedInstanceState != null) {
 			setFragment((Option) savedInstanceState.get("fragment"));
-			hideOptionsMenu(null);
+			optionsPadManager.hideOptionsPad();
 		} else {
 			currentFragment = Option.LANGUAGE;
 			getFragmentManager().beginTransaction().add(R.id.fragment, new LanguageFragment()).commit();
@@ -173,7 +178,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(Option.PRACTISE);
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoDictionary(View v) {
@@ -186,7 +191,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(Option.DICTIONARY);
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoLanguageMain(View v) {
@@ -210,7 +215,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		setFragment(Option.WAREHOUSE);
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoVerbs(View v) {
@@ -220,7 +225,7 @@ public class LanguageActivity extends Activity {
 		}
 		setFragment(Option.VERBS);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoPhrasalVerbs(View v) {
@@ -230,7 +235,7 @@ public class LanguageActivity extends Activity {
 		}
 		setFragment(Option.PHRASAL_VERBS);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoBin(View v) {
@@ -245,19 +250,19 @@ public class LanguageActivity extends Activity {
 		}
 		setFragment(Option.BIN);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoSearch(View v) {
 		setFragment(Option.SEARCH);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoPronunciation(View v) {
 		setFragment(Option.PRONUNCIATION);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoThemes(View v) {
@@ -267,7 +272,7 @@ public class LanguageActivity extends Activity {
 		}
 		setFragment(Option.THEMES);
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 	}
 
 	public void jumptoDebug(View v) {
@@ -276,7 +281,7 @@ public class LanguageActivity extends Activity {
 			return;
 		}
 		dialog.dismiss();
-		hideOptionsMenu(null);
+		optionsPadManager.hideOptionsPad();
 		startActivity(new Intent(this, Debug.class));
 	}
 
@@ -284,19 +289,90 @@ public class LanguageActivity extends Activity {
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 	}
 
-	public void showOptionsMenu(View v) {
-		show_options.setVisibility(View.GONE);
-		options.setVisibility(View.VISIBLE);
-	}
-
-	public void hideOptionsMenu(View v) {
-		options.setVisibility(View.GONE);
-		show_options.setVisibility(View.VISIBLE);
-	}
-
 	private void debug(String text) {
 		if (Settings.DEBUG)
 			android.util.Log.d("##LanguageActivity##", text);
+	}
+
+	private class OptionsPadManager implements OnTouchListener {
+
+		private View options;
+		private TextView touchpad;
+		private RelativeLayout layout;
+
+		private FrameLayout.LayoutParams params;
+		private RelativeLayout.LayoutParams touch_params;
+
+		public OptionsPadManager() {
+
+			layout = (RelativeLayout) findViewById(R.id.layout);
+			touchpad = (TextView) findViewById(R.id.touchpad);
+			touchpad.setOnTouchListener(this);
+			options = findViewById(R.id.options);
+
+			params = (FrameLayout.LayoutParams) layout.getLayoutParams();
+			touch_params = (RelativeLayout.LayoutParams) touchpad.getLayoutParams();
+		}
+
+		public int getBottomMargin() {
+			return params.bottomMargin;
+		}
+
+		public void moveTo(int bottomMargin) {
+			params.bottomMargin = bottomMargin;
+			layout.setLayoutParams(params);
+		}
+
+		public void showOptionsPad() {
+			moveTo(0);
+			touchpad.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_down_float);
+
+			touch_params.height = (int) (getResources().getDisplayMetrics().density * 65 + 0.5f);
+			touchpad.setLayoutParams(touch_params);
+		}
+
+		public void hideOptionsPad() {
+			touchpad.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, android.R.drawable.arrow_up_float);
+			moveTo(-options.getHeight());
+
+			touch_params.height = (int) (getResources().getDisplayMetrics().density * 15 + 0.5f);
+			touchpad.setLayoutParams(touch_params);
+		}
+
+		/** ************************** ON TOUCH ****************************** **/
+		private float touchY;
+		private boolean goingUp;
+
+		@Override
+		public boolean onTouch(View view, MotionEvent event) {
+
+			if (view.getId() != R.id.touchpad)
+				return false;
+
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_MOVE:
+				int bottomMargin = getBottomMargin() - (int) (event.getRawY() - touchY);
+				if (bottomMargin > 0) {
+					bottomMargin = 0;
+				}
+				moveTo(bottomMargin);
+
+				goingUp = event.getRawY() < touchY ? true : false;
+				break;
+			case MotionEvent.ACTION_UP:
+				if (goingUp) {
+					showOptionsPad();
+				} else {
+					hideOptionsPad();
+				}
+				break;
+			case MotionEvent.ACTION_DOWN:
+				break;
+			}
+			touchY = event.getRawY();
+			return true;
+		}
+
 	}
 
 }

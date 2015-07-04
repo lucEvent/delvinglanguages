@@ -1,9 +1,9 @@
 package com.delvinglanguages.face.fragment;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +12,16 @@ import android.widget.ListView;
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.phrasals.AddPhrasalsActivity;
 import com.delvinglanguages.face.phrasals.ListPhrasalActivity;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.KernelControl;
+import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.phrasals.PhrasalVerbs;
 import com.delvinglanguages.listers.OptionLister;
+import com.delvinglanguages.net.internal.BackgroundTaskMessenger;
+import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class PhrasalsFragment extends ListFragment {
+public class PhrasalsFragment extends ListFragment implements BackgroundTaskMessenger, Messages {
 
-	private Language idioma;
+	private PhrasalVerbs phManager;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,8 +29,7 @@ public class PhrasalsFragment extends ListFragment {
 
 		Settings.setBackgroundTo(view);
 
-		idioma = KernelControl.getCurrentLanguage();
-		idioma.analizePhrasals();
+		LanguageKernelControl.getPhrasalVerbsManager(this);
 
 		setListAdapter(new OptionLister(getActivity(), getResources().getStringArray(R.array.phv_opt)));
 
@@ -40,16 +41,31 @@ public class PhrasalsFragment extends ListFragment {
 		super.onListItemClick(l, v, position, id);
 
 		Activity activity = getActivity();
-
+		Intent intent = null;
 		switch (position) {
 		case 0:
-			// startActivity(new Intent(activity, Activity.class));
-			break;
+			// startActivity(new Intent(activity, Activity.class)); break;
+			return;
 		case 1:
-			startActivity(new Intent(activity, AddPhrasalsActivity.class));
+			while (phManager == null)
+				;
+			intent = new Intent(activity, AddPhrasalsActivity.class);
+			intent.putExtra(SEND_PHRASAL_MANAGER, phManager);
 			break;
 		case 2:
-			startActivity(new Intent(activity, ListPhrasalActivity.class));
+			intent = new Intent(activity, ListPhrasalActivity.class);
+		}
+		startActivity(intent);
+	}
+
+	@Override
+	public void onTaskStart() {
+	}
+
+	@Override
+	public void onTaskDone(int codePetition, int codeResult, Object result) {
+		if (codeResult == BackgroundTaskMessenger.TASK_DONE) {
+			phManager = (PhrasalVerbs) result;
 		}
 	}
 

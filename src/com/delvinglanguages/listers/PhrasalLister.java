@@ -1,5 +1,7 @@
 package com.delvinglanguages.listers;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.phrasals.PVLink;
 
-public class PhrasalLister extends ArrayAdapter<String> {
+public class PhrasalLister extends ArrayAdapter<PVLink> {
 
 	public final static Integer STAT_NORMAL = 0;
 	public final static Integer STAT_PRESSED = 1;
 	public final static Integer STAT_MARKED = 2;
 
-	private String[] values;
 	private Integer[] marks;
 	private LayoutInflater inflater;
 
-	public PhrasalLister(Context context, String[] values, Integer[] marks) {
+	public PhrasalLister(Context context, ArrayList<PVLink> values, Integer[] marks) {
 		super(context, R.layout.i_stored_word, values);
-		this.values = values;
 		this.marks = marks;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -33,11 +34,13 @@ public class PhrasalLister extends ArrayAdapter<String> {
 		}
 		TextView word = (TextView) view.findViewById(R.id.stored_word);
 
-		word.setText(values[position]);
+		word.setText(getItem(position).name);
 		if (marks[position] == STAT_PRESSED) {
-			view.setBackgroundResource(R.drawable.button_pressed);
+			view.setBackgroundColor(0xFF33AA33);
 		} else if (marks[position] == STAT_MARKED) {
-			view.setBackgroundResource(R.drawable.button_marked);
+			view.setBackgroundColor(0xFF33AA33);
+		} else {
+			view.setBackgroundColor(0x0000);
 		}
 		return view;
 	}

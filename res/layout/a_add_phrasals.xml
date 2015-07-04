@@ -80,7 +80,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/separator"
         android:gravity="center"
-        android:text="@string/modifier"
+        android:text="Preposition"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

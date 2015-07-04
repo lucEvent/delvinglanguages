@@ -1,6 +1,6 @@
 package com.delvinglanguages.face.phrasals;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -17,22 +16,23 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.face.activity.add.AddWordFromPhrasalActivity;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageKernelControl;
+import com.delvinglanguages.kernel.phrasals.PVLink;
+import com.delvinglanguages.kernel.phrasals.PhrasalVerbs;
 import com.delvinglanguages.listers.PhrasalLister;
 import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocusChangeListener, Messages {
+public class AddPhrasalsActivity extends Activity implements TextWatcher, Messages {
 
-	private String[] bases;
-	private Integer[] m_bases, m_preps;
+	private Integer[] status_verbs, status_preps;
 
-	private TreeMap<String, Boolean[]> phrasals;
+	private PhrasalLister prepadapter, verbadapter;
 
-	private PhrasalLister prepadapter, baseadapter;
+	private ArrayList<PVLink> verbslist, prepslist;
 
-	private EditText inputbase, inputprep;
+	private EditText inputverb, inputprep;
+
+	private PhrasalVerbs phManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,112 +41,89 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 		Settings.setBackgroundTo(view);
 		setContentView(view);
 
-		ListView preplist = (ListView) findViewById(R.id.prep_list);
-		m_preps = new Integer[Language.preps.length];
-		for (int i = 0; i < m_preps.length; i++) {
-			m_preps[i] = PhrasalLister.STAT_NORMAL;
+		phManager = (PhrasalVerbs) getIntent().getExtras().getSerializable(SEND_PHRASAL_MANAGER);
+
+		status_preps = new Integer[phManager.getPrepositions().size()];
+		for (int i = 0; i < status_preps.length; i++) {
+			status_preps[i] = PhrasalLister.STAT_NORMAL;
 		}
-		prepadapter = new PhrasalLister(this, Language.preps, m_preps);
+		prepslist = new ArrayList<PVLink>(phManager.getPrepositions());
+		prepadapter = new PhrasalLister(this, prepslist, status_preps);
+
+		ListView preplist = (ListView) findViewById(R.id.prep_list);
 		preplist.setAdapter(prepadapter);
 		preplist.setOnItemClickListener(new PrepositionListListener());
 
-		phrasals = LanguageKernelControl.getPhrasals();
+		verbslist = new ArrayList<PVLink>(phManager.getVerbs());
+		status_verbs = new Integer[verbslist.size()];
+		for (int i = 0; i < status_verbs.length; i++) {
+			status_verbs[i] = PhrasalLister.STAT_NORMAL;
+		}
+		verbadapter = new PhrasalLister(this, verbslist, status_verbs);
 
 		ListView verblist = (ListView) findViewById(R.id.verb_list);
-		bases = phrasals.keySet().toArray(new String[0]);
-		m_bases = new Integer[bases.length];
-		for (int i = 0; i < m_bases.length; i++) {
-			m_bases[i] = PhrasalLister.STAT_NORMAL;
-		}
-		baseadapter = new PhrasalLister(this, bases, m_bases);
-		verblist.setAdapter(baseadapter);
+		verblist.setAdapter(verbadapter);
 		verblist.setOnItemClickListener(new VerbListListener());
 
-		inputbase = (EditText) findViewById(R.id.input_verb);
+		inputverb = (EditText) findViewById(R.id.input_verb);
+		inputverb.addTextChangedListener(this);
+
 		inputprep = (EditText) findViewById(R.id.input_prep);
-		inputbase.addTextChangedListener(this);
-		inputbase.setOnFocusChangeListener(this);
 		inputprep.addTextChangedListener(this);
-		inputprep.setOnFocusChangeListener(this);
 	}
 
 	private class VerbListListener implements OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> ad, View view, int position, long id) {
-			// Lista de las bases
-			if (m_bases[position] == PhrasalLister.STAT_MARKED) {
-				String p = inputprep.getText().toString().toLowerCase();
-				int pos = position(p, Language.preps);
-				if (pos != -1 && phrasals.get(bases[position])[pos]) {
-					String pv = bases[position] + " " + p;
-					showMessage(pv);
-					return;
-				}
-			}
-			String t = bases[position];
-			inputbase.setText(t);
-			inputbase.setSelection(t.length());
-			inputbase.requestFocus();
+		public void onItemClick(AdapterView<?> ad, View view, int pos, long id) {
+			String t = verbslist.get(pos).name;
+			inputverb.setText(t);
+			inputverb.setSelection(t.length());
+			inputverb.requestFocus();
 
-			Boolean[] temp = phrasals.get(bases[position]);
-			for (int i = 0; i < m_preps.length; i++) {
-				if (temp[i]) {
-					m_preps[i] = PhrasalLister.STAT_MARKED;
-				} else {
-					m_preps[i] = PhrasalLister.STAT_NORMAL;
-				}
+			unselect(status_preps);
+			unselect(status_verbs, pos);
+
+			for (PVLink link : verbslist.get(pos).links) {
+				status_preps[prepslist.indexOf(link)] = PhrasalLister.STAT_MARKED;
 			}
 
-			unselect(m_bases, position);
-			baseadapter.notifyDataSetChanged();
 			prepadapter.notifyDataSetChanged();
+			verbadapter.notifyDataSetChanged();
 		}
 	}
 
 	private class PrepositionListListener implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> ad, View view, int pos, long id) {
-			// Lista de las preposiciones
-			if (m_preps[pos] == PhrasalLister.STAT_MARKED) {
-				String p = inputbase.getText().toString();
-				int position = position(p.toLowerCase(), bases);
-				if (pos != -1 && phrasals.get(bases[position])[pos]) {
-					String pv = p + " " + Language.preps[pos].toLowerCase();
-					showMessage(pv);
-					return;
-				}
-			}
-
-			String t = Language.preps[pos].toLowerCase();
+			String t = prepslist.get(pos).name.toLowerCase();
 			inputprep.setText(t);
 			inputprep.setSelection(t.length());
 			inputprep.requestFocus();
 
-			for (int i = 0; i < phrasals.size(); i++) {
-				if (phrasals.get(bases[i])[pos]) {
-					m_bases[i] = PhrasalLister.STAT_MARKED;
-				} else {
-					m_bases[i] = PhrasalLister.STAT_NORMAL;
-				}
+			unselect(status_verbs);
+			unselect(status_preps, pos);
+
+			for (PVLink link : prepslist.get(pos).links) {
+				status_verbs[verbslist.indexOf(link)] = PhrasalLister.STAT_MARKED;
 			}
-			unselect(m_preps, pos);
+
 			prepadapter.notifyDataSetChanged();
-			baseadapter.notifyDataSetChanged();
+			verbadapter.notifyDataSetChanged();
 		}
 	}
 
-	private int unselect(Integer[] vector) {
+	private void unselect(Integer[] vector) {
 		int count = 0;
 		for (int i = 0; i < vector.length; i++) {
 			count += vector[i];
 			vector[i] = PhrasalLister.STAT_NORMAL;
 		}
-		return count;
+		// return count;
 	}
 
-	private void unselect(Integer[] vector, int maintain) {
+	private void unselect(Integer[] vector, int pressed) {
 		unselect(vector);
-		vector[maintain] = PhrasalLister.STAT_PRESSED;
+		vector[pressed] = PhrasalLister.STAT_PRESSED;
 	}
 
 	/** ******************* * ONTEXTCHANGED * ********************/
@@ -160,74 +137,38 @@ public class AddPhrasalsActivity extends Activity implements TextWatcher, OnFocu
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		if (focusINPUT) {
-			if (unselect(m_bases) > 0) {
-				baseadapter.notifyDataSetChanged();
-			}
-		} else {
-			if (unselect(m_preps) > 0) {
-				prepadapter.notifyDataSetChanged();
-			}
-		}
+		unselect(status_verbs);
+		unselect(status_preps);
+		verbadapter.notifyDataSetChanged();
+		prepadapter.notifyDataSetChanged();
 	}
 
 	public void addPhrasal(View v) {
-		String base = inputbase.getText().toString();
-		if (base.length() == 0) {
+		String verb = inputverb.getText().toString();
+		if (verb.length() == 0) {
 			Toast.makeText(this, R.string.noverb, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String prep = inputprep.getText().toString();
+		String prep = inputprep.getText().toString().toLowerCase();
 		if (prep.length() == 0) {
 			Toast.makeText(this, R.string.noprep, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		String lowb = base.toLowerCase();
-		for (int i = 0; i < bases.length; i++) {
-			if (lowb.equals(bases[i].toLowerCase())) {
-				String lowp = prep.toLowerCase();
-				for (int j = 0; j < Language.preps.length; j++) {
-					if (lowp.equals(Language.preps[j].toLowerCase())) {
-						if (phrasals.get(bases[i])[j]) {
-							showMessage(base + " " + lowp);
-							return;
-						}
-						break;
-					}
+		PVLink pvlVerb = phManager.getVerb(verb);
+		if (pvlVerb != null) {
+			PVLink pvlPrep = phManager.getPreposition(prep);
+			if (pvlPrep != null) {
+				if (pvlVerb.links.contains(pvlPrep)) {
+					showMessage(verb + " " + prep);
+					return;
 				}
-				break;
 			}
 		}
 		Intent intent = new Intent(this, AddWordFromPhrasalActivity.class);
-		intent.putExtra(SEND_NAME, base + " " + prep);
+		intent.putExtra(SEND_NAME, verb + " " + prep);
 		startActivity(intent);
 		finish();
-	}
-
-	private boolean focusINPUT; // true -> base, false -> prep
-
-	/** ******************* * ONFOCUSCHANGED * ********************/
-	@Override
-	public void onFocusChange(View view, boolean hasfocus) {
-		if (view == inputbase) {
-			if (hasfocus) {
-				focusINPUT = true;
-			}
-		} else if (view == inputprep) {
-			if (hasfocus) {
-				focusINPUT = false;
-			}
-		}
-	}
-
-	private int position(String s, String[] vector) {
-		for (int i = 0; i < vector.length; i++) {
-			if (s.equals(vector[i].toLowerCase())) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 	private void showMessage(String text) {

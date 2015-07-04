@@ -330,6 +330,10 @@ public class Language {
 		}
 	}
 
+	public DReferences getPhrasalVerbs() {
+		return datos.dictionary.getPhrasalVerbs(false);
+	}
+
 	public void initCollator() {
 		collator = Collator.getInstance(locale);
 		collator.setStrength(Collator.PRIMARY);
@@ -408,34 +412,6 @@ public class Language {
 
 	public boolean isDictionaryCreated() {
 		return datos.dictionary.dictionaryCreated;
-	}
-
-	/** ******************* NUEVAS A DEBUGGAR **********************/
-
-	private PhrasalVerbs phrasalverbs;
-
-	public static String[] preps = { "About", "Across", "After", "Against", "Ahead", "Along", "Apart", "Around", "As", "Aside", "At", "Away", "Back",
-			"By", "Down", "For", "Forth", "Forward", "From", "In", "Into", "It", "Of", "Off", "On", "Onto", "Out", "Over", "Round", "Through", "To",
-			"Together", "Towards", "Under", "Up", "Upon", "With" };
-
-	public void analizePhrasals() {
-		if (phrasalverbs != null)
-			return;
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				phrasalverbs = new PhrasalVerbs(datos.words, preps);
-			}
-		}).start();
-	}
-
-	public TreeMap<String, Boolean[]> getPhrasals() {
-		return phrasalverbs.phrasals;
-	}
-
-	public DReferences getPhrasalVerbs() {
-		return datos.dictionary.getPhrasalVerbs(false);
 	}
 
 	private void debug(String text) {

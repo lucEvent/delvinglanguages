@@ -17,6 +17,7 @@ public interface Messages {
 	public static final String SEND_PRONUNTIATION = "s_pr";
 	public static final String SEND_TYPE = "s_tp";
 	public static final String SEND_WORD = "s_wd";
+	public static final String SEND_PHRASAL_MANAGER = "s_ph_man";
 	public static final String EDITED = "edited";
 
 	public static final String ACTION_EDIT = "edit";
