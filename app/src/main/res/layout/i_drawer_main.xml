@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DDD"
+        android:paddingBottom="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="20dip">
+
+        <ImageView
+            android:id="@+id/app_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="10dip"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/app_icon"
+            android:layout_toRightOf="@+id/app_icon"
+            android:paddingBottom="15dip"
+            android:paddingLeft="15dip"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/app_icon"
+            android:layout_alignParentRight="true"
+            android:text="@string/app_version"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            style="@style/item_main_drawer"
+            android:onClick="onCreateLanguageAction">
+
+            <ImageView
+                android:id="@+id/icon_1"
+                style="@style/item_iv_main_drawer"
+                android:src="@drawable/ic_add" />
+
+            <TextView
+                style="@style/item_tv_main_drawer"
+                android:layout_toRightOf="@+id/icon_1"
+                android:text="@string/create_language" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/item_main_drawer"
+            android:onClick="onHistoryAction">
+
+            <ImageView
+                android:id="@+id/icon_2"
+                style="@style/item_iv_main_drawer"
+                android:src="@drawable/ic_history" />
+
+            <TextView
+                style="@style/item_tv_main_drawer"
+                android:layout_toRightOf="@+id/icon_2"
+                android:text="@string/historial" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/item_main_drawer"
+            android:onClick="onConfigurationAction">
+
+            <ImageView
+                android:id="@+id/icon_3"
+                style="@style/item_iv_main_drawer"
+                android:src="@drawable/ic_settings" />
+
+            <TextView
+                style="@style/item_tv_main_drawer"
+                android:layout_toRightOf="@+id/icon_3"
+                android:text="@string/configuration" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/item_main_drawer"
+            android:onClick="onAboutAction">
+
+            <ImageView
+                android:id="@+id/icon_4"
+                style="@style/item_iv_main_drawer"
+                android:src="@drawable/ic_info_outline" />
+
+            <TextView
+                style="@style/item_tv_main_drawer"
+                android:layout_toRightOf="@+id/icon_4"
+                android:text="@string/about" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD" />
+
+        <RelativeLayout style="@style/item_main_drawer">
+
+            <ImageView
+                android:id="@+id/icon_5"
+                style="@style/item_iv_main_drawer"
+                android:src="@drawable/ic_language" />
+
+            <TextView
+                style="@style/item_tv_main_drawer"
+                android:layout_toRightOf="@+id/icon_5"
+                android:text="@string/my_languages" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

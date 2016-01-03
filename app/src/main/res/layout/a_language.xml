@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/types"
+        layout="@layout/v_types_bar" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/types"
+        android:layout_marginTop="-7dp"
+        android:visibility="invisible" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/laymarleft"
+            android:paddingRight="@dimen/laymarright">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/margenlabels"
+                android:paddingTop="@dimen/margenlabels"
+                android:text="@string/statistics"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/attemps" />
+
+                    <TextView
+                        android:id="@+id/as_na"
+                        style="@style/textview_statistics" />
+
+                    <TextView style="@style/textview_statistics" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success1" />
+
+                    <TextView
+                        android:id="@+id/as_ns1"
+                        style="@style/textview_statistics" />
+
+                    <TextView
+                        android:id="@+id/as_ns1p"
+                        style="@style/textview_statistics" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success2" />
+
+                    <TextView
+                        android:id="@+id/as_ns2"
+                        style="@style/textview_statistics" />
+
+                    <TextView
+                        android:id="@+id/as_ns2p"
+                        style="@style/textview_statistics" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/success3" />
+
+                    <TextView
+                        android:id="@+id/as_ns3"
+                        style="@style/textview_statistics" />
+
+                    <TextView
+                        android:id="@+id/as_ns3p"
+                        style="@style/textview_statistics" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/textview_statistics"
+                        android:maxLines="1"
+                        android:text="@string/failures" />
+
+                    <TextView
+                        android:id="@+id/as_nf"
+                        style="@style/textview_statistics" />
+
+                    <TextView
+                        android:id="@+id/as_nfp"
+                        style="@style/textview_statistics" />
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:id="@+id/newword"
+                style="@style/button_list_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newword" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

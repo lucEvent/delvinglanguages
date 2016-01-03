@@ -1,4 +1,0 @@
-delvinglanguages
-================
-
-DelvingL project

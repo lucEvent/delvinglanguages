@@ -1,0 +1,199 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
+
+    <style name="AppTheme" parent="AppBaseTheme"></style>
+
+    <!-- ******************** BUTTONS ******************** -->
+    <style name="ww_tm">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="ww_tl">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="button_list_selector">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">2dip</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="buttons_complete">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- ******************** TEXTVIEWS ******************* -->
+    <style name="textview_statistics" parent="ww_tl">
+        <item name="android:paddingBottom">@dimen/margenlabels</item>
+        <item name="android:paddingTop">@dimen/margenlabels</item>
+    </style>
+
+    <style name="textview_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="base_textview_types">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#FFCCCCCC</item>
+    </style>
+
+    <style name="textview_label_types_small" parent="base_textview_types">
+        <item name="android:layout_marginLeft">3dip</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="textview_label_types_top" parent="base_textview_types">
+        <item name="android:layout_marginLeft">1dip</item>
+        <item name="android:layout_marginRight">1dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="label_types_idiom" parent="base_textview_types">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="text_mw1_center_large">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="text_ww1_center_medium" parent="ww_tm">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">3dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <!-- ************************************************** -->
+    <style name="divisor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:paddingBottom">2dip</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:background">#484848</item>
+    </style>
+
+    <style name="layout_labels_types">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="edittext_palabra">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">7dip</item>
+        <item name="android:padding">7dip</item>
+        <item name="android:paddingLeft">15dip</item>
+        <item name="android:paddingRight">15dip</item>
+        <item name="android:background">#88FFFFFF</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="layout_0w1">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="button_type_word">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">2dip</item>
+        <item name="android:padding">2dip</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="button_type_word_close" parent="button_type_word">
+        <item name="android:layout_margin">1dip</item>
+        <item name="android:padding">1dip</item>
+    </style>
+
+    <!-- ******************** SETTINGS *************************** -->
+    <style name="settings_indexs">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">20dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingBottom">3dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="settings_option">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">20dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingBottom">20dip</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/option</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="option_lang_features" parent="settings_option">
+        <item name="android:checkMark">?android:attr/listChoiceIndicatorMultiple</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingRight">20dip</item>
+    </style>
+
+    <style name="item_main_drawer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/selector_settings</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:paddingLeft">40dip</item>
+        <item name="android:paddingTop">10dip</item>
+    </style>
+
+    <style name="item_iv_main_drawer">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="item_tv_main_drawer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingLeft">20dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+</resources>
