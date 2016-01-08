@@ -14,21 +14,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.face.dialog.AddTranslationDialog;
+import com.delvinglanguages.face.AppCode;
+import com.delvinglanguages.face.dialog.AddInflexionDialog;
 import com.delvinglanguages.face.listeners.FoneticsKeyboard;
 import com.delvinglanguages.face.view.SpecialKeysBar;
+import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.Translation;
 import com.delvinglanguages.kernel.Word;
-import com.delvinglanguages.kernel.set.Translations;
+import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.kernel.set.Words;
-import com.delvinglanguages.listers.TranslationLister;
-import com.delvinglanguages.net.internal.Messages;
+import com.delvinglanguages.listers.InflexionLister;
 import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Settings;
 
-public class AddWordActivity extends ListActivity implements TextWatcher, OnClickListener, NetWork, OnFocusChangeListener, Messages {
+public class AddWordActivity extends ListActivity implements TextWatcher, OnClickListener, NetWork, OnFocusChangeListener {
 
     protected Language idioma;
 
@@ -38,10 +38,10 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
 
     protected FoneticsKeyboard fonetickb;
 
-    protected Translations translations;
-    protected TranslationLister adapter;
+    protected Inflexions inflexions;
+    protected InflexionLister adapter;
 
-    protected AddTranslationDialog translationManager;
+    protected AddInflexionDialog inflexionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,8 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
 
         fonetickb = new FoneticsKeyboard(this, R.id.ap_keyboard, pronuntiation, idioma.CODE);
 
-        setTranslationsList(new Translations());
-        translationManager = new AddTranslationDialog(this, this);
+        setInflexionsList(new Inflexions());
+        inflexionManager = new AddInflexionDialog(this, this);
 
         setTitle(R.string.addingnewword);
     }
@@ -84,7 +84,7 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
     }
 
     protected void get_and_set_Name(Bundle bundle) {
-        String name = bundle.getString(SEND_NAME);
+        String name = bundle.getString(AppCode.NAME);
         if (name != null) {
             word.setText(name);
             word.setSelection(name.length());
@@ -92,22 +92,22 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
     }
 
     protected void get_and_set_Pronuntiation(Bundle bundle) {
-        String value = bundle.getString(SEND_PRONUNTIATION);
+        String value = bundle.getString(AppCode.PRONUNCIATION);
         if (value != null) {
             pronuntiation.setText(value);
         }
     }
 
-    protected void setTranslationsList(Translations list) {
-        translations = list;
-        adapter = new TranslationLister(this, list, true, this);
+    protected void setInflexionsList(Inflexions list) {
+        inflexions = list;
+        adapter = new InflexionLister(this, list, true, this);
         setListAdapter(adapter);
     }
 
     public void addTranslation(View v) {
         editing = false;
         fonetickb.hideCustomKeyboard();
-        translationManager.show();
+        inflexionManager.show();
     }
 
     public void cancel(View v) {
@@ -139,7 +139,7 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
             showMessage(R.string.noword);
             return false;
         }
-        if (translations.isEmpty()) {
+        if (inflexions.isEmpty()) {
             showMessage(R.string.notrans);
             return false;
         }
@@ -148,17 +148,17 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
             showMessage(R.string.nopron);
             return false;
         }
-        saveWord(nombre, translations, pron);
+        saveWord(nombre, inflexions, pron);
         return true;
     }
 
-    protected void saveWord(String nombre, Translations translations, String pron) {
+    protected void saveWord(String nombre, Inflexions inflexions, String pron) {
         if (autocomplete) {
-            KernelControl.updateWord(modifiedWord, nombre, translations, pron);
+            KernelControl.updateWord(modifiedWord, nombre, inflexions, pron);
             showMessage(R.string.msswordmodified);
             return;
         }
-        KernelControl.addWord(nombre, translations, pron, Word.INITIAL_PRIORITY);
+        KernelControl.addWord(nombre, inflexions, pron, Word.INITIAL_PRIORITY);
         showMessage(R.string.msswordadded);
     }
 
@@ -172,8 +172,8 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
 
     protected boolean autocomplete = false;
     protected Word modifiedWord = null;
-    private Translations savedTranlations = null;
-    private Editable savedPronuntiation = null;
+    private Inflexions savedInflexions = null;
+    private Editable savedPronunciation = null;
 
     @Override
     public void afterTextChanged(Editable s) {
@@ -190,8 +190,8 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
                 remove.setEnabled(true);
             }
             autocomplete = false;
-            pronuntiation.setText(savedPronuntiation);
-            translations = savedTranlations;
+            pronuntiation.setText(savedPronunciation);
+            inflexions = savedInflexions;
         }
         modifiedWord = null;
         if (s.length() > 0) {
@@ -204,11 +204,11 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
             }
             autocomplete = true;
 
-            savedPronuntiation = pronuntiation.getText();
-            savedTranlations = translations;
+            savedPronunciation = pronuntiation.getText();
+            savedInflexions = inflexions;
 
             pronuntiation.setText(modifiedWord.getPronunciation());
-            translations = modifiedWord.getTranslations();
+            inflexions = modifiedWord.getInflexions();
         }
     }
 
@@ -217,23 +217,24 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
     }
 
     private boolean editing = false;
-    private Translation t_editing;
+    private Inflexion t_editing;
 
     @Override
     public void datagram(int code, String message, Object packet) {
         switch (code) {
             case NetWork.ERROR:
                 showMessage((Integer) packet);
-                translationManager.show();
+                inflexionManager.show();
                 break;
             case NetWork.OK:
-                Translation t = (Translation) packet;
+                Inflexion i = (Inflexion) packet;
                 if (editing) {
                     editing = false;
-                    t_editing.name = t.name;
-                    t_editing.type = t.type;
+                    t_editing.setInflexions(i.getInflexions());
+                    t_editing.setTranslations(i.getTranslations());
+                    t_editing.setType(i.getType());
                 } else {
-                    translations.add(t);
+                    inflexions.add(i);
                 }
                 adapter.notifyDataSetChanged();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -247,14 +248,14 @@ public class AddWordActivity extends ListActivity implements TextWatcher, OnClic
 
     @Override
     public void onClick(View v) {
-        Translation translation = translations.get((Integer) v.getTag());
+        Inflexion inflexion = inflexions.get((Integer) v.getTag());
         if (v.getId() == R.id.edit) {
             editing = true;
-            t_editing = translation;
+            t_editing = inflexion;
             fonetickb.hideCustomKeyboard();
-            translationManager.show(translation);
+            inflexionManager.show(inflexion);
         } else if (v.getId() == R.id.remove) {
-            adapter.remove(translation);
+            adapter.remove(inflexion);
         }
     }
 

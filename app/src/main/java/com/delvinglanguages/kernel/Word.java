@@ -1,6 +1,6 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.kernel.set.Translations;
+import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.settings.Settings;
 
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Word implements Comparable<Word> {
 
     public static final int INITIAL_PRIORITY = 100;
+
     public static final int NOUN = 0;
     public static final int VERB = 1;
     public static final int ADJECTIVE = 2;
@@ -18,99 +19,71 @@ public class Word implements Comparable<Word> {
 
     public final int id;
 
-    protected String nombre;
-    protected Translations traducciones;
-    protected String pronunciacion;
-    protected int prioridad;
+    protected String name;
+    protected Inflexions inflexions;
+    protected String pronunciation;
+    protected int priority;
 
-    public Word(int id, String name, String translations, String pronunciation, int priority) {
-        this(id, name, new Translations(translations), pronunciation, priority);
+    public Word(int id, String name, String inflexions, String pronunciation, int priority) {
+        this(id, name, new Inflexions(inflexions), pronunciation, priority);
     }
 
-    public Word(int id, String name, Translations translations, String pronunciation, int priority) {
+    public Word(int id, String name, Inflexions inflexions, String pronunciation, int priority) {
         this.id = id;
-        nombre = name;
-        traducciones = translations;
-        pronunciacion = pronunciation;
-        prioridad = priority;
+        this.name = name;
+        this.inflexions = inflexions;
+        this.pronunciation = pronunciation;
+        this.priority = priority;
     }
 
     /**
      * ****************************** Getters *******************************
      **/
     public String getName() {
-        return nombre;
+        return name;
     }
 
-    public ArrayList<String> getNameArray() {
-        return Translation.formatArray(nombre);
+    public String getTranslationsAsString() {
+        return inflexions.getTranslationsAsString();
     }
 
-    public String getTranslationString() {
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < traducciones.size(); i++) {
-            if (i != 0) {
-                res.append(", ");
-            }
-            res.append(traducciones.get(i).name);
-        }
-        return res.toString();
-    }
-
-    public ArrayList<String> getTranslationArray() {
+    public ArrayList<String> getTranslationsAsArray() {
         ArrayList<String> res = new ArrayList<String>();
-
-        for (Translation translation : traducciones) {
-            res.addAll(translation.getItems());
+        for (Inflexion i : inflexions) {
+            for (String t : i.getTranslations()) {
+                res.add(t);
+            }
         }
         return res;
     }
 
-    public Translations getTranslations() {
-        return traducciones;
+    public Inflexions getInflexions() {
+        return inflexions;
+    }
+
+    public String getInflexionsAsString() {
+        return inflexions.toString();
     }
 
     public String getPronunciation() {
-        return pronunciacion;
+        return pronunciation;
     }
 
     public int getType() {
         int res = 0;
-        for (Translation t : traducciones) {
-            res |= t.type;
+        for (Inflexion i : inflexions) {
+            res |= i.getType();
         }
         return res;
     }
 
     public int getPriority() {
-        return prioridad;
+        return priority;
     }
 
-    public Character getCap() {
-        return nombre.charAt(0);
-    }
-
-    public Word getInverse(boolean todelv) {
-        StringBuilder name = new StringBuilder();
-        Translations translations = new Translations();
-        if (todelv) {
-            name.append(traducciones.get(0).name);
-
-            ArrayList<String> s_translations = getNameArray();
-            for (int i = 0; i < s_translations.size(); i++) {
-                translations.add(new Translation(s_translations.get(i), traducciones.get(i).type));
-            }
-        } else {
-            for (int i = 0; i < traducciones.size(); i++) {
-                Translation traduccion = traducciones.get(i);
-                if (i != 0) {
-                    name.append(", ");
-                }
-                name.append(traduccion.name);
-                translations.add(new Translation(nombre, traduccion.type));
-            }
-        }
-        return new Word(id, name.toString(), translations, pronunciacion, prioridad);
+    public Word getInverse() {
+        //// TODO: 06/01/2016
+        return null;
     }
 
     /**
@@ -118,60 +91,32 @@ public class Word implements Comparable<Word> {
      **/
     @Override
     public boolean equals(Object word) {
-        return this.id == ((Word) word).id;
+        return word instanceof Word && this.id == ((Word) word).id;
     }
 
     /**
      * ****************************** Setters *******************************
      **/
-    public void setChanges(String name, Translations translations, String pronunciation) {
-        nombre = name;
-        traducciones = translations;
-        pronunciacion = pronunciation;
+    public void setInflexions(Inflexions inflexions) {
+        this.inflexions = inflexions;
     }
 
-    public void updatePriority(int value) {
-        prioridad = value;
+    public void update(String name, Inflexions inflexions, String pronunciation) {
+        this.name = name;
+        this.inflexions = inflexions;
+        this.pronunciation = pronunciation;
     }
 
-    public void setTranslations(Translations translations) {
-        traducciones = translations;
+    public void updatePriority(int priority) {
+        this.priority = priority;
     }
 
     /**
      * ************************** Interfaces *******************************
      **/
-
     @Override
     public int compareTo(Word another) {
-        return nombre.compareToIgnoreCase(another.nombre);
-    }
-
-    public static String format(String s) { // Funcion a revisar y rehacer de 0
-        StringBuilder res = new StringBuilder(s);
-        int index = res.indexOf(",");
-        while (index != -1) {
-            try {
-                if (res.charAt(index + 1) != ' ') {
-                    res.insert(index + 1, " ");
-                } else {
-                    while (res.charAt(index + 2) == ' ') {
-                        res.delete(index + 2, index + 3);
-                    }
-                }
-            } catch (StringIndexOutOfBoundsException e) {
-                debug("StringIndexOutOfBoundsException con:" + s);
-                char car;
-                int size = res.length();
-                do {
-                    res.delete(size, size + 1);
-                    res.charAt(index);
-                    car = res.charAt(size - 1);
-                } while (car == ',' || car == ' ');
-            }
-            index = res.indexOf(",", index + 1);
-        }
-        return res.toString();
+        return name.compareToIgnoreCase(another.name);
     }
 
     private static void debug(String text) {
@@ -179,7 +124,4 @@ public class Word implements Comparable<Word> {
             android.util.Log.d("##Word##", text);
     }
 
-    public String getTranslationToSave() {
-        return traducciones.toSavingString();
-    }
 }

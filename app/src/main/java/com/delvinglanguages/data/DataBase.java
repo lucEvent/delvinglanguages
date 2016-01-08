@@ -63,18 +63,18 @@ public class DataBase extends SQLiteOpenHelper {
         public static String id = "_id";
         public static String name = "name";
         public static String lang_id = "language";
-        public static String translations = "translations";
+        public static String inflexions = "inflexions";
         public static String pronunciation = "pronunciation";
         public static String priority = "priority";
 
-        public static String[] cols = {id, name, lang_id, translations, pronunciation, priority};
+        public static String[] cols = {id, name, lang_id, inflexions, pronunciation, priority};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         name + " TEXT NOT NULL," +
                         lang_id + " INTEGER," +
-                        translations + " TEXT NOT NULL," +
+                        inflexions + " TEXT NOT NULL," +
                         pronunciation + " TEXT NOT NULL," +
                         priority + " INTEGER," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +

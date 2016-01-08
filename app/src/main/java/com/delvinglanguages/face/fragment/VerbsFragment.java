@@ -12,61 +12,61 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.activity.ReferenceActivity;
 import com.delvinglanguages.face.activity.add.AddWordFromVerbActivity;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class VerbsFragment extends ListFragment implements OnClickListener, Messages {
+public class VerbsFragment extends ListFragment implements OnClickListener {
 
-	private DReferences verbslist;
+    private DReferences verbslist;
 
-	private boolean phMode;
+    private boolean phMode;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.a_list_with_button, container, false);
+        View view = inflater.inflate(R.layout.a_list_with_button, container, false);
 
-		Settings.setBackgroundTo(view);
+        Settings.setBackgroundTo(view);
 
-		verbslist = LanguageKernelControl.getVerbs();
-		phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
-		setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
+        verbslist = LanguageKernelControl.getVerbs();
+        phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
+        setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
 
-		Button action = ((Button) view.findViewById(R.id.action));
-		action.setText(getString(R.string.addverb));
-		action.setOnClickListener(this);
+        Button action = ((Button) view.findViewById(R.id.action));
+        action.setText(getString(R.string.addverb));
+        action.setOnClickListener(this);
 
-		return view;
-	}
+        return view;
+    }
 
-	@Override
-	public void onListItemClick(ListView l, View v, int pos, long id) {
-		super.onListItemClick(l, v, pos, id);
-		Intent intent = new Intent(getActivity(), ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, verbslist.get(pos).name);
-		startActivityForResult(intent, REQUEST_MODIFIED);
-	}
+    @Override
+    public void onListItemClick(ListView l, View v, int pos, long id) {
+        super.onListItemClick(l, v, pos, id);
+        Intent intent = new Intent(getActivity(), ReferenceActivity.class);
+        intent.putExtra(AppCode.DREFERENCE, verbslist.get(pos).name);
+        startActivityForResult(intent, AppCode.ACTION_MODIFY);
+    }
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_MODIFIED) {
-			if (resultCode == Activity.RESULT_OK) {
-				verbslist = LanguageKernelControl.getVerbs();
-				setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
-			}
-		}
-	}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppCode.ACTION_MODIFY) {
+            if (resultCode == Activity.RESULT_OK) {
+                verbslist = LanguageKernelControl.getVerbs();
+                setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));
+            }
+        }
+    }
 
-	@Override
-	public void onClick(View v) {
-		startActivity(new Intent(getActivity(), AddWordFromVerbActivity.class));
-	}
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(getActivity(), AddWordFromVerbActivity.class));
+    }
 
 }

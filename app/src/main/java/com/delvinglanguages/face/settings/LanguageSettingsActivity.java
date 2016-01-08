@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.dialog.IntegrateManager;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
@@ -115,10 +116,10 @@ public class LanguageSettingsActivity extends Activity implements OnItemSelected
     }
 
     private void removeLanguage() {
-        String mssg = LanguageKernelControl.getLanguageName() + " " + getResources().getString(R.string._removed);
+        String message = LanguageKernelControl.getLanguageName() + " " + getResources().getString(R.string._removed);
         KernelControl.deleteLanguage();
-        setResult(Activity.RESULT_OK, null);
-        showMessage(mssg);
+        setResult(AppCode.LANGUAGE_REMOVED);
+        showMessage(message);
         finish();
     }
 

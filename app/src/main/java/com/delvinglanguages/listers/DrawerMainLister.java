@@ -21,8 +21,7 @@ public class DrawerMainLister extends ArrayAdapter<Language> {
 
     public DrawerMainLister(Context context, Languages languages) {
         super(context, -1, languages);
-        this.languages = languages;
-        this.views = new View[languages.size() + 1];
+        clear(languages);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -46,6 +45,12 @@ public class DrawerMainLister extends ArrayAdapter<Language> {
         }
         views[position] = view;
         return view;
+    }
+
+    public void clear(Languages languages) {
+        this.languages = languages;
+        this.views = new View[languages.size() + 1];
+        notifyDataSetChanged();
     }
 
     @Override

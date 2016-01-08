@@ -11,16 +11,16 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/middle"
         android:gravity="center"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_redo" />
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="&#10137;" />
 
     <TextView
         android:id="@+id/pair_2"
@@ -30,7 +30,6 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/middle"
         android:gravity="center"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

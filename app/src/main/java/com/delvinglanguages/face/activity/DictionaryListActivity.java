@@ -13,16 +13,16 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class DictionaryListActivity extends ListActivity implements Messages {
+public class DictionaryListActivity extends ListActivity {
 
 	private static final int REQUEST_MODIFIED = 0;
 
@@ -54,7 +54,7 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 			types[Word.PHRASAL].setVisibility(View.GONE);
 		}
 
-		capital = getIntent().getExtras().getChar(CHARACTER);
+		capital = getIntent().getExtras().getChar(AppCode.CHARACTER);
 
 		setTitle(getString(R.string.wordsby) + " " + capital);
 
@@ -119,7 +119,7 @@ public class DictionaryListActivity extends ListActivity implements Messages {
 	@Override
 	public void onListItemClick(ListView l, View v, int pos, long id) {
 		Intent intent = new Intent(this, ReferenceActivity.class);
-		intent.putExtra(DREFERENCE, values.get(pos).name);
+		intent.putExtra(AppCode.DREFERENCE, values.get(pos).name);
 		startActivityForResult(intent, REQUEST_MODIFIED);
 	}
 

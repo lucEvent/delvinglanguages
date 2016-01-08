@@ -25,7 +25,7 @@ public class MatchGame extends Game {
         res.correct = new Boolean[nAnswers];
 
         int randompos = nextInt(nAnswers);
-        res.answers[randompos] = ref.getTranslation();
+        res.answers[randompos] = ref.getTranslationsAsString();
         res.correct[randompos] = true;
         for (int i = 0; i < nAnswers; ++i) {
             if (i != randompos) {
@@ -35,7 +35,7 @@ public class MatchGame extends Game {
                 } else {
                     res.correct[i] = false;
                 }
-                res.answers[i] = resp.getTranslation();
+                res.answers[i] = resp.getTranslationsAsString();
             }
         }
         return res;
@@ -52,7 +52,7 @@ public class MatchGame extends Game {
         res.correct = new Boolean[nAnswers];
 
         int cand2 = nextInt(nAnswers);
-        res.answers[cand2] = p.getTranslation();
+        res.answers[cand2] = p.getTranslationsAsString();
         res.correct[cand2] = true;
         for (int i = 0; i < nAnswers; ++i) {
             if (i != cand2) {
@@ -62,7 +62,7 @@ public class MatchGame extends Game {
                 } else {
                     res.correct[i] = false;
                 }
-                res.answers[i] = resp.getTranslation();
+                res.answers[i] = resp.getTranslationsAsString();
             }
         }
         return res;

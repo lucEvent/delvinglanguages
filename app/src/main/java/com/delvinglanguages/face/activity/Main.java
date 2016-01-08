@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.debug.Debug;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.fragment.BinFragment;
 import com.delvinglanguages.face.fragment.DictionaryFragment;
 import com.delvinglanguages.face.fragment.LanguageFragment;
@@ -30,6 +33,7 @@ import com.delvinglanguages.face.fragment.VerbsFragment;
 import com.delvinglanguages.face.fragment.WarehouseFragment;
 import com.delvinglanguages.face.settings.About;
 import com.delvinglanguages.face.settings.HistorialActivity;
+import com.delvinglanguages.face.settings.LanguageSettingsActivity;
 import com.delvinglanguages.face.settings.SettingsActivity;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
@@ -38,8 +42,6 @@ import com.delvinglanguages.settings.Settings;
 
 public class Main extends FragmentActivity {
 
-    private static final int REQUEST_REMOVE = 0;
-
     private enum Option {
         LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES, PRONUNCIATION
     }
@@ -47,7 +49,7 @@ public class Main extends FragmentActivity {
     private static KernelControl kernel;
     private static Settings settings;
 
-    private Language idioma;
+    private Language currentLanguage;
     private boolean actualPHMode;
     private Option currentFragment;
 
@@ -72,12 +74,15 @@ public class Main extends FragmentActivity {
 
         optionsPadManager = new OptionsPadManager();
 
-        idioma = KernelControl.getCurrentLanguage();
-        if (idioma == null) {
+        currentLanguage = KernelControl.getCurrentLanguage();
+
+        if (currentLanguage == null) {
             if (KernelControl.getNumLanguages() == 0) {
-                startActivity(new Intent(this, AddLanguageActivity.class));
+                //// TODO: 08/01/2016 Crear pantalla de primer inicio
+                startActivityForResult(new Intent(this, AddLanguageActivity.class), AppCode.FIRST_LAUNCH);
+                return;
             } else {
-                idioma = KernelControl.setCurrentLanguage(0);
+                currentLanguage = KernelControl.setCurrentLanguage(0);
             }
         }
 
@@ -104,15 +109,37 @@ public class Main extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         Settings.setBackgroundTo(findViewById(android.R.id.content));
-        actualPHMode = idioma.getSettings(Language.MASK_PH);
+        actualPHMode = currentLanguage.getSettings(Language.MASK_PH);
+        ((DrawerMainLister) drawerlist.getAdapter()).clear(KernelControl.getLanguages());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_REMOVE) {
+        if (requestCode == AppCode.FIRST_LAUNCH) {
             if (resultCode == RESULT_OK) {
-                finish();
+                currentLanguage = KernelControl.setCurrentLanguage(0);
+                setFragment(Option.LANGUAGE);
+            }
+            //// TODO: 08/01/2016  si no da OK
+        }
+        if (requestCode == AppCode.LANGUAGE_CREATED) {
+            if (resultCode == RESULT_OK) {
+                currentLanguage = KernelControl.setCurrentLanguage(KernelControl.getNumLanguages() - 1);
+                setFragment(Option.LANGUAGE);
+            }
+        }
+        if (requestCode == AppCode.STATE_CHANGED) {
+            if (resultCode == AppCode.LANGUAGE_REMOVED) {
+                int nLangs = KernelControl.getNumLanguages();
+                if (nLangs != 0) {
+                    currentLanguage = KernelControl.setCurrentLanguage(0);
+                    setFragment(Option.LANGUAGE);
+                } else {
+                    //// TODO: 08/01/2016 Mostrar pantalla de primer inicio 
+                }
+            } else if (resultCode == AppCode.LANGUAGE_RECOVERED) {
+                KernelControl.refreshData();
             }
         }
     }
@@ -128,17 +155,35 @@ public class Main extends FragmentActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                startActivityForResult(new Intent(this, LanguageSettingsActivity.class), AppCode.STATE_CHANGED);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
     private void setFragment(Option option) {
         Fragment fragment;
         String title;
         switch (option) {
             case LANGUAGE:
                 fragment = new LanguageFragment();
-                title = idioma.language_delved_name;
+                title = currentLanguage.language_delved_name;
                 break;
             case PRACTISE:
                 fragment = new PractiseFragment();
-                title = getString(R.string.title_practising) + " " + idioma.language_delved_name;
+                title = getString(R.string.title_practising) + " " + currentLanguage.language_delved_name;
                 break;
             case DICTIONARY:
                 fragment = new DictionaryFragment();
@@ -146,7 +191,7 @@ public class Main extends FragmentActivity {
                 break;
             case VERBS:
                 fragment = new VerbsFragment();
-                title = idioma.language_delved_name + "'s Verbs";
+                title = currentLanguage.language_delved_name + "'s Verbs";
                 break;
             case PHRASAL_VERBS:
                 fragment = new PhrasalsFragment();
@@ -154,27 +199,27 @@ public class Main extends FragmentActivity {
                 break;
             case WAREHOUSE:
                 fragment = new WarehouseFragment();
-                title = idioma.language_delved_name + " " + getString(R.string.warehouse);
+                title = currentLanguage.language_delved_name + " " + getString(R.string.warehouse);
                 break;
             case BIN:
                 fragment = new BinFragment();
-                title = idioma.language_delved_name + " " + getString(R.string.bin);
+                title = currentLanguage.language_delved_name + " " + getString(R.string.bin);
                 break;
             case SEARCH:
                 fragment = new SearchFragment();
-                title = idioma.language_delved_name + " " + getString(R.string.search);
+                title = currentLanguage.language_delved_name + " " + getString(R.string.search);
                 break;
             case PRONUNCIATION:
                 fragment = new PronunciationFragment();
-                title = idioma.language_delved_name + " " + getString(R.string.pronunciation);
+                title = currentLanguage.language_delved_name + " " + getString(R.string.pronunciation);
                 break;
             case THEMES:
                 fragment = new ThemesFragment();
-                title = idioma.language_delved_name + " " + getString(R.string.themes);
+                title = currentLanguage.language_delved_name + " " + getString(R.string.themes);
                 break;
             default:
                 fragment = new LanguageFragment();
-                title = idioma.language_delved_name;
+                title = currentLanguage.language_delved_name;
         }
         currentFragment = option;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -188,7 +233,7 @@ public class Main extends FragmentActivity {
      */
     public void onCreateLanguageAction(View view) {
         mDrawerLayout.closeDrawer(drawerlist);
-        startActivity(new Intent(this, AddLanguageActivity.class));
+        startActivityForResult(new Intent(this, AddLanguageActivity.class), AppCode.LANGUAGE_CREATED);
     }
 
     public void onHistoryAction(View view) {
@@ -198,7 +243,7 @@ public class Main extends FragmentActivity {
 
     public void onConfigurationAction(View view) {
         mDrawerLayout.closeDrawer(drawerlist);
-        startActivity(new Intent(this, SettingsActivity.class));
+        startActivityForResult(new Intent(this, SettingsActivity.class), AppCode.STATE_CHANGED);
     }
 
     public void onAboutAction(View view) {
@@ -208,7 +253,8 @@ public class Main extends FragmentActivity {
 
     public void onLanguageSelectedAction(View view) {
         mDrawerLayout.closeDrawer(drawerlist);
-        KernelControl.setCurrentLanguage((Language) view.getTag());
+        currentLanguage = (Language) view.getTag();
+        KernelControl.setCurrentLanguage(currentLanguage);
         setFragment(Option.LANGUAGE);
     }
 
@@ -216,11 +262,11 @@ public class Main extends FragmentActivity {
      * Options from Pad
      */
     public void jumptoPractise(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
-        if (!idioma.hasEntries()) {
+        if (!currentLanguage.hasEntries()) {
             showMessage(R.string.mssNoWords);
             return;
         }
@@ -229,11 +275,11 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoDictionary(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
-        if (!idioma.hasEntries()) {
+        if (!currentLanguage.hasEntries()) {
             showMessage(R.string.mssNoWordsToList);
             return;
         }
@@ -256,7 +302,7 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoWarehouse(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
@@ -265,7 +311,7 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoVerbs(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
@@ -275,7 +321,7 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoPhrasalVerbs(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
@@ -285,11 +331,11 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoBin(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
-        if (idioma.removed_words.size() <= 0) {
+        if (currentLanguage.removed_words.size() <= 0) {
             showMessage(R.string.mssNoTrash);
             dialog.dismiss();
             return;
@@ -312,7 +358,7 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoThemes(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
@@ -322,7 +368,7 @@ public class Main extends FragmentActivity {
     }
 
     public void jumptoDebug(View v) {
-        if (!idioma.isLoaded()) {
+        if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }

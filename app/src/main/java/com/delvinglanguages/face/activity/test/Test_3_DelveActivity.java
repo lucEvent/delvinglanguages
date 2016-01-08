@@ -20,10 +20,9 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestKernelControl;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class Test_3_DelveActivity extends Activity implements Messages {
+public class Test_3_DelveActivity extends Activity {
 
     private TestKernelControl kernel;
     private Test test;
@@ -92,7 +91,7 @@ public class Test_3_DelveActivity extends Activity implements Messages {
 
         Settings.setBackgroundColorsforType(labels, ref.getType());
         delv.setText(ref.name);
-        nativ.setText(ref.getTranslation());
+        nativ.setText(ref.getTranslationsAsString());
         delv_p.setText("[ " + ref.pronunciation + " ]");
 
         if (index == 0) {

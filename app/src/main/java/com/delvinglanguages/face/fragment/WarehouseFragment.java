@@ -13,16 +13,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.activity.add.AddWordFromWarehouseActivity;
 import com.delvinglanguages.face.view.SpecialKeysBar;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.listers.StoreWordLister;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class WarehouseFragment extends ListFragment implements OnClickListener, Messages {
+public class WarehouseFragment extends ListFragment implements OnClickListener {
 
     private ImageButton storeword;
     private EditText edit;
@@ -60,7 +60,7 @@ public class WarehouseFragment extends ListFragment implements OnClickListener, 
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Intent intent = new Intent(getActivity(), AddWordFromWarehouseActivity.class);
-        intent.putExtra(STORE_NOTE, position);
+        intent.putExtra(AppCode.NOTE, position);
         startActivity(intent);
     }
 

@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.activity.DictionaryListActivity;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class DictionaryFragment extends Fragment implements OnClickListener, Messages {
+public class DictionaryFragment extends Fragment implements OnClickListener {
 
     private final int NUM_LETRAS = 31;
 
@@ -130,7 +130,7 @@ public class DictionaryFragment extends Fragment implements OnClickListener, Mes
     public void onClick(View button) {
         button.setOnClickListener(null);
         Intent intent = new Intent(getActivity(), DictionaryListActivity.class);
-        intent.putExtra(CHARACTER, (Character) button.getTag());
+        intent.putExtra(AppCode.CHARACTER, (Character) button.getTag());
         startActivity(intent);
     }
 

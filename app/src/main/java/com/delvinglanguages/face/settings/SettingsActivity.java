@@ -12,6 +12,7 @@ import android.widget.CheckedTextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.BackUp;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.listers.AvailableLanguageLister;
 import com.delvinglanguages.settings.Settings;
 
@@ -65,8 +66,14 @@ public class SettingsActivity extends Activity implements OnItemSelectedListener
             public void run() {
                 Looper.prepare();
                 new BackUp().recoverBackUp(SettingsActivity.this);
+                finalizedRecovering();
             }
         }).start();
+    }
+
+    private void finalizedRecovering() {
+        setResult(AppCode.LANGUAGE_RECOVERED);
+        finish();
     }
 
     @Override

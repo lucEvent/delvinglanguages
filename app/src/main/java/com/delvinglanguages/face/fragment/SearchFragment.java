@@ -20,15 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.activity.add.AddWordFromSearchActivity;
-import com.delvinglanguages.kernel.Translation;
+import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.net.external.WordReference;
 import com.delvinglanguages.net.external.WordReference.WRItem;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Settings;
 
-public class SearchFragment extends Fragment implements OnClickListener, NetWork, TextWatcher, Messages {
+public class SearchFragment extends Fragment implements OnClickListener, NetWork, TextWatcher {
 
     private EditText input;
     private Button search, add;
@@ -78,18 +78,18 @@ public class SearchFragment extends Fragment implements OnClickListener, NetWork
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         } else if (v == add) {
-            ArrayList<Translation> translations = new ArrayList<Translation>();
+            ArrayList<Inflexion> translations = new ArrayList<Inflexion>();
             for (int i = 0; i < list.getChildCount(); i++) {
                 View view = list.getChildAt(i);
                 CheckedTextView ctw = (CheckedTextView) view.findViewById(R.id.text);
                 if (ctw.isChecked()) {
                     WRItem d = data.get(i);
-                    translations.add(new Translation(d.name, d.type));
+                    translations.add(new Inflexion(new String[]{}, new String[]{d.name}, d.type));
                 }
             }
             Intent intent = new Intent(getActivity(), AddWordFromSearchActivity.class);
-            intent.putExtra(SEND_NAME, searchedWord);
-            intent.putExtra(SEND_TRANSLATION, translations);
+            intent.putExtra(AppCode.NAME, searchedWord);
+            intent.putExtra(AppCode.TRANSLATION, translations);
             startActivity(intent);
 
         } else {

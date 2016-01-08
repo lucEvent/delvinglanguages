@@ -3,9 +3,9 @@ package com.delvinglanguages.kernel;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.kernel.set.DrawerWords;
+import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.kernel.set.Tests;
 import com.delvinglanguages.kernel.set.Themes;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
@@ -56,7 +56,7 @@ public class Language {
             {'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'}
     };
 
-    // Language ID
+    // Language CODE
     public static final int UK = 0;
     public static final int US = 1;
     public static final int SV = 2;
@@ -234,8 +234,6 @@ public class Language {
             res = R.array.en_subjects;
         } else if (CODE == Language.SV) {
             res = R.array.sv_subjects;
-        } else if (CODE == Language.FI) {
-            res = R.array.fi_subjects;
         } else {
             res = R.array.en_subjects;
         }
@@ -367,10 +365,10 @@ public class Language {
         dictionary.addEntry(word);
     }
 
-    public void updateWord(Word word, String name, Translations translations, String pronunciation) {
+    public void updateWord(Word word, String name, Inflexions inflexions, String pronunciation) {
         words.remove(word);
         dictionary.removeEntry(word);
-        word.setChanges(name, translations, pronunciation);
+        word.update(name, inflexions, pronunciation);
         words.add(word);
         dictionary.addEntry(word);
     }

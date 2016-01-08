@@ -19,21 +19,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.activity.add.AddWordFromModifyActivity;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
-import com.delvinglanguages.kernel.Translation;
 import com.delvinglanguages.kernel.Word;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
-import com.delvinglanguages.listers.TranslationLister;
+import com.delvinglanguages.listers.InflexionLister;
 import com.delvinglanguages.listers.WordLister;
-import com.delvinglanguages.net.internal.Messages;
 import com.delvinglanguages.settings.Settings;
 
-public class ReferenceActivity extends ListActivity implements Messages, OnInitListener, OnClickListener {
+public class ReferenceActivity extends ListActivity implements OnInitListener, OnClickListener {
 
     private static final int REQUEST_MODIFIED = 0;
 
@@ -47,7 +45,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
         setContentView(view);
 
         Language idioma = KernelControl.getCurrentLanguage();
-        reference = idioma.getReference(getIntent().getExtras().getString(DREFERENCE));
+        reference = idioma.getReference(getIntent().getExtras().getString(AppCode.DREFERENCE));
 
         displayReference();
     }
@@ -59,7 +57,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
             if (resultCode == Activity.RESULT_OK) {
                 setResult(Activity.RESULT_OK, null);
 
-                String ref = (String) data.getExtras().get(EDITED);
+                String ref = (String) data.getExtras().get(AppCode.EDITED);
                 reference = LanguageKernelControl.getReference(ref.split(",")[0]);
                 if (reference == null) {
                     finish();
@@ -88,28 +86,12 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
         ((TextView) findViewById(R.id.word)).setText(reference.name);
         ((TextView) findViewById(R.id.pronuntiation)).setText("[ " + reference.pronunciation + " ]");
 
-        Translations trans = reference.getTranslations();
-        Translations transpack = new Translations();
-        for (Translation T : trans) {
-            boolean packed = false;
-            out:
-            for (Translation TP : transpack) {
-                if (TP.type == T.type) {
-                    TP.name += ", " + T.name;
-                    packed = true;
-                    break out;
-                }
-            }
-            if (!packed) {
-                transpack.add(T);
-            }
-        }
-        setListAdapter(new TranslationLister(this, transpack, false, this));
+        setListAdapter(new InflexionLister(this, reference.getInflexions(), false, this));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.palabra, menu);
+        getMenuInflater().inflate(R.menu.reference, menu);
         return true;
     }
 
@@ -172,7 +154,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 
     private void editAction(Word wordtoedit) {
         Intent intent = new Intent(this, AddWordFromModifyActivity.class);
-        intent.putExtra(SEND_WORD, wordtoedit.id);
+        intent.putExtra(AppCode.WORD, wordtoedit.id);
         startActivityForResult(intent, REQUEST_MODIFIED);
     }
 
@@ -203,7 +185,7 @@ public class ReferenceActivity extends ListActivity implements Messages, OnInitL
 // TODO: 31/12/2015  
         //  KernelControl.switchDictionary();
         Intent intent = new Intent(this, ReferenceActivity.class);
-        intent.putExtra(DREFERENCE, name);
+        intent.putExtra(AppCode.DREFERENCE, name);
         startActivity(intent);
 
     }

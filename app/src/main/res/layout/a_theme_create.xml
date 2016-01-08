@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/input"
@@ -17,7 +16,7 @@
         android:inputType="textCapSentences"
         android:nextFocusDown="@+id/in_delv"
         android:nextFocusRight="@+id/in_delv"
-        android:textAppearance="?android:attr/textAppearanceMedium" >
+        android:textAppearance="?android:attr/textAppearanceMedium">
 
         <requestFocus />
     </EditText>
@@ -39,16 +38,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/inputs"
         android:layout_below="@+id/separator"
-        android:divider="@android:color/transparent"
-        android:padding="20dip" >
-    </ListView>
+        android:divider="@android:color/transparent" />
 
     <RelativeLayout
         android:id="@+id/inputs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/options"
-        android:padding="5dip" >
+        android:padding="5dip">
 
         <EditText
             android:id="@+id/in_delv"
@@ -96,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/letrasespeciales"
-        android:layout_centerInParent="true" >
+        android:layout_centerInParent="true">
 
         <Button
             style="@style/button_list_selector"
@@ -112,9 +109,9 @@
 
     <include
         android:id="@+id/letrasespeciales"
+        layout="@layout/v_special_letters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        layout="@layout/v_special_letters" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

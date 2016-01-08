@@ -1,12 +1,11 @@
 package com.delvinglanguages.kernel;
 
 import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.kernel.util.AppFormat;
 import com.delvinglanguages.settings.Settings;
 
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
 
@@ -55,31 +54,34 @@ public class Dictionary implements Comparator<DReference> {
             }
         }
 
-        ArrayList<String> refsD = entry.getNameArray();
-        Translations refsN = entry.getTranslations();
+        String[] refsD = AppFormat.formatArray(entry.getName());
         for (String refDS : refsD) {
             if (refDS.length() == 0) {
                 continue;
             }
-            DReference refD = new DReference(refDS, entry.pronunciacion, entry.prioridad);
+            DReference refD = new DReference(refDS, entry.pronunciation, entry.priority);
             if (!dictionary.add(refD)) {
                 refD = dictionary.ceiling(refD);
             }
 
-            for (Translation transN : refsN) {
-                for (String refNS : transN.getItems()) {
-                    if (refNS.length() == 0) {
-                        continue;
-                    }
-                    DReference refN = new DReference(refNS, "", entry.prioridad, transN.type);
-                    if (!dictionary_inverse.add(refN)) {
-                        refN = dictionary_inverse.ceiling(refN);
-                    }
-                    refD.linkTo(entry, refN);
-                    refN.linkTo(entry, refD);
+            refD.addTranslation(entry, entry.getInflexions());
+        }
+
+        for (Inflexion inflexion : entry.getInflexions()) {
+            Inflexion infN = new Inflexion(inflexion.getInflexions(), refsD, inflexion.getType());
+            for (String refNS : inflexion.getTranslations()) {
+                if (refNS.length() == 0) {
+                    continue;
                 }
+                DReference refN = new DReference(refNS, "", entry.priority);
+                if (!dictionary_inverse.add(refN)) {
+                    refN = dictionary_inverse.ceiling(refN);
+                }
+                refN.addTranslation(entry, infN);
+
             }
         }
+
     }
 
     public void removeEntry(Word entry) {
@@ -90,29 +92,28 @@ public class Dictionary implements Comparator<DReference> {
             }
         }
 
-        ArrayList<String> refsD = entry.getNameArray();
-        Translations refsN = entry.getTranslations();
+        String[] refsD = AppFormat.formatArray(entry.getName());
         for (String refDS : refsD) {
-            DReference refD = dictionary.ceiling(new DReference(refDS, -1));
+            DReference refD = dictionary.ceiling(new DReference(refDS));
 
-            for (Translation transN : refsN) {
-                for (String refNS : transN.getItems()) {
-                    DReference refN = dictionary_inverse.ceiling(new DReference(refNS, transN.type));
+            refD.removeTranslation(entry, entry.getInflexions());
 
-                    refD.unlink(entry, refN);
-                    refN.unlink(entry, refD);
-
-                    if (refN.translations.isEmpty()) {
-                        dictionary_inverse.remove(refN);
-                    }
-
-                }
-            }
-
-            if (refD.translations.isEmpty()) {
+            if (refD.inflexions.isEmpty()) {
                 dictionary.remove(refD);
             }
+        }
 
+        for (Inflexion inflexion : entry.getInflexions()) {
+            for (String refNS : inflexion.getTranslations()) {
+                DReference refN = dictionary_inverse.ceiling(new DReference(refNS));
+
+                refN.removeTranslation(entry, inflexion);
+
+                if (refN.inflexions.isEmpty()) {
+                    dictionary_inverse.remove(refN);
+                }
+
+            }
         }
     }
 
@@ -168,7 +169,7 @@ public class Dictionary implements Comparator<DReference> {
         if (inverse) {
             dictionary = this.dictionary_inverse;
         }
-        DReference ceiling = dictionary.ceiling(new DReference("" + at, -1));
+        DReference ceiling = dictionary.ceiling(new DReference("" + at));
         if (ceiling == null || ceiling.name.charAt(0) != at) {
             return new TreeSet<DReference>();
         }
@@ -192,7 +193,7 @@ public class Dictionary implements Comparator<DReference> {
                     break;
             }
         }
-        DReference floor = dictionary.floor(new DReference(next, -1));
+        DReference floor = dictionary.floor(new DReference(next));
         if (floor == null) {
             return new TreeSet<DReference>();
         }
@@ -204,7 +205,7 @@ public class Dictionary implements Comparator<DReference> {
         if (inverse) {
             dictionary = this.dictionary_inverse;
         }
-        DReference candidate = dictionary.ceiling(new DReference(name, -1));
+        DReference candidate = dictionary.ceiling(new DReference(name));
         if (candidate != null && candidate.name.equals(name)) {
             return candidate;
         }

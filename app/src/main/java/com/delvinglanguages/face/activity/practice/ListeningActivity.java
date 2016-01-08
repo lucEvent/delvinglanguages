@@ -15,75 +15,75 @@ import com.delvinglanguages.settings.Settings;
 
 public class ListeningActivity extends Activity implements OnInitListener {
 
-	private TextView word, pron, tran;
+    private TextView word, pron, tran;
 
-	private TextToSpeech speechEngine;
+    private TextToSpeech speechEngine;
 
-	private Game game;
+    private Game game;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		View view = getLayoutInflater().inflate(R.layout.a_listening, null);
-		Settings.setBackgroundTo(view);
-		setContentView(view);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View view = getLayoutInflater().inflate(R.layout.a_listening, null);
+        Settings.setBackgroundTo(view);
+        setContentView(view);
 
-		game = new Game(LanguageKernelControl.getReferences());
+        game = new Game(LanguageKernelControl.getReferences());
 
-		word = (TextView) view.findViewById(R.id.word);
-		pron = (TextView) view.findViewById(R.id.pronunciation);
-		tran = (TextView) view.findViewById(R.id.translations);
+        word = (TextView) view.findViewById(R.id.word);
+        pron = (TextView) view.findViewById(R.id.pronunciation);
+        tran = (TextView) view.findViewById(R.id.translations);
 
-		onNext(null);
-	}
+        onNext(null);
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		speechEngine = new TextToSpeech(this, this);
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        speechEngine = new TextToSpeech(this, this);
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		speechEngine.stop();
-		speechEngine.shutdown();
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        speechEngine.stop();
+        speechEngine.shutdown();
+    }
 
-	@Override
-	public void onInit(int status) {
-		if (status == TextToSpeech.SUCCESS) {
-			speechEngine.setLanguage(LanguageKernelControl.getCurrentLanguage().getLocale());
-		}
-	}
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            speechEngine.setLanguage(LanguageKernelControl.getCurrentLanguage().getLocale());
+        }
+    }
 
-	public void onNext(View v) {
-		DReference ref = game.nextReference();
+    public void onNext(View v) {
+        DReference ref = game.nextReference();
 
-		word.setText(ref.name);
-		tran.setText(ref.getTranslation());
-		pron.setText(ref.pronunciation);
+        word.setText(ref.name);
+        tran.setText(ref.getTranslationsAsString());
+        pron.setText(ref.pronunciation);
 
-		new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(400);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				onSpeech(null);
-			}
-		}).start();
-	}
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(400);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                onSpeech(null);
+            }
+        }).start();
+    }
 
-	public void onSpeech(View v) {
-		speechEngine.speak(word.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-	}
+    public void onSpeech(View v) {
+        speechEngine.speak(word.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+    }
 
 	/*
-	 * @Override protected void onCreate(Bundle savedInstanceState) {
+     * @Override protected void onCreate(Bundle savedInstanceState) {
 	 * super.onCreate(savedInstanceState);
 	 * 
 	 * Intent checkIntent = new Intent();

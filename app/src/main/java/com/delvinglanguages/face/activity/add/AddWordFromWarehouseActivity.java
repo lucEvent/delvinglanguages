@@ -5,13 +5,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.kernel.DrawerWord;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.LanguageKernelControl;
-import com.delvinglanguages.kernel.set.Translations;
-import com.delvinglanguages.net.internal.Messages;
+import com.delvinglanguages.kernel.set.Inflexions;
 
-public class AddWordFromWarehouseActivity extends AddWordActivity implements Messages {
+public class AddWordFromWarehouseActivity extends AddWordActivity {
 
     private DrawerWord nota;
 
@@ -21,7 +21,7 @@ public class AddWordFromWarehouseActivity extends AddWordActivity implements Mes
 
         remove = ((Button) findViewById(R.id.addmore));
         remove.setText(R.string.remove);
-        nota = LanguageKernelControl.getDrawerWords().get(getIntent().getExtras().getInt(STORE_NOTE));
+        nota = LanguageKernelControl.getDrawerWords().get(getIntent().getExtras().getInt(AppCode.NOTE));
         word.setText(nota.name);
     }
 
@@ -32,14 +32,14 @@ public class AddWordFromWarehouseActivity extends AddWordActivity implements Mes
     }
 
     @Override
-    protected void saveWord(String nombre, Translations translations, String pron) {
+    protected void saveWord(String nombre, Inflexions inflexions, String pron) {
         if (autocomplete) {
             KernelControl.removeFromStore(nota);
-            KernelControl.updateWord(modifiedWord, nombre, translations, pron);
+            KernelControl.updateWord(modifiedWord, nombre, inflexions, pron);
             showMessage(R.string.msswordmodified);
             return;
         }
-        KernelControl.addWord(nota, nombre, translations, pron);
+        KernelControl.addWord(nota, nombre, inflexions, pron);
         showMessage(R.string.msswordadded);
     }
 

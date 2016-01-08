@@ -16,15 +16,15 @@ public class ThemeLister extends ArrayAdapter<Theme> {
     private LayoutInflater inflater;
 
     public ThemeLister(Context context, Themes values) {
-        super(context, R.layout.i_language, values);
+        super(context, R.layout.i_stored_word, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
-            view = inflater.inflate(R.layout.i_language, parent, false);
+            view = inflater.inflate(R.layout.i_stored_word, parent, false);
         }
-        ((TextView) view.findViewById(R.id.name)).setText(getItem(position).getName());
+        ((TextView) view).setText(getItem(position).getName());
         return view;
     }
 

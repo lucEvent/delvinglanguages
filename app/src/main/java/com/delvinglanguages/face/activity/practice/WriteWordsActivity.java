@@ -96,7 +96,7 @@ public class WriteWordsActivity extends Activity implements TextWatcher {
         progress.setProgress(0);
         iswrong = false;
         input.setText("");
-        palabra.setText(refActual.getTranslation().toUpperCase());
+        palabra.setText(refActual.getTranslationsAsString().toUpperCase());
         help.setEnabled(true);
         next.setEnabled(true);
         help.setClickable(true);

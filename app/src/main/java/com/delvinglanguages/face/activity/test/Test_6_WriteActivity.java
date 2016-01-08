@@ -1,6 +1,5 @@
 package com.delvinglanguages.face.activity.test;
 
-import java.sql.SQLOutput;
 import java.util.Locale;
 
 import android.app.AlertDialog;
@@ -62,7 +61,7 @@ public class Test_6_WriteActivity extends WriteWordsActivity {
         progress.setMax(refActual.name.length());
         progress.setProgress(0);
         input.setText("");
-        palabra.setText(refActual.getTranslation().toUpperCase(locale));
+        palabra.setText(refActual.getTranslationsAsString().toUpperCase(locale));
     }
 
     /**

@@ -35,7 +35,7 @@ public class RemovedWordLister extends ArrayAdapter<Word> implements OnClickList
         ImageButton restore = (ImageButton) view.findViewById(R.id.restore);
 
         name.setText(word.getName());
-        translation.setText(word.getTranslationString());
+        translation.setText(word.getTranslationsAsString());
         restore.setTag(position);
         restore.setOnClickListener(this);
 

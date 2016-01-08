@@ -50,7 +50,7 @@ public class ReferenceLister extends ArrayAdapter<DReference> {
         }
 
         word.setText(ref.name);
-        tran.setText(ref.getTranslation());
+        tran.setText(ref.getTranslationsAsString());
         return view;
     }
 

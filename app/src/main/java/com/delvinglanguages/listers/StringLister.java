@@ -16,20 +16,20 @@ public class StringLister extends ArrayAdapter<String> {
     private LayoutInflater inflater;
 
     public StringLister(Context context, String[] values) {
-        super(context, R.layout.i_language, values);
+        super(context, R.layout.i_stored_word, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public StringLister(Context context, ArrayList<String> values) {
-        super(context, R.layout.i_language, values);
+        super(context, R.layout.i_stored_word, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
-            view = inflater.inflate(R.layout.i_language, parent, false);
+            view = inflater.inflate(R.layout.i_stored_word, parent, false);
         }
-        ((TextView) view.findViewById(R.id.name)).setText(getItem(position));
+        ((TextView) view).setText(getItem(position));
         return view;
     }
 

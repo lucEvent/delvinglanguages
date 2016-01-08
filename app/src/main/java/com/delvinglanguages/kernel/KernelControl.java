@@ -4,9 +4,10 @@ import android.content.Context;
 
 import com.delvinglanguages.data.ControlDisco;
 import com.delvinglanguages.data.DataBaseManager;
+import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.kernel.set.Languages;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
+import com.delvinglanguages.kernel.util.AppFormat;
 import com.delvinglanguages.net.internal.ProgressHandler;
 import com.delvinglanguages.net.internal.TaskHandler;
 import com.delvinglanguages.net.internal.TaskHandler.TaskState;
@@ -46,7 +47,8 @@ public class KernelControl {
             initializeAll();
 
             int position = sdcard.getLastLanguage();
-            if (position != -1) currentLanguage = languages.get(position);
+            if (position != -1 && position < languages.size())
+                currentLanguage = languages.get(position);
         }
         return currentLanguage;
     }
@@ -69,6 +71,13 @@ public class KernelControl {
         return languages;
     }
 
+    public static void refreshData() {
+        dbManager = null;
+        languages = null;
+        sdcard = null;
+        initializeAll();
+    }
+
     public static void loadLanguage(Language language) {
         if (!language.isLoaded()) {
             dbManager.readLanguage(language, new ProgressHandler(null));
@@ -88,19 +97,17 @@ public class KernelControl {
         }
     }
 
-    public static int addLanguage(int code, String name, int settings) {
-        Language newlanguage = dbManager.insertLanguage(code, name, settings);
-        languages.add(newlanguage);
-        return languages.size() - 1;
+    public static void addLanguage(int code, String name, int settings) {
+        languages.add(dbManager.insertLanguage(code, name, settings));
     }
 
-    public static void addWord(String name, Translations translations, String pronunciation, int priority) {
-        Word W = dbManager.insertWord(Word.format(name), translations, currentLanguage.id, pronunciation, priority);
+    public static void addWord(String name, Inflexions inflexions, String pronunciation, int priority) {
+        Word W = dbManager.insertWord(AppFormat.formatWordName(name), inflexions, currentLanguage.id, pronunciation, priority);
         currentLanguage.addWord(W);
     }
 
-    public static void updateWord(Word word, String name, Translations translation, String pronunciation) {
-        currentLanguage.updateWord(word, name, translation, pronunciation);
+    public static void updateWord(Word word, String name, Inflexions inflexions, String pronunciation) {
+        currentLanguage.updateWord(word, name, inflexions, pronunciation);
         dbManager.updateWord(word);
     }
 
@@ -139,8 +146,8 @@ public class KernelControl {
         currentLanguage.addWord(dbManager.insertStoreWord(note, currentLanguage.id));
     }
 
-    public static void addWord(DrawerWord sword, String name, Translations translations, String pronuntiation) {
-        addWord(name, translations, pronuntiation, Word.INITIAL_PRIORITY);
+    public static void addWord(DrawerWord sword, String name, Inflexions inflexions, String pronuntiation) {
+        addWord(name, inflexions, pronuntiation, Word.INITIAL_PRIORITY);
         removeFromStore(sword);
     }
 

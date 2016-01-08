@@ -14,8 +14,6 @@ import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.settings.Settings;
 
-import java.util.TreeSet;
-
 public class WordLister extends ArrayAdapter<Word> {
 
     private LayoutInflater inflater;
@@ -34,7 +32,7 @@ public class WordLister extends ArrayAdapter<Word> {
         }
         Word word = getItem(position);
         ((TextView) view.findViewById(R.id.word)).setText(word.getName());
-        ((TextView) view.findViewById(R.id.translation)).setText(word.getTranslationString());
+        ((TextView) view.findViewById(R.id.translation)).setText(word.getTranslationsAsString());
 
         TextView labels[] = new TextView[7];
         labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);

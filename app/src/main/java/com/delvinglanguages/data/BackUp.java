@@ -15,7 +15,6 @@ import com.delvinglanguages.kernel.set.Languages;
 import com.delvinglanguages.kernel.set.Tests;
 import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.kernel.set.Themes;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
@@ -68,11 +67,11 @@ public class BackUp {
 
                 Words words = database.readWords(language.id, new ProgressHandler(null));
                 stream.writeInt(words.size());
-                for (Word p : words) {  // Por cada palabra del idioma
-                    stream.writeString(p.getName());
-                    stream.writeString(p.getPronunciation());
-                    stream.writeInt(p.getPriority());
-                    stream.writeString(p.getTranslationToSave());
+                for (Word w : words) {  // Por cada palabra del idioma
+                    stream.writeString(w.getName());
+                    stream.writeString(w.getPronunciation());
+                    stream.writeInt(w.getPriority());
+                    stream.writeString(w.getInflexionsAsString());
                 }
 
                 DrawerWords drawer = database.readDrawerWords(language.id);
@@ -107,7 +106,8 @@ public class BackUp {
     }
 
     public void recoverBackUp(Context context) {
-        DataBaseManager database = new DataBaseManager(context);
+        DatabaseBackUpManager database = new DatabaseBackUpManager(context);
+        database.openWritableDatabase();
         try {
             InStream stream = new InStream(backupfile);
 
@@ -117,8 +117,7 @@ public class BackUp {
                 String Lname = stream.readString();
                 int Lsettings = stream.readInt();
 
-                debug((i + 1) + ". " + Lname + "[" + Lcode + "]");
-
+                //      debug((i + 1) + ". " + Lname + "[" + Lcode + "]");
                 Language language = database.insertLanguage(Lcode, Lname, Lsettings);
 
                 // Statistics
@@ -127,23 +126,22 @@ public class BackUp {
                 language.statistics.aciertos2 = stream.readInt();
                 language.statistics.aciertos3 = stream.readInt();
                 language.statistics.fallos = stream.readInt();
-                database.updateStatistics(language.statistics);
+                database.insertStatistics(language.statistics);
 
-                int nPalabras = stream.readInt();
-                for (int j = 0; j < nPalabras; j++) {   // Por cada palabra del idioma
+                int nWords = stream.readInt();
+                for (int j = 0; j < nWords; j++) {   // For each WORD of the language
                     String name = stream.readString();
                     String pronunciation = stream.readString();
                     int priority = stream.readInt();
-                    Translations translation = new Translations(stream.readString());
-
-                    debug(" -" + name);
-                    database.insertWord(name, translation, language.id, pronunciation, priority);
+                    String inflexionsString = stream.readString();
+                    database.insertWord(name, inflexionsString, language.id, pronunciation, priority);
+                    //         debug(" -" + name);
                 }
 
                 int nDrawerWords = stream.readInt();
-                for (int j = 0; j < nDrawerWords; j++) {    // Por cada entrada del store
-                    String nota = stream.readString();
-                    database.insertStoreWord(nota, language.id);
+                for (int j = 0; j < nDrawerWords; j++) {    // For each entry of warehouse
+                    String note = stream.readString();
+                    database.insertStoreWord(note, language.id);
                 }
 
                 int nThemes = stream.readInt();
@@ -170,7 +168,10 @@ public class BackUp {
         } catch (Exception e) {
             debug("Exception: " + e.toString() + "\n\n");
             e.printStackTrace();
+            database.closeAndCancelDatabase();
+            return;
         }
+        database.closeAndRollDatabase();
     }
 
     private static void debug(String text) {

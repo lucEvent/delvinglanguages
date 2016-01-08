@@ -272,5 +272,32 @@
     <string name="configuration">Configuration</string>
     <string name="my_languages">My languages</string>
     <string name="create_language">Create language</string>
+    <string name="translations_cap">TRANSLATIONS</string>
+    <string name="inflexions_cap">INFLEXIONS</string>
+
+    <string name="about_content"><![CDATA[
+        <h2>Delving Languages version 2.1.0</h2>
+        <h2>Developed by Rafael J. Lucena</h2>
+        <h3>Contact: rafaa89(at)gmail.com</h3>
+        <p>
+            <p><b>News Features and Improvements:</b></p>
+            <p>Version 2.1.0 2016-01-08:<br>App look updated. New kernel feature: inflexions, that replace translations. Many changes and improvements.</p>
+        </p>
+        <br>
+        <p>
+            <p><b>Old improvements:</b></p>
+            <p>Version 1.6.1 2015-07-04:<br>IMPROVED: Touch interaction in language options menu, and kernel for managing phrasal verbs in english</p>
+            <p>Version 1.6.0 2015-07-03:<br>NEW: Support for Swedish word inflexions. Some other changes and improvements</p>
+            <p>Version 1.5.1 2015-05-16:<br>NEW: Pronunciation for words</p>
+            <p>Version 1.5.0 2015-05-14:<br>New Translation organization. New Database format.</p>
+            <p>Version 1.4.1 2015-03-11:<br>New kernel</p>
+            <p>Version 1.4.0 2015-03-09:<br>New feature: THEMES. Learn faster. Create your own themes and make studying easier :)</p>
+            <p>Version 1.3.4 2015-03-06:<br>Improved: word\'s priority, tests, Special characters. Some other bugs fixed.</p>
+            <p>Version 1.3.3 2014-11-08:<br>Improved performance. New features</p>
+            <p>Version 1.3.0 2014-10-28:<br>"Translation" change to "Search". Added Add word from Search. Solved problems. Internal improvements. Updated: "About"</p>
+            <p>Version 1.2.3 2014-10-25:<br>Updated: Language Menu</p>
+            <p>Version 1.2.0 2014-05-13:<br>Updated: Dictionary</p>
+        </p>]]>
+    </string>
 
 </resources>

@@ -18,11 +18,11 @@ import com.delvinglanguages.kernel.Estadisticas;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.DrawerWords;
+import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.kernel.set.Languages;
 import com.delvinglanguages.kernel.set.Tests;
 import com.delvinglanguages.kernel.set.ThemePairs;
 import com.delvinglanguages.kernel.set.Themes;
-import com.delvinglanguages.kernel.set.Translations;
 import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
@@ -213,7 +213,7 @@ public class DataBaseManager {
     public void updateWord(Word word) {
         ContentValues values = new ContentValues();
         values.put(DBWord.name, word.getName());
-        values.put(DBWord.translations, word.getTranslationToSave());
+        values.put(DBWord.inflexions, word.getInflexionsAsString());
         values.put(DBWord.pronunciation, word.getPronunciation());
         values.put(DBWord.priority, word.getPriority());
 
@@ -294,7 +294,7 @@ public class DataBaseManager {
         long stats_id = database.insert(DBStatistics.db, null, values);
 
         // Inserting language
-        values = new ContentValues();
+        values.clear();
         values.put(DBLanguage.code, code);
         values.put(DBLanguage.name, name);
         values.put(DBLanguage.statistics, stats_id);
@@ -307,11 +307,11 @@ public class DataBaseManager {
         return language;
     }
 
-    public Word insertWord(String name, Translations translations, int langID, String pronunciation, int priority) {
+    public Word insertWord(String name, Inflexions inflexions, int langID, String pronunciation, int priority) {
         ContentValues values = new ContentValues();
         values.put(DBWord.name, name);
         values.put(DBWord.lang_id, langID);
-        values.put(DBWord.translations, translations.toSavingString());
+        values.put(DBWord.inflexions, inflexions.toString());
         values.put(DBWord.pronunciation, pronunciation);
         values.put(DBWord.priority, priority);
 
@@ -319,7 +319,7 @@ public class DataBaseManager {
         int word_id = (int) database.insert(DBWord.db, null, values);
         database.close();
 
-        return new Word(word_id, name, translations, pronunciation, Word.INITIAL_PRIORITY);
+        return new Word(word_id, name, inflexions, pronunciation, Word.INITIAL_PRIORITY);
     }
 
     public void insertRemovedWord(int langID, int word_id) {
@@ -463,7 +463,7 @@ public class DataBaseManager {
     }
 
     private DrawerWord cursorToDrawerWord(Cursor c) {
-        return new DrawerWord(c.getInt(0), c.getString(1));
+        return new DrawerWord(c.getInt(0), c.getString(2));
     }
 
     private Test cursorToTest(Cursor c) {

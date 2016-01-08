@@ -13,11 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Translation;
+import com.delvinglanguages.kernel.Inflexion;
+import com.delvinglanguages.kernel.util.AppFormat;
 import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Settings;
 
-public class AddTranslationDialog extends Builder implements android.view.View.OnClickListener, OnFocusChangeListener {
+public class AddInflexionDialog extends Builder implements android.view.View.OnClickListener, OnFocusChangeListener {
 
     private AlertDialog dialog;
 
@@ -27,7 +28,7 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 
     private NetWork net;
 
-    public AddTranslationDialog(Context context, NetWork net) {
+    public AddInflexionDialog(Context context, NetWork net) {
         super(context);
         this.net = net;
 
@@ -35,7 +36,7 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 
         setView(view);
         setPositiveButton(R.string.add, null);
-        setNeutralButton("Add more", null);
+        setNeutralButton(R.string.addmore, null);
         setNegativeButton(R.string.cancel, new OnClickListener() {
 
             @Override
@@ -121,7 +122,7 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
             net.datagram(NetWork.ERROR, "", R.string.notype);
             return false;
         }
-        net.datagram(NetWork.OK, "", new Translation(translation, type));
+        net.datagram(NetWork.OK, "", new Inflexion(new String[]{}, AppFormat.formatArray(translation), type));
 
         clearFields();
         return true;
@@ -149,9 +150,9 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
         return dialog;
     }
 
-    public void show(Translation translation) {
-        input.setText(translation.name);
-        setType(translation.type);
+    public void show(Inflexion inflexion) {
+        input.setText(AppFormat.arrayToString(inflexion.getTranslations()));
+        setType(inflexion.getType());
         this.show();
     }
 
@@ -173,7 +174,7 @@ public class AddTranslationDialog extends Builder implements android.view.View.O
 
     private static void debug(String text) {
         if (Settings.DEBUG)
-            android.util.Log.d("##AddTranslationDlg##", text);
+            android.util.Log.d("##AddInflexionDialog##", text);
     }
 
 }
