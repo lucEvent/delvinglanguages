@@ -23,24 +23,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/delv"
+            android:layout_toLeftOf="@+id/option_language_main"
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/option_practise"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
-                android:onClick="jumptoPractise"
+                android:onClick="onOptionsPadAction"
                 android:text="@string/practise" />
 
             <Button
+                android:id="@+id/option_drawer"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
-                android:onClick="jumptoWarehouse"
+                android:onClick="onOptionsPadAction"
                 android:text="@string/Warehouse" />
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/delv"
+            android:id="@+id/option_language_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/optionsleft"
@@ -48,26 +50,28 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="2dip"
             android:background="#22222222"
-            android:onClick="jumptoLanguageMain"
+            android:onClick="onOptionsPadAction"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/delv"
+            android:layout_toRightOf="@+id/option_language_main"
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/option_dictionary"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
-                android:onClick="jumptoDictionary"
+                android:onClick="onOptionsPadAction"
                 android:text="@string/Dictionary" />
 
             <Button
+                android:id="@+id/option_other"
                 style="@style/button_list_selector"
                 android:layout_width="match_parent"
-                android:onClick="jumptoOther"
+                android:onClick="onOptionsPadAction"
                 android:text="@string/other" />
         </LinearLayout>
     </RelativeLayout>

@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,10 +39,10 @@ import com.delvinglanguages.face.settings.LanguageSettingsActivity;
 import com.delvinglanguages.face.settings.SettingsActivity;
 import com.delvinglanguages.kernel.KernelControl;
 import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.listers.DrawerMainLister;
+import com.delvinglanguages.listers.LanguageLister;
 import com.delvinglanguages.settings.Settings;
 
-public class Main extends FragmentActivity {
+public class Main extends FragmentActivity implements AdapterView.OnItemClickListener {
 
     private enum Option {
         LANGUAGE, PRACTISE, DICTIONARY, VERBS, PHRASAL_VERBS, WAREHOUSE, BIN, SEARCH, THEMES, PRONUNCIATION
@@ -54,7 +56,7 @@ public class Main extends FragmentActivity {
     private Option currentFragment;
 
     private static DrawerLayout mDrawerLayout;
-    private static ListView drawerlist;
+    private static ListView drawer;
     private OptionsPadManager optionsPadManager;
 
 
@@ -68,9 +70,10 @@ public class Main extends FragmentActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        drawerlist = (ListView) findViewById(R.id.drawer);
-        drawerlist.setAdapter(new DrawerMainLister(this, KernelControl.getLanguages()));
-        drawerlist.setOnItemClickListener(null);
+        drawer = (ListView) findViewById(R.id.drawer);
+        drawer.addHeaderView(getLayoutInflater().inflate(R.layout.v_main_drawer_header, null), null, false);
+        drawer.setAdapter(new LanguageLister(this, KernelControl.getLanguages()));
+        drawer.setOnItemClickListener(this);
 
         optionsPadManager = new OptionsPadManager();
 
@@ -109,8 +112,7 @@ public class Main extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         Settings.setBackgroundTo(findViewById(android.R.id.content));
-        actualPHMode = currentLanguage.getSettings(Language.MASK_PH);
-        ((DrawerMainLister) drawerlist.getAdapter()).clear(KernelControl.getLanguages());
+        actualPHMode = currentLanguage != null && currentLanguage.getSettings(Language.MASK_PH);
     }
 
     @Override
@@ -120,6 +122,7 @@ public class Main extends FragmentActivity {
             if (resultCode == RESULT_OK) {
                 currentLanguage = KernelControl.setCurrentLanguage(0);
                 setFragment(Option.LANGUAGE);
+                refreshLanguageList();
             }
             //// TODO: 08/01/2016  si no da OK
         }
@@ -127,6 +130,7 @@ public class Main extends FragmentActivity {
             if (resultCode == RESULT_OK) {
                 currentLanguage = KernelControl.setCurrentLanguage(KernelControl.getNumLanguages() - 1);
                 setFragment(Option.LANGUAGE);
+                refreshLanguageList();
             }
         }
         if (requestCode == AppCode.STATE_CHANGED) {
@@ -136,18 +140,24 @@ public class Main extends FragmentActivity {
                     currentLanguage = KernelControl.setCurrentLanguage(0);
                     setFragment(Option.LANGUAGE);
                 } else {
-                    //// TODO: 08/01/2016 Mostrar pantalla de primer inicio 
+                    //// TODO: 08/01/2016 Mostrar pantalla de primer inicio
                 }
             } else if (resultCode == AppCode.LANGUAGE_RECOVERED) {
                 KernelControl.refreshData();
             }
+            refreshLanguageList();
         }
+    }
+
+    private void refreshLanguageList() {
+        ((LanguageLister) ((HeaderViewListAdapter) drawer.getAdapter())
+                .getWrappedAdapter()).clear(KernelControl.getLanguages());
     }
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(drawerlist)) {
-            mDrawerLayout.closeDrawer(drawerlist);
+        if (mDrawerLayout.isDrawerOpen(drawer)) {
+            mDrawerLayout.closeDrawer(drawer);
         } else if (currentFragment != Option.LANGUAGE) {
             setFragment(Option.LANGUAGE);
         } else {
@@ -229,174 +239,115 @@ public class Main extends FragmentActivity {
     }
 
     /**
-     * Options from Drawer
+     * App Drawer Navigation options
      */
-    public void onCreateLanguageAction(View view) {
-        mDrawerLayout.closeDrawer(drawerlist);
-        startActivityForResult(new Intent(this, AddLanguageActivity.class), AppCode.LANGUAGE_CREATED);
+    public void onNavigationAction(View view) {
+        switch (view.getId()) {
+            case R.id.nav_create_language:
+                startActivityForResult(new Intent(this, AddLanguageActivity.class), AppCode.LANGUAGE_CREATED);
+                break;
+            case R.id.nav_history:
+                startActivity(new Intent(this, HistorialActivity.class));
+                break;
+            case R.id.nav_configuration:
+                startActivityForResult(new Intent(this, SettingsActivity.class), AppCode.STATE_CHANGED);
+                break;
+            case R.id.nav_about:
+                startActivityForResult(new Intent(this, About.class), 0);
+                break;
+        }
+        mDrawerLayout.closeDrawer(drawer);
     }
 
-    public void onHistoryAction(View view) {
-        mDrawerLayout.closeDrawer(drawerlist);
-        startActivity(new Intent(this, HistorialActivity.class));
-    }
-
-    public void onConfigurationAction(View view) {
-        mDrawerLayout.closeDrawer(drawerlist);
-        startActivityForResult(new Intent(this, SettingsActivity.class), AppCode.STATE_CHANGED);
-    }
-
-    public void onAboutAction(View view) {
-        mDrawerLayout.closeDrawer(drawerlist);
-        startActivityForResult(new Intent(this, About.class), 0);
-    }
-
-    public void onLanguageSelectedAction(View view) {
-        mDrawerLayout.closeDrawer(drawerlist);
-        currentLanguage = (Language) view.getTag();
-        KernelControl.setCurrentLanguage(currentLanguage);
-        setFragment(Option.LANGUAGE);
-    }
-
-    /**
-     * Options from Pad
-     */
-    public void jumptoPractise(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position < drawer.getHeaderViewsCount()) {
             return;
         }
-        if (!currentLanguage.hasEntries()) {
-            showMessage(R.string.mssNoWords);
-            return;
-        }
-        setFragment(Option.PRACTISE);
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoDictionary(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
-        }
-        if (!currentLanguage.hasEntries()) {
-            showMessage(R.string.mssNoWordsToList);
-            return;
-        }
-        setFragment(Option.DICTIONARY);
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoLanguageMain(View v) {
+        mDrawerLayout.closeDrawer(drawer);
+        currentLanguage = KernelControl.setCurrentLanguage(position - drawer.getHeaderViewsCount());
         setFragment(Option.LANGUAGE);
     }
 
     private Dialog dialog;
 
-    public void jumptoOther(View v) {
-        View view = getLayoutInflater().inflate(R.layout.d_other_langoptions, null);
-        if (!actualPHMode) {
-            view.findViewById(R.id.phrasal_verbs).setVisibility(View.GONE);
-        }
-        dialog = new AlertDialog.Builder(this).setView(view).show();
-    }
+    /**
+     * Options from Pad
+     */
+    public void onOptionsPadAction(View view) {
 
-    public void jumptoWarehouse(View v) {
         if (!currentLanguage.isLoaded()) {
             showMessage(R.string.languageloading);
             return;
         }
-        setFragment(Option.WAREHOUSE);
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoVerbs(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
+        switch (view.getId()) {
+            case R.id.option_practise:
+                if (!currentLanguage.hasEntries()) {
+                    showMessage(R.string.mssNoWords);
+                    return;
+                }
+                setFragment(Option.PRACTISE);
+                break;
+            case R.id.option_drawer:
+                setFragment(Option.WAREHOUSE);
+                break;
+            case R.id.option_language_main:
+                setFragment(Option.LANGUAGE);
+                return;
+            case R.id.option_dictionary:
+                if (!currentLanguage.hasEntries()) {
+                    showMessage(R.string.mssNoWordsToList);
+                    return;
+                }
+                setFragment(Option.DICTIONARY);
+                break;
+            case R.id.option_other:
+                View d_view = getLayoutInflater().inflate(R.layout.d_other_langoptions, null);
+                if (!actualPHMode) {
+                    view.findViewById(R.id.option_phrasal_verbs).setVisibility(View.GONE);
+                }
+                dialog = new AlertDialog.Builder(this).setView(d_view).show();
+                return;
+            case R.id.option_themes:
+                setFragment(Option.THEMES);
+                dialog.dismiss();
+                break;
+            case R.id.option_verbs:
+                setFragment(Option.VERBS);
+                dialog.dismiss();
+                break;
+            case R.id.option_phrasal_verbs:
+                setFragment(Option.PHRASAL_VERBS);
+                dialog.dismiss();
+                break;
+            case R.id.option_search:
+                setFragment(Option.SEARCH);
+                dialog.dismiss();
+                break;
+            case R.id.option_pronunciation:
+                setFragment(Option.PRONUNCIATION);
+                dialog.dismiss();
+                break;
+            case R.id.option_bin:
+                if (currentLanguage.removed_words.size() <= 0) {
+                    showMessage(R.string.mssNoTrash);
+                    dialog.dismiss();
+                    return;
+                }
+                setFragment(Option.BIN);
+                dialog.dismiss();
+                break;
+            case R.id.option_debug:
+                dialog.dismiss();
+                startActivity(new Intent(this, Debug.class));
+                break;
         }
-        setFragment(Option.VERBS);
-        dialog.dismiss();
         optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoPhrasalVerbs(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
-        }
-        setFragment(Option.PHRASAL_VERBS);
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoBin(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
-        }
-        if (currentLanguage.removed_words.size() <= 0) {
-            showMessage(R.string.mssNoTrash);
-            dialog.dismiss();
-            return;
-        }
-        setFragment(Option.BIN);
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoSearch(View v) {
-        setFragment(Option.SEARCH);
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoPronunciation(View v) {
-        setFragment(Option.PRONUNCIATION);
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoThemes(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
-        }
-        setFragment(Option.THEMES);
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-    }
-
-    public void jumptoDebug(View v) {
-        if (!currentLanguage.isLoaded()) {
-            showMessage(R.string.languageloading);
-            return;
-        }
-        dialog.dismiss();
-        optionsPadManager.hideOptionsPad();
-        startActivity(new Intent(this, Debug.class));
     }
 
     private void showMessage(int text) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
-
-    /*
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_addidiom:
-                startActivity(new Intent(this, AddLanguageActivity.class));
-                return true;
-            case R.id.menu_appsettings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-        }
-        return false;
-    }
-
-*/
 
     private class OptionsPadManager implements View.OnTouchListener {
 
@@ -480,7 +431,6 @@ public class Main extends FragmentActivity {
             touchY = event.getRawY();
             return true;
         }
-
     }
 
     private static void debug(String text) {

@@ -172,26 +172,27 @@
         <item name="android:paddingRight">20dip</item>
     </style>
 
-    <style name="item_main_drawer">
+    <style name="row_main_drawer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/selector_settings</item>
         <item name="android:paddingBottom">10dip</item>
         <item name="android:paddingRight">10dip</item>
-        <item name="android:paddingLeft">40dip</item>
+        <item name="android:paddingLeft">30dip</item>
         <item name="android:paddingTop">10dip</item>
     </style>
 
-    <style name="item_iv_main_drawer">
+    <style name="imageview_main_drawer">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="item_tv_main_drawer">
+    <style name="textview_main_drawer">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">20dip</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>

@@ -2,49 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <Button
+        android:id="@+id/option_themes"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoThemes"
+        android:onClick="onOptionsPadAction"
         android:text="@string/themes" />
 
     <Button
+        android:id="@+id/option_verbs"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoVerbs"
+        android:onClick="onOptionsPadAction"
         android:text="@string/verb" />
 
     <Button
-        android:id="@+id/phrasal_verbs"
+        android:id="@+id/option_phrasal_verbs"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoPhrasalVerbs"
+        android:onClick="onOptionsPadAction"
         android:text="@string/phrasalverbs" />
 
     <Button
+        android:id="@+id/option_search"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoSearch"
+        android:onClick="onOptionsPadAction"
         android:text="@string/search" />
 
     <Button
+        android:id="@+id/option_pronunciation"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoPronunciation"
+        android:onClick="onOptionsPadAction"
         android:text="@string/pronunciation" />
 
     <Button
+        android:id="@+id/option_bin"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoBin"
+        android:onClick="onOptionsPadAction"
         android:text="@string/bin" />
 
     <Button
+        android:id="@+id/option_debug"
         style="@style/button_list_selector"
         android:layout_width="match_parent"
-        android:onClick="jumptoDebug"
+        android:onClick="onOptionsPadAction"
         android:text="Debug" />
 
 </LinearLayout>

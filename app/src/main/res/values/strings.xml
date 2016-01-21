@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Delving Languages</string>
-    <string name="app_version">v2.0.0</string>
+    <string name="app_version">version 2.1.0</string>
 
     <!-- * *************************** Titles **************************** * -->
     <string name="addingnewword">Adding a new word</string>

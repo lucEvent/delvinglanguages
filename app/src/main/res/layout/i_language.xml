@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/item_main_drawer"
-    android:onClick="onLanguageSelectedAction"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/row_main_drawer"
     android:paddingLeft="60dp">
 
     <ImageView
         android:id="@+id/logo"
-        style="@style/item_iv_main_drawer"
-        android:layout_centerVertical="true"
+        style="@style/imageview_main_drawer"
         android:background="@drawable/ic_language" />
 
     <TextView
         android:id="@+id/name"
-        style="@style/item_tv_main_drawer"
-        android:layout_toRightOf="@+id/logo"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        style="@style/textview_main_drawer" />
 
-</RelativeLayout>
+</LinearLayout>
+
