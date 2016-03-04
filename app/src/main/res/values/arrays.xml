@@ -145,6 +145,8 @@
         <item>@color/adverb</item>
         <item>@color/phrasal</item>
         <item>@color/expression</item>
+        <item>@color/preposition</item>
+        <item>@color/conjuntion</item>
         <item>@color/other</item>
     </integer-array>
 

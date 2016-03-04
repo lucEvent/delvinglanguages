@@ -8,20 +8,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.HeaderViewListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.debug.Debug;
 import com.delvinglanguages.face.AppCode;
 import com.delvinglanguages.face.fragment.BinFragment;
 import com.delvinglanguages.face.fragment.DictionaryFragment;
@@ -165,24 +163,6 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings:
-                startActivityForResult(new Intent(this, LanguageSettingsActivity.class), AppCode.STATE_CHANGED);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
     private void setFragment(Option option) {
         Fragment fragment;
         String title;
@@ -291,9 +271,6 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
             case R.id.option_drawer:
                 setFragment(Option.WAREHOUSE);
                 break;
-            case R.id.option_language_main:
-                setFragment(Option.LANGUAGE);
-                return;
             case R.id.option_dictionary:
                 if (!currentLanguage.hasEntries()) {
                     showMessage(R.string.mssNoWordsToList);
@@ -304,7 +281,7 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
             case R.id.option_other:
                 View d_view = getLayoutInflater().inflate(R.layout.d_other_langoptions, null);
                 if (!actualPHMode) {
-                    view.findViewById(R.id.option_phrasal_verbs).setVisibility(View.GONE);
+                    d_view.findViewById(R.id.option_phrasal_verbs).setVisibility(LinearLayout.GONE);
                 }
                 dialog = new AlertDialog.Builder(this).setView(d_view).show();
                 return;
@@ -337,9 +314,9 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
                 setFragment(Option.BIN);
                 dialog.dismiss();
                 break;
-            case R.id.option_debug:
+            case R.id.option_settings:
+                startActivityForResult(new Intent(this, LanguageSettingsActivity.class), AppCode.STATE_CHANGED);
                 dialog.dismiss();
-                startActivity(new Intent(this, Debug.class));
                 break;
         }
         optionsPadManager.hideOptionsPad();
@@ -361,7 +338,7 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
         public OptionsPadManager() {
 
             layout = (RelativeLayout) findViewById(R.id.layout);
-            touchpad = (TextView) findViewById(R.id.touchpad);
+            touchpad = (TextView) findViewById(R.id.option_language_main);
             touchpad.setOnTouchListener(this);
             options = findViewById(R.id.options);
 
@@ -405,7 +382,7 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
         @Override
         public boolean onTouch(View view, MotionEvent event) {
 
-            if (view.getId() != R.id.touchpad)
+            if (view.getId() != R.id.option_language_main)
                 return false;
 
             switch (event.getAction()) {

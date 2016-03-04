@@ -85,7 +85,8 @@ public class AddInflexionDialog extends Builder implements android.view.View.OnC
         input.setOnFocusChangeListener(this);
         input.setHint(context.getString(R.string.entertranslationin) + " " + Settings.NativeLanguage);
 
-        int[] i_types = new int[]{R.id.sel_noun, R.id.sel_verb, R.id.sel_adj, R.id.sel_adv, R.id.sel_phrasal, R.id.sel_expression, R.id.sel_other};
+        int[] i_types = new int[]{R.id.sel_noun, R.id.sel_verb, R.id.sel_adj, R.id.sel_adv, R.id.sel_phrasal,
+                R.id.sel_expression, R.id.sel_preposition, R.id.sel_conjunction, R.id.sel_other};
         types = new Button[i_types.length];
 
         for (int i = 0; i < types.length; i++) {

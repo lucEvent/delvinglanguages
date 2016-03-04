@@ -9,13 +9,17 @@ public class Word implements Comparable<Word> {
 
     public static final int INITIAL_PRIORITY = 100;
 
+    public static final int NUMBER_OF_TYPES = 9;
+
     public static final int NOUN = 0;
     public static final int VERB = 1;
     public static final int ADJECTIVE = 2;
     public static final int ADVERB = 3;
     public static final int PHRASAL = 4;
     public static final int EXPRESSION = 5;
-    public static final int OTHER = 6;
+    public static final int PREPOSITION = 8; //in the future 6
+    public static final int CONJUNCTION = 7;
+    public static final int OTHER = 6;//in the future = 8
 
     public final int id;
 

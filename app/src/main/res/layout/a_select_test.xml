@@ -61,26 +61,26 @@
                 <Button
                     android:id="@+id/noun"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_noun_backgrounds"
+                    android:background="@drawable/button_noun"
                     android:paddingLeft="10dip"
                     android:text="@string/nouns" />
 
                 <Button
                     android:id="@+id/verb"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_verb_backgrounds"
+                    android:background="@drawable/button_verb"
                     android:text="@string/verbs" />
 
                 <Button
                     android:id="@+id/adjective"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_adjective_backgrounds"
+                    android:background="@drawable/button_adjective"
                     android:text="@string/adjectives" />
 
                 <Button
                     android:id="@+id/adverb"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_adverb_backgrounds"
+                    android:background="@drawable/button_adverb"
                     android:text="@string/adverbs" />
             </LinearLayout>
 
@@ -92,7 +92,7 @@
                 <Button
                     android:id="@+id/phrasal"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_phrasal_backgrounds"
+                    android:background="@drawable/button_phrasal"
                     android:text="@string/phrasalverbs" />
             </LinearLayout>
 
@@ -104,13 +104,13 @@
                 <Button
                     android:id="@+id/expression"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_expression_backgrounds"
+                    android:background="@drawable/button_expression"
                     android:text="@string/expressions" />
 
                 <Button
                     android:id="@+id/other"
                     style="@style/button_type_word"
-                    android:background="@drawable/type_other_backgrounds"
+                    android:background="@drawable/button_other"
                     android:text="@string/others" />
             </LinearLayout>
 

@@ -11,51 +11,65 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/lab_nn"
+            android:id="@+id/sel_nn"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_noun_backgrounds"
+            android:background="@drawable/button_noun"
             android:onClick="changeState"
             android:text="@string/nn" />
 
         <Button
-            android:id="@+id/lab_vb"
+            android:id="@+id/sel_vb"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_verb_backgrounds"
+            android:background="@drawable/button_verb"
             android:onClick="changeState"
             android:text="@string/vb" />
 
         <Button
-            android:id="@+id/lab_adj"
+            android:id="@+id/sel_adj"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_adjective_backgrounds"
+            android:background="@drawable/button_adjective"
             android:onClick="changeState"
             android:text="@string/adj" />
 
         <Button
-            android:id="@+id/lab_adv"
+            android:id="@+id/sel_adv"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_adverb_backgrounds"
+            android:background="@drawable/button_adverb"
             android:onClick="changeState"
             android:text="@string/adv" />
 
         <Button
-            android:id="@+id/lab_phv"
+            android:id="@+id/sel_phv"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_phrasal_backgrounds"
+            android:background="@drawable/button_phrasal"
             android:onClick="changeState"
-            android:text="@string/ph.v" />
+            android:text="@string/phv" />
 
         <Button
-            android:id="@+id/lab_exp"
+            android:id="@+id/sel_exp"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_expression_backgrounds"
+            android:background="@drawable/button_expression"
             android:onClick="changeState"
             android:text="@string/exp" />
 
         <Button
-            android:id="@+id/lab_oth"
+            android:id="@+id/sel_pre"
             style="@style/label_types_idiom"
-            android:background="@drawable/type_other_backgrounds"
+            android:background="@drawable/button_preposition"
+            android:onClick="changeState"
+            android:text="@string/prp" />
+
+        <Button
+            android:id="@+id/sel_con"
+            style="@style/label_types_idiom"
+            android:background="@drawable/button_conjunction"
+            android:onClick="changeState"
+            android:text="@string/cnj" />
+
+        <Button
+            android:id="@+id/sel_oth"
+            style="@style/label_types_idiom"
+            android:background="@drawable/button_other"
             android:onClick="changeState"
             android:text="@string/oth" />
     </LinearLayout>
@@ -64,6 +78,7 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@null"
         android:paddingTop="5dip" />
 
 </LinearLayout>

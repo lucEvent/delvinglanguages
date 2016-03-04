@@ -1,7 +1,5 @@
 package com.delvinglanguages.face.fragment;
 
-import java.util.ArrayList;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +25,8 @@ import com.delvinglanguages.net.external.WordReference;
 import com.delvinglanguages.net.external.WordReference.WRItem;
 import com.delvinglanguages.net.internal.NetWork;
 import com.delvinglanguages.settings.Settings;
+
+import java.util.ArrayList;
 
 public class SearchFragment extends Fragment implements OnClickListener, NetWork, TextWatcher {
 
@@ -117,7 +117,7 @@ public class SearchFragment extends Fragment implements OnClickListener, NetWork
             R.drawable.button_adverb_pressed, R.drawable.button_phrasals_pressed, R.drawable.button_expression_pressed,
             R.drawable.button_other_pressed};
 
-    private int[] ttypes = {R.string.nn, R.string.vb, R.string.adj, R.string.adv, R.string.ph_v, R.string.exp, R.string.oth};
+    private int[] ttypes = {R.string.nn, R.string.vb, R.string.adj, R.string.adv, R.string.phv, R.string.exp, R.string.oth};
 
     private View getRow(int type, String content) {
         View view = inflater.inflate(R.layout.i_search_row, null);

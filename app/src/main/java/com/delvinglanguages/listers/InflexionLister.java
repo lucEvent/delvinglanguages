@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
-import com.delvinglanguages.kernel.Word;
 import com.delvinglanguages.kernel.set.Inflexions;
 import com.delvinglanguages.settings.Settings;
 
@@ -22,9 +21,14 @@ public class InflexionLister extends ArrayAdapter<Inflexion> {
     private static final int[] backgrounds = {R.drawable.button_noun_pressed,
             R.drawable.button_verb_pressed, R.drawable.button_adjective_pressed,
             R.drawable.button_adverb_pressed, R.drawable.button_phrasals_pressed,
-            R.drawable.button_expression_pressed, R.drawable.button_other_pressed};
+            R.drawable.button_expression_pressed, R.drawable.button_preposition_pressed,
+            R.drawable.button_conjunction_pressed, R.drawable.button_other_pressed};
 
-    private static final String[] s_types = {"NOUN", "VERB", "ADJECTIVE", "ADVERB", "PHRASAL", "EXPRESSION", "OTHER"};
+    private static final int[] s_types = {
+            R.string.noun_cap, R.string.verb_cap, R.string.adjective_cap, R.string.adverb_cap,
+            R.string.phrasal_cap, R.string.expression_cap, R.string.preposition_cap,
+            R.string.conjunction_cap, R.string.other_cap
+    };
 
     private LayoutInflater inflater;
 
@@ -69,45 +73,18 @@ public class InflexionLister extends ArrayAdapter<Inflexion> {
         LinearLayout tit_trans = (LinearLayout) view.findViewById(R.id.title_translations);
         LinearLayout tit_forms = (LinearLayout) view.findViewById(R.id.layout_inflexions);
         if (inflexion.hasInflexions()) {
-//todo make it work for any lang, not just swedish
             tit_trans.setVisibility(LinearLayout.VISIBLE);
             tit_forms.setVisibility(LinearLayout.VISIBLE);
 
-            String[] labels;
-            int type = inflexion.getType();
-            if (type == (1 << Word.NOUN)) {
-                labels = new String[]{"Sing. indef.: ", "Sing. Def.: ", "Pl. indef.: ", "Pl. def.: ", ""};
-            } else if (type == (1 << Word.VERB)) {
-                labels = new String[]{"Imperativ: ", "Infinitiv: ", "Presens: ", "Preteritum: ", "Supinum: "};
-            } else if (type == (1 << Word.ADJECTIVE)) {
-                labels = new String[]{"En-Sing.: ", "Ett-Sing.: ", "Plural: ", "Comparative: ", "Superlative: "};
-            } else {
-                labels = new String[]{"", "", "", "", ""};
+            int[] labids = new int[]{R.id.form1, R.id.form2, R.id.form3, R.id.form4, R.id.form5, R.id.form6};
+            String[] forms = inflexion.getInflexions();
+            for (int i = 0; i < forms.length; i++) {
+                ((TextView) view.findViewById(labids[i])).setText(forms[i]);
+                ((TextView) view.findViewById(labids[i])).setVisibility(TextView.VISIBLE);
             }
-
-            ((TextView) view.findViewById(R.id.lab1)).setText(labels[0]);
-            ((TextView) view.findViewById(R.id.lab2)).setText(labels[1]);
-            ((TextView) view.findViewById(R.id.lab3)).setText(labels[2]);
-            ((TextView) view.findViewById(R.id.lab4)).setText(labels[3]);
-            TextView tmp_lab = (TextView) view.findViewById(R.id.lab5);
-            tmp_lab.setText(labels[4]);
-            //   ((TextView) view.findViewById(R.id.lab6)).setText(labels[5]);
-
-            String[] inflexions = inflexion.getInflexions();
-            ((TextView) view.findViewById(R.id.form1)).setText(inflexions[0]);
-            ((TextView) view.findViewById(R.id.form2)).setText(inflexions[1]);
-            ((TextView) view.findViewById(R.id.form3)).setText(inflexions[2]);
-            ((TextView) view.findViewById(R.id.form4)).setText(inflexions[3]);
-            TextView tmp = (TextView) view.findViewById(R.id.form5);
-            if (inflexions.length > 4) {
-                tmp.setText(inflexions[4]);
-                tmp.setVisibility(TextView.VISIBLE);
-                tmp_lab.setVisibility(TextView.VISIBLE);
-            } else {
-                tmp.setVisibility(TextView.GONE);
-                tmp_lab.setVisibility(TextView.GONE);
+            for (int i = forms.length; i < labids.length; i++) {
+                ((TextView) view.findViewById(labids[i])).setVisibility(TextView.GONE);
             }
-            //      ((TextView) view.findViewById(R.id.form6)).setText(inflexions.length > 5 ? inflexions[5] : "");
 
         } else {
             tit_trans.setVisibility(LinearLayout.GONE);

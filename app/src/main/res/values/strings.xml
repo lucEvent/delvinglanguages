@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">Delving Languages</string>
-    <string name="app_version">version 2.1.0</string>
+    <string name="app_version">version 2.2.0</string>
 
     <!-- * *************************** Titles **************************** * -->
     <string name="addingnewword">Adding a new word</string>
-    <string name="bin">Bin</string>
+    <string name="bin">Recycle Bin</string>
     <string name="emptyingbin">Emptying bin</string>
     <string name="modifyingword">Modifying word</string>
     <string name="renaminglanguage">Renaming language</string>
@@ -28,7 +28,7 @@
     <string name="title_removingtest">Removing test</string>
     <string name="title_searching">Searching words</string>
     <string name="title_select_background">Select background</string>
-    <string name="title_language_settings">Language settings</string>
+    <string name="language_settings">Language settings</string>
     <string name="title_test">Test</string>
     <string name="warehouse">warehouse</string>
     <string name="wordsby">Words by</string>
@@ -36,34 +36,56 @@
     <string name="integratinglang">Integrating</string>
 
     <!-- * ************************** Etiquetas *************************** * -->
-    <string name="adj">ADJ</string>
-    <string name="adjective">Adjective</string>
-    <string name="adjectives">Adjectives</string>
-    <string name="adv">ADV</string>
-    <string name="adverb">Adverb</string>
-    <string name="adverbs">Adverbs</string>
+
     <string name="all">All</string>
     <string name="attemps">Attemps:</string>
     <string name="choosecolor">Choose a color</string>
     <string name="chooseimage">Choose an image</string>
     <string name="complete">Complete</string>
-    <string name="exp">EXP</string>
-    <string name="expression">Expression</string>
-    <string name="expressions">Expressions</string>
+
     <string name="failures">Failures:</string>
     <string name="match">Match</string>
     <string name="messageseparatecommas">**Separate different translations with commas.</string>
     <string name="savechanges">Save changes</string>
+
+
+    <!-- ********************* Types **************************** -->
     <string name="nn">NN</string>
     <string name="noun">Noun</string>
+    <string name="noun_cap">NOUN</string>
     <string name="nouns">Nouns</string>
+    <string name="vb">VB</string>
+    <string name="verb">Verb</string>
+    <string name="verb_cap">VERB</string>
+    <string name="verbs">Verbs</string>
+    <string name="adj">ADJ</string>
+    <string name="adjective">Adjective</string>
+    <string name="adjective_cap">ADJECTIVE</string>
+    <string name="adjectives">Adjectives</string>
+    <string name="adv">ADV</string>
+    <string name="adverb">Adverb</string>
+    <string name="adverb_cap">ADVERB</string>
+    <string name="adverbs">Adverbs</string>
+    <string name="phv">PHV</string>
+    <string name="phrasalverb">Phrasal verb</string>
+    <string name="phrasal_cap">PHRASAL VERB</string>
+    <string name="phrasalverbs">Phrasal verbs</string>
+    <string name="exp">EXP</string>
+    <string name="expression">Expression</string>
+    <string name="expression_cap">EXPRESSION</string>
+    <string name="expressions">Expressions</string>
+    <string name="prp">PRP</string>
+    <string name="preposition">Preposition</string>
+    <string name="preposition_cap">PREPOSITION</string>
+    <string name="cnj">CNJ</string>
+    <string name="conjunction">Conjunction</string>
+    <string name="conjunction_cap">CONJUNCTION</string>
     <string name="oth">OTH</string>
     <string name="other">Other</string>
+    <string name="other_cap">OTHER</string>
     <string name="others">Others</string>
-    <string name="ph.v">PH.V</string>
-    <string name="phrasalverb">Phrasal verb</string>
-    <string name="phrasalverbs">Phrasal verbs</string>
-    <string name="phv">PHV</string>
+    <!-- ***************************************************** -->
+
     <string name="questionsavetest">Enter a name for test:</string>
     <string name="searching">. Searching</string>
     <string name="selectingbetween">Selecting between:</string>
@@ -73,9 +95,7 @@
     <string name="success3">3rd Success:</string>
     <string name="testssaved">Tests saved:</string>
     <string name="type">Select type:</string>
-    <string name="vb">VB</string>
-    <string name="verb">Verb</string>
-    <string name="verbs">Verbs</string>
+
     <string name="wordstotest"># Words to test:</string>
     <string name="write">Write</string>
     <string name="newmatch">New match</string>
@@ -276,11 +296,12 @@
     <string name="inflexions_cap">INFLEXIONS</string>
 
     <string name="about_content"><![CDATA[
-        <h2>Delving Languages version 2.1.0</h2>
+        <h2>Delving Languages version 2.2.0</h2>
         <h2>Developed by Rafael J. Lucena</h2>
         <h3>Contact: rafaa89(at)gmail.com</h3>
         <p>
             <p><b>News Features and Improvements:</b></p>
+            <p>Version 2.2.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially). Added icons for language options. Updated language option\'s pad look.</p>
             <p>Version 2.1.0 2016-01-08:<br>App look updated. New kernel feature: inflexions, that replace translations. Many changes and improvements.</p>
         </p>
         <br>
@@ -299,5 +320,6 @@
             <p>Version 1.2.0 2014-05-13:<br>Updated: Dictionary</p>
         </p>]]>
     </string>
+
 
 </resources>

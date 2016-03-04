@@ -33,7 +33,7 @@
         android:id="@+id/phrasal"
         style="@style/label_types_idiom"
         android:background="@color/phrasal"
-        android:text="@string/ph.v" />
+        android:text="@string/phv" />
 
     <TextView
         android:id="@+id/expression"

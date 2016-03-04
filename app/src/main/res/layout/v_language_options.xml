@@ -6,73 +6,52 @@
     android:layout_gravity="bottom">
 
     <TextView
-        android:id="@+id/touchpad"
+        android:id="@+id/option_language_main"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:drawableBottom="@android:drawable/arrow_down_float"
-        android:focusableInTouchMode="true" />
+        android:onClick="onOptionsPadAction" />
 
-    <RelativeLayout
+
+    <LinearLayout
         android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/touchpad">
+        android:layout_below="@+id/option_language_main"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/optionsleft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/option_language_main"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/option_practise"
-                style="@style/button_list_selector"
-                android:layout_width="match_parent"
-                android:onClick="onOptionsPadAction"
-                android:text="@string/practise" />
-
-            <Button
-                android:id="@+id/option_drawer"
-                style="@style/button_list_selector"
-                android:layout_width="match_parent"
-                android:onClick="onOptionsPadAction"
-                android:text="@string/Warehouse" />
-        </LinearLayout>
 
         <ImageButton
-            android:id="@+id/option_language_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/optionsleft"
-            android:layout_alignTop="@+id/optionsleft"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="2dip"
-            android:background="#22222222"
+            android:id="@+id/option_practise"
+            style="@style/button_list_selector"
+            android:layout_width="match_parent"
             android:onClick="onOptionsPadAction"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_practice" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/option_language_main"
-            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/option_dictionary"
-                style="@style/button_list_selector"
-                android:layout_width="match_parent"
-                android:onClick="onOptionsPadAction"
-                android:text="@string/Dictionary" />
+        <ImageButton
+            android:id="@+id/option_dictionary"
+            style="@style/button_list_selector"
+            android:layout_width="match_parent"
+            android:onClick="onOptionsPadAction"
+            android:src="@drawable/ic_dictionary" />
 
-            <Button
-                android:id="@+id/option_other"
-                style="@style/button_list_selector"
-                android:layout_width="match_parent"
-                android:onClick="onOptionsPadAction"
-                android:text="@string/other" />
-        </LinearLayout>
-    </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/option_drawer"
+            style="@style/button_list_selector"
+            android:layout_width="match_parent"
+            android:onClick="onOptionsPadAction"
+            android:src="@drawable/ic_drawer2" />
+
+        <ImageButton
+            android:id="@+id/option_other"
+            style="@style/button_list_selector"
+            android:layout_width="match_parent"
+            android:onClick="onOptionsPadAction"
+            android:src="@drawable/ic_more" />
+
+    </LinearLayout>
+
 </RelativeLayout>

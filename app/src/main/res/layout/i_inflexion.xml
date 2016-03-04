@@ -97,108 +97,36 @@
                 style="@style/divisor"
                 android:background="#AA000000" />
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dip">
+            <TextView
+                android:id="@+id/form1"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
+            <TextView
+                android:id="@+id/form2"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                    <TextView
-                        android:id="@+id/lab1"
-                        style="@style/ww_tm"
-                        android:text="Imperative:" />
+            <TextView
+                android:id="@+id/form3"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                    <TextView
-                        android:id="@+id/form1"
-                        style="@style/ww_tl"
-                        android:text="Lämna" />
-                </TableRow>
+            <TextView
+                android:id="@+id/form4"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
+            <TextView
+                android:id="@+id/form5"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                    <TextView
-                        android:id="@+id/lab2"
-                        style="@style/ww_tm"
-                        android:text="Infinitive:" />
+            <TextView
+                android:id="@+id/form6"
+                style="@style/inflexion"
+                android:text="Lämna" />
 
-                    <TextView
-                        android:id="@+id/form2"
-                        style="@style/ww_tl"
-                        android:text="Lämna" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
-
-                    <TextView
-                        android:id="@+id/lab3"
-                        style="@style/ww_tm"
-                        android:text="Preteritum:" />
-
-                    <TextView
-                        android:id="@+id/form3"
-                        style="@style/ww_tl"
-                        android:text="Lämnade" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
-
-                    <TextView
-                        android:id="@+id/lab4"
-                        style="@style/ww_tm"
-                        android:text="Supinum:" />
-
-                    <TextView
-                        android:id="@+id/form4"
-                        style="@style/ww_tl"
-                        android:text="Lämnat" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip">
-
-                    <TextView
-                        android:id="@+id/lab5"
-                        style="@style/ww_tm"
-                        android:text="Imperative:" />
-
-                    <TextView
-                        android:id="@+id/form5"
-                        style="@style/ww_tl"
-                        android:text="Lämna" />
-                </TableRow>
-                <!--
-                                <TableRow
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="5dip">
-
-                                    <TextView
-                                        android:id="@+id/lab6"
-                                        style="@style/ww_tm"
-                                        android:text="Imperative:" />
-
-                                    <TextView
-                                        android:id="@+id/form6"
-                                        style="@style/ww_tl"
-                                        android:text="Lämna" />
-                                </TableRow>
-                    -->
-            </TableLayout>
         </LinearLayout>
     </LinearLayout>
 

@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_gravity="center_vertical"
         android:layout_margin="2dip"
-        android:background="@drawable/type_verb_backgrounds"
+        android:background="@drawable/button_verb"
         android:gravity="center"
         android:padding="10dip"
         android:text="FF"

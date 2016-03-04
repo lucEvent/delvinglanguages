@@ -35,14 +35,16 @@ public class ReferenceLister extends ArrayAdapter<DReference> {
         TextView word = (TextView) view.findViewById(R.id.word);
         TextView tran = (TextView) view.findViewById(R.id.translation);
 
-        TextView labels[] = new TextView[7];
-        labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
-        labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);
-        labels[Word.ADJECTIVE] = (TextView) view.findViewById(R.id.adjective);
-        labels[Word.ADVERB] = (TextView) view.findViewById(R.id.adverb);
-        labels[Word.PHRASAL] = (TextView) view.findViewById(R.id.phrasal);
-        labels[Word.EXPRESSION] = (TextView) view.findViewById(R.id.expression);
-        labels[Word.OTHER] = (TextView) view.findViewById(R.id.other);
+        View labels[] = new View[Word.NUMBER_OF_TYPES];
+        labels[Word.NOUN] =  view.findViewById(R.id.noun);
+        labels[Word.VERB] =  view.findViewById(R.id.verb);
+        labels[Word.ADJECTIVE] =  view.findViewById(R.id.adjective);
+        labels[Word.ADVERB] = view.findViewById(R.id.adverb);
+        labels[Word.PHRASAL] = view.findViewById(R.id.phrasal);
+        labels[Word.EXPRESSION] =  view.findViewById(R.id.expression);
+        labels[Word.PREPOSITION] =  view.findViewById(R.id.preposition);
+        labels[Word.CONJUNCTION] =  view.findViewById(R.id.conjuntion);
+        labels[Word.OTHER] =  view.findViewById(R.id.other);
 
         Settings.setBackgroundColorsforType(labels, ref.getType());
         if (!phMode) {

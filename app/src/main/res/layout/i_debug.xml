@@ -26,43 +26,43 @@
         <Button
             android:id="@+id/noun"
             style="@style/button_type_word"
-            android:background="@drawable/type_noun_backgrounds"
+            android:background="@drawable/button_noun"
             android:text="@string/nn" />
 
         <Button
             android:id="@+id/verb"
             style="@style/button_type_word"
-            android:background="@drawable/type_verb_backgrounds"
+            android:background="@drawable/button_verb"
             android:text="@string/vb" />
 
         <Button
             android:id="@+id/adj"
             style="@style/button_type_word"
-            android:background="@drawable/type_adjective_backgrounds"
+            android:background="@drawable/button_adjective"
             android:text="@string/adj" />
 
         <Button
             android:id="@+id/adverb"
             style="@style/button_type_word"
-            android:background="@drawable/type_adverb_backgrounds"
+            android:background="@drawable/button_adverb"
             android:text="@string/adv" />
 
         <Button
             android:id="@+id/phrasal"
             style="@style/button_type_word"
-            android:background="@drawable/type_phrasal_backgrounds"
+            android:background="@drawable/button_phrasal"
             android:text="@string/phv" />
 
         <Button
             android:id="@+id/expression"
             style="@style/button_type_word"
-            android:background="@drawable/type_expression_backgrounds"
+            android:background="@drawable/button_expression"
             android:text="@string/exp" />
 
         <Button
             android:id="@+id/other"
             style="@style/button_type_word"
-            android:background="@drawable/type_other_backgrounds"
+            android:background="@drawable/button_other"
             android:text="@string/oth" />
     </LinearLayout>
 

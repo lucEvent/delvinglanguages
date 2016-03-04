@@ -22,10 +22,37 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">2dip</item>
+        <item name="android:padding">10dp</item>
         <item name="android:background">@drawable/button</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
+
+    <!-- ********************** d_other_langoptions.xml ***************************** -->
+    <style name="linearlayout_list_options">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="imageview_list_options">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="textview_list_options">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+    <!-- ********************** ************************* ***************************** -->
+
 
     <style name="buttons_complete">
         <item name="android:layout_width">wrap_content</item>
@@ -63,6 +90,12 @@
     <style name="textview_label_types_small" parent="base_textview_types">
         <item name="android:layout_marginLeft">3dip</item>
         <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="label_type_row">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">4dip</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="textview_label_types_top" parent="base_textview_types">
@@ -195,6 +228,14 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">20dip</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="inflexion">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">20dip</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
 </resources>

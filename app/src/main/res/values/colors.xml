@@ -7,7 +7,10 @@
     <color name="adverb">#FFBE86E4</color>
     <color name="phrasal">#FF645947</color>
     <color name="expression">#FF0A4737</color>
+    <color name="preposition">#FF3c2995</color>
+    <color name="conjuntion">#FFa007a4</color>
     <color name="other">#FFA96601</color>
+
     <color name="transparent">#00000000</color>
     <color name="border_button">#B3236990</color>
     <color name="main_drawer">#fccc</color>

@@ -32,7 +32,7 @@
             android:label="@string/title_add_idiom" />
         <activity
             android:name=".face.settings.LanguageSettingsActivity"
-            android:label="@string/title_language_settings" />
+            android:label="@string/language_settings" />
         <activity
             android:name=".face.settings.SelectBackground"
             android:label="@string/title_select_background" />
@@ -79,9 +79,6 @@
         <activity
             android:name=".face.phrasals.AddPhrasalsActivity"
             android:label="@string/title_add_phrasals" />
-        <activity
-            android:name=".debug.Debug"
-            android:label="Debuging" />
         <activity
             android:name=".face.phrasals.ListPhrasalActivity"
             android:label="@string/title_list_phrasal" />

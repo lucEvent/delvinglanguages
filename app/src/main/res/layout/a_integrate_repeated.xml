@@ -1,16 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/air_control" >
+        android:layout_above="@+id/air_control">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/air_name"
@@ -36,17 +35,17 @@
                 android:layout_below="@+id/sep_title"
                 android:layout_marginLeft="40dip"
                 android:layout_marginTop="10dip"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/air_laytrans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <Button
                             android:layout_width="wrap_content"
@@ -67,48 +66,48 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/air_nn"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_noun_backgrounds"
+                        android:background="@drawable/button_noun"
                         android:text="@string/nn" />
 
                     <Button
                         android:id="@+id/air_vb"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_verb_backgrounds"
+                        android:background="@drawable/button_verb"
                         android:text="@string/vb" />
 
                     <Button
                         android:id="@+id/air_adj"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_adjective_backgrounds"
+                        android:background="@drawable/button_adjective"
                         android:text="@string/adj" />
 
                     <Button
                         android:id="@+id/air_adv"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_adverb_backgrounds"
+                        android:background="@drawable/button_adverb"
                         android:text="@string/adv" />
 
                     <Button
                         android:id="@+id/air_phrasal"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_phrasal_backgrounds"
-                        android:text="@string/ph.v" />
+                        android:background="@drawable/button_phrasal"
+                        android:text="@string/phv" />
 
                     <Button
                         android:id="@+id/air_expression"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_expression_backgrounds"
+                        android:background="@drawable/button_expression"
                         android:text="@string/exp" />
 
                     <Button
                         android:id="@+id/air_other"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_other_backgrounds"
+                        android:background="@drawable/button_other"
                         android:text="@string/oth" />
                 </LinearLayout>
             </LinearLayout>
@@ -127,17 +126,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/sep"
                 android:layout_marginLeft="40dip"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/air_laynewtrans"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <Button
                             android:layout_width="wrap_content"
@@ -158,48 +157,48 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/air_new_nn"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_noun_backgrounds"
+                        android:background="@drawable/button_noun"
                         android:text="@string/nn" />
 
                     <Button
                         android:id="@+id/air_new_vb"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_verb_backgrounds"
+                        android:background="@drawable/button_verb"
                         android:text="@string/vb" />
 
                     <Button
                         android:id="@+id/air_new_adj"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_adjective_backgrounds"
+                        android:background="@drawable/button_adjective"
                         android:text="@string/adj" />
 
                     <Button
                         android:id="@+id/air_new_adv"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_adverb_backgrounds"
+                        android:background="@drawable/button_adverb"
                         android:text="@string/adv" />
 
                     <Button
                         android:id="@+id/air_new_phrasal"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_phrasal_backgrounds"
-                        android:text="@string/ph.v" />
+                        android:background="@drawable/button_phrasal"
+                        android:text="@string/phv" />
 
                     <Button
                         android:id="@+id/air_new_expression"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_expression_backgrounds"
+                        android:background="@drawable/button_expression"
                         android:text="@string/exp" />
 
                     <Button
                         android:id="@+id/air_new_other"
                         style="@style/button_type_word_close"
-                        android:background="@drawable/type_other_backgrounds"
+                        android:background="@drawable/button_other"
                         android:text="@string/oth" />
                 </LinearLayout>
             </LinearLayout>
@@ -237,7 +236,7 @@
         android:id="@+id/air_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/air_ignore"
