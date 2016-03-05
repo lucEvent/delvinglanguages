@@ -1,6 +1,8 @@
 package com.delvinglanguages.kernel;
 
-public class Inflexion {
+import java.io.Serializable;
+
+public class Inflexion implements Serializable {
 
     private String[] inflexions;
 
@@ -9,7 +11,6 @@ public class Inflexion {
     private int type;
 
     public Inflexion(String[] inflexions, String[] translations, int type) {
-      //  System.out.println("Creando inflexion, primera translation es:"+translations[0]);
         this.inflexions = inflexions;
         this.translations = translations;
         this.type = type;

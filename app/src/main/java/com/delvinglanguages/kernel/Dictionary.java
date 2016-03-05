@@ -54,7 +54,7 @@ public class Dictionary implements Comparator<DReference> {
             }
         }
 
-        String[] refsD = AppFormat.formatArray(entry.getName());
+        String[] refsD = AppFormat.formatTranslation(entry.getName());
         for (String refDS : refsD) {
             if (refDS.length() == 0) {
                 continue;
@@ -92,7 +92,7 @@ public class Dictionary implements Comparator<DReference> {
             }
         }
 
-        String[] refsD = AppFormat.formatArray(entry.getName());
+        String[] refsD = AppFormat.formatTranslation(entry.getName());
         for (String refDS : refsD) {
             DReference refD = dictionary.ceiling(new DReference(refDS));
 

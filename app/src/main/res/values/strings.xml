@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Delving Languages</string>
-    <string name="app_version">version 2.2.0</string>
+    <string name="app_version">version 2.3.1</string>
 
     <!-- * *************************** Titles **************************** * -->
     <string name="addingnewword">Adding a new word</string>
@@ -296,12 +296,13 @@
     <string name="inflexions_cap">INFLEXIONS</string>
 
     <string name="about_content"><![CDATA[
-        <h2>Delving Languages version 2.2.0</h2>
+        <h2>Delving Languages version 2.3.1</h2>
         <h2>Developed by Rafael J. Lucena</h2>
         <h3>Contact: rafaa89(at)gmail.com</h3>
         <p>
             <p><b>News Features and Improvements:</b></p>
-            <p>Version 2.2.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially). Added icons for language options. Updated language option\'s pad look.</p>
+            <p>Version 2.3.1 2016-03-05:<br>Search function working again. Now it supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.</p>
+            <p>Version 2.3.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially). Added icons for language options. Updated language option\'s pad look.</p>
             <p>Version 2.1.0 2016-01-08:<br>App look updated. New kernel feature: inflexions, that replace translations. Many changes and improvements.</p>
         </p>
         <br>

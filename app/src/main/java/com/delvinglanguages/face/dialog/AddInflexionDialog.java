@@ -123,7 +123,7 @@ public class AddInflexionDialog extends Builder implements android.view.View.OnC
             net.datagram(NetWork.ERROR, "", R.string.notype);
             return false;
         }
-        net.datagram(NetWork.OK, "", new Inflexion(new String[]{}, AppFormat.formatArray(translation), type));
+        net.datagram(NetWork.OK, "", new Inflexion(new String[]{}, AppFormat.formatTranslation(translation), type));
 
         clearFields();
         return true;

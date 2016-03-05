@@ -1,21 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true" >
+    android:animateLayoutChanges="true">
 
     <ScrollView
         android:id="@+id/scrollcontent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/word"
@@ -45,15 +44,14 @@
         android:dividerHeight="1sp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:padding="5dip" >
-    </ListView>
+        android:padding="5dip"></ListView>
 
     <LinearLayout
         android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/letrasespeciales"
-        android:layout_centerInParent="true" >
+        android:layout_centerInParent="true">
 
         <Button
             android:id="@+id/cancel"
@@ -76,10 +74,10 @@
 
     <include
         android:id="@+id/letrasespeciales"
+        layout="@layout/v_special_letters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ap_keyboard"
-        layout="@layout/v_special_letters" />
+        android:layout_above="@+id/ap_keyboard" />
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/ap_keyboard"

@@ -34,42 +34,41 @@ public class AppFormat {
         return res.toString();
     }
 
-    public static String[] formatArray(String string) {
-        // TODO: 06/01/2016 rehacer y optimizar.... con regex???
+    public static String[] formatTranslation(String string) {
         ArrayList<String> list = new ArrayList<String>();
+
         int indi = 0, caps = 0;
         int indf;
         for (indf = 0; indf < string.length(); ++indf) {
             char car = string.charAt(indf);
-            if (!Character.isLetter(car)) {
-                if (car == ',') {
-                    if (caps > 0)
+
+            switch (car) {
+                case ',':
+                    if (caps > 0) {
                         continue;
-                    while (string.charAt(indi) == ' ') {
-                        indi++;
                     }
                     list.add(string.substring(indi, indf));
                     indi = indf + 1;
-                } else if (car == '(' || car == '[' || car == '{') {
+                    break;
+                case '(':
+                case '[':
+                case '{':
                     caps++;
-                } else if (car == ')' || car == ']' || car == '}') {
+                    break;
+                case ')':
+                case ']':
+                case '}':
                     caps--;
-                }
+                    break;
             }
         }
         if (caps == 0) {
-            try {
-                while (string.charAt(indi) == ' ') {
-                    indi++;
-                }
-            } catch (IndexOutOfBoundsException e) {
-                debug("##Error por:" + string + "##");
-            }
             list.add(string.substring(indi, indf));
         }
         String[] res = new String[list.size()];
         for (int i = 0; i < res.length; i++) {
-            res[i] = list.get(i);
+            String temp = list.get(i).trim();
+            res[i] = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
         }
         return res;
     }
