@@ -33,8 +33,6 @@ public class WarehouseFragment extends ListFragment implements OnClickListener {
 
         View view = inflater.inflate(R.layout.a_warehouse, container, false);
 
-        Settings.setBackgroundTo(view);
-
         adapter = new StoreWordLister(getActivity(), LanguageKernelControl.getDrawerWords());
         setListAdapter(adapter);
 

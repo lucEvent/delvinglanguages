@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,7 +58,6 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
     private static ListView drawer;
     private OptionsPadManager optionsPadManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +97,7 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
             currentFragment = Option.LANGUAGE;
             getFragmentManager().beginTransaction().add(R.id.fragment, new LanguageFragment()).commit();
         }
-
+        Settings.setBackgroundTo(mDrawerLayout);
     }
 
     @Override
@@ -109,41 +109,53 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        Settings.setBackgroundTo(findViewById(android.R.id.content));
         actualPHMode = currentLanguage != null && currentLanguage.getSettings(Language.MASK_PH);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppCode.FIRST_LAUNCH) {
-            if (resultCode == RESULT_OK) {
-                currentLanguage = KernelControl.setCurrentLanguage(0);
-                setFragment(Option.LANGUAGE);
-                refreshLanguageList();
-            }
-            //// TODO: 08/01/2016  si no da OK
-        }
-        if (requestCode == AppCode.LANGUAGE_CREATED) {
-            if (resultCode == RESULT_OK) {
-                currentLanguage = KernelControl.setCurrentLanguage(KernelControl.getNumLanguages() - 1);
-                setFragment(Option.LANGUAGE);
-                refreshLanguageList();
-            }
-        }
-        if (requestCode == AppCode.STATE_CHANGED) {
-            if (resultCode == AppCode.LANGUAGE_REMOVED) {
-                int nLangs = KernelControl.getNumLanguages();
-                if (nLangs != 0) {
+        switch (requestCode) {
+            case AppCode.FIRST_LAUNCH:
+                if (resultCode == RESULT_OK) {
                     currentLanguage = KernelControl.setCurrentLanguage(0);
                     setFragment(Option.LANGUAGE);
-                } else {
-                    //// TODO: 08/01/2016 Mostrar pantalla de primer inicio
+                    refreshLanguageList();
                 }
-            } else if (resultCode == AppCode.LANGUAGE_RECOVERED) {
-                KernelControl.refreshData();
-            }
-            refreshLanguageList();
+                //// TODO: 08/01/2016  si no da OK
+                break;
+            case AppCode.LANGUAGE_CREATED:
+                if (resultCode == RESULT_OK) {
+                    currentLanguage = KernelControl.setCurrentLanguage(KernelControl.getNumLanguages() - 1);
+                    setFragment(Option.LANGUAGE);
+                    refreshLanguageList();
+                }
+                break;
+            case AppCode.STATE_CHANGED:
+
+                switch (resultCode) {
+                    case AppCode.LANGUAGE_REMOVED:
+                        int nLangs = KernelControl.getNumLanguages();
+                        if (nLangs != 0) {
+                            currentLanguage = KernelControl.setCurrentLanguage(0);
+                            setFragment(Option.LANGUAGE);
+                        } else {
+                            //// TODO: 08/01/2016 Mostrar pantalla de primer inicio
+                        }
+                        refreshLanguageList();
+                        break;
+                    case AppCode.LANGUAGE_RECOVERED:
+                        KernelControl.refreshData();
+                        refreshLanguageList();
+                        break;
+                    case AppCode.BACKGROUND_CHANGED:
+                        Settings.setBackgroundTo(mDrawerLayout);
+                        optionsPadManager.refresh();
+                        break;
+                }
+                break;
+            default:
+                debug("[Option not implemented] on Main.onActivityResult");
         }
     }
 
@@ -348,6 +360,10 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
             Settings.setBackgroundTo(options);
         }
 
+        public void refresh() {
+            Settings.setBackgroundTo(options);
+        }
+
         public int getBottomMargin() {
             return params.bottomMargin;
         }
@@ -408,11 +424,12 @@ public class Main extends FragmentActivity implements AdapterView.OnItemClickLis
             touchY = event.getRawY();
             return true;
         }
+
     }
 
     private static void debug(String text) {
         if (Settings.DEBUG)
-            android.util.Log.d("##MAIN##", text);
+            Log.d("##MAIN##", text);
     }
 
 }

@@ -8,6 +8,8 @@ public final class AppCode {
     public static final int FIRST_LAUNCH = 3;
     public static final int ACTION_MODIFY = 4;
     public static final int STATE_CHANGED = 5;
+    public static final int BACKGROUND_CHANGED = 6;
+
 
     public static final String CHARACTER = "char";
     public static final String DREFERENCE = "dref";

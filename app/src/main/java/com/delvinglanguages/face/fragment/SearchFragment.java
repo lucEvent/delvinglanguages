@@ -31,19 +31,17 @@ import java.util.TreeSet;
 
 public class SearchFragment extends ListFragment implements OnClickListener, TextWatcher {
 
-    private static EditText input;
-    private static Button search, add;
+    private EditText input;
+    private Button search, add;
 
     private WordReference dictionary;
 
-    private static SearchLister adapter;
+    private SearchLister adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.a_search, container, false);
-
-        Settings.setBackgroundTo(view);
 
         input = (EditText) view.findViewById(R.id.input);
         search = (Button) view.findViewById(R.id.search);
@@ -77,6 +75,8 @@ public class SearchFragment extends ListFragment implements OnClickListener, Tex
             searchedWord = input.getText().toString();
             dictionary.searchTerm(searchedWord);
 
+            adapter.clear();
+
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -109,7 +109,7 @@ public class SearchFragment extends ListFragment implements OnClickListener, Tex
         }
     }
 
-    private static Handler handler = new Handler() {
+    private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {

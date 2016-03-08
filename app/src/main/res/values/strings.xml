@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Delving Languages</string>
-    <string name="app_version">version 2.3.1</string>
+    <!-- * ************************** ******** *************************** * -->
+    <string name="app_name" translatable="false">Delving Languages</string>
+    <string name="app_version" translatable="false">version 2.3.2</string>
+
+    <string name="a" translatable="false">A</string>
+    <string name="b" translatable="false">B</string>
+    <string name="c" translatable="false">C</string>
+    <string name="d" translatable="false">D</string>
+    <string name="e" translatable="false">E</string>
+    <string name="f" translatable="false">F</string>
+    <string name="g" translatable="false">G</string>
+    <string name="h" translatable="false">H</string>
+    <string name="i" translatable="false">I</string>
+    <string name="j" translatable="false">J</string>
+    <string name="k" translatable="false">K</string>
+    <string name="l" translatable="false">L</string>
+    <string name="es_n_cap" translatable="false">Ñ</string>
+    <string name="m" translatable="false">M</string>
+    <string name="n" translatable="false">N</string>
+    <string name="o" translatable="false">O</string>
+    <string name="p" translatable="false">P</string>
+    <string name="q" translatable="false">Q</string>
+    <string name="r" translatable="false">R</string>
+    <string name="s" translatable="false">S</string>
+    <string name="t" translatable="false">T</string>
+    <string name="u" translatable="false">U</string>
+    <string name="v" translatable="false">V</string>
+    <string name="w" translatable="false">W</string>
+    <string name="x" translatable="false">X</string>
+    <string name="y" translatable="false">Y</string>
+    <string name="z" translatable="false">Z</string>
+    <string name="sv_ao_cap" translatable="false">Å</string>
+    <string name="sv_ae_cap" translatable="false">Ä</string>
+    <string name="sv_oe_cap" translatable="false">Ö</string>
+    <string name="sv_ao" translatable="false">å</string>
+    <string name="sv_ae" translatable="false">ä</string>
+    <string name="sv_oe" translatable="false">ö</string>
+    <string name="es_n" translatable="false">ñ</string>
+    <string name="mas" translatable="false">+</string>
+    <string name="menos" translatable="false">-</string>
 
     <!-- * *************************** Titles **************************** * -->
     <string name="addingnewword">Adding a new word</string>
@@ -27,7 +65,7 @@
     <string name="title_removing">Removing</string>
     <string name="title_removingtest">Removing test</string>
     <string name="title_searching">Searching words</string>
-    <string name="title_select_background">Select background</string>
+    <string name="title_select_background">Select background color</string>
     <string name="language_settings">Language settings</string>
     <string name="title_test">Test</string>
     <string name="warehouse">warehouse</string>
@@ -36,18 +74,17 @@
     <string name="integratinglang">Integrating</string>
 
     <!-- * ************************** Etiquetas *************************** * -->
-
     <string name="all">All</string>
     <string name="attemps">Attemps:</string>
-    <string name="choosecolor">Choose a color</string>
-    <string name="chooseimage">Choose an image</string>
+    <string name="selectcolor">Select color</string>
+    <string name="selectgallery">Select from gallery</string>
+    <string name="selectcamera">Take a picture</string>
     <string name="complete">Complete</string>
 
     <string name="failures">Failures:</string>
     <string name="match">Match</string>
     <string name="messageseparatecommas">**Separate different translations with commas.</string>
     <string name="savechanges">Save changes</string>
-
 
     <!-- ********************* Types **************************** -->
     <string name="nn">NN</string>
@@ -95,7 +132,6 @@
     <string name="success3">3rd Success:</string>
     <string name="testssaved">Tests saved:</string>
     <string name="type">Select type:</string>
-
     <string name="wordstotest"># Words to test:</string>
     <string name="write">Write</string>
     <string name="newmatch">New match</string>
@@ -105,7 +141,7 @@
     <string name="about_cap">ABOUT</string>
     <string name="about">About</string>
     <string name="historial">Historial</string>
-    <string name="background">Background</string>
+    <string name="selectbackground">Select background</string>
     <string name="customization">CUSTOMIZATION</string>
     <string name="doubledirection">Double direction</string>
     <string name="general">GENERAL</string>
@@ -118,66 +154,27 @@
     <string name="special_chars_enabled">Enable special characters</string>
 
     <!-- * *************************** Botones **************************** * -->
-    <string name="a">A</string>
     <string name="accept">Accept</string>
     <string name="add">Add</string>
     <string name="create">Create</string>
     <string name="addmore">Add more</string>
     <string name="addverb">Add verb</string>
     <string name="addtheme">Create new theme</string>
-    <string name="b">B</string>
-    <string name="c">C</string>
     <string name="cancel">Cancel</string>
     <string name="clearstatistics">Clear statistics</string>
     <string name="confirm">Confirm</string>
     <string name="continue_">Continue</string>
-    <string name="d">D</string>
     <string name="doitagain">Do it again</string>
-    <string name="e">E</string>
     <string name="emptybin">Empty bin</string>
     <string name="exit">Exit</string>
-    <string name="f">F</string>
-    <string name="g">G</string>
     <string name="goon">Go on!</string>
     <string name="gotest">Go test</string>
-    <string name="h">H</string>
-    <string name="i">I</string>
-    <string name="j">J</string>
-    <string name="k">K</string>
-    <string name="l">L</string>
-    <string name="es_n_cap">Ñ</string>
-    <string name="loadfromcamera">Load from camera</string>
-    <string name="loadfromsd">Load from SD</string>
-    <string name="m">M</string>
-    <string name="makeitup">Make it up!</string>
-    <string name="mas">+</string>
-    <string name="menos">-</string>
-    <string name="n">N</string>
     <string name="next">Next</string>
-    <string name="o">O</string>
-    <string name="p">P</string>
     <string name="previous">Previous</string>
-    <string name="q">Q</string>
-    <string name="r">R</string>
     <string name="remove">Remove</string>
-    <string name="s">S</string>
     <string name="saveit">Save it</string>
-    <string name="t">T</string>
-    <string name="u">U</string>
-    <string name="v">V</string>
-    <string name="w">W</string>
-    <string name="x">X</string>
-    <string name="y">Y</string>
-    <string name="z">Z</string>
     <string name="handle">Handle</string>
     <string name="ignore">Ignore</string>
-    <string name="sv_ao">å</string>
-    <string name="sv_ae">ä</string>
-    <string name="sv_oe">ö</string>
-    <string name="sv_ao_cap">Å</string>
-    <string name="sv_ae_cap">Ä</string>
-    <string name="sv_oe_cap">Ö</string>
-    <string name="es_n">ñ</string>
     <string name="practise">Practise</string>
     <string name="Warehouse">Warehouse</string>
     <string name="Dictionary">Dictionary</string>
@@ -224,7 +221,6 @@
     <string name="mssNoTrash">Bin is empty.</string>
     <string name="msswordadded">Word added successfully</string>
     <string name="msswordmodified">Word modified successfully</string>
-    <string name="imageloaded">Image loaded</string>
     <string name="notypesselected">You must select one type at least</string>
     <string name="nonametest">No name entered. Test did not save.</string>
     <string name="testsaved">Test saved</string>
@@ -296,12 +292,13 @@
     <string name="inflexions_cap">INFLEXIONS</string>
 
     <string name="about_content"><![CDATA[
-        <h2>Delving Languages version 2.3.1</h2>
+        <h2>Delving Languages version 2.3.2</h2>
         <h2>Developed by Rafael J. Lucena</h2>
         <h3>Contact: rafaa89(at)gmail.com</h3>
         <p>
             <p><b>News Features and Improvements:</b></p>
-            <p>Version 2.3.1 2016-03-05:<br>Search function working again. Now it supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.</p>
+            <p>Version 2.3.2 2016-03-08:<br>Selection of background changed: Material design colors available now. TTS improved for Lollipop and above versions.</p>
+            <p>Version 2.3.1 2016-03-06:<br>Search function working again. Now it supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.</p>
             <p>Version 2.3.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially). Added icons for language options. Updated language option\'s pad look.</p>
             <p>Version 2.1.0 2016-01-08:<br>App look updated. New kernel feature: inflexions, that replace translations. Many changes and improvements.</p>
         </p>
@@ -321,6 +318,7 @@
             <p>Version 1.2.0 2014-05-13:<br>Updated: Dictionary</p>
         </p>]]>
     </string>
-
+    <string name="hint_input_pronunciation">Introduce word or text to hear its pronunciation</string>
+    <string name="cd_button_speech">Listen pronunciation</string>
 
 </resources>

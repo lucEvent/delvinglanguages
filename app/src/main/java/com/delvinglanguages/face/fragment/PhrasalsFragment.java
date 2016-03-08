@@ -17,7 +17,6 @@ import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.phrasals.PhrasalVerbs;
 import com.delvinglanguages.listers.OptionLister;
 import com.delvinglanguages.net.internal.TaskHandler;
-import com.delvinglanguages.settings.Settings;
 
 public class PhrasalsFragment extends ListFragment implements TaskHandler {
 
@@ -26,8 +25,6 @@ public class PhrasalsFragment extends ListFragment implements TaskHandler {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.a_simple_list, container, false);
-
-        Settings.setBackgroundTo(view);
 
         LanguageKernelControl.getPhrasalVerbsManager(this);
 

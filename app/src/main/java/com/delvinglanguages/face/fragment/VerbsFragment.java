@@ -1,9 +1,9 @@
 package com.delvinglanguages.face.fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +19,6 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageKernelControl;
 import com.delvinglanguages.kernel.set.DReferences;
 import com.delvinglanguages.listers.ReferenceLister;
-import com.delvinglanguages.settings.Settings;
 
 public class VerbsFragment extends ListFragment implements OnClickListener {
 
@@ -31,9 +30,7 @@ public class VerbsFragment extends ListFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.a_list_with_button, container, false);
-
-        Settings.setBackgroundTo(view);
-
+        
         verbslist = LanguageKernelControl.getVerbs();
         phMode = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
         setListAdapter(new ReferenceLister(getActivity(), verbslist, phMode));

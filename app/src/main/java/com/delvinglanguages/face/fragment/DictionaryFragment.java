@@ -40,8 +40,6 @@ public class DictionaryFragment extends Fragment implements OnClickListener {
                 view = inflater.inflate(R.layout.a_dictionary, container, false);
         }
 
-        Settings.setBackgroundTo(view);
-
         letras = new Button[NUM_LETRAS];
         letras[0] = (Button) view.findViewById(R.id.dic_a);
         letras[1] = (Button) view.findViewById(R.id.dic_b);

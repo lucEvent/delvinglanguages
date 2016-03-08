@@ -1,127 +1,114 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/palette"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+    <View
+        android:id="@id/separator"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/palette"
+        android:layout_toRightOf="@+id/palette"
+        android:background="#f666" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="15dip"
-            android:text="@string/choosecolor"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="*" >
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/sb_red"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_orange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_yellow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/sb_pink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_green"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <Button
-                    android:id="@+id/sb_purple"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_blue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-
-                <Button
-                    android:id="@+id/sb_cyan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_default" />
-            </TableRow>
-        </TableLayout>
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/separator"
+        android:layout_toRightOf="@+id/separator"
+        android:orientation="vertical">
 
         <Button
-            android:id="@+id/sb_makeit"
-            style="@style/button_list_selector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/makeitup" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="15dip"
-            android:text="@string/chooseimage"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+            android:id="@+id/color_1"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
 
         <Button
-            android:id="@+id/fromsd"
-            style="@style/button_list_selector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/loadfromsd" />
+            android:id="@+id/color_2"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
 
         <Button
-            android:id="@+id/fromcamera"
-            style="@style/button_list_selector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/loadfromcamera" />
+            android:id="@+id/color_3"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+
+        <Button
+            android:id="@+id/color_4"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_5"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_6"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_7"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_8"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_9"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_10"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_11"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_12"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_13"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
+        <Button
+            android:id="@+id/color_14"
+            style="@style/button_list_color"
+            android:background="#ffff"
+            android:onClick="onPaletteAction" />
+
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>

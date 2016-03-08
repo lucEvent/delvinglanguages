@@ -34,7 +34,7 @@
             android:name=".face.settings.LanguageSettingsActivity"
             android:label="@string/language_settings" />
         <activity
-            android:name=".face.settings.SelectBackground"
+            android:name=".face.settings.SelectBackgroundColor"
             android:label="@string/title_select_background" />
         <activity
             android:name=".face.settings.About"
@@ -42,9 +42,6 @@
         <activity
             android:name=".face.activity.add.AddWordActivity"
             android:configChanges="keyboardHidden|keyboard|orientation" />
-        <activity
-            android:name=".face.settings.MakeColorActivity"
-            android:label="Make your color" />
 
         <!-- practice ACTIVITIES -->
         <activity android:name=".face.activity.practice.PreguntasActivity" />
@@ -117,6 +114,11 @@
         <activity
             android:name=".face.settings.BackUpActivity"
             android:label="@string/title_activity_back_up" />
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

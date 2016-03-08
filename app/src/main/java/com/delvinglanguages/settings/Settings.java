@@ -1,21 +1,16 @@
 package com.delvinglanguages.settings;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.View;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.ControlDisco;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Settings {
 
@@ -111,49 +106,49 @@ public class Settings {
         saveSettings();
     }
 
-    public static void setBackground(String imagePath, int imageColor, boolean isImage) {
-        // Destruimos el drawable y la image anteriores
+    public static void setBackground(int imageColor) {
         backgroundimage = null;
         if (bg_type == BG_IMAGE_ON) {
             new File(bg_imagePath).delete();
         }
-        if (isImage) {
-            bg_imagePath = imagePath;
-            bg_type = BG_IMAGE_ON;
-        } else {
-            bg_color = imageColor;
-            bg_type = BG_COLOR_ON;
+
+        bg_type = BG_COLOR_ON;
+        bg_color = imageColor;
+
+        saveSettings();
+    }
+
+
+    public static void setBackground(String imagePath) {
+        bg_imagePath = createDLFilePath();
+        disco.copyFile(imagePath, bg_imagePath);
+        setBackgroundImagePath(bg_imagePath);
+    }
+
+    public static void setBackgroundImagePath(String imagePath) {
+        backgroundimage = null;
+        if (bg_type == BG_IMAGE_ON) {
+            new File(bg_imagePath).delete();
         }
+
+        bg_type = BG_IMAGE_ON;
+        bg_imagePath = imagePath;
         saveSettings();
     }
 
     public static void setBackgroundTo(View view) {
         if (bg_type == BG_COLOR_ON) {
-            view.setBackgroundColor(getBackgroundColor());
+            view.setBackgroundColor(bg_color);
         } else if (bg_type == BG_IMAGE_ON) {
             view.setBackground(getBackgroundImage());
         }
     }
 
-    public static int getBackgroundType() {
-        return bg_type;
-    }
-
     public static Drawable getBackgroundImage() {
-        if (bg_type != BG_IMAGE_ON) {
-            return null;
-        }
         if (backgroundimage == null) {
             backgroundimage = Drawable.createFromPath(bg_imagePath);
         }
         return backgroundimage;
-    }
-
-    public static int getBackgroundColor() {
-        if (bg_type != BG_COLOR_ON) {
-            return -1;
-        }
-        return bg_color;
     }
 
     public static void toggleVibration() {
@@ -165,30 +160,9 @@ public class Settings {
         return vibration;
     }
 
-    public static File locationForImage() {
-        File image = null;
+    public static String createDLFilePath() {
         String time = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
-        String imageFileName = time + "_";
-        image = disco.createTempFile(imageFileName, ".delving");
-
-        setBackground(image.getAbsolutePath(), -1, true);
-        return image;
-    }
-
-    public static void copyImage(Activity context, Intent intent) {
-        Uri selectedImage = intent.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-        Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-        cursor.moveToFirst();
-
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String photopath = cursor.getString(columnIndex);
-        cursor.close();
-
-        File forig = new File(photopath);
-        File fcopy = locationForImage();
-        disco.copyFile(forig, fcopy);
+        return disco.getFolderPath() + File.separator + time + ".delv";
     }
 
     public static void setBackgroundColorsforType(View[] labels, int type) {

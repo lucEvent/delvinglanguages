@@ -44,8 +44,6 @@ public class LanguageFragment extends Fragment implements OnClickListener, TaskH
 
         KernelControl.loadLanguage(idioma, new ProgressHandler((ProgressBar) view.findViewById(R.id.progressbar)), this);
 
-        Settings.setBackgroundTo(view);
-
         labels = new TextView[7];
         labels[Word.NOUN] = (TextView) view.findViewById(R.id.noun);
         labels[Word.VERB] = (TextView) view.findViewById(R.id.verb);

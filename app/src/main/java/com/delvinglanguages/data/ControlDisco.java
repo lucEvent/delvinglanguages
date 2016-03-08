@@ -7,7 +7,11 @@ import com.delvinglanguages.data.util.OutStream;
 import com.delvinglanguages.kernel.HistorialItem;
 import com.delvinglanguages.settings.Settings;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class ControlDisco {
@@ -27,6 +31,10 @@ public class ControlDisco {
 
         folder = new File(extDir.getAbsolutePath() + File.separator + FOLDERNAME);
         folder.mkdirs();
+    }
+
+    public String getFolderPath() {
+        return folder.getAbsolutePath();
     }
 
     public int getLastLanguage() {
@@ -132,31 +140,24 @@ public class ControlDisco {
         return file;
     }
 
-    public void copyFile(File forig, File fcopy) {
+    public void copyFile(String src, String dst) {
         try {
-            InStream in = new InStream(forig);
-            OutStream out = new OutStream(new File(fcopy.getAbsolutePath()));
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(src)));
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(dst)));
 
             int len;
             byte[] buffer = new byte[1024];
             while ((len = in.read(buffer, 0, buffer.length)) > 0) {
                 out.write(buffer, 0, len);
             }
+
             in.close();
+            out.flush();
             out.close();
         } catch (Exception e) {
-            debug("Exception: " + e.toString());
+            System.err.println("Exception: " + e.toString());
+            e.printStackTrace();
         }
-    }
-
-    public File createTempFile(String prefix, String sufix) {
-        File tempFile = null;
-        try {
-            tempFile = File.createTempFile(prefix, sufix, folder);
-        } catch (Exception e) {
-            debug("Exception en locationForImage: " + e.toString());
-        }
-        return tempFile;
     }
 
     private void debug(String text) {
