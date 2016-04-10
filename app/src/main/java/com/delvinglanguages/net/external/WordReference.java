@@ -2,9 +2,9 @@ package com.delvinglanguages.net.external;
 
 import android.os.Handler;
 
-import com.delvinglanguages.kernel.Word;
+import com.delvinglanguages.Settings;
+import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.AppFormat;
-import com.delvinglanguages.settings.Settings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,7 +76,7 @@ public class WordReference {
 
         WRSearch(String term) {
             this.term = term;
-            found = new TreeSet[Word.NUMBER_OF_TYPES];
+            found = new TreeSet[DReference.NUMBER_OF_TYPES];
             for (int i = 0; i < found.length; i++) {
                 found[i] = new TreeSet<String>();
             }

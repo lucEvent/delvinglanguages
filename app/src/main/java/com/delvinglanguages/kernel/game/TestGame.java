@@ -1,9 +1,9 @@
 package com.delvinglanguages.kernel.game;
 
-import android.util.Log;
-
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.set.DReferences;
+import com.delvinglanguages.kernel.test.Test;
+import com.delvinglanguages.kernel.test.TestReferenceState;
+import com.delvinglanguages.kernel.util.DReferences;
 
 public class TestGame extends Game {
 
@@ -11,31 +11,33 @@ public class TestGame extends Game {
         super(references);
     }
 
-    public DReferences getWords(int numero, int types) {
-        DReferences res = new DReferences(numero);
-        while (running)
-            ;
-        if (numero > references.size())
-            numero = references.size();
-        while (numero > 0) {
-            Integer priority = priorityMap.getMaxKey();
-            DReferences set = priorityMap.get(priority);
+    public DReferences getRandomReferences(int number, int type) {
+        DReferences res = new DReferences(number);
+        if (number > references.size())
+            number = references.size();
 
-            DReference ref = set.remove(nextInt(set.size()));
-            Log.v(DEBUG, "Getting ref with prior:" + priority);
-            if ((ref.getType() & types) != 0) {
-                res.add(ref);
-                numero--;
+        int checked = 0;
+        while (number > 0 && checked < references.size()) {
+            checked++;
+            DReference candidate = nextReference();
+
+            if ((candidate.type & type) != 0) {
+                res.add(candidate);
+                number--;
             }
 
-            if (set.isEmpty()) {
-                priorityMap.remove(priority);
-                if (priorityMap.size() == 0) {
-                    break;
-                }
-            }
         }
         return res;
+    }
+
+    public TestReferenceState nextTestReference(Test test) {
+        while (true) {
+            int position = nextInt(test.references.size());
+
+            TestReferenceState refState = test.references.get(position);
+            if (refState.stage != TestReferenceState.TestStage.END)
+                return refState;
+        }
     }
 
 }

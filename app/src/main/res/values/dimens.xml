@@ -1,29 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <dimen name="separacionbotones">1dip</dimen>
-    <dimen name="margenbotones">20dip</dimen>
-    <dimen name="margenlabels">10dip</dimen>
-
-    <dimen name="laymar">10dip</dimen>
-    <dimen name="laymartop">10dip</dimen>
-    <dimen name="laymarbottom">5dip</dimen>
-    <dimen name="laymarleft">10dip</dimen>
-    <dimen name="laymarright">10dip</dimen>
-
-
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
-         https://developer.android.com/design/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">240dp</dimen>
-
-    <!-- Button attributes -->
-    <dimen name="btn_corner_radius">10dip</dimen>
-    <dimen name="btn_border_width">1dip</dimen>
-    <dimen name="btn_border_width_double">2dip</dimen>
-
-
+    <dimen name="floating_button_margin">16dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.ThemeEditorActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/ripple_round"
+                    android:contentDescription="@string/cancel"
+                    android:onClick="actionCancel"
+                    android:src="@drawable/ic_cancel_accent" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center"
+                    android:onClick="actionSave"
+                    android:text="@string/save" />
+
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/in_theme_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="#0f00"
+                    android:hint="@string/hint_enter_theme_name"
+                    android:nextFocusDown="@+id/in_pair1"
+                    android:nextFocusForward="@+id/in_pair1"
+                    android:nextFocusLeft="@+id/in_pair1"
+                    android:nextFocusRight="@+id/in_pair1"
+                    android:nextFocusUp="@+id/in_pair1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textAlignment="textStart"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+
+                    <requestFocus />
+                </EditText>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_bar"
+            android:layout_below="@+id/top_bar" />
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#fff"
+            android:elevation="20dp">
+
+            <EditText
+                android:id="@+id/in_pair1"
+                style="@style/input"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/addPair"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:nextFocusDown="@+id/in_pair2"
+                android:nextFocusForward="@+id/in_pair2"
+                android:nextFocusLeft="@+id/in_pair2"
+                android:nextFocusRight="@+id/in_pair2"
+                android:nextFocusUp="@+id/in_pair2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageButton
+                android:id="@+id/addPair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#0000"
+                android:contentDescription="@string/add"
+                android:onClick="actionAddPair"
+                android:padding="10dp"
+                android:src="@drawable/ic_add" />
+
+            <EditText
+                android:id="@+id/in_pair2"
+                style="@style/input"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/addPair"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:nextFocusDown="@+id/in_pair1"
+                android:nextFocusForward="@+id/in_pair1"
+                android:nextFocusLeft="@+id/in_pair1"
+                android:nextFocusRight="@+id/in_pair1"
+                android:nextFocusUp="@+id/in_pair1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -20,4 +20,5 @@ public class OutStream extends ObjectOutputStream {
     public void writeString(String string) throws IOException {
         writeObject(string);
     }
+
 }

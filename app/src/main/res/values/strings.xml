@@ -1,324 +1,270 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- * ************************** ******** *************************** * -->
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 2.3.2</string>
+    <string name="app_version" translatable="false">version 3.0.0</string>
 
-    <string name="a" translatable="false">A</string>
-    <string name="b" translatable="false">B</string>
-    <string name="c" translatable="false">C</string>
-    <string name="d" translatable="false">D</string>
-    <string name="e" translatable="false">E</string>
-    <string name="f" translatable="false">F</string>
-    <string name="g" translatable="false">G</string>
-    <string name="h" translatable="false">H</string>
-    <string name="i" translatable="false">I</string>
-    <string name="j" translatable="false">J</string>
-    <string name="k" translatable="false">K</string>
-    <string name="l" translatable="false">L</string>
-    <string name="es_n_cap" translatable="false">Ñ</string>
-    <string name="m" translatable="false">M</string>
-    <string name="n" translatable="false">N</string>
-    <string name="o" translatable="false">O</string>
-    <string name="p" translatable="false">P</string>
-    <string name="q" translatable="false">Q</string>
-    <string name="r" translatable="false">R</string>
-    <string name="s" translatable="false">S</string>
-    <string name="t" translatable="false">T</string>
-    <string name="u" translatable="false">U</string>
-    <string name="v" translatable="false">V</string>
-    <string name="w" translatable="false">W</string>
-    <string name="x" translatable="false">X</string>
-    <string name="y" translatable="false">Y</string>
-    <string name="z" translatable="false">Z</string>
-    <string name="sv_ao_cap" translatable="false">Å</string>
-    <string name="sv_ae_cap" translatable="false">Ä</string>
-    <string name="sv_oe_cap" translatable="false">Ö</string>
-    <string name="sv_ao" translatable="false">å</string>
-    <string name="sv_ae" translatable="false">ä</string>
-    <string name="sv_oe" translatable="false">ö</string>
-    <string name="es_n" translatable="false">ñ</string>
-    <string name="mas" translatable="false">+</string>
-    <string name="menos" translatable="false">-</string>
-
-    <!-- * *************************** Titles **************************** * -->
-    <string name="addingnewword">Adding a new word</string>
-    <string name="bin">Recycle Bin</string>
-    <string name="emptyingbin">Emptying bin</string>
-    <string name="modifyingword">Modifying word</string>
-    <string name="renaminglanguage">Renaming language</string>
-    <string name="savingtest">Saving test</string>
-    <string name="statistics">Statistics</string>
-    <string name="test_title_3">Step 1: Delve</string>
-    <string name="test_title_4">Step 2: Match</string>
-    <string name="test_title_5">Step 3: Complete</string>
-    <string name="test_title_6">Step 4: Write</string>
-    <string name="test_title_7">Test qualification</string>
-    <string name="title_add_phrasals">Adding phrasal verb</string>
-    <string name="title_fonetics">Fonetics</string>
-    <string name="title_list_phrasal">Phrasals\' list</string>
-    <string name="title_list_selector">Select letter</string>
-    <string name="title_listening">Listening</string>
-    <string name="title_phrasals">Phrasal verbs</string>
-    <string name="title_practising">Practising</string>
-    <string name="title_removing">Removing</string>
-    <string name="title_removingtest">Removing test</string>
-    <string name="title_searching">Searching words</string>
-    <string name="title_select_background">Select background color</string>
-    <string name="language_settings">Language settings</string>
-    <string name="title_test">Test</string>
-    <string name="warehouse">warehouse</string>
-    <string name="wordsby">Words by</string>
-    <string name="title_add_idiom">Adding new language</string>
-    <string name="integratinglang">Integrating</string>
-
-    <!-- * ************************** Etiquetas *************************** * -->
-    <string name="all">All</string>
-    <string name="attemps">Attemps:</string>
-    <string name="selectcolor">Select color</string>
-    <string name="selectgallery">Select from gallery</string>
-    <string name="selectcamera">Take a picture</string>
-    <string name="complete">Complete</string>
-
-    <string name="failures">Failures:</string>
-    <string name="match">Match</string>
-    <string name="messageseparatecommas">**Separate different translations with commas.</string>
-    <string name="savechanges">Save changes</string>
-
-    <!-- ********************* Types **************************** -->
+    <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
     <string name="noun">Noun</string>
     <string name="noun_cap">NOUN</string>
-    <string name="nouns">Nouns</string>
     <string name="vb">VB</string>
     <string name="verb">Verb</string>
     <string name="verb_cap">VERB</string>
-    <string name="verbs">Verbs</string>
     <string name="adj">ADJ</string>
     <string name="adjective">Adjective</string>
     <string name="adjective_cap">ADJECTIVE</string>
-    <string name="adjectives">Adjectives</string>
     <string name="adv">ADV</string>
     <string name="adverb">Adverb</string>
     <string name="adverb_cap">ADVERB</string>
-    <string name="adverbs">Adverbs</string>
     <string name="phv">PHV</string>
-    <string name="phrasalverb">Phrasal verb</string>
+    <string name="phrasalverb">Phrasal Verb</string>
     <string name="phrasal_cap">PHRASAL VERB</string>
-    <string name="phrasalverbs">Phrasal verbs</string>
     <string name="exp">EXP</string>
     <string name="expression">Expression</string>
     <string name="expression_cap">EXPRESSION</string>
-    <string name="expressions">Expressions</string>
-    <string name="prp">PRP</string>
+    <string name="prep">PREP</string>
     <string name="preposition">Preposition</string>
     <string name="preposition_cap">PREPOSITION</string>
-    <string name="cnj">CNJ</string>
+    <string name="conj">CONJ</string>
     <string name="conjunction">Conjunction</string>
     <string name="conjunction_cap">CONJUNCTION</string>
     <string name="oth">OTH</string>
     <string name="other">Other</string>
     <string name="other_cap">OTHER</string>
-    <string name="others">Others</string>
-    <!-- ***************************************************** -->
 
-    <string name="questionsavetest">Enter a name for test:</string>
-    <string name="searching">. Searching</string>
-    <string name="selectingbetween">Selecting between:</string>
-    <string name="settings">Settings</string>
-    <string name="success1">1st Success:</string>
-    <string name="success2">2nd Success:</string>
-    <string name="success3">3rd Success:</string>
-    <string name="testssaved">Tests saved:</string>
-    <string name="type">Select type:</string>
-    <string name="wordstotest"># Words to test:</string>
-    <string name="write">Write</string>
-    <string name="newmatch">New match</string>
-    <string name="total">Total</string>
 
-    <!-- * *************************** Opciones *************************** * -->
-    <string name="about_cap">ABOUT</string>
-    <string name="about">About</string>
-    <string name="historial">Historial</string>
-    <string name="selectbackground">Select background</string>
-    <string name="customization">CUSTOMIZATION</string>
-    <string name="doubledirection">Double direction</string>
-    <string name="general">GENERAL</string>
-    <string name="enable_vibration">Enable vibration</string>
-    <string name="languagename">Language name</string>
-    <string name="nativelanguage">Native Language</string>
-    <string name="phrasalsenabled">Enable Phrasal Verbs</string>
-    <string name="features">FEATURES</string>
-    <string name="adjectsenabled">Enable Adjectives</string>
-    <string name="special_chars_enabled">Enable special characters</string>
-
-    <!-- * *************************** Botones **************************** * -->
-    <string name="accept">Accept</string>
-    <string name="add">Add</string>
-    <string name="create">Create</string>
-    <string name="addmore">Add more</string>
-    <string name="addverb">Add verb</string>
-    <string name="addtheme">Create new theme</string>
-    <string name="cancel">Cancel</string>
-    <string name="clearstatistics">Clear statistics</string>
-    <string name="confirm">Confirm</string>
-    <string name="continue_">Continue</string>
-    <string name="doitagain">Do it again</string>
-    <string name="emptybin">Empty bin</string>
-    <string name="exit">Exit</string>
-    <string name="goon">Go on!</string>
-    <string name="gotest">Go test</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="remove">Remove</string>
-    <string name="saveit">Save it</string>
-    <string name="handle">Handle</string>
-    <string name="ignore">Ignore</string>
-    <string name="practise">Practise</string>
-    <string name="Warehouse">Warehouse</string>
-    <string name="Dictionary">Dictionary</string>
-    <string name="search">Search</string>
-    <string name="pronunciation">Pronunciation</string>
-    <string name="themes">Themes</string>
-    <string name="addfirstlanguage">Add first language</string>
-    <string name="appsettings">App Settings</string>
-
-    <!-- * ***************** Hints o Content Descriptions ***************** * -->
-    <string name="changedirection">Change direction</string>
-    <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
-    <string name="enterlanguage">Enter language</string>
-    <string name="helps">Helps</string>
-    <string name="thelanguagename">Write the language name</string>
-    <string name="newword">New word</string>
-    <string name="removelanguage">Remove language</string>
-    <string name="save">Save</string>
-    <string name="clear">Clear</string>
-    <string name="typeanother">Type another</string>
-    <string name="addlanguage">Add language</string>
-    <string name="refresh">Refresh</string>
-    <string name="integratelang">Integrate</string>
-    <string name="enterwordin">Enter word in</string>
-    <string name="entertranslationin">Enter translation in</string>
-    <string name="enterpronuntiationin">Enter pronuntiation in</string>
-
-    <!-- * *************************** Mensajes *************************** * -->
-    <string name="testremoved">Test removed</string>
-    <string name="noword">Missing word</string>
-    <string name="notrans">Missing translation</string>
-    <string name="nopron">Missing pronunciation</string>
-    <string name="notype">Missing type</string>
-    <string name="noverb">Missing verb</string>
-    <string name="noprep">Missing preposition</string>
-    <string name="alreadyindb">already in database</string>
-    <string name="trashemptied">Bin successfully emptied</string>
-    <string name="nonamelang">No name entered. Changes did not save.</string>
-    <string name="renamedsuccessfully">Renamed successfully</string>
-    <string name="mssNoWords">There are no words to practise. Please add some.</string>
-    <string name="languageloading">Language is loading</string>
-    <string name="mssNoWordsToList">There are no words to list. Please add some.</string>
-    <string name="mssNoTrash">Bin is empty.</string>
-    <string name="msswordadded">Word added successfully</string>
-    <string name="msswordmodified">Word modified successfully</string>
-    <string name="notypesselected">You must select one type at least</string>
-    <string name="nonametest">No name entered. Test did not save.</string>
-    <string name="testsaved">Test saved</string>
-    <string name="wordalreadyindb">This word is already in database</string>
-    <string name="exp_integrate1">Select the language to integrate with:</string>
-    <string name="exp_integrate2">Are you sure to integrate these languages? Changes can not be undone.</string>
-    <string name="exp_integrate3">matches have been found</string>
-    <string name="mssclearstats">Statistics has been cleared</string>
-    <string name="createconjugatuionquestion">There are no data for this tense. Do you want to add tense data?</string>
-    <string name="makecolor">Make your own color</string>
-    <string name="_removed">removed</string>
-    <string name="msgnolangname">Please, enter a name for the language</string>
-    <string name="nowordmatched">No words matching your paramaters</string>
-    <string name="msgbothsidesnotfilled">Both sides are not filled</string>
-    <string name="msgthemecreated">Theme created</string>
-    <string name="msgthememodified">Theme modified</string>
-    <string name="msgnamenotspecified">Name not specified</string>
-    <string name="msgnopairadded">No content added to the theme</string>
-    <string name="toast_themeremoved">Theme removed</string>
-
-    <!-- * ************************** Preguntas *************************** * -->
-    <string name="removeidiomquestion">Are you sure to remove this language?</string>
-    <string name="removetestquestion">Are you sure to remove this test?</string>
-    <string name="removewordquestion">Are you sure to remove this word?</string>
-    <string name="clearbinquestion">Are you sure to empty the bin?</string>
-    <string name="removethemequestion">Are you sure to remove this theme?</string>
-    <!-- * *****************  ***************** * -->
-    <string name="translate">Translate</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_integrate_repeated">Integrate matches</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="languageintegrated">Language integrated</string>
-    <string name="title_activity_new_tense">New Tense</string>
-    <string name="options">Options</string>
-    <string name="actions">ACTIONS</string>
-    <string name="langfeatures">LANGUAGE FEATURES</string>
-    <string name="hint_search">Type word to search</string>
-    <string name="langcreated">Language created</string>
-    <string name="langerased">Language erased</string>
-    <string name="langintegrated">Language integrated</string>
-    <string name="wordaddedtostore">Word added to store</string>
-    <string name="wordadded">Word added</string>
-    <string name="wordconsulted">Word looked up</string>
-    <string name="wordmodified">Word modified</string>
-    <string name="wordremoved">Word removed</string>
-    <string name="bincleared">Bin cleared</string>
-    <string name="tenseadded">Tense added</string>
-    <string name="tensemodified">Tense modified</string>
-    <string name="testcreated">Test created</string>
-    <string name="testdone">Test done</string>
-    <string name="practisedmatch">Played match</string>
-    <string name="practisedcomplete">Played complete</string>
-    <string name="practisedwrite">Played write</string>
-    <string name="nativenamechanged">Native language name changed</string>
-    <string name="backgroundchanged">Background changed</string>
-    <string name="changedoubledirection">Double direction changed</string>
-    <string name="langnamechanged">Language name changed</string>
-    <string name="enablephrasalchanged">Phrasals support needed changed</string>
-    <string name="enableadjectivechange">Adjective support needed changed</string>
-    <string name="statisticscleared">Statistics cleared</string>
-    <string name="title_activity_create_theme">Creating Theme</string>
-    <string name="theme_name">Theme name</string>
-    <string name="title_activity_modify_theme">ModifyThemeActivity</string>
-    <string name="title_activity_back_up">Back Up</string>
-    <string name="configuration">Configuration</string>
-    <string name="my_languages">My languages</string>
+    <!-- * ******************** Labels **************************** * -->
     <string name="create_language">Create language</string>
+    <string name="historial">Historial</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="my_languages">My languages</string>
+    <string name="phrasalverbs">Phrasal verbs</string>
+    <string name="adjectives">Adjectives</string>
+    <string name="specialcharacters">Special characters</string>
+    <string name="language_features">Language features</string>
+    <string name="web_search">Web search</string>
+    <string name="search">Search</string>
+    <string name="practice">Practice</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="drawer">Drawer</string>
+    <string name="more">More</string>
+    <string name="themes">Themes</string>
+    <string name="verbs">Verbs</string>
+    <string name="pronunciation">Pronunciation</string>
+    <string name="recycle_bin">Recycle bin</string>
+    <string name="language_settings">Language settings</string>
+    <string name="word">Word</string>
     <string name="translations_cap">TRANSLATIONS</string>
     <string name="inflexions_cap">INFLEXIONS</string>
+    <string name="match">Match</string>
+    <string name="complete">Complete</string>
+    <string name="write">Write</string>
+    <string name="listening">Listening</string>
+    <string name="test">Test</string>
+    <string name="type_filter">Type filter</string>
+    <string name="number_of_words">Number of words</string>
+    <string name="main_types_content_description">%1$s nouns\n%2$s verbs\n%3$s adjectives\n%4$s adverbs\n%5$s phrasal verbs\n%6$s expressions\n%7$s prepositions\n%8$s conjunctions\n%9$s others\n%10$s themes\n%11$s tests</string>
+    <string name="content">Content</string>
+    <string name="statistics">Statistics</string>
+    <string name="main_stats_content_description">Attempts:\t\t %1$s\nNeat hits:\t\t\t %2$s (%3$s)\nHits at 2nd:\t %4$s (%5$s)\nHits at 3rd:\t\t %6$s (%7$s)\nErrors:\t\t\t\t %8$s (%9$s)</string>
 
+
+    <!-- * ******************** Buttons **************************** * -->
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
+    <string name="add">Add</string>
+    <string name="import_more">Import more</string>
+    <string name="export_more">Export more</string>
+    <string name="done">Done</string>
+    <string name="proceed">Proceed</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="continue_">Continue</string>
+    <string name="go_out">Go out</string>
+    <string name="add_translation">Add Translation</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="open_google_play">Google Play</string>
+    <string name="open_settings">Settings</string>
+    <string name="delete_all">Delete all</string>
+    <string name="accept">Accept</string>
+    <string name="see_them">See them</string>
+    <string name="ignore_all">Ignore all</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="add_word">Add word</string>
+    <string name="add_theme">Add theme</string>
+
+
+    <!-- * ******************** Hints **************************** * -->
+    <string name="hint_enter_word">Enter word in %1$s</string>
+    <string name="hint_enter_pronunciation">Enter pronunciation in %1$s</string>
+    <string name="hint_enter_language">Enter language name</string>
+    <string name="hint_enter_theme_name">Theme name</string>
+    <string name="hint_search">Search</string>
+    <string name="hint_enter_drawer">Write a word</string>
+    <string name="hint_enter_backup_name">Enter a name for the backup file</string>
+    <string name="hint_in_">in %1$s</string>
+    <string name="hint_search_content">Search content</string>
+    <string name="hint_enter_translations">Enter translations</string>
+    <string name="hint_enter_inflexions">Enter inflexions</string>
+    <string name="hint_translations">Translations</string>
+    <string name="hint_inflexions">Inflexions</string>
+    <string name="hint_enter_text_to_speech">Enter text to speech</string>
+    <string name="hint_practise_write">Try something</string>
+    <string name="hint_practise_listening">What did you hear?</string>
+    <string name="hint_enter_test_name">Test name</string>
+
+
+    <!-- * ******************** Messages **************************** * -->
+    <string name="msg_word_exists">%1$s already exists</string>
+    <string name="msg_missing_word">Missing word</string>
+    <string name="msg_missing_translations">Missing translations</string>
+    <string name="msg_missing_type">Missing type</string>
+    <string name="msg_missing_language_name">Missing language name</string>
+    <string name="msg_language_created">Language created</string>
+    <string name="msg_not_implemented">Function not implement yet</string>
+    <string name="msg_preparing_file">Preparing file</string>
+    <string name="msg_found_languages">Found %1$s language(s)</string>
+    <string name="msg_n_references">%1$s words</string>
+    <string name="msg_n_drawerreferences">%1$s words in the drawer</string>
+    <string name="msg_n_themes">%1$s themes</string>
+    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_import_finished">Import finished successfully</string>
+    <string name="msg_export_finished">Export finished successfully</string>
+    <string name="msg_not_dl_file">Selected file is not a Delving Languages file</string>
+    <string name="error">Error</string>
+    <string name="msg_select_languages_backup">Select languages to backup</string>
+    <string name="msg_could_access_disc">Could\'nt access to disc</string>
+    <string name="msg_saving_">Saving %1$s</string>
+    <string name="msg_language_saved_">%1$s saved with %2$s words, %3$s words in drawer, %4$s themes and %5$s tests</string>
+    <string name="msg_missing_filename">Missing file name</string>
+    <string name="msg_no_language_selected">No language selected</string>
+    <string name="msg_confirm_to_delete_theme">Confirm to delete %1$s theme</string>
+    <string name="msg_confirm_to_delete_word">Confirm to delete %1$s</string>
+    <string name="msg_confirm_to_delete_test">Confirm to delete %1$s test</string>
+    <string name="msg_go_back_without_saving">Go out without saving changes</string>
+    <string name="msg_go_out_from_test">Go out without finishing the test</string>
+    <string name="msg_missing_theme_name">Missing theme name</string>
+    <string name="msg_missing_theme_content">Missing theme content</string>
+    <string name="msg_missing_content">Missing content</string>
+    <string name="msg_notifier_tts">Your device does not have the needed resources for pronunciation in %1$s. Try to download them in Settings or get a TTS application from the Google Play store.</string>
+    <string name="msg_missing_test_name">Missing test name</string>
+    <string name="msg_test_hasnot_run_yet">The test has not been done yet</string>
+    <string name="msg_test_done_times">Done %1$s times</string>
+    <string name="msg_test_accuracy">Accuracy: %1$s%%</string>
+    <string name="msg_test_best_reference">Easiest word: %1$s</string>
+    <string name="msg_test_worst_reference">Most difficult word: %1$s</string>
+    <string name="msg_confirm_to_clear_all_items">Confirm to clear all items</string>
+    <string name="msg_confirm_to_remove_language">Confirm to remove %1$s language</string>
+    <string name="msg_confirm_to_reset_statistics">Confirm to reset %1$s statistics</string>
+    <string name="msg_select_language_to_merge_with">Select language to merge with</string>
+    <string name="msg_no_conflicts_found">No conflicts found</string>
+    <string name="msg_estimating_merge_of">Estimating merge of %1$s and %2$s</string>
+    <string name="msg_be_patience">Be patience!</string>
+    <string name="msg_conflicts_need_supervision">%1$s conflicts need supervision</string>
+    <string name="msg_reading">Reading %1$s</string>
+
+
+    <!-- * *************** Activities and fragment's titles ********************* * -->
+    <string name="title_drawer_fragment">%1$s\'s drawer</string>
+    <string name="title_themes_fragment">%1$s themes</string>
+    <string name="title_pronunciation_fragment"> pronunciation</string>
+    <string name="title_practise_fragment">%1$s\'s practise</string>
+    <string name="title_activity_practisetest">%1$s\'s tests</string>
+    <string name="title_recyclebin_fragment">%1$s\'s recycle bin</string>
+    <string name="title_language_settings_fragment">%1$s\'s settings</string>
+
+
+    <!-- * ******************** ********** **************************** * -->
     <string name="about_content"><![CDATA[
-        <h2>Delving Languages version 2.3.2</h2>
+        <h2>Delving Languages version 3.0.0</h2>
         <h2>Developed by Rafael J. Lucena</h2>
         <h3>Contact: rafaa89(at)gmail.com</h3>
         <p>
             <p><b>News Features and Improvements:</b></p>
+            <p>Version 3.0.0 2016-04-XX:<br>Lollipop support.<br>Settings standardized.<br>Kernel "word" and "dreference" merged for better performance.<br>Better support/user interaction when TTS is needed.<br>Listening in practise redesigned.<br>Tests redesigned.<br>Listening added in test.</p>
             <p>Version 2.3.2 2016-03-08:<br>Selection of background changed: Material design colors available now. TTS improved for Lollipop and above versions.</p>
             <p>Version 2.3.1 2016-03-06:<br>Search function working again. Now it supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.</p>
-            <p>Version 2.3.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially). Added icons for language options. Updated language option\'s pad look.</p>
-            <p>Version 2.1.0 2016-01-08:<br>App look updated. New kernel feature: inflexions, that replace translations. Many changes and improvements.</p>
+            <p>Version 2.3.0 2016-03-05:<br>NEW: Prepositions and Conjunctions supported (yet partially).<br> Added icons for language options.<br> Updated language option\'s pad look.</p>
+            <p>Version 2.1.0 2016-01-08:<br>App look updated.<br> New kernel feature: inflexions, that replace translations.<br> Many changes and improvements.</p>
         </p>
         <br>
         <p>
             <p><b>Old improvements:</b></p>
             <p>Version 1.6.1 2015-07-04:<br>IMPROVED: Touch interaction in language options menu, and kernel for managing phrasal verbs in english</p>
-            <p>Version 1.6.0 2015-07-03:<br>NEW: Support for Swedish word inflexions. Some other changes and improvements</p>
+            <p>Version 1.6.0 2015-07-03:<br>NEW: Support for Swedish word inflexions.<br> Some other changes and improvements</p>
             <p>Version 1.5.1 2015-05-16:<br>NEW: Pronunciation for words</p>
-            <p>Version 1.5.0 2015-05-14:<br>New Translation organization. New Database format.</p>
+            <p>Version 1.5.0 2015-05-14:<br>New Translation organization.<br> New Database format.</p>
             <p>Version 1.4.1 2015-03-11:<br>New kernel</p>
             <p>Version 1.4.0 2015-03-09:<br>New feature: THEMES. Learn faster. Create your own themes and make studying easier :)</p>
-            <p>Version 1.3.4 2015-03-06:<br>Improved: word\'s priority, tests, Special characters. Some other bugs fixed.</p>
-            <p>Version 1.3.3 2014-11-08:<br>Improved performance. New features</p>
-            <p>Version 1.3.0 2014-10-28:<br>"Translation" change to "Search". Added Add word from Search. Solved problems. Internal improvements. Updated: "About"</p>
+            <p>Version 1.3.4 2015-03-06:<br>Improved: word\'s priority, tests, Special characters.<br> Some other bugs fixed.</p>
+            <p>Version 1.3.3 2014-11-08:<br>Improved performance.<br> New features</p>
+            <p>Version 1.3.0 2014-10-28:<br>"Translation" change to "Search".<br> Added Add word from Search.<br> Solved problems.<br> Internal improvements.<br> Updated: "About"</p>
             <p>Version 1.2.3 2014-10-25:<br>Updated: Language Menu</p>
             <p>Version 1.2.0 2014-05-13:<br>Updated: Dictionary</p>
-        </p>]]>
+        </p>
+        <p>
+            <p><b>In next releases:</b></p>
+            <p>Change listviews by recycleviews</p>
+            <p>Change Handler by static classes extending Handler to avoid leaks (like in LanguageMainFragment)</p>
+            <p>Error in tests while accessing Listening in a language not supported</p>
+            <p>Add theme to tests (or practise theme or both)</p>
+            <p>Change theme and test itemListers appearance</p>
+            <p>Improve search method in LanguageMain like in dictionary (a method in KernelManager can be made)</p>
+            <p>Translation to spanish and catalan</p>
+            <p>Implement phrasal verb setting features</p>
+            <p>Implement Phrasal verbs and Verbs features</p>
+        </p>
+        <style> body { margin: 20px; } </style>
+        ]]>
     </string>
-    <string name="hint_input_pronunciation">Introduce word or text to hear its pronunciation</string>
-    <string name="cd_button_speech">Listen pronunciation</string>
+    <!-- * ********************** App Settings strings ************************* * -->
+    <string name="pref_title_general">General</string>
+    <string name="pref_title_customization">Customization</string>
+    <string name="pref_title_data">Data</string>
+
+    <string name="pref_app_language">App language</string>
+    <string name="pref_phonetic_keyboard_vibration">Phonetic keyboard vibration</string>
+    <string name="pref_app_theme">App theme</string>
+    <string name="pref_import_data">Import data</string>
+    <string name="pref_export_data">Export data</string>
+    <string name="pref_current_language">Current language</string>
+
+    <string name="pref_app_language_key" translatable="false">pref1</string>
+    <string name="pref_phonetic_keyboard_vibration_key" translatable="false">pref2</string>
+    <string name="pref_app_theme_key" translatable="false">pref3</string>
+    <string name="pref_import_data_key" translatable="false">pref4</string>
+    <string name="pref_export_data_key" translatable="false">pref5</string>
+    <string name="pref_current_language_key" translatable="false">pref6</string>
+
+    <!-- * ********************** Language Settings strings ************************* * -->
+    <string name="pref_title_options">Options</string>
+
+    <string name="pref_language_code">Language</string>
+    <string name="pref_language_name">Language name</string>
+    <string name="pref_language_phrasalverbs">Phrasal verbs</string>
+    <string name="pref_language_merge">Merge</string>
+    <string name="pref_language_remove">Remove</string>
+    <string name="pref_language_reset_statistics">Reset statistics</string>
+
+    <string name="pref_language_code_key" translatable="false">langpref1</string>
+    <string name="pref_language_name_key" translatable="false">langpref2</string>
+    <string name="pref_language_phrasalverbs_key" translatable="false">langpref3</string>
+    <string name="pref_language_merge_key" translatable="false">langpref4</string>
+    <string name="pref_language_remove_key" translatable="false">langpref5</string>
+    <string name="pref_language_reset_statistics_key" translatable="false">langpref6</string>
+
+
+    <!-- ********************************************************************************* -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="title_activity_dictionary">Dictionary</string>
+    <string name="msg_calculating_changes">Calculating changes</string>
+    <string name="msg_merging">Merging</string>
+    <string name="msg_temp_conflicts_treatment">This app version will just ignore any conflict. A coming update may let you decide what to do. Stay updated!</string>
+    <string name="msg_remove_language_after_merge">Do you want to remove this language?</string>
+
 
 </resources>

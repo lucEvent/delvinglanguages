@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/noun"
+        style="@style/type_label_bar"
+        android:background="@color/noun"
+        android:text="@string/nn" />
+
+    <TextView
+        android:id="@+id/verb"
+        style="@style/type_label_bar"
+        android:background="@color/verb"
+        android:text="@string/vb" />
+
+    <TextView
+        android:id="@+id/adjective"
+        style="@style/type_label_bar"
+        android:background="@color/adjective"
+        android:text="@string/adj" />
+
+    <TextView
+        android:id="@+id/adverb"
+        style="@style/type_label_bar"
+        android:background="@color/adverb"
+        android:text="@string/adv" />
+
+    <TextView
+        android:id="@+id/phrasal_verb"
+        style="@style/type_label_bar"
+        android:background="@color/phrasal"
+        android:text="@string/phv" />
+
+    <TextView
+        android:id="@+id/expression"
+        style="@style/type_label_bar"
+        android:background="@color/expression"
+        android:text="@string/exp" />
+
+    <TextView
+        android:id="@+id/preposition"
+        style="@style/type_label_bar"
+        android:background="@color/preposition"
+        android:text="@string/prep" />
+
+    <TextView
+        android:id="@+id/conjunction"
+        style="@style/type_label_bar"
+        android:background="@color/conjunction"
+        android:text="@string/conj" />
+
+    <TextView
+        android:id="@+id/other"
+        style="@style/type_label_bar"
+        android:background="@color/other"
+        android:text="@string/oth" />
+
+</LinearLayout>

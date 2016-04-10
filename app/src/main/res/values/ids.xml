@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="position" type="id" />
+    <item name="search_item" type="id" />
+    <item name="delete_all" type="id" />
+
+</resources>

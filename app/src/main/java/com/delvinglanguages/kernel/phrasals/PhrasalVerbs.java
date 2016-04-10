@@ -1,16 +1,15 @@
 package com.delvinglanguages.kernel.phrasals;
 
+import com.delvinglanguages.Settings;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.util.DReferences;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.TreeSet;
-
-import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.net.internal.TaskHandler;
-import com.delvinglanguages.settings.Settings;
 
 public class PhrasalVerbs implements Runnable, Serializable {
 
@@ -29,19 +28,16 @@ public class PhrasalVerbs implements Runnable, Serializable {
     private TreeSet<PVLink> verbs;
     private TreeSet<PVLink> prepositions;
 
-    private TaskHandler handler;
 
-    public PhrasalVerbs(int language, DReferences words, TaskHandler handler) {
+    public PhrasalVerbs(int language, DReferences words) {
         this.language = language;
         this.words = words;
-        this.handler = handler;
 
         new Thread(this).start();
     }
 
     @Override
     public void run() {
-        handler.onTaskStart();
         String[] sPrepositions = null;
         switch (language) {
             case Language.UK:
@@ -65,7 +61,6 @@ public class PhrasalVerbs implements Runnable, Serializable {
                 addPhrasalVerb(ref.name);
             }
         }
-        handler.onTaskDone(-1, TaskHandler.TaskState.TASK_DONE, this);
     }
 
     public void addPhrasalVerb(String ph) {

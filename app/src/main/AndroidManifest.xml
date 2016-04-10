@@ -7,118 +7,86 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".face.activity.Main"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:label="@string/app_name">
+            android:name=".Main"
+            android:configChanges="keyboard|keyboardHidden"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".face.activity.DictionaryListActivity" />
-        <activity
-            android:name=".face.activity.AddLanguageActivity"
-            android:label="@string/title_add_idiom" />
-        <activity
-            android:name=".face.settings.LanguageSettingsActivity"
-            android:label="@string/language_settings" />
-        <activity
-            android:name=".face.settings.SelectBackgroundColor"
-            android:label="@string/title_select_background" />
-        <activity
-            android:name=".face.settings.About"
-            android:label="@string/about" />
-        <activity
-            android:name=".face.activity.add.AddWordActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
 
-        <!-- practice ACTIVITIES -->
-        <activity android:name=".face.activity.practice.PreguntasActivity" />
-        <activity android:name=".face.activity.practice.WriteWordsActivity" />
-        <activity android:name=".face.activity.practice.CompleteActivity" />
-        <activity
-            android:name=".face.activity.practice.ListeningActivity"
-            android:label="@string/title_listening" />
-        <!-- test ACTIVITIES -->
-        <activity android:name=".face.activity.test.Test_1_SelectActivity" />
-        <activity android:name=".face.activity.test.Test_2_CreateActivity" />
-        <activity
-            android:name=".face.activity.test.Test_3_DelveActivity"
-            android:label="@string/test_title_3" />
-        <activity
-            android:name=".face.activity.test.Test_4_MatchActivity"
-            android:label="@string/test_title_4" />
-        <activity
-            android:name=".face.activity.test.Test_5_CompleteActivity"
-            android:label="@string/test_title_5" />
-        <activity
-            android:name=".face.activity.test.Test_6_WriteActivity"
-            android:label="@string/test_title_6" />
-        <activity
-            android:name=".face.activity.test.Test_7_ResultActivity"
-            android:label="@string/test_title_7" />
+        <activity android:name=".view.activity.BackUpActivity">
+            <intent-filter>
+                <action android:name="com.delvinglanguages.backup.IMPORT" />
+                <action android:name="com.delvinglanguages.backup.EXPORT" />
 
-        <!-- ************************************************************** -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
-            android:name=".face.settings.FoneticsActivity"
-            android:label="@string/title_fonetics" />
+            android:name=".view.activity.LanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
-            android:name=".face.phrasals.AddPhrasalsActivity"
-            android:label="@string/title_add_phrasals" />
+            android:name=".view.activity.ThemeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.phrasals.ListPhrasalActivity"
-            android:label="@string/title_list_phrasal" />
+            android:name=".view.activity.ThemeEditorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.IntegrateRepeatedActivity"
-            android:label="@string/title_activity_integrate_repeated" />
-        <activity android:name=".face.activity.ReferenceActivity" />
+            android:name=".view.activity.DictionaryActivity"
+            android:label="@string/title_activity_dictionary"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.settings.SettingsActivity"
-            android:label="@string/settings" />
+            android:name=".view.activity.DReferenceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.settings.HistorialActivity"
-            android:label="@string/historial" />
+            android:name=".view.activity.ReferenceEditorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.add.AddWordFromSearchActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
+            android:name=".view.activity.WebSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.add.AddWordFromWarehouseActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
+            android:name=".view.activity.practise.PractiseMatchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.add.AddWordFromVerbActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
+            android:name=".view.activity.practise.PractiseCompleteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.add.AddWordFromModifyActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
+            android:name=".view.activity.practise.PractiseWriteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.add.AddWordFromPhrasalActivity"
-            android:configChanges="keyboardHidden|keyboard|orientation" />
-        <activity android:name=".face.activity.theme.ThemeActivity" />
+            android:name=".view.activity.practise.PractiseListeningActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.theme.CreateThemeActivity"
-            android:label="@string/title_activity_create_theme" />
+            android:name=".view.activity.practise.PractiseTestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.activity.theme.ModifyThemeActivity"
-            android:label="@string/title_activity_modify_theme" />
+            android:name=".view.activity.practise.TestEditorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".face.settings.BackUpActivity"
-            android:label="@string/title_activity_back_up" />
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:name=".view.activity.practise.TestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".view.activity.LanguageMergerActivity">
+            <intent-filter>
+                <action android:name="com.delvinglanguages.merger.MERGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

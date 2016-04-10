@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.delvinglanguages.settings.Settings;
+import com.delvinglanguages.Settings;
 
 public class DataBase extends SQLiteOpenHelper {
 
@@ -32,7 +32,7 @@ public class DataBase extends SQLiteOpenHelper {
                         hits2 + " INTEGER," +
                         hits3 + " INTEGER," +
                         misses + " INTEGER" +
-                ");";
+                        ");";
     }
 
     public static final class DBLanguage {
@@ -54,11 +54,11 @@ public class DataBase extends SQLiteOpenHelper {
                         statistics + " INTEGER," +
                         settings + " INTEGER," +
                         "FOREIGN KEY(" + statistics + ") REFERENCES " + DBStatistics.db + "(" + DBStatistics.id + ")" +
-                ");";
+                        ");";
     }
 
-    public static final class DBWord {
-        public static String db = "word";
+    public static final class DBReference {
+        public static String db = "reference";
 
         public static String id = "_id";
         public static String name = "name";
@@ -78,30 +78,30 @@ public class DataBase extends SQLiteOpenHelper {
                         pronunciation + " TEXT NOT NULL," +
                         priority + " INTEGER," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
-    public static final class DBRemovedWord {
-        public static String db = "removedword";
+    public static final class DBRemovedReference {
+        public static String db = "removedreference";
 
         public static String id = "_id";
         public static String lang_id = "language";
-        public static String word_id = "word_id";
+        public static String reference_id = "reference_id";
 
-        public static String[] cols = {id, lang_id, word_id};
+        public static String[] cols = {id, lang_id, reference_id};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         lang_id + " INTEGER," +
-                        word_id + " INTEGER," +
-                        "FOREIGN KEY(" + word_id + ") REFERENCES " + DBWord.db + "(" + DBWord.id + ")" +
+                        reference_id + " INTEGER," +
+                        "FOREIGN KEY(" + reference_id + ") REFERENCES " + DBReference.db + "(" + DBReference.id + ")" +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
-    public static final class DBDrawerWord {
-        public static String db = "drawerword";
+    public static final class DBDrawerReference {
+        public static String db = "drawerreference";
 
         public static String id = "_id";
         public static String lang_id = "lang_id";
@@ -115,27 +115,29 @@ public class DataBase extends SQLiteOpenHelper {
                         lang_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBTest {
         public static String db = "test";
 
         public static String id = "_id";
-        public static String name = "name";
         public static String lang_id = "lang_id";
+        public static String name = "name";
+        public static String runtimes = "runtimes";
         public static String content = "content";
 
-        public static String[] cols = {id, name, lang_id, content};
+        public static String[] cols = {id, lang_id, name, runtimes, content};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        name + " TEXT NOT NULL," +
                         lang_id + " INTEGER," +
+                        name + " TEXT NOT NULL," +
+                        runtimes + " INTEGER," +
                         content + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBTheme {
@@ -153,7 +155,7 @@ public class DataBase extends SQLiteOpenHelper {
                         lang_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBThemePair {
@@ -173,7 +175,7 @@ public class DataBase extends SQLiteOpenHelper {
                         in_delv + " TEXT NOT NULL," +
                         in_nativ + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + theme_id + ") REFERENCES " + DBTheme.db + "(" + DBTheme.id + ")" +
-                ");";
+                        ");";
     }
 
     public DataBase(Context context) {
@@ -186,9 +188,9 @@ public class DataBase extends SQLiteOpenHelper {
 
         db.execSQL(DBStatistics.creator);
         db.execSQL(DBLanguage.creator);
-        db.execSQL(DBWord.creator);
-        db.execSQL(DBRemovedWord.creator);
-        db.execSQL(DBDrawerWord.creator);
+        db.execSQL(DBReference.creator);
+        db.execSQL(DBRemovedReference.creator);
+        db.execSQL(DBDrawerReference.creator);
         db.execSQL(DBTest.creator);
         db.execSQL(DBTheme.creator);
         db.execSQL(DBThemePair.creator);

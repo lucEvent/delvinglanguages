@@ -1,6 +1,6 @@
 package com.delvinglanguages.kernel.game;
 
-import com.delvinglanguages.kernel.set.DReferences;
+import com.delvinglanguages.kernel.util.DReferences;
 
 public class WriteGame extends Game {
 

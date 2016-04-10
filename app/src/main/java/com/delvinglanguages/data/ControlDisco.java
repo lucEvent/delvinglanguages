@@ -2,10 +2,10 @@ package com.delvinglanguages.data;
 
 import android.os.Environment;
 
+import com.delvinglanguages.Settings;
 import com.delvinglanguages.data.util.InStream;
 import com.delvinglanguages.data.util.OutStream;
 import com.delvinglanguages.kernel.HistorialItem;
-import com.delvinglanguages.settings.Settings;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -37,27 +37,7 @@ public class ControlDisco {
         return folder.getAbsolutePath();
     }
 
-    public int getLastLanguage() {
-        int result = -1;
-        try {
-            InStream in = new InStream(new File(folder, STATE));
-            result = in.readInt();
-            in.close();
-        } catch (Exception e) {
-            debug("Exception: " + e.toString());
-        }
-        return result;
-    }
 
-    public void saveLastLaguage(int position) {
-        try {
-            OutStream out = new OutStream(new File(folder, STATE));
-            out.writeInt(position);
-            out.close();
-        } catch (Exception e) {
-            debug("Exception: " + e.toString());
-        }
-    }
 
     public String[] readParams(String settings) {
         try {

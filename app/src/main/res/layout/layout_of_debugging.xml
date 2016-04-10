@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip">
+
+        <!-- ************** GENERAL ************** -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="General"
+            android:textAllCaps="true"
+            android:textStyle="bold" />
+
+        <View style="@style/divisor" />
+
+        <Spinner
+            android:id="@+id/selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:spinnerMode="dialog" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:onClick="changeLanguageName"
+            android:padding="10dp"
+            android:text="Language Name" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Features"
+            android:textAllCaps="true"
+
+            android:textStyle="bold" />
+
+        <View style="@style/divisor" />
+
+        <CheckedTextView
+            android:id="@+id/phrasal_state"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:onClick="togglePhrasalState"
+            android:text="Phrasals enabled" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <CheckedTextView
+            android:id="@+id/adjective_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="toggleAdjectiveState"
+            android:text="Adjectives enabled" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <CheckedTextView
+            android:id="@+id/special_chars_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="toggleSpecialCharacterState"
+            android:text="Special characters enabled" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actions"
+            android:textAllCaps="true"
+
+            android:textStyle="bold" />
+
+        <View style="@style/divisor" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="integrate"
+            android:text="Integrate (Merge)" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="remove"
+            android:text="Remove" />
+
+        <View
+            style="@style/divisor"
+            android:layout_height="0.5dip"
+            android:background="#B7B7B7" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="clearStatistics"
+            android:text="Clear statistics" />
+    </LinearLayout>
+
+</ScrollView>

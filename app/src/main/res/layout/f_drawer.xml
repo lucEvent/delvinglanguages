@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_alignParentTop="true"
+        android:animateLayoutChanges="true" />
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#fff"
+        android:elevation="20dp">
+
+        <EditText
+            android:id="@+id/input"
+            style="@style/input"
+            android:ems="10"
+            android:hint="@string/hint_enter_drawer"
+            android:imeActionLabel="@string/add">
+
+            <requestFocus />
+        </EditText>
+
+    </LinearLayout>
+
+</RelativeLayout>

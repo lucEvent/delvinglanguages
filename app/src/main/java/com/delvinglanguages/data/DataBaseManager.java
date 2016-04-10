@@ -5,30 +5,28 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.delvinglanguages.data.DataBase.DBDrawerWord;
+import com.delvinglanguages.data.DataBase.DBDrawerReference;
 import com.delvinglanguages.data.DataBase.DBLanguage;
-import com.delvinglanguages.data.DataBase.DBRemovedWord;
+import com.delvinglanguages.data.DataBase.DBReference;
+import com.delvinglanguages.data.DataBase.DBRemovedReference;
 import com.delvinglanguages.data.DataBase.DBStatistics;
 import com.delvinglanguages.data.DataBase.DBTest;
 import com.delvinglanguages.data.DataBase.DBTheme;
 import com.delvinglanguages.data.DataBase.DBThemePair;
-import com.delvinglanguages.data.DataBase.DBWord;
-import com.delvinglanguages.kernel.DrawerWord;
-import com.delvinglanguages.kernel.Estadisticas;
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.Word;
-import com.delvinglanguages.kernel.set.DrawerWords;
-import com.delvinglanguages.kernel.set.Inflexions;
-import com.delvinglanguages.kernel.set.Languages;
-import com.delvinglanguages.kernel.set.Tests;
-import com.delvinglanguages.kernel.set.ThemePairs;
-import com.delvinglanguages.kernel.set.Themes;
-import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemePair;
-import com.delvinglanguages.net.internal.ProgressHandler;
-import com.delvinglanguages.settings.Settings;
+import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.DrawerReferences;
+import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.Statistics;
+import com.delvinglanguages.kernel.util.Tests;
+import com.delvinglanguages.kernel.util.ThemePairs;
+import com.delvinglanguages.kernel.util.Themes;
 
 import java.util.TreeSet;
 
@@ -46,78 +44,66 @@ public class DataBaseManager {
     public Languages readLanguages() {
         SQLiteDatabase database = gateway.getReadableDatabase();
         Languages result = new Languages();
-        Cursor cursorID = database.query(DBLanguage.db, DBLanguage.cols, null, null, null, null, null);
+        Cursor cursorL = database.query(DBLanguage.db, DBLanguage.cols, null, null, null, null, null);
 
-        Cursor cursorES = database.query(DBStatistics.db, DBStatistics.cols, null, null, null, null, null);
+        Cursor cursorS = database.query(DBStatistics.db, DBStatistics.cols, null, null, null, null, null);
 
-        cursorID.moveToFirst();
-        cursorES.moveToFirst();
-        while (!cursorID.isAfterLast()) {
-            Language language = cursorToLanguage(cursorID);
-            language.setStatistics(cursorToStatitics(cursorES));
+        cursorL.moveToFirst();
+        cursorS.moveToFirst();
+        while (!cursorL.isAfterLast()) {
+            Language language = cursorToLanguage(cursorL);
+            language.setStatistics(cursorToStatistics(cursorS));
             result.add(language);
-            cursorID.moveToNext();
-            cursorES.moveToNext();
+            cursorL.moveToNext();
+            cursorS.moveToNext();
         }
-        cursorID.close();
-        cursorES.close();
+        cursorL.close();
+        cursorS.close();
         database.close();
-        debug(result.size() + " Idiomas leidos");
+        System.out.println("# Languages in DB: " + result.size());
         return result;
     }
 
-    public void readLanguage(Language language, ProgressHandler progress) {
-        language.setWords(readWords(language.id, progress));
-        language.setDrawerWords(readDrawerWords(language.id));
-        language.setRemovedWords(readRemovedWords(language.id));
-    }
-
-    public Words readWords(int langID, ProgressHandler progress) {
-        TreeSet<Integer> remIds = readRemovedWordsIds(langID);
+    public DReferences readReferences(int langID) {
+        TreeSet<Integer> remIds = readRemovedReferencesIds(langID);
         SQLiteDatabase database = gateway.getReadableDatabase();
-        Words result = new Words();
-        Cursor cursor = database.query(DBWord.db, DBWord.cols, DBWord.lang_id + "=" + langID, null, null, null, DBWord.name + " ASC");
-
-        progress.start(cursor.getCount());
+        DReferences result = new DReferences();
+        Cursor cursor = database.query(DBReference.db, DBReference.cols, DBReference.lang_id + "=" + langID, null, null, null, DBReference.name + " ASC");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             if (!remIds.contains(cursor.getInt(0))) {
-                result.add(cursorToWord(cursor));
+                result.add(cursorToReference(cursor));
             }
-            progress.stepForward();
             cursor.moveToNext();
         }
         cursor.close();
-
-        progress.finish();
-
-        debug("Palabras leidas: " + result.size());
         database.close();
+        System.out.println("# References in DB: " + result.size());
         return result;
     }
 
-    public DrawerWords readDrawerWords(int langID) {
+    public DrawerReferences readDrawerReferences(int langID) {
         SQLiteDatabase database = gateway.getReadableDatabase();
-        DrawerWords result = new DrawerWords();
-        Cursor cursor = database.query(DBDrawerWord.db, DBDrawerWord.cols, DBDrawerWord.lang_id + "=" + langID, null, null, null, DBDrawerWord.name + " ASC");
+        DrawerReferences result = new DrawerReferences();
+        Cursor cursor = database.query(DBDrawerReference.db, DBDrawerReference.cols, DBDrawerReference.lang_id + "=" + langID, null, null, null, DBDrawerReference.name + " ASC");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            result.add(cursorToDrawerWord(cursor));
+            result.add(cursorToDrawerReference(cursor));
             cursor.moveToNext();
         }
         cursor.close();
-        debug("Almacen leidas: " + result.size());
         database.close();
+        System.out.println("# DrawerReferences in DB: " + result.size());
         return result;
     }
 
-    private TreeSet<Integer> readRemovedWordsIds(int lang_id) {
+    private TreeSet<Integer> readRemovedReferencesIds(int lang_id) {
         SQLiteDatabase database = gateway.getReadableDatabase();
-        Cursor cursor = database.query(DBRemovedWord.db, DBRemovedWord.cols, DBRemovedWord.lang_id + " = " + lang_id, null, null, null, null);
+        Cursor cursor = database.query(DBRemovedReference.db, DBRemovedReference.cols, DBRemovedReference.lang_id + " = " + lang_id, null, null, null, null);
 
-        TreeSet<Integer> result = new TreeSet<Integer>();
+        TreeSet<Integer> result = new TreeSet<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             result.add(cursor.getInt(2));
@@ -128,22 +114,22 @@ public class DataBaseManager {
         return result;
     }
 
-    private Words readRemovedWords(int langID) {
-        TreeSet<Integer> wordIds = readRemovedWordsIds(langID);
+    public DReferences readRemovedReferences(int langID) {
+        TreeSet<Integer> referenceIds = readRemovedReferencesIds(langID);
 
         SQLiteDatabase database = gateway.getReadableDatabase();
 
-        Words result = new Words();
-        for (Integer word_id : wordIds) {
-            Cursor cursor = database.query(DBWord.db, DBWord.cols, DBWord.id + " = " + word_id, null, null, null, null);
+        DReferences result = new DReferences();
+        for (Integer reference_id : referenceIds) {
+            Cursor cursor = database.query(DBReference.db, DBReference.cols, DBReference.id + " = " + reference_id, null, null, null, null);
             cursor.moveToFirst();
-            Word word = cursorToWord(cursor);
+            DReference reference = cursorToReference(cursor);
             cursor.close();
-            result.add(word);
+            result.add(reference);
         }
-
-        debug("Palabras eliminadas leidas: " + result.size());
         database.close();
+
+        System.out.println("# RemovedReferences in DB: " + result.size());
         return result;
     }
 
@@ -159,8 +145,8 @@ public class DataBaseManager {
             cursor.moveToNext();
         }
         cursor.close();
-        debug("Test leidos: " + result.size());
         database.close();
+        System.out.println("# Tests in DB: " + result.size());
         return result;
     }
 
@@ -177,8 +163,8 @@ public class DataBaseManager {
             cursor.moveToNext();
         }
         cursor.close();
-        debug("Themes leidos: " + result.size());
         database.close();
+        System.out.println("# Themes in DB: " + result.size());
         return result;
     }
 
@@ -203,58 +189,62 @@ public class DataBaseManager {
     public void updateLanguage(Language lang) {
         ContentValues values = new ContentValues();
         values.put(DBLanguage.code, lang.CODE);
-        values.put(DBLanguage.name, lang.language_delved_name);
+        values.put(DBLanguage.name, lang.language_name);
         values.put(DBLanguage.settings, lang.settings);
         SQLiteDatabase database = gateway.getWritableDatabase();
         database.update(DBLanguage.db, values, DBLanguage.id + " = " + lang.id, null);
         database.close();
     }
 
-    public void updateWord(Word word) {
+    public void updateReference(DReference reference) {
         ContentValues values = new ContentValues();
-        values.put(DBWord.name, word.getName());
-        values.put(DBWord.inflexions, word.getInflexionsAsString());
-        values.put(DBWord.pronunciation, word.getPronunciation());
-        values.put(DBWord.priority, word.getPriority());
+        values.put(DBReference.name, reference.name);
+        values.put(DBReference.inflexions, reference.getInflexions().toString());
+        values.put(DBReference.pronunciation, reference.pronunciation);
+        values.put(DBReference.priority, reference.priority);
 
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.update(DBWord.db, values, DBWord.id + " = " + word.id, null);
+        database.update(DBReference.db, values, DBReference.id + " = " + reference.id, null);
         database.close();
     }
 
-    public void updateWordLanguage(Word word, int newlang_id) {
+    public void updateReferenceLanguage(DReference reference, int newlang_id) {
         ContentValues values = new ContentValues();
-        values.put(DBWord.lang_id, newlang_id);
+        values.put(DBReference.lang_id, newlang_id);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.update(DBWord.db, values, DBWord.id + " = " + word.id, null);
+        database.update(DBReference.db, values, DBReference.id + " = " + reference.id, null);
         database.close();
     }
 
-    public void updateWordPriority(Word word) {
+    public void updateReferencePriority(DReference reference) {
         ContentValues values = new ContentValues();
-        values.put(DBWord.priority, word.getPriority());
+        values.put(DBReference.priority, reference.priority);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.update(DBWord.db, values, DBWord.id + " = " + word.id, null);
+        database.update(DBReference.db, values, DBReference.id + " = " + reference.id, null);
         database.close();
     }
 
-    public void updateDrawerWordsLanguage(int oldlang_id, int newlang_id) {
+    public void updateDrawerReferencesLanguage(int oldlang_id, int newlang_id) {
         ContentValues values = new ContentValues();
-        values.put(DBDrawerWord.lang_id, newlang_id);
+        values.put(DBDrawerReference.lang_id, newlang_id);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.update(DBDrawerWord.db, values, DBDrawerWord.lang_id + " = " + oldlang_id, null);
+        database.update(DBDrawerReference.db, values, DBDrawerReference.lang_id + " = " + oldlang_id, null);
         database.close();
     }
 
-    public void updateTest(Test t) {
+    public void updateTest(Test test) {
         SQLiteDatabase database = gateway.getWritableDatabase();
+
         ContentValues values = new ContentValues();
-        values.put(DBTest.content, t.encapsulate());
-        database.update(DBTest.db, values, DBTest.id + " = " + t.id, null);
+        values.put(DBTest.name, test.name);
+        values.put(DBTest.runtimes, test.getRunTimes());
+        values.put(DBTest.content, Test.wrapContent(test));
+
+        database.update(DBTest.db, values, DBTest.id + " = " + test.id, null);
         database.close();
     }
 
-    public void updateStatistics(Estadisticas e) {
+    public void updateStatistics(Statistics e) {
         ContentValues values = new ContentValues();
         values.put(DBStatistics.tries, e.intentos);
         values.put(DBStatistics.hits1, e.aciertos1);
@@ -301,55 +291,59 @@ public class DataBaseManager {
         values.put(DBLanguage.settings, settings);
         int lang_id = (int) database.insert(DBLanguage.db, null, values);
 
-        Language language = new Language(lang_id, code, name, Settings.NativeLanguage, settings);
-        language.setStatistics(new Estadisticas((int) stats_id));
+        Language language = new Language(lang_id, code, name, settings);
+        language.setStatistics(new Statistics((int) stats_id));
         database.close();
         return language;
     }
 
-    public Word insertWord(String name, Inflexions inflexions, int langID, String pronunciation, int priority) {
+    public DReference insertReference(String name, Inflexions inflexions, int langID, String pronunciation, int priority) {
         ContentValues values = new ContentValues();
-        values.put(DBWord.name, name);
-        values.put(DBWord.lang_id, langID);
-        values.put(DBWord.inflexions, inflexions.toString());
-        values.put(DBWord.pronunciation, pronunciation);
-        values.put(DBWord.priority, priority);
+        values.put(DBReference.name, name);
+        values.put(DBReference.lang_id, langID);
+        values.put(DBReference.inflexions, inflexions.toString());
+        values.put(DBReference.pronunciation, pronunciation);
+        values.put(DBReference.priority, priority);
 
         SQLiteDatabase database = gateway.getWritableDatabase();
-        int word_id = (int) database.insert(DBWord.db, null, values);
+        int reference_id = (int) database.insert(DBReference.db, null, values);
         database.close();
 
-        return new Word(word_id, name, inflexions, pronunciation, Word.INITIAL_PRIORITY);
+        return new DReference(reference_id, name, pronunciation, inflexions, DReference.INITIAL_PRIORITY);
     }
 
-    public void insertRemovedWord(int langID, int word_id) {
+    public void insertRemovedReference(int langID, int reference_id) {
         ContentValues values = new ContentValues();
-        values.put(DBRemovedWord.lang_id, langID);
-        values.put(DBRemovedWord.word_id, word_id);
+        values.put(DBRemovedReference.lang_id, langID);
+        values.put(DBRemovedReference.reference_id, reference_id);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.insert(DBRemovedWord.db, null, values);
+        database.insert(DBRemovedReference.db, null, values);
         database.close();
     }
 
-    public DrawerWord insertStoreWord(String note, int langID) {
+    public DrawerReference insertDrawerReference(String note, int langID) {
         ContentValues values = new ContentValues();
-        values.put(DBDrawerWord.name, note);
-        values.put(DBDrawerWord.lang_id, langID);
+        values.put(DBDrawerReference.name, note);
+        values.put(DBDrawerReference.lang_id, langID);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        long note_id = database.insert(DBDrawerWord.db, null, values);
+        long note_id = database.insert(DBDrawerReference.db, null, values);
         database.close();
-        return new DrawerWord((int) note_id, note);
+        return new DrawerReference((int) note_id, note);
     }
 
-    public int insertTest(String name, String content, int langID) {
+    public Test insertTest(String test_name, DReferences refs, int lang_id) {
+        Test test = new Test(test_name, refs);
+
         ContentValues values = new ContentValues();
-        values.put(DBTest.name, name);
-        values.put(DBTest.lang_id, langID);
-        values.put(DBTest.content, content);
+        values.put(DBTest.lang_id, lang_id);
+        values.put(DBTest.name, test_name);
+        values.put(DBTest.runtimes, test.getRunTimes());
+        values.put(DBTest.content, Test.wrapContent(test));
+
         SQLiteDatabase database = gateway.getWritableDatabase();
-        long tid = database.insert(DBTest.db, null, values);
+        test.id = (int) database.insert(DBTest.db, null, values);
         database.close();
-        return (int) tid;
+        return test;
     }
 
     public Theme insertTheme(int langID, String thname, ThemePairs pairs) {
@@ -381,12 +375,12 @@ public class DataBaseManager {
      **/
     public void deleteLanguage(Language lang) {
         SQLiteDatabase database = gateway.getWritableDatabase();
-        // Removing words
-        database.delete(DBWord.db, DBWord.lang_id + " = " + lang.id, null);
+        // Removing references
+        database.delete(DBReference.db, DBReference.lang_id + " = " + lang.id, null);
         // Removing trash
-        database.delete(DBRemovedWord.db, DBRemovedWord.lang_id + " = " + lang.id, null);
+        database.delete(DBRemovedReference.db, DBRemovedReference.lang_id + " = " + lang.id, null);
         // Removing store
-        database.delete(DBDrawerWord.db, DBDrawerWord.lang_id + " = " + lang.id, null);
+        database.delete(DBDrawerReference.db, DBDrawerReference.lang_id + " = " + lang.id, null);
         // Removing tests
         database.delete(DBTest.db, DBTest.lang_id + " = " + lang.id, null);
         // Removing themes
@@ -405,23 +399,23 @@ public class DataBaseManager {
         database.close();
     }
 
-    public void deleteWordTemporarily(int lang_id, int word_id) {
-        insertRemovedWord(lang_id, word_id);
+    public void deleteReferenceTemporarily(int lang_id, int reference_id) {
+        insertRemovedReference(lang_id, reference_id);
     }
 
-    public void deleteAllRemovedWords(int lang_id) {
-        TreeSet<Integer> ids = readRemovedWordsIds(lang_id);
+    public void deleteAllRemovedReferences(int lang_id) {
+        TreeSet<Integer> ids = readRemovedReferencesIds(lang_id);
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.delete(DBRemovedWord.db, DBRemovedWord.lang_id + " = " + lang_id, null);
-        for (Integer word_id : ids) {
-            database.delete(DBWord.db, DBWord.id + " = " + word_id, null);
+        database.delete(DBRemovedReference.db, DBRemovedReference.lang_id + " = " + lang_id, null);
+        for (Integer reference_id : ids) {
+            database.delete(DBReference.db, DBReference.id + " = " + reference_id, null);
         }
         database.close();
     }
 
-    public void deleteStoredWord(int id) {
+    public void deleteDrawerReference(int id) {
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.delete(DBDrawerWord.db, DBDrawerWord.id + " = " + id, null);
+        database.delete(DBDrawerReference.db, DBDrawerReference.id + " = " + id, null);
         database.close();
     }
 
@@ -441,33 +435,33 @@ public class DataBaseManager {
     /**
      * ******************** Restore *********************
      **/
-    public void restoreWord(int word_id) {
+    public void restoreReference(int reference_id) {
         SQLiteDatabase database = gateway.getWritableDatabase();
-        database.delete(DBRemovedWord.db, DBRemovedWord.word_id + " = " + word_id, null);
+        database.delete(DBRemovedReference.db, DBRemovedReference.reference_id + " = " + reference_id, null);
         database.close();
     }
 
     /**
-     * ******************** Funciones privadas *********************
+     * ******************** "Cursor to" functions *********************
      **/
     private Language cursorToLanguage(Cursor c) {
-        return new Language(c.getInt(0), c.getInt(1), c.getString(2), Settings.NativeLanguage, c.getInt(4));
+        return new Language(c.getInt(0), c.getInt(1), c.getString(2), c.getInt(4));
     }
 
-    private Word cursorToWord(Cursor c) {
-        return new Word(c.getInt(0), c.getString(1), c.getString(3), c.getString(4), c.getInt(5));
+    private DReference cursorToReference(Cursor c) {
+        return new DReference(c.getInt(0), c.getString(1), c.getString(4), c.getString(3), c.getInt(5));
     }
 
-    private Estadisticas cursorToStatitics(Cursor c) {
-        return new Estadisticas(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+    private Statistics cursorToStatistics(Cursor c) {
+        return new Statistics(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
     }
 
-    private DrawerWord cursorToDrawerWord(Cursor c) {
-        return new DrawerWord(c.getInt(0), c.getString(2));
+    private DrawerReference cursorToDrawerReference(Cursor c) {
+        return new DrawerReference(c.getInt(0), c.getString(2));
     }
 
     private Test cursorToTest(Cursor c) {
-        return new Test(c.getInt(0), c.getString(1), c.getString(3));
+        return new Test(c.getInt(0), c.getString(2), c.getInt(3), c.getString(4));
     }
 
     private Theme cursorToTheme(Cursor c) {
@@ -476,11 +470,6 @@ public class DataBaseManager {
 
     private ThemePair cursorToThemePair(Cursor c) {
         return new ThemePair(c.getString(2), c.getString(3));
-    }
-
-    private void debug(String text) {
-        if (Settings.DEBUG)
-            android.util.Log.d("##DataBaseManager##", text);
     }
 
 }

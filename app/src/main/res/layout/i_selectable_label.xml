@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sl_label"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/label_selectable_backgrounds"
-    android:padding="5dip"
-    android:text="TextView"
-    android:textAppearance="?android:attr/textAppearanceMedium" />

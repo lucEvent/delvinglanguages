@@ -1,59 +1,62 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.kernel.set.Inflexions;
-import com.delvinglanguages.settings.Settings;
-
-import java.util.Comparator;
-import java.util.TreeSet;
+import com.delvinglanguages.kernel.util.Inflexions;
 
 public class DReference {
 
+    private final static String SEP = "%Dr";
+
+    public static final int INITIAL_PRIORITY = 100;
+
+    public static final int NUMBER_OF_TYPES = 9;
+
+    public static final int NOUN = 0x1;
+    public static final int VERB = 0x2;
+    public static final int ADJECTIVE = 0x4;
+    public static final int ADVERB = 0x08;
+    public static final int PHRASAL_VERB = 0x10;
+    public static final int EXPRESSION = 0x20;
+    public static final int PREPOSITION = 0x40;
+    public static final int CONJUNCTION = 0x80;
+    public static final int OTHER = 0x100;
+
     /**
-     * ***************** Variables ******************
+     * DReference parameters
      **/
+    public final int id;
     public String name;
-    public Inflexions inflexions;
+    private Inflexions inflexions;
     public String pronunciation;
     public int priority;
-    private int type;
+    public int type;
 
-    public TreeSet<Word> appearances;
+    private String lower_case_name;
 
-    /**
-     * ***************** Creadoras ******************
-     **/
-    public DReference(String name) {
-        this(name, "", -1);
+    public static DReference createBait(String name) {
+        return new DReference(-1, name, null, new Inflexions(), -1);
     }
 
-    /*public DReference(String name, String pronunciation, int priority) {
-        this(name, pronunciation, priority);
-    }*/
+    public DReference(int id, String name, String pronunciation, String inflexions, int priority) {
+        this(id, name, pronunciation, new Inflexions(inflexions), priority);
+    }
 
-    public DReference(String name, String pronunciation, int priority) {
+    public DReference(int id, String name, String pronunciation, Inflexions inflexions, int priority) {
+        this.id = id;
         this.name = name;
+        this.lower_case_name = name.toLowerCase();
+        this.inflexions = inflexions;
         this.pronunciation = pronunciation;
         this.priority = priority;
-        this.type = -1;
-        appearances = new TreeSet<Word>(new Comparator<Word>() {
-            @Override
-            public int compare(Word lhs, Word rhs) {
-                return lhs.id < rhs.id ? -1 : (lhs.id == rhs.id ? 0 : 1);
-            }
-        });
-        inflexions = new Inflexions();
+
+        for (Inflexion i : inflexions)
+            this.type = this.type | i.getType();
     }
 
     /**
      * ***************** Getters ******************
      **/
-    public int getType() {
-        if (type == -1) {
-            type = 0;
-            for (Inflexion inf : inflexions)
-                type |= inf.getType();
-        }
-        return type;
+    public String[] getTranslations() {
+        return inflexions.getTranslations();
     }
 
     public String getTranslationsAsString() {
@@ -64,72 +67,102 @@ public class DReference {
         return inflexions;
     }
 
+    public String getInflexionsAsString() {
+        return inflexions.getInflexionsAsString();
+    }
+
     /**
      * ***************** Askers ******************
      **/
     public boolean isNoun() {
-        return (getType() & 0x1) != 0;
+        return (type & NOUN) != 0;
     }
 
     public boolean isVerb() {
-        return (getType() & 0x2) != 0;
+        return (type & VERB) != 0;
     }
 
     public boolean isAdjective() {
-        return (getType() & 0x4) != 0;
+        return (type & ADJECTIVE) != 0;
     }
 
     public boolean isAdverb() {
-        return (getType() & 0x8) != 0;
+        return (type & ADVERB) != 0;
     }
 
     public boolean isPhrasalVerb() {
-        return (getType() & 0x10) != 0;
+        return (type & PHRASAL_VERB) != 0;
     }
 
     public boolean isExpression() {
-        return (getType() & 0x20) != 0;
+        return (type & EXPRESSION) != 0;
+    }
+
+    public boolean isPreposition() {
+        return (type & PREPOSITION) != 0;
+    }
+
+    public boolean isConjunction() {
+        return (type & CONJUNCTION) != 0;
     }
 
     public boolean isOther() {
-        return (getType() & 0x40) != 0;
+        return (type & OTHER) != 0;
+    }
+
+    public boolean hasContent(CharSequence s) {
+        return lower_case_name.contains(s) || inflexions.hasContent(s);
     }
 
     /**
-     * ***************** Modificadoras ******************
+     * ***************** Modifiers ******************
      **/
-    public void addTranslation(Word word, Inflexions inflexions) {
-        this.type = -1;
-        this.appearances.add(word);
-        this.inflexions.addAll(inflexions);
+    public void addInflexion(Inflexion inflexion) {
+        this.type = this.type | inflexion.getType();
+        this.inflexions.add(inflexion);
     }
 
-    public void addTranslation(Word word, Inflexion inflexion) {
-        this.type = -1;
-        appearances.add(word);
-        inflexions.add(inflexion);
-    }
-
-    public void removeTranslation(Word word, Inflexions inflexions) {
-        this.type = -1;
-        this.appearances.remove(word);
-        this.inflexions.remove(inflexions);
-    }
-
-    public void removeTranslation(Word word, Inflexion inflexion) {
-        this.type = -1;
-        this.appearances.remove(word);
+    public void removeInflexion(Inflexion inflexion) {
         for (Inflexion inf : this.inflexions) {
             if (inf.getInflexions() == inflexion.getInflexions()) {
+                this.type = this.type & ~inf.getType();
                 this.inflexions.remove(inf);
                 break;
             }
         }
     }
 
-    private void debug(String text) {
-        if (Settings.DEBUG)
-            android.util.Log.d("##DReference##", text);
+    public void update(String name, String pronunciation, Inflexions inflexions) {
+        this.name = name;
+        this.lower_case_name = name.toLowerCase();
+        this.inflexions = inflexions;
+        this.pronunciation = pronunciation;
+
+        this.type = 0;
+        for (Inflexion i : inflexions)
+            this.type = this.type | i.getType();
+    }
+
+    public static DReference unWrapReference(String wrappedReference) {
+        String[] items = wrappedReference.split(SEP);
+
+        String name = items[0];
+        Inflexions inflexions = new Inflexions(items[1]);
+        String pronunciation = items[2];
+        int priority = Integer.parseInt(items[3]);
+
+        return new DReference(-1, name, pronunciation, inflexions, priority);
+    }
+
+    public static String wrapReference(DReference reference) {
+        StringBuilder res = new StringBuilder();
+
+        res.append(reference.name);
+        res.append(SEP).append(reference.getInflexions().toString());
+        res.append(SEP).append(reference.pronunciation);
+        res.append(SEP).append(reference.priority);
+
+        return res.toString();
     }
 
 }

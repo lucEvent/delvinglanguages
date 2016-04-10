@@ -1,128 +1,152 @@
 package com.delvinglanguages.kernel.test;
 
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.LanguageKernelControl;
-import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.TestReferenceStates;
+import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.TestReferenceStates;
 
 public class Test {
 
-    public final static int PHASE_DELVING = 1;
-    public final static int PHASE_MATCH = 2;
-    public final static int PHASE_COMPLETE = 3;
-    public final static int PHASE_WRITE = 4;
-    public final static int PHASE_STATISTICS = 5;
-
-    private final static String p = "-_-";
+    private final static String SEP = "%Tt";
 
     public int id;
     public String name;
-    public int state;
+
+    private int runTimes;
 
     public TestReferenceStates references;
 
-    public Test(DReferences references) {
-        id = -1;
-        this.references = new TestReferenceStates();
-        for (DReference ref : references) {
-            this.references.add(new TestReferenceState(ref));
-        }
-    }
-
-    public Test(int id, String name, String encapsulation) {
+    public Test(int id, String name, int runTimes, String wrappedContent) {
         this.id = id;
         this.name = name;
-        this.references = new TestReferenceStates();
+        this.runTimes = runTimes;
+        this.references = unWrapContent(wrappedContent);
+    }
 
-        String[] elems = encapsulation.split(p);
+    public Test(String name, DReferences refs) {
+        this.id = -1;
+        this.name = name;
+        this.runTimes = 0;
+        this.references = new TestReferenceStates(refs.size());
+        for (DReference ref : refs)
+            this.references.add(new TestReferenceState(ref));
+    }
+
+    private TestReferenceStates unWrapContent(String wrappedContent) {
+        String[] items = wrappedContent.split(SEP);
         int index = 0;
-        // Estado
-        state = Integer.parseInt(elems[index++]);
-        // Numero de palabras
-        int size = Integer.parseInt(elems[index++]);
-        // Por cada palabra (con su estado y passed)
-        for (int i = 0; i < size; i++) {
-            DReference ref = LanguageKernelControl.getReference(elems[index++]);
-            boolean passed = Boolean.parseBoolean(elems[index++]);
-            int fallos_match = Integer.parseInt(elems[index++]);
-            int fallos_complete = Integer.parseInt(elems[index++]);
-            int fallos_write = Integer.parseInt(elems[index++]);
 
-            if (ref != null) {
-                TestReferenceState refstate = new TestReferenceState(ref);
-                refstate.passed = passed;
-                refstate.fallos_match = fallos_match;
-                refstate.fallos_complete = fallos_complete;
-                refstate.fallos_write = fallos_write;
-                references.add(refstate);
-            }
-        }
-    }
+        int nRefs = Integer.parseInt(items[index++]);
+        TestReferenceStates res = new TestReferenceStates(nRefs);
+        for (int i = 0; i < nRefs; i++) {
+            TestReferenceState refState = new TestReferenceState(null);
 
-    public String encapsulate() {
-        StringBuilder res = new StringBuilder();
-        // Estado
-        res.append(state).append(p);
-        // Numero de palabras
-        res.append(references.size()).append(p);
-        // Por cada palabra (con su estado y passed)
-        for (TestReferenceState refstate : references) {
-            res.append(refstate.reference.name).append(p);
-            res.append(refstate.passed).append(p);
-            res.append(refstate.fallos_match).append(p);
-            res.append(refstate.fallos_complete).append(p);
-            res.append(refstate.fallos_write).append(p);
-        }
-        return res.toString();
-    }
+            refState.reference = DReference.unWrapReference(items[index++]);
+            refState.match.attempts = Integer.parseInt(items[index++]);
+            refState.match.errors = Integer.parseInt(items[index++]);
+            refState.complete.attempts = Integer.parseInt(items[index++]);
+            refState.complete.errors = Integer.parseInt(items[index++]);
+            refState.write.attempts = Integer.parseInt(items[index++]);
+            refState.write.errors = Integer.parseInt(items[index++]);
+            refState.listening.attempts = Integer.parseInt(items[index++]);
+            refState.listening.errors = Integer.parseInt(items[index++]);
 
-    public void clear() {
-        for (TestReferenceState refstate : references) {
-            refstate.passed = false;
-            refstate.fallos_match = 0;
-            refstate.fallos_complete = 0;
-            refstate.fallos_write = 0;
-        }
-    }
-
-    public void nextStat() {
-        for (TestReferenceState refstate : references) {
-            refstate.passed = false;
-        }
-    }
-
-    public boolean isSaved() {
-        return id != -1;
-    }
-
-    public DReferences getReferences() {
-        DReferences res = new DReferences();
-        for (TestReferenceState refstate : references) {
-            res.add(refstate.reference);
+            res.add(refState);
         }
         return res;
     }
 
-    public int indexOf(DReference reference) {
-        for (int i = 0; i < references.size(); i++) {
-            if (reference == references.get(i).reference) {
-                return i;
-            }
+    public static String wrapContent(Test test) {
+        StringBuilder res = new StringBuilder();
+        res.append(test.references.size());
+        for (TestReferenceState refState : test.references) {
+
+            res.append(SEP).append(DReference.wrapReference(refState.reference));
+            res.append(SEP).append(refState.match.attempts).append(SEP).append(refState.match.errors);
+            res.append(SEP).append(refState.complete.attempts).append(SEP).append(refState.complete.errors);
+            res.append(SEP).append(refState.write.attempts).append(SEP).append(refState.write.errors);
+            res.append(SEP).append(refState.listening.attempts).append(SEP).append(refState.listening.errors);
+
         }
-        return -1;
+        return res.toString();
     }
 
-    public void check() {
-        for (int i = 0; i < references.size(); i++) {
-            String name = references.get(i).reference.name;
-            if (LanguageKernelControl.getReference(name) == null) {
-                references.remove(i);
-                i--;
-            }
-        }
+    public DReferences getReferences() {
+        DReferences res = new DReferences();
+        for (TestReferenceState refState : references)
+            res.add(refState.reference);
+        return res;
     }
 
-    public boolean isEmpty() {
-        return references.isEmpty();
+    public boolean hasRun() {
+        return runTimes != 0;
     }
+
+    public void run_finished() {
+        runTimes++;
+    }
+
+    public int getRunTimes() {
+        return runTimes;
+    }
+
+    public double getAccuracy() {
+        int attempts = 0;
+        int errors = 0;
+        for (TestReferenceState refState : references) {
+            attempts += refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
+            errors += refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
+        }
+        return getAccurary(attempts, errors);
+    }
+
+    private double getAccurary(int attempts, int errors) {
+        return ((double) (attempts - errors) / (double) attempts) * 100;
+    }
+
+    public String getBestReferenceName() {
+        int bestAttempt = 0;
+        double bestAccuracy = -1.0;
+        String bestName = "";
+
+        for (TestReferenceState refState : references) {
+            int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
+            int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
+            double accuracy = getAccurary(attempts, errors);
+
+            if (accuracy > bestAccuracy || ((accuracy == bestAccuracy) && (attempts < bestAttempt))) {
+                bestName = refState.reference.name;
+                bestAttempt = attempts;
+                bestAccuracy = accuracy;
+            } else if (accuracy == bestAccuracy && (attempts == bestAttempt)) {
+                bestName = bestName + ", " + refState.reference.name;
+            }
+        }
+        return bestName;
+    }
+
+    public String getWorstReferenceName() {
+        int worstAttempt = 0;
+        double worstAccuracy = 100000.0;
+        String worstName = "";
+
+        for (TestReferenceState refState : references) {
+            int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
+            int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
+            double accuracy = getAccurary(attempts, errors);
+
+            if (accuracy < worstAttempt || ((accuracy == worstAttempt) && (attempts > worstAttempt))) {
+                worstName = refState.reference.name;
+                worstAttempt = attempts;
+                worstAccuracy = accuracy;
+            } else if (accuracy == worstAccuracy && (attempts == worstAttempt)) {
+                worstName = worstName + ", " + refState.reference.name;
+            }
+        }
+        return worstName;
+    }
+
+    public boolean hasContent(CharSequence s) {
+        return name.contains(s);
+    }
+
 }

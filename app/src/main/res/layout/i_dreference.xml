@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dip"
+    android:background="@drawable/ripple"
+    android:clickable="true"
+    android:elevation="3dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/noun"
+            style="@style/label_type_row"
+            android:background="@color/noun" />
+
+        <View
+            android:id="@+id/verb"
+            style="@style/label_type_row"
+            android:background="@color/verb" />
+
+        <View
+            android:id="@+id/adjective"
+            style="@style/label_type_row"
+            android:background="@color/adjective" />
+
+        <View
+            android:id="@+id/adverb"
+            style="@style/label_type_row"
+            android:background="@color/adverb" />
+
+        <View
+            android:id="@+id/phrasal"
+            style="@style/label_type_row"
+            android:background="@color/phrasal" />
+
+        <View
+            android:id="@+id/expression"
+            style="@style/label_type_row"
+            android:background="@color/expression" />
+
+        <View
+            android:id="@+id/preposition"
+            style="@style/label_type_row"
+            android:background="@color/preposition" />
+
+        <View
+            android:id="@+id/conjunction"
+            style="@style/label_type_row"
+            android:background="@color/conjunction" />
+
+
+        <View
+            android:id="@+id/other"
+            style="@style/label_type_row"
+            android:background="@color/other" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:maxLines="1"
+        android:text="La palabra"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FF000000"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/translation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:maxLines="1"
+        android:text="La traduccion"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FF444444" />
+
+</LinearLayout>

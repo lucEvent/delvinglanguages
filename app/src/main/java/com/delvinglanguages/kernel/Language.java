@@ -1,15 +1,14 @@
 package com.delvinglanguages.kernel;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.DrawerWords;
-import com.delvinglanguages.kernel.set.Inflexions;
-import com.delvinglanguages.kernel.set.Tests;
-import com.delvinglanguages.kernel.set.Themes;
-import com.delvinglanguages.kernel.set.Words;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
-import com.delvinglanguages.settings.Settings;
+import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.DrawerReferences;
+import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Statistics;
+import com.delvinglanguages.kernel.util.Tests;
+import com.delvinglanguages.kernel.util.Themes;
 
 import java.text.Collator;
 import java.util.Locale;
@@ -76,10 +75,9 @@ public class Language {
     public static final int PO = 16;
     public static final int RU = 17;
 
-    // Setting masks
-    public static final int MASK_PH = 0x1;
-    public static final int MASK_ADJ = 0x2;
-    public static final int MASK_ESP_CHARS = 0x4;
+    // Settings masks
+    public static final int MASK_PHRASAL_VERBS = 0x1;
+
 
     private Locale locale;
 
@@ -87,83 +85,71 @@ public class Language {
 
     public final int id;
 
-    public String language_delved_name;
-    public String language_native_name;
-
-    public Words words;
-    public Words removed_words;
-    public DrawerWords drawer_words;
-
-    public Dictionary dictionary;
-
-    public Estadisticas statistics;
-
-    public Tests tests;
-
-    public Themes themes;
+    public String language_name;
 
     public int settings;
 
-    public Language(int id, int code, String delved_name, String native_name, int settings) {
+    public Dictionary dictionary;
+    public DReferences removed_references;
+    public DrawerReferences drawer_references;
+    public Themes themes;
+    public Tests tests;
+    public Statistics statistics;
+
+    public Language(int id, int code, String language_name, int settings) {
         this.id = id;
         this.CODE = code;
-        this.language_delved_name = delved_name;
-        this.language_native_name = native_name;
+        this.language_name = language_name;
         this.settings = settings;
 
-        setLocale();
+        locale = getLocale(code);
     }
 
-    protected void setLocale() {
-        switch (CODE) {
+    public static Locale getLocale(int language_code) {
+        switch (language_code) {
             case UK:
-                locale = new Locale("en", "GB");
-                break;
+                return Locale.UK;
             case US:
-                locale = new Locale("en", "US");
-                break;
+                return Locale.US;
             case SV:
-                locale = new Locale("sv", "SE", "SE");
-                break;
-            case ES:
-                locale = new Locale("es", "ES", "ES");
-                break;
+                return new Locale("sv", "SE", "SE");
             case FI:
-                locale = new Locale("fi", "FI", "FI");
-                break;
-            default:
-                locale = new Locale("en", "GB");
+                return new Locale("fi", "FI", "FI");
+            case ES:
+                return new Locale("es", "ES", "ES");
+            case CA:
+                return new Locale("ca", "ES");
+            case BA:
+                return new Locale("eu", "ES");
+            case CZ:
+                return new Locale("cs", "CZ");
+            case DA:
+                return new Locale("da", "DK");
+            case DU:
+                return new Locale("nl", "NL");
+            case EST:
+                return new Locale("et", "EE");
+            case FR:
+                return Locale.FRANCE;
+            case GE:
+                return Locale.GERMANY;
+            case GR:
+                return new Locale("el", "GR");
+            case IT:
+                return Locale.ITALY;
+            case NO:
+                return new Locale("nb", "NO");
+            case PO:
+                return new Locale("pl", "PL");
+            case RU:
+                return new Locale("ru", "RU");
         }
+        return null;
     }
 
     /**
      * ********************** Getters ***********************
      **/
-
-    public Words getWords(String word) {
-        return getWords(word, dictionary.getDictionaryAt(false, word.charAt(0)));
-    }
-
-    private Words getWords(String name, TreeSet<DReference> subD) {
-        if (subD != null) {
-            for (DReference ref : subD) {
-                if (ref.name.equals(name)) {
-                    return new Words(ref.appearances);
-                }
-            }
-        }
-        return null;
-    }
-
-    public Word getWordById(int id) {
-        for (Word word : words) {
-            if (word.id == id) {
-                return word;
-            }
-        }
-        return null;
-    }
-
     public DReference getReference(String name) {
         return dictionary.getReference(false, name);
     }
@@ -172,34 +158,24 @@ public class Language {
         return dictionary.getReferences(false);
     }
 
-    public boolean contains(Word word) {
-        return words.contains(word);
-    }
-
     public int[] getTypeCounter() {
         return dictionary.getTypeCounter();
     }
 
     public TreeSet<DReference> getDiccionary() {
-        return dictionary.getDictionary(false);
+        return dictionary.getDictionary();
     }
 
-    public TreeSet<DReference> getDiccionaryAt(char charAt) {
-        return dictionary.getDictionaryAt(false, charAt);
+    public TreeSet<DReference> getDiccionaryInverse() {
+        return dictionary.getDictionaryInverse();
     }
 
     public Character[] getDictionaryIndexes() {
         return CAPS[CODE];
     }
 
-    public boolean getSettings(int mask) {
-        boolean res;
-        if ((settings & mask) != 0) {
-            res = true;
-        } else {
-            res = false;
-        }
-        return res;
+    public boolean getSetting(int mask) {
+        return (settings & mask) != 0;
     }
 
     public Locale getLocale() {
@@ -241,36 +217,31 @@ public class Language {
     }
 
     public boolean isLoaded() {
-        return words != null && drawer_words != null && removed_words != null;
-    }
-
-    public boolean hasEntries() {
-        return !words.isEmpty();
+        return dictionary != null && drawer_references != null && removed_references != null;
     }
 
     /**
      * ********************** Setters ***********************
      **/
 
-    public void setStatistics(Estadisticas e) {
-        statistics = e;
+    public void setStatistics(Statistics s) {
+        statistics = s;
     }
 
-    public void setWords(Words words) {
-        this.words = words;
-        this.dictionary = new Dictionary(Collator.getInstance(locale), words);
+    public void setReferences(DReferences references) {
+        this.dictionary = new Dictionary(Collator.getInstance(locale), references);
     }
 
-    public void setDrawerWords(DrawerWords drawer_words) {
-        this.drawer_words = drawer_words;
+    public void setDrawerReferences(DrawerReferences drawer_references) {
+        this.drawer_references = drawer_references;
     }
 
-    public void setRemovedWords(Words removed_words) {
-        this.removed_words = removed_words;
+    public void setRemovedReferences(DReferences removed_references) {
+        this.removed_references = removed_references;
     }
 
-    public void setName(String newname) {
-        this.language_delved_name = newname;
+    public void setName(String name) {
+        this.language_name = name;
     }
 
     public void setTests(Tests tests) {
@@ -281,7 +252,7 @@ public class Language {
         this.themes = themes;
     }
 
-    public void setSettings(boolean state, int mask) {
+    public void setSetting(boolean state, int mask) {
         if (state) {
             this.settings |= mask;
         } else {
@@ -295,33 +266,28 @@ public class Language {
         return dictionary.getPhrasalVerbs(false);
     }
 
-    public static int configure(boolean phrasal, boolean adjective, boolean specialCharacters) {
+    public static int configure(boolean phrasal) {
         int settings = 0;
         if (phrasal)
-            settings |= MASK_PH;
-        if (adjective)
-            settings |= MASK_ADJ;
-        if (specialCharacters)
-            settings |= MASK_ESP_CHARS;
+            settings |= MASK_PHRASAL_VERBS;
         return settings;
     }
 
-    public void updateCode(int code) {
+    public void setCode(int code) {
         this.CODE = code;
-        setLocale();
+        this.locale = getLocale(code);
     }
 
     /**
      * ********************** Adders ***********************
      **/
 
-    public void addWord(Word word) {
-        words.add(word);
-        dictionary.addEntry(word);
+    public void addReference(DReference reference) {
+        dictionary.addEntry(reference);
     }
 
-    public void addWord(DrawerWord word) {
-        drawer_words.add(0, word);
+    public void addReference(DrawerReference drawerReference) {
+        drawer_references.add(0, drawerReference);
     }
 
     public void addTest(Test t) {
@@ -336,50 +302,48 @@ public class Language {
      * ********************** Deletes ***********************
      **/
 
-    public void removeWord(Word word) {
-        words.remove(word);
-        dictionary.removeEntry(word);
+    public void removeReference(DReference reference) {
+        dictionary.removeEntry(reference);
 
-        removed_words.add(word);
+        removed_references.add(reference);
     }
 
-    public void deleteWord(int position) {
-        removed_words.remove(position);
+    public void deleteReference(int position) {
+        removed_references.remove(position);
     }
 
-    public void deleteDrawerWord(DrawerWord word) {
-        drawer_words.remove(word);
+    public void deleteDrawerReference(DrawerReference drawerReference) {
+        drawer_references.remove(drawerReference);
     }
 
-    public void deleteAllRemovedWords() {
-        removed_words.clear();
+    public void deleteAllRemovedReferences() {
+        removed_references.clear();
     }
 
     /**
      * ********************** Restores ***********************
      **/
-    public void restoreWord(int position) {
-        Word word = removed_words.remove(position);
-
-        words.add(word);
-        dictionary.addEntry(word);
+    public void restoreReference(DReference reference) {
+        removed_references.remove(reference);
+        dictionary.addEntry(reference);
     }
 
-    public void updateWord(Word word, String name, Inflexions inflexions, String pronunciation) {
-        words.remove(word);
-        dictionary.removeEntry(word);
-        word.update(name, inflexions, pronunciation);
-        words.add(word);
-        dictionary.addEntry(word);
+    public void updateReference(DReference reference, String name, String pronunciation, Inflexions inflexions) {
+        dictionary.removeEntry(reference);
+        reference.update(name, pronunciation, inflexions);
+        dictionary.addEntry(reference);
     }
 
     public boolean isDictionaryCreated() {
-        return dictionary.dictionaryCreated;
+        return dictionary != null && dictionary.dictionaryCreated;
     }
 
-    private void debug(String text) {
-        if (Settings.DEBUG)
-            android.util.Log.d("##Language##", text);
+    public void clear() {
+        dictionary = null;
+        drawer_references = null;
+        removed_references = null;
+        themes = null;
+        tests = null;
     }
 
 }

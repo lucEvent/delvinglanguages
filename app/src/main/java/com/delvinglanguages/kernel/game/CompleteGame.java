@@ -1,6 +1,6 @@
 package com.delvinglanguages.kernel.game;
 
-import com.delvinglanguages.kernel.set.DReferences;
+import com.delvinglanguages.kernel.util.DReferences;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,7 @@ public class CompleteGame extends Game {
             position = pos;
             letter = let;
             string = act;
-            visibleUntil = pos;// Al menos tiene que ser visible hasta su
-            // posicion
+            visibleUntil = pos;// Must be visible until his position at least
         }
     }
 
@@ -69,14 +68,12 @@ public class CompleteGame extends Game {
                         dictionary[c - 'A'] = true;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("AIOOBException por: " + c + " ("
-                            + (int) c + ")");
+                    System.out.println("AIOOBException por: " + c + " (" + (int) c + ")");
                 }
             }
         }
 
-        // Comprovamos que las (size o validChars.size) primeras Acciones no
-        // estan repetidas
+        // Comprovamos que las (size o validChars.size) primeras Acciones no estan repetidas
         int minsize = validChars.size() < size ? validChars.size() : size;
         for (int i = 1; i < minsize; i++) {
             Action act1 = validChars.get(i);

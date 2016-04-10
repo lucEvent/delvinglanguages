@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#8aaa">
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0000"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/hint_enter_text_to_speech"
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium">
+
+            <requestFocus />
+        </EditText>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/speech"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ripple_round"
+        android:padding="15dp"
+        android:src="@drawable/ic_speaker" />
+
+</RelativeLayout>

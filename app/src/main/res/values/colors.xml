@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="noun">#FF0B80D6</color>
-    <color name="verb">#FFE7290F</color>
-    <color name="adjective">#FF13B677</color>
-    <color name="adverb">#FFBE86E4</color>
-    <color name="phrasal">#FF645947</color>
-    <color name="expression">#FF0A4737</color>
-    <color name="preposition">#FF3c2995</color>
-    <color name="conjuntion">#FFa007a4</color>
-    <color name="other">#FFA96601</color>
+    <color name="colorPrimary">#3379A0</color>
+    <color name="colorPrimaryDark">#236990</color>
+    <color name="colorAccent">#FFD54F</color>
+    <color name="colorPrimarySoft">#2A7198</color>
 
-    <color name="transparent">#00000000</color>
-    <color name="border_button">#B3236990</color>
-    <color name="main_drawer">#fccc</color>
+    <color name="noun">#E53935</color>
+    <color name="verb">#8E24AA</color>
+    <color name="adjective">#3949AB</color>
+    <color name="adverb">#039BE5</color>
+    <color name="phrasal">#00897B</color>
+    <color name="expression">#7CB342</color>
+    <color name="preposition">#FDD835</color>
+    <color name="conjunction">#FB8C00</color>
+    <color name="other">#6D4C41</color>
+    <color name="none">#0fff</color>
+
+    <color name="button_disabled">#feee</color>
+    <color name="button_default">#fddd</color>
+    <color name="default_background">#feee</color>
+    <color name="activity_title">#ffff</color>
 
 </resources>

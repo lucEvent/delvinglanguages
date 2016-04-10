@@ -1,16 +1,11 @@
 package com.delvinglanguages.kernel.game;
 
-import android.util.Log;
-
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.TestReferenceStates;
+import com.delvinglanguages.kernel.util.DReferences;
 
 import java.util.Random;
 
-public class Game extends Random {
-
-    protected static final String DEBUG = "##Game##";
+public abstract class Game extends Random {
 
     protected DReferences references;
     protected PriorityMap priorityMap;
@@ -43,21 +38,21 @@ public class Game extends Random {
         }).start();
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     public DReference nextReference() {
         while (running) ;
 
         Integer priority = priorityMap.getMaxKey();
         DReferences set = priorityMap.get(priority);
 
-        DReference p = set.remove(nextInt(set.size()));
+        DReference ref = set.remove(nextInt(set.size()));
         if (set.isEmpty()) {
             priorityMap.remove(priority);
-            if (priorityMap.size() == 0) {
+            if (priorityMap.size() == 0)
                 createPriorityMap();
-            }
         }
-        Log.v(DEBUG, "Getting ref with prior:" + priority);
-        return p;
+        System.out.println("Getting ref with prior:" + priority);
+        return ref;
     }
 
     public char nextLetter(boolean upperCase) {
@@ -68,11 +63,4 @@ public class Game extends Random {
         }
     }
 
-    public int nextPosition(TestReferenceStates refstates) {
-        int cand;
-        do {
-            cand = nextInt(refstates.size());
-        } while (refstates.get(cand).passed);
-        return cand;
-    }
 }

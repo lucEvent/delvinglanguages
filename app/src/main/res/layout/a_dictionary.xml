@@ -1,183 +1,59 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*" >
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.DictionaryActivity">
 
-    <TableRow
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/dic_a"
-            style="@style/button_list_selector"
-            android:text="@string/a" />
+        <RelativeLayout
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary">
 
-        <Button
-            android:id="@+id/dic_b"
-            style="@style/button_list_selector"
-            android:text="@string/b" />
+            <TextView
+                style="?android:attr/windowTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/start_search"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="@string/dictionary" />
 
-        <Button
-            android:id="@+id/dic_c"
-            style="@style/button_list_selector"
-            android:text="@string/c" />
-    </TableRow>
+            <ImageButton
+                android:id="@+id/start_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ripple_round"
+                android:onClick="startSearch"
+                android:padding="16dp"
+                android:src="@drawable/ic_search" />
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/dic_d"
-            style="@style/button_list_selector"
-            android:text="@string/d" />
+        <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:queryHint="@string/hint_search_content"
+            android:visibility="gone" />
 
-        <Button
-            android:id="@+id/dic_e"
-            style="@style/button_list_selector"
-            android:text="@string/e" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <Button
-            android:id="@+id/dic_f"
-            style="@style/button_list_selector"
-            android:text="@string/f" />
-
-        <Button
-            android:id="@+id/dic_g"
-            style="@style/button_list_selector"
-            android:text="@string/g" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/dic_h"
-            style="@style/button_list_selector"
-            android:text="@string/h" />
-
-        <Button
-            android:id="@+id/dic_i"
-            style="@style/button_list_selector"
-            android:text="@string/i" />
-
-        <Button
-            android:id="@+id/dic_j"
-            style="@style/button_list_selector"
-            android:text="@string/j" />
-
-        <Button
-            android:id="@+id/dic_k"
-            style="@style/button_list_selector"
-            android:text="@string/k" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/dic_l"
-            style="@style/button_list_selector"
-            android:text="@string/l" />
-
-        <Button
-            android:id="@+id/dic_m"
-            style="@style/button_list_selector"
-            android:text="@string/m" />
-
-        <Button
-            android:id="@+id/dic_n"
-            style="@style/button_list_selector"
-            android:text="@string/n" />
-
-        <Button
-            android:id="@+id/dic_o"
-            style="@style/button_list_selector"
-            android:text="@string/o" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/dic_p"
-            style="@style/button_list_selector"
-            android:text="@string/p" />
-
-        <Button
-            android:id="@+id/dic_q"
-            style="@style/button_list_selector"
-            android:text="@string/q" />
-
-        <Button
-            android:id="@+id/dic_r"
-            style="@style/button_list_selector"
-            android:text="@string/r" />
-
-        <Button
-            android:id="@+id/dic_s"
-            style="@style/button_list_selector"
-            android:text="@string/s" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/dic_t"
-            style="@style/button_list_selector"
-            android:text="@string/t" />
-
-        <Button
-            android:id="@+id/dic_u"
-            style="@style/button_list_selector"
-            android:text="@string/u" />
-
-        <Button
-            android:id="@+id/dic_v"
-            style="@style/button_list_selector"
-            android:text="@string/v" />
-
-        <Button
-            android:id="@+id/dic_w"
-            style="@style/button_list_selector"
-            android:text="@string/w" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <Button
-            android:id="@+id/dic_x"
-            style="@style/button_list_selector"
-            android:text="@string/x" />
-
-        <Button
-            android:id="@+id/dic_y"
-            style="@style/button_list_selector"
-            android:text="@string/y" />
-
-        <Button
-            android:id="@+id/dic_z"
-            style="@style/button_list_selector"
-            android:text="@string/z" />
-
-        <Button
-            android:id="@+id/dic_others"
-            style="@style/button_list_selector"
-            android:text="@string/mas" />
-    </TableRow>
-
-</TableLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

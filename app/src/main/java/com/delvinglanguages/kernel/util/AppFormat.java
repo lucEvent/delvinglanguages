@@ -1,12 +1,10 @@
 package com.delvinglanguages.kernel.util;
 
-import com.delvinglanguages.settings.Settings;
-
 import java.util.ArrayList;
 
 public class AppFormat {
 
-    public static String formatWordName(String s) { // Funcion a revisar y rehacer de 0
+    public static String formatReferenceName(String s) { // Funcion a revisar y rehacer de 0
         //// TODO: 06/01/2016  
         StringBuilder res = new StringBuilder(s);
         int index = res.indexOf(",");
@@ -20,7 +18,7 @@ public class AppFormat {
                     }
                 }
             } catch (StringIndexOutOfBoundsException e) {
-                debug("StringIndexOutOfBoundsException con:" + s);
+                System.out.println("StringIndexOutOfBoundsException con:" + s);
                 char car;
                 int size = res.length();
                 do {
@@ -35,6 +33,8 @@ public class AppFormat {
     }
 
     public static String[] formatTranslation(String string) {
+        if (string.isEmpty()) return new String[]{};
+
         ArrayList<String> list = new ArrayList<String>();
 
         int indi = 0, caps = 0;
@@ -85,11 +85,6 @@ public class AppFormat {
             }
         }
         return res.toString();
-    }
-
-    private static void debug(String text) {
-        if (Settings.DEBUG)
-            android.util.Log.d("##AppFormat##", text);
     }
 
 }

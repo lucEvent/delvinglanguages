@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   style="@style/main_item_layout">
+
+    <TextView
+        style="@style/main_item_title"
+        android:text="@string/content" />
+
+    <TextView
+        style="@style/main_item_content"
+        android:id="@+id/main_types_content"
+        android:text="@string/main_types_content_description" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_add_reference"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_word" />
+
+        <Button
+            android:id="@+id/button_add_theme"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_theme" />
+    </LinearLayout>
+
+</LinearLayout>

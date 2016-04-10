@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/practise_match"
+        style="@style/Option_Linearlayout">
+
+        <ImageView
+            style="@style/Option_Imageview"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            style="@style/Option_Textview"
+            android:text="@string/match" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/practise_complete"
+        style="@style/Option_Linearlayout">
+
+        <ImageView
+            style="@style/Option_Imageview"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            style="@style/Option_Textview"
+            android:text="@string/complete" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/practise_write"
+        style="@style/Option_Linearlayout">
+
+        <ImageView
+            style="@style/Option_Imageview"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            style="@style/Option_Textview"
+            android:text="@string/write" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/practise_listening"
+        style="@style/Option_Linearlayout">
+
+        <ImageView
+            style="@style/Option_Imageview"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            style="@style/Option_Textview"
+            android:text="@string/listening" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/practise_test"
+        style="@style/Option_Linearlayout">
+
+        <ImageView
+            style="@style/Option_Imageview"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            style="@style/Option_Textview"
+            android:text="@string/test" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

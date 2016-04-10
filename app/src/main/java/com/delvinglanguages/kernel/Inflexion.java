@@ -1,8 +1,6 @@
 package com.delvinglanguages.kernel;
 
-import java.io.Serializable;
-
-public class Inflexion implements Serializable {
+public class Inflexion {
 
     private String[] inflexions;
 
@@ -49,4 +47,18 @@ public class Inflexion implements Serializable {
     public void setType(int type) {
         this.type = type;
     }
+
+    public boolean hasContent(CharSequence content) {
+        for (String i : inflexions)
+            if (i.toLowerCase().contains(content)) return true;
+        for (String t : translations)
+            if (t.toLowerCase().contains(content)) return true;
+        return false;
+    }
+
+    @Override
+    public Inflexion clone() {
+        return new Inflexion(inflexions.clone(), translations.clone(), type);
+    }
+
 }

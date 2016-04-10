@@ -1,70 +1,55 @@
 package com.delvinglanguages.kernel.game;
 
+
+import android.util.Pair;
+
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.set.DReferences;
-import com.delvinglanguages.kernel.set.TestReferenceStates;
+import com.delvinglanguages.kernel.util.DReferences;
 
 public class MatchGame extends Game {
 
-    public class QuestionModel {
+    public class RoundData {
         public DReference reference;
-        public String[] answers;
-        public Boolean[] correct;
+        public Pair<String, Boolean>[] options;
     }
 
     public MatchGame(DReferences references) {
         super(references);
     }
 
-    public QuestionModel nextQuestion(int nAnswers) {
-        QuestionModel res = new QuestionModel();
-
-        DReference ref = nextReference();
-        res.reference = ref;
-        res.answers = new String[nAnswers];
-        res.correct = new Boolean[nAnswers];
-
-        int randompos = nextInt(nAnswers);
-        res.answers[randompos] = ref.getTranslationsAsString();
-        res.correct[randompos] = true;
-        for (int i = 0; i < nAnswers; ++i) {
-            if (i != randompos) {
-                DReference resp = references.get(nextInt(references.size()));
-                if (resp == ref) {
-                    res.correct[i] = true;
-                } else {
-                    res.correct[i] = false;
-                }
-                res.answers[i] = resp.getTranslationsAsString();
-            }
-        }
-        return res;
+    public RoundData nextRound(int n_options, int own_options_max) { // own_options_max <= n_options
+        return nextRound(nextReference(), n_options, own_options_max);
     }
 
-    public QuestionModel nextQuestion(TestReferenceStates refstates,
-                                      int nAnswers) {
-        QuestionModel res = new QuestionModel();
+    public RoundData nextRound(DReference reference, int n_options, int own_options_max) { // own_options_max <= n_options
+        RoundData res = new RoundData();
 
-        int cand = nextPosition(refstates);
-        DReference p = references.get(cand);
-        res.reference = p;
-        res.answers = new String[nAnswers];
-        res.correct = new Boolean[nAnswers];
+        res.reference = reference;
+        res.options = new Pair[n_options];
 
-        int cand2 = nextInt(nAnswers);
-        res.answers[cand2] = p.getTranslationsAsString();
-        res.correct[cand2] = true;
-        for (int i = 0; i < nAnswers; ++i) {
-            if (i != cand2) {
-                DReference resp = references.get(nextInt(refstates.size()));
-                if (resp == p) {
-                    res.correct[i] = true;
-                } else {
-                    res.correct[i] = false;
-                }
-                res.answers[i] = resp.getTranslationsAsString();
-            }
+        String[] translations = res.reference.getTranslations();
+        own_options_max = Math.min(own_options_max, translations.length);
+        for (int i = 0; i < own_options_max; i++) {
+            int randomPosition;
+            do {
+                randomPosition = nextInt(n_options);
+            } while (res.options[randomPosition] != null);
+
+            int randomTranslationPosition;
+            do {
+                randomTranslationPosition = nextInt(translations.length);
+            } while (translations[randomTranslationPosition] == null);
+
+            res.options[randomPosition] = new Pair<>(translations[randomTranslationPosition], true);
+            translations[randomTranslationPosition] = null;
         }
+
+        for (int i = 0; i < n_options; ++i)
+            if (res.options[i] == null) {
+                String[] hooks = references.get(nextInt(references.size())).getTranslations();
+                res.options[i] = new Pair<>(hooks[nextInt(hooks.length)], false);//podria poner una solucion valida a false // TODO: 02/04/2016
+            }
+
         return res;
     }
 

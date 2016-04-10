@@ -21,12 +21,38 @@
         <item>Portuguese</item>
         <item>Russian</item>
     </string-array>
-    <string-array name="prac_opt">
-        <item>Match</item>
-        <item>Complete</item>
-        <item>Write</item>
-        <item>Listening</item>
-        <item>Test you</item>
+    <string-array name="language_codes">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+    </string-array>
+    <string-array name="number_of_languages">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
     </string-array>
     <string-array name="phv_opt">
         <item>Practise</item>
@@ -146,7 +172,7 @@
         <item>@color/phrasal</item>
         <item>@color/expression</item>
         <item>@color/preposition</item>
-        <item>@color/conjuntion</item>
+        <item>@color/conjunction</item>
         <item>@color/other</item>
     </integer-array>
 

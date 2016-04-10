@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_noun"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_noun"
+            android:text="@string/noun" />
+
+        <Button
+            android:id="@+id/button_verb"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_verb"
+            android:text="@string/verb" />
+
+        <Button
+            android:id="@+id/button_adjective"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_adjective"
+            android:text="@string/adjective" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_adverb"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_adverb"
+            android:text="@string/adverb" />
+
+        <Button
+            android:id="@+id/button_phrasal"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_phrasal"
+            android:text="@string/phrasalverb" />
+
+        <Button
+            android:id="@+id/button_expression"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_expression"
+            android:text="@string/expression" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_preposition"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_preposition"
+            android:text="@string/preposition" />
+
+        <Button
+            android:id="@+id/button_conjunction"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_conjunction"
+            android:text="@string/conjunction" />
+
+        <Button
+            android:id="@+id/button_other"
+            style="@style/button_type"
+            android:backgroundTint="@color/button_other"
+            android:text="@string/other" />
+    </LinearLayout>
+
+</LinearLayout>

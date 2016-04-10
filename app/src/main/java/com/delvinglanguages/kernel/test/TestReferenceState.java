@@ -4,18 +4,32 @@ import com.delvinglanguages.kernel.DReference;
 
 public class TestReferenceState {
 
-	public DReference reference;
-	public boolean passed;
+    public enum TestStage {
+        DELVING, MATCH, COMPLETE, WRITE, LISTENING, END
+    }
 
-	public int fallos_match;
-	public int fallos_complete;
-	public int fallos_write;
+    public class Stats {
+        public int attempts;
+        public int errors;
 
-	public TestReferenceState(DReference reference) {
-		this.reference = reference;
-		passed = false;
-		fallos_match = 0;
-		fallos_complete = 0;
-		fallos_write = 0;
-	}
+        public Stats() {
+            this.attempts = 0;
+            this.errors = 0;
+        }
+    }
+
+    public DReference reference;
+
+    public TestStage stage;
+
+    public Stats match, complete, write, listening;
+
+    public TestReferenceState(DReference reference) {
+        this.reference = reference;
+        this.match = new Stats();
+        this.complete = new Stats();
+        this.write = new Stats();
+        this.listening = new Stats();
+    }
+
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip">
+
+    <TextView
+        android:id="@+id/pair_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/edit"
+        android:gravity="center"
+        android:text="Text 1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/middle"
+        android:background="#0000"
+        android:padding="8dp"
+        android:src="@drawable/ic_edit" />
+
+    <View
+        android:id="@+id/middle"
+        android:layout_width="1dip"
+        android:layout_height="20dip"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/middle"
+        android:background="#0000"
+        android:padding="8dp"
+        android:src="@drawable/ic_delete" />
+
+    <TextView
+        android:id="@+id/pair_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/delete"
+        android:gravity="center"
+        android:text="Text 2"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
