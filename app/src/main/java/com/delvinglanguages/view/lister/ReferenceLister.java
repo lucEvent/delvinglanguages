@@ -19,7 +19,8 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     private final boolean phrasalsEnabled;
     private View.OnClickListener itemListener;
 
-    public ReferenceLister(DReferences dataset, boolean phrasalsEnabled, View.OnClickListener itemListener) {
+    public ReferenceLister(DReferences dataset, boolean phrasalsEnabled, View.OnClickListener itemListener)
+    {
         this.dataset = dataset;
         this.phrasalsEnabled = phrasalsEnabled;
         this.itemListener = itemListener;
@@ -28,42 +29,47 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     }
 
     @Override
-    public ReferenceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReferenceViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_dreference, parent, false);
         v.setOnClickListener(itemListener);
         return new ReferenceViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ReferenceViewHolder holder, int position) {
+    public void onBindViewHolder(ReferenceViewHolder holder, int position)
+    {
         ReferenceViewHolder.populateViewHolder(holder, dataset.get(position), phrasalsEnabled);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return datasetVisibleCount;
     }
 
-    public void setNewDataSet(DReferences dataset) {
+    public void setNewDataSet(DReferences dataset)
+    {
         this.dataset = dataset;
 
         int newVisibleCount = Math.min(dataset.size(), CHUNK);
         if (newVisibleCount > datasetVisibleCount) {
-            notifyItemRangeChanged(0, datasetVisibleCount - 1);
-            notifyItemRangeInserted(datasetVisibleCount, newVisibleCount - 1);
+            notifyItemRangeChanged(0, datasetVisibleCount);
+            notifyItemRangeInserted(datasetVisibleCount, newVisibleCount - datasetVisibleCount);
         } else if (newVisibleCount < datasetVisibleCount) {
-            notifyItemRangeChanged(0, newVisibleCount - 1);
-            notifyItemRangeRemoved(newVisibleCount, datasetVisibleCount - 1);
+            notifyItemRangeChanged(0, newVisibleCount);
+            notifyItemRangeRemoved(newVisibleCount, datasetVisibleCount - newVisibleCount);
         } else
             notifyDataSetChanged();
 
         this.datasetVisibleCount = newVisibleCount;
     }
 
-    public void loadMoreData() {
+    public void loadMoreData()
+    {
         int dataAdded = Math.min(this.datasetVisibleCount + CHUNK, dataset.size()) - datasetVisibleCount;
         try {
-            notifyItemRangeInserted(datasetVisibleCount, datasetVisibleCount + dataAdded - 1);
+            notifyItemRangeInserted(datasetVisibleCount, dataAdded);
         } catch (Exception ignored) {
         }
         this.datasetVisibleCount += dataAdded;

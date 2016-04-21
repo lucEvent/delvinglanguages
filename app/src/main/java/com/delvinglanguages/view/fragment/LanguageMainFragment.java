@@ -53,18 +53,21 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity context) {
+    public void onAttach(Activity context)
+    {
         super.onAttach(context);
         onAttachX(context);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         onAttachX(context);
     }
 
-    private void onAttachX(Context context) {
+    private void onAttachX(Context context)
+    {
         handler = new Handler(this);
         dataManager = new LanguageFetchManager(context, this.handler);
         currentLanguage = dataManager.getCurrentLanguage();
@@ -77,7 +80,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     private View optionPad;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.f_language_main, container, false);
 
         view_search = (EditText) view.findViewById(R.id.search_edittext);
@@ -100,7 +104,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()) {
             @Override
-            public boolean supportsPredictiveItemAnimations() {
+            public boolean supportsPredictiveItemAnimations()
+            {
                 return false;
             }
         };
@@ -111,7 +116,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new ContentLoader(layoutManager) {
             @Override
-            public void onLoadMore() {
+            public void onLoadMore()
+            {
                 listManager.loadMoreData();
             }
         });
@@ -129,14 +135,16 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         getActivity().setTitle(currentLanguage.language_name);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId()) {
             case R.id.search_button_left:
                 if (searchActive)
@@ -156,14 +164,16 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
     private View.OnClickListener onMoreOptionsClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             onOptionSelected(v.getId());
         }
     };
 
     private Dialog optionsDialog;
 
-    private void onOptionSelected(int option) {
+    private void onOptionSelected(int option)
+    {
         Intent intent = new Intent(getActivity(), LanguageActivity.class);
         switch (option) {
             case R.id.option_practise:
@@ -250,7 +260,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case AppCode.LANGUAGE_NAME_CHANGED:
@@ -261,13 +272,13 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
     }
 
     @Override
-    public void onTextChanged(CharSequence search, int start, int before, int count) {
-        long tstart = System.currentTimeMillis();
-
+    public void onTextChanged(CharSequence search, int start, int before, int count)
+    {
         ArrayList<Object> matches = new ArrayList<>();
         for (DReference ref : currentLanguage.dictionary.getDictionary())
             if (ref.hasContent(search))
@@ -282,25 +293,24 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
                 matches.add(test);
 
         listManager.setNewDataSet(matches);
-
-        long tend = System.currentTimeMillis();
-
-        System.out.println("[in " + (tend - tstart) + " ms] Search:" + search + " with " + matches.size() + " matches");
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable s)
+    {
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    public void onFocusChange(View v, boolean hasFocus)
+    {
         if (hasFocus)
             onSearchActionStart();
         else
             onSearchActionEnd();
     }
 
-    private void onSearchActionStart() {
+    private void onSearchActionStart()
+    {
         btn_srch_left.setImageResource(R.drawable.ic_arrow_back);
         btn_srch_right.setImageResource(R.drawable.ic_cancel);
         optionPad.setVisibility(View.GONE);
@@ -311,7 +321,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
         searchActive = true;
     }
 
-    private void onSearchActionEnd() {
+    private void onSearchActionEnd()
+    {
         btn_srch_left.setImageResource(R.mipmap.ic_launcher);
         btn_srch_right.setImageResource(R.drawable.ic_search);
         optionPad.setVisibility(View.VISIBLE);
@@ -328,12 +339,14 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
         private final WeakReference<LanguageMainFragment> context;
 
-        Handler(LanguageMainFragment context) {
+        Handler(LanguageMainFragment context)
+        {
             this.context = new WeakReference<>(context);
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             LanguageMainFragment service = context.get();
             switch (msg.what) {
                 case AppCode.MAIN_DATA_COUNTERS:
@@ -349,7 +362,8 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
     private View.OnClickListener onListItemClick = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
 
             Object item = v.getTag();
             if (item instanceof DReference) {
@@ -379,20 +393,23 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     };
     private View.OnClickListener onResetStatistics = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             dataManager.resetStatistics();
             listManager.notifyItemChanged(0);
         }
     };
     private View.OnClickListener onAddTheme = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             startActivity(new Intent(getActivity(), ThemeEditorActivity.class));
         }
     };
     private View.OnClickListener onAddReference = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             Intent intent = new Intent(getActivity(), ReferenceEditorActivity.class);
             intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_CREATE);
             startActivity(intent);

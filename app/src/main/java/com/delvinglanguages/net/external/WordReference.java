@@ -2,7 +2,6 @@ package com.delvinglanguages.net.external;
 
 import android.os.Handler;
 
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.AppFormat;
 
@@ -11,7 +10,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -48,7 +46,8 @@ public class WordReference {
     private final Handler handler;
     private final String header;
 
-    public WordReference(int from_language_code, int to_language_code, Handler handler) {
+    public WordReference(int from_language_code, int to_language_code, Handler handler)
+    {
         String from = CODES[from_language_code];
         String to = CODES[to_language_code];
 
@@ -60,7 +59,8 @@ public class WordReference {
         this.handler = handler;
     }
 
-    public boolean searchTerm(String search) {
+    public boolean searchTerm(String search)
+    {
         if (header == null) {
             return false;
         }
@@ -74,16 +74,18 @@ public class WordReference {
 
         final String term;
 
-        WRSearch(String term) {
+        WRSearch(String term)
+        {
             this.term = term;
             found = new TreeSet[DReference.NUMBER_OF_TYPES];
             for (int i = 0; i < found.length; i++) {
-                found[i] = new TreeSet<String>();
+                found[i] = new TreeSet<>();
             }
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             try {
                 URL page = new URL(header + term);
                 System.out.println(header + term);
@@ -114,21 +116,15 @@ public class WordReference {
                         }
                     }
                 }
-
-            } catch (MalformedURLException e) {
-                debug("Error en getContent");
-                e.printStackTrace();
-
             } catch (Exception e) {
-                debug("Exception: " + e.toString());
+                System.out.println("[WR] Error en run");
                 e.printStackTrace();
             }
-
             handler.obtainMessage(0, found).sendToTarget();
-
         }
 
-        void addAll(JSONObject translations) throws JSONException {
+        void addAll(JSONObject translations) throws JSONException
+        {
             String[] KEYS = {"OriginalTerm", "FirstTranslation", "SecondTranslation", "ThirdTranslation", "FourthTranslation"};
 
             int N = 0;
@@ -159,14 +155,16 @@ public class WordReference {
             }
         }
 
-        void add(JSONObject data, int type) throws JSONException {
+        void add(JSONObject data, int type) throws JSONException
+        {
             if (type != -1) {
                 String name = data.getString("term");
                 found[type].addAll(Arrays.asList(AppFormat.formatTranslation(name)));
             }
         }
 
-        int getType(JSONObject data) throws JSONException {
+        int getType(JSONObject data) throws JSONException
+        {
             String typeCode = data.getString("POS");
             int type;
 
@@ -232,19 +230,13 @@ public class WordReference {
                     type = 8;
                     break;
                 default:
-                    debug("HEYYY!!!! no tengo este tipo:" + typeCode);
+                    System.out.println("HEYYY!!!! no tengo este tipo:" + typeCode);
                     type = -1;
                     break;
             }
             return type;
         }
     }
-
-    private void debug(String text) {
-        if (Settings.DEBUG)
-            System.out.println("##WordReference##" + text);
-    }
-
 
 }
 

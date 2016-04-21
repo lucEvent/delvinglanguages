@@ -38,7 +38,8 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
 
         View title_translations, title_inflexions;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v)
+        {
             super(v);
 
             text_type = (TextView) v.findViewById(R.id.textview_type);
@@ -51,21 +52,24 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
         }
     }
 
-    public InflexionLister(Context context, Inflexions dataset, View.OnClickListener itemListener) {
+    public InflexionLister(Context context, Inflexions dataset, View.OnClickListener itemListener)
+    {
         this.inflater = LayoutInflater.from(context);
         this.dataset = dataset;
         this.itemListener = itemListener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = inflater.inflate(R.layout.i_inflexion, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
         Inflexion inflexion = dataset.get(position);
         int type = inflexion.getType();
 
@@ -105,25 +109,25 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataset.size();
     }
 
-    public void setNewDataSet(Inflexions dataset) {
-        int changed = Math.min(this.dataset.size(), dataset.size());
-        for (int i = 0; i < changed; i++) {
-            notifyItemChanged(i);
-        }
-        if (this.dataset.size() > changed) {
-            for (int i = changed; i < this.dataset.size(); i++) {
-                notifyItemRemoved(i);
-            }
-        } else if (dataset.size() > changed) {
-            for (int i = changed; i < dataset.size(); i++) {
-                notifyItemInserted(i);
-            }
-        }
+    public void setNewDataSet(Inflexions dataset)
+    {
+        int oldSize = this.dataset.size();
+        int newSize = dataset.size();
         this.dataset = dataset;
+
+        if (newSize > oldSize) {
+            notifyItemRangeChanged(0, oldSize);
+            notifyItemRangeInserted(oldSize, newSize - oldSize);
+        } else if (newSize < oldSize) {
+            notifyItemRangeChanged(0, newSize);
+            notifyItemRangeRemoved(newSize, oldSize - newSize);
+        } else
+            notifyDataSetChanged();
     }
 
 }

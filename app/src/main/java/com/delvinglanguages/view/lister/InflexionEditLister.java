@@ -17,7 +17,8 @@ public class InflexionEditLister extends InflexionLister {
 
         ImageView edit, delete;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v)
+        {
             super(v);
 
             edit = (ImageView) v.findViewById(R.id.edit);
@@ -25,7 +26,9 @@ public class InflexionEditLister extends InflexionLister {
         }
     }
 
-    public InflexionEditLister(Context context, Inflexions dataset, View.OnClickListener onModifyListener, View.OnClickListener onDeleteListener) {
+    public InflexionEditLister(Context context, Inflexions dataset, View.OnClickListener onModifyListener,
+                               View.OnClickListener onDeleteListener)
+    {
         super(context, dataset, null);
 
         this.onModifyListener = onModifyListener;
@@ -33,7 +36,8 @@ public class InflexionEditLister extends InflexionLister {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = inflater.inflate(R.layout.i_inflexion_edit, parent, false);
 
         ViewHolder holder = new ViewHolder(v);
@@ -43,7 +47,8 @@ public class InflexionEditLister extends InflexionLister {
     }
 
     @Override
-    public void onBindViewHolder(InflexionLister.ViewHolder holder, int position) {
+    public void onBindViewHolder(InflexionLister.ViewHolder holder, int position)
+    {
         super.onBindViewHolder(holder, position);
 
         Inflexion inflexion = dataset.get(position);
@@ -52,7 +57,8 @@ public class InflexionEditLister extends InflexionLister {
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataset.size();
     }
 

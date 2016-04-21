@@ -34,7 +34,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private MainOption currentFragment, previousFragment;
     private MainFlag flag;
 
-    private Settings app_settings;
     private KernelManager dataManager;
 
     public static Handler handler;
@@ -42,12 +41,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private DrawerLayout drawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        AppSettings.initialize(this);
+
+     //   setTheme(AppSettings.getAppThemeResource());
         setContentView(R.layout.a_main);
 
         Main.handler = this.phandler;
-        app_settings = new Settings(this);
         dataManager = new KernelManager(this);
         previousFragment = MainOption.MAIN;
 
@@ -74,7 +76,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 return;
             } else {
                 currentLanguage = dataManager.getLanguages().get(0);
-                Settings.setCurrentLanguage(currentLanguage.id);
+                AppSettings.setCurrentLanguage(currentLanguage.id);
             }
         }
 
@@ -88,13 +90,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putSerializable("fragment", currentFragment);
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -103,7 +107,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
 
         switch (item.getItemId()) {
             case R.id.nav_create_language:
@@ -119,7 +124,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 setFragment(MainOption.ABOUT);
                 break;
             default:
-                Settings.setCurrentLanguage(item.getItemId());
+                AppSettings.setCurrentLanguage(item.getItemId());
                 setFragment(MainOption.MAIN);
                 item.setChecked(true);
                 ((NavigationView) findViewById(R.id.nav_view)).setCheckedItem(item.getItemId());
@@ -129,7 +134,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
-    private void updateLanguageList() {
+    private void updateLanguageList()
+    {
         Languages languages = dataManager.getLanguages();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -148,14 +154,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private Handler phandler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             switch (msg.what) {
                 case AppCode.LANGUAGE_CREATED_OK:
 
                     Object[] data = (Object[]) msg.obj;
                     Language language = dataManager.createLanguage((int) data[0], (String) data[1], (int) data[2]);
 
-                    Settings.setCurrentLanguage(language.id);
+                    AppSettings.setCurrentLanguage(language.id);
 
                     setFragment(MainOption.MAIN);
                     updateLanguageList();
@@ -174,7 +181,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     if (languages.isEmpty()) {
                         setFragment(MainOption.CREATE_LANGUAGE);
                     } else {
-                        Settings.setCurrentLanguage(languages.get(0).id);
+                        AppSettings.setCurrentLanguage(languages.get(0).id);
                         setFragment(MainOption.MAIN);
                     }
                     updateLanguageList();
@@ -192,7 +199,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         }
     };
 
-    private void setFragment(MainOption option) {
+    private void setFragment(MainOption option)
+    {
         Fragment fragment = null;
         String title = "Fragment not implemented";
 
@@ -211,7 +219,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 Snackbar.make(drawer, R.string.msg_not_implemented, Snackbar.LENGTH_SHORT).show();
                 return;//                break;
             case SETTINGS:
-                fragment = new com.delvinglanguages.view.fragment.SettingsFragment();
+                fragment = new com.delvinglanguages.view.fragment.AppSettingsFragment();
                 title = getString(R.string.settings);
                 break;
             case ABOUT:

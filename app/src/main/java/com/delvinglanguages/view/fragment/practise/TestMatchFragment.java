@@ -1,6 +1,5 @@
 package com.delvinglanguages.view.fragment.practise;
 
-import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,18 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.MatchGame;
-import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.view.utils.AppAnimator;
 import com.delvinglanguages.view.utils.AppCode;
 
 public class TestMatchFragment extends TestFragment {
 
-    public TestMatchFragment() {
+    public TestMatchFragment()
+    {
         super();
     }
 
@@ -32,7 +31,8 @@ public class TestMatchFragment extends TestFragment {
     private Button button_answer[];
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.a_practise_match, container, false);
 
         LanguageManager dataManager = new LanguageManager(getActivity());
@@ -62,7 +62,8 @@ public class TestMatchFragment extends TestFragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         boolean[] shownType = AppAnimator.getTypeStatusVector();
         AppAnimator.typeAnimation(getActivity(), shownType, reference.reference.type);
@@ -70,7 +71,8 @@ public class TestMatchFragment extends TestFragment {
 
     private View.OnClickListener onAnswerSelected = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             if ((Boolean) v.getTag())
                 acierto(v);
 
@@ -79,7 +81,8 @@ public class TestMatchFragment extends TestFragment {
         }
     };
 
-    private void acierto(View v) {
+    private void acierto(View v)
+    {
         v.getBackground().setColorFilter(0xFF33CC00, PorterDuff.Mode.MULTIPLY);
         for (int i = 0; i < n_options; i++)
             button_answer[i].setClickable(false);
@@ -87,7 +90,8 @@ public class TestMatchFragment extends TestFragment {
         next();
     }
 
-    private void fallo(View v) {
+    private void fallo(View v)
+    {
         attempt++;
         v.setClickable(false);
         v.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
@@ -100,12 +104,14 @@ public class TestMatchFragment extends TestFragment {
         }
     }
 
-    private void next() {
+    private void next()
+    {
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 try {
-                    Thread.sleep(Settings.TEST_AFTER_HIT_WAITING_TIME);
+                    Thread.sleep(AppSettings.TEST_AFTER_HIT_WAITING_TIME);
                 } catch (InterruptedException ignored) {
                 }
 

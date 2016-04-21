@@ -14,25 +14,29 @@ public class TestLister extends RecyclerView.Adapter<TestViewHolder> {
     private Tests dataset;
     private View.OnClickListener itemListener;
 
-    public TestLister(Tests dataset, View.OnClickListener clickListener) {
+    public TestLister(Tests dataset, View.OnClickListener clickListener)
+    {
         this.dataset = dataset;
         this.itemListener = clickListener;
     }
 
     @Override
-    public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_drawer_word, parent, false);
         v.setOnClickListener(itemListener);
         return new TestViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(TestViewHolder holder, int position) {
+    public void onBindViewHolder(TestViewHolder holder, int position)
+    {
         TestViewHolder.populateViewHolder(holder, dataset.get(position));
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataset.size();
     }
 

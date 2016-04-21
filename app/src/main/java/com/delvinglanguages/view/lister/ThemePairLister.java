@@ -18,7 +18,8 @@ public class ThemePairLister extends RecyclerView.Adapter<ThemePairLister.ViewHo
 
         public TextView pair1, pair2;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v)
+        {
             super(v);
             pair1 = (TextView) v.findViewById(R.id.pair_1);
             pair2 = (TextView) v.findViewById(R.id.pair_2);
@@ -26,20 +27,21 @@ public class ThemePairLister extends RecyclerView.Adapter<ThemePairLister.ViewHo
 
     }
 
-    public ThemePairLister(ThemePairs dataset) {
+    public ThemePairLister(ThemePairs dataset)
+    {
         this.dataset = dataset;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_theme_pair, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
         ThemePair pair = dataset.get(position);
 
         holder.pair1.setText(pair.inDelved);
@@ -47,7 +49,8 @@ public class ThemePairLister extends RecyclerView.Adapter<ThemePairLister.ViewHo
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataset.size();
     }
 

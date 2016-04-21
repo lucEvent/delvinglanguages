@@ -1,6 +1,6 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.Settings;
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
 
@@ -18,11 +18,12 @@ public class Dictionary implements Comparator<DReference> {
 
     public boolean dictionaryCreated;
 
-    public Dictionary(Collator collator, final DReferences references) {
+    public Dictionary(Collator collator, final DReferences references)
+    {
         this.collator = collator;
         this.collator.setStrength(Collator.PRIMARY);
 
-        type_counter = new int[Settings.NUMBER_OF_TYPES];
+        type_counter = new int[AppSettings.NUMBER_OF_TYPES];
         for (int i = 0; i < type_counter.length; i++) type_counter[i] = 0;
 
         dictionary = new TreeSet<>(this);
@@ -32,7 +33,8 @@ public class Dictionary implements Comparator<DReference> {
 
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 for (DReference reference : references) {
                     addEntry(reference);
                 }
@@ -41,7 +43,8 @@ public class Dictionary implements Comparator<DReference> {
         }).start();
     }
 
-    public void addEntry(DReference entry) {
+    public void addEntry(DReference entry)
+    {
         int type = entry.type;
         for (int i = 0; i < type_counter.length; i++)
             if ((type & (1 << i)) != 0)
@@ -67,7 +70,8 @@ public class Dictionary implements Comparator<DReference> {
         }
     }
 
-    public void removeEntry(DReference entry) {
+    public void removeEntry(DReference entry)
+    {
         int type = entry.type;
         for (int i = 0; i < type_counter.length; i++)
             if ((type & (1 << i)) != 0)
@@ -89,11 +93,13 @@ public class Dictionary implements Comparator<DReference> {
         }
     }
 
-    public int[] getTypeCounter() {
+    public int[] getTypeCounter()
+    {
         return type_counter;
     }
 
-    public DReferences getReferences(boolean inverse) {
+    public DReferences getReferences(boolean inverse)
+    {
         TreeSet<DReference> dictionary = this.dictionary;
         if (inverse) {
             dictionary = this.dictionary_inverse;
@@ -101,7 +107,8 @@ public class Dictionary implements Comparator<DReference> {
         return new DReferences(dictionary);
     }
 
-    public DReferences getPhrasalVerbs(boolean inverse) {
+    public DReferences getPhrasalVerbs(boolean inverse)
+    {
         TreeSet<DReference> dictionary = this.dictionary;
         if (inverse) {
             dictionary = this.dictionary_inverse;
@@ -115,7 +122,8 @@ public class Dictionary implements Comparator<DReference> {
         return res;
     }
 
-    public DReferences getVerbs(boolean inverse) {
+    public DReferences getVerbs(boolean inverse)
+    {
         TreeSet<DReference> dictionary = this.dictionary;
         if (inverse) {
             dictionary = this.dictionary_inverse;
@@ -129,15 +137,18 @@ public class Dictionary implements Comparator<DReference> {
         return res;
     }
 
-    public TreeSet<DReference> getDictionary() {
+    public TreeSet<DReference> getDictionary()
+    {
         return dictionary;
     }
 
-    public TreeSet<DReference> getDictionaryInverse() {
+    public TreeSet<DReference> getDictionaryInverse()
+    {
         return dictionary_inverse;
     }
 
-    public DReference getReference(boolean inverse, String name) {
+    public DReference getReference(boolean inverse, String name)
+    {
         TreeSet<DReference> dictionary = this.dictionary;
         if (inverse) {
             dictionary = this.dictionary_inverse;
@@ -150,7 +161,8 @@ public class Dictionary implements Comparator<DReference> {
     }
 
     @Override
-    public int compare(DReference lhs, DReference rhs) {
+    public int compare(DReference lhs, DReference rhs)
+    {
         return collator.compare(lhs.name, rhs.name);
     }
 

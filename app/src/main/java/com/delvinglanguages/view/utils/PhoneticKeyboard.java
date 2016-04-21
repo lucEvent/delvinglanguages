@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.Language;
 
 public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
@@ -30,10 +30,11 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
     private Keyboard keyboard_symbols, keyboard_punctuation, keyboard_empty;
     private boolean defaultkb = false; // true->vowels, false->consonants
 
-    public PhoneticKeyboard(Context context, EditText edittext, int langCode) {
+    public PhoneticKeyboard(Context context, EditText edittext, int langCode)
+    {
         this.context = context;
 
-        if (Settings.getPreferencePhonKBVibration()) {
+        if (AppSettings.getPreferencePhonKBVibration()) {
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         }
 
@@ -61,13 +62,15 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-    public void hide() {
+    public void hide()
+    {
         keyboardView.setKeyboard(keyboard_empty);
     }
 
     private Handler mHandler = new Handler();
 
-    public void show(View v) {
+    public void show(View v)
+    {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
@@ -77,14 +80,16 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         new Thread(new Runnable() {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignored) {
                 }
                 mHandler.post(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         keyboardView.setKeyboard(keyboard_symbols);
                         defaultkb = false;
                     }
@@ -93,7 +98,8 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         }).start();
     }
 
-    public boolean isVisible() {
+    public boolean isVisible()
+    {
         return keyboardView.getKeyboard() != keyboard_empty;
     }
 
@@ -103,7 +109,8 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
     public final static int KEYCODE_CANCEL = -3; // Keyboard.KEYCODE_CANCEL
 
     @Override
-    public void onKey(int primaryCode, int[] keyCodes) {
+    public void onKey(int primaryCode, int[] keyCodes)
+    {
         if (vibrator != null) {
             vibrator.vibrate(15);
         }
@@ -136,32 +143,39 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
     }
 
     @Override
-    public void onPress(int primaryCode) {
+    public void onPress(int primaryCode)
+    {
 
     }
 
     @Override
-    public void onRelease(int primaryCode) {
+    public void onRelease(int primaryCode)
+    {
     }
 
     @Override
-    public void onText(CharSequence text) {
+    public void onText(CharSequence text)
+    {
     }
 
     @Override
-    public void swipeDown() {
+    public void swipeDown()
+    {
     }
 
     @Override
-    public void swipeLeft() {
+    public void swipeLeft()
+    {
     }
 
     @Override
-    public void swipeRight() {
+    public void swipeRight()
+    {
     }
 
     @Override
-    public void swipeUp() {
+    public void swipeUp()
+    {
     }
 
     /**
@@ -169,22 +183,24 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
      **/
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    public void onFocusChange(View v, boolean hasFocus)
+    {
         if (hasFocus) {
             show(v);
             edittext.setSelection(edittext.getText().length());
-        }
-        else
+        } else
             hide();
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         show(v);
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouch(View v, MotionEvent event)
+    {
         if (keyboardView.getKeyboard() == keyboard_empty) {
             edittext.requestFocus();
         }

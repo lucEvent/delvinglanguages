@@ -12,8 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.WriteGame;
@@ -37,7 +37,8 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
     private int attempt;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_practise_write);
 
@@ -50,7 +51,7 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
         input = (EditText) findViewById(R.id.input);
         input.addTextChangedListener(this);
         view_progress = (ProgressBar) findViewById(R.id.progress);
-        view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_OK, Settings.PROGRESS_COLOR_MODE);
+        view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
 
         help = (ImageButton) findViewById(R.id.help);
         next = (ImageButton) findViewById(R.id.next);
@@ -61,12 +62,14 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         dataManager.saveStatistics();
     }
 
-    protected void nextReference() {
+    protected void nextReference()
+    {
         attempt = 1;
         currentReference = gameManager.nextReference();
 
@@ -84,13 +87,14 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable s)
+    {
         String answer = input.getText().toString();
         if (currentReference.name.toLowerCase().startsWith(answer.toLowerCase())) {
 
             view_progress.setProgress(answer.length());
             if (iswrong) {
-                view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_OK, Settings.PROGRESS_COLOR_MODE);
+                view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
                 iswrong = false;
             }
 
@@ -105,7 +109,8 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
                 dataManager.exercise(currentReference, attempt);
 
                 new Thread(new Runnable() {
-                    public void run() {
+                    public void run()
+                    {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -113,7 +118,8 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
                         }
                         handler.post(new Runnable() {
                             @Override
-                            public void run() {
+                            public void run()
+                            {
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {
@@ -130,20 +136,23 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
             view_progress.setProgress(currentReference.name.length());
             if (!iswrong) {
                 iswrong = true;
-                view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_MISS, Settings.PROGRESS_COLOR_MODE);
+                view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
             }
         }
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
     }
 
-    protected void fullfill() {
+    protected void fullfill()
+    {
         String answer = input.getText().toString();
         StringBuilder toAdd = new StringBuilder();
         int index = answer.length();
@@ -154,27 +163,21 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
             while (c == ' ') {
                 toAdd.append(c);
                 index++;
-                if (index == length) {
+                if (index == length)
                     break loop;
-                }
                 c = currentReference.name.charAt(index);
             }
             char end;
-            if (c == '(') {
-                end = ')';
-            } else if (c == '[') {
-                end = ']';
-            } else if (c == '{') {
-                end = '}';
-            } else {
-                break loop;
-            }
+            if (c == '(') end = ')';
+            else if (c == '[') end = ']';
+            else if (c == '{') end = '}';
+            else break;
+
             while (c != end) {
                 toAdd.append(c);
                 index++;
-                if (index == length) {
+                if (index == length)
                     break loop;
-                }
                 c = currentReference.name.charAt(index);
             }
             toAdd.append(c);
@@ -186,16 +189,19 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
         }
     }
 
-    public void onConfigurationAction(View v) {
+    public void onConfigurationAction(View v)
+    {
         // TODO: 02/04/2016
         Toast.makeText(this, "Available in coming releases. Stay updated!", Toast.LENGTH_SHORT).show();
     }
 
-    public void onNextAction(View v) {
+    public void onNextAction(View v)
+    {
         nextReference();
     }
 
-    public void onHelpAction(View v) {
+    public void onHelpAction(View v)
+    {
         String answer = input.getText().toString();
         int len = answer.length();
         if (iswrong) {

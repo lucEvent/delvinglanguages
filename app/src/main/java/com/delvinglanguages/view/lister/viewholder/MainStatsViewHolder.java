@@ -21,14 +21,15 @@ public class MainStatsViewHolder extends RecyclerView.ViewHolder {
     private TextView content;
     private Button resetStatistics;
 
-    public MainStatsViewHolder(View v) {
+    public MainStatsViewHolder(View v)
+    {
         super(v);
-
         content = (TextView) v.findViewById(R.id.main_stats_content);
         resetStatistics = (Button) v.findViewById(R.id.button_clear_statistics);
     }
 
-    public static void populateViewHolder(MainStatsViewHolder holder, Data data, Resources resources) {
+    public static void populateViewHolder(MainStatsViewHolder holder, Data data, Resources resources)
+    {
         String s = resources.getString(R.string.main_stats_content_description, data.statistics.intentos,
                 data.statistics.aciertos1, data.statistics.porcentageAcertadas1(),
                 data.statistics.aciertos2, data.statistics.porcentageAcertadas2(),

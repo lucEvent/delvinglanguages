@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.MatchGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
@@ -31,7 +31,8 @@ public class PractiseMatchActivity extends AppCompatActivity {
     protected Button button_answer[];
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_practise_match);
 
@@ -56,18 +57,21 @@ public class PractiseMatchActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         dataManager.saveStatistics();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         pronunciationManager.destroy();
     }
 
-    private void nextReference() {
+    private void nextReference()
+    {
         attempt = 1;
         roundData = gameManager.nextRound(n_options, own_options_max);
 
@@ -75,7 +79,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
         view_inflexions.setText(roundData.reference.getInflexionsAsString());
 
         for (int i = 0; i < n_options; i++) {
-            button_answer[i].getBackground().setColorFilter(0xFFFFFFFF, Settings.PROGRESS_COLOR_MODE);
+            button_answer[i].getBackground().setColorFilter(0xFFFFFFFF, AppSettings.PROGRESS_COLOR_MODE);
             button_answer[i].setText(roundData.options[i].first);
             button_answer[i].setClickable(true);
             button_answer[i].setTag(roundData.options[i].second);
@@ -85,7 +89,8 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
     }
 
-    public void onAnswerSelected(View v) {
+    public void onAnswerSelected(View v)
+    {
         if ((Boolean) v.getTag()) {
             acierto(v);
         } else {
@@ -95,16 +100,18 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
 
-    private void acierto(View v) {
+    private void acierto(View v)
+    {
 
-        v.getBackground().setColorFilter(Settings.PROGRESS_COLOR_OK, Settings.PROGRESS_COLOR_MODE);
+        v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
         for (int i = 0; i < n_options; i++) {
             button_answer[i].setClickable(false);
         }
 
         new Thread(new Runnable() {
 
-            public void run() {
+            public void run()
+            {
                 dataManager.exercise(roundData.reference, attempt);
                 try {
                     Thread.sleep(1000);
@@ -112,7 +119,8 @@ public class PractiseMatchActivity extends AppCompatActivity {
                 }
                 mHandler.post(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         nextReference();
                     }
                 });
@@ -120,10 +128,11 @@ public class PractiseMatchActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void fallo(View v) {
+    private void fallo(View v)
+    {
         attempt++;
         v.setClickable(false);
-        v.getBackground().setColorFilter(Settings.PROGRESS_COLOR_MISS, Settings.PROGRESS_COLOR_MODE);
+        v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
         if (attempt == 4) {
             for (int i = 0; i < n_options; i++) {
                 if (roundData.options[i].second) {
@@ -133,12 +142,14 @@ public class PractiseMatchActivity extends AppCompatActivity {
         }
     }
 
-    public void onConfigurationAction(View v) {
+    public void onConfigurationAction(View v)
+    {
         // TODO: 02/04/2016
         Toast.makeText(this, "Available in coming releases. Stay updated!", Toast.LENGTH_SHORT).show();
     }
 
-    public void onPronunciationAction(View v) {
+    public void onPronunciationAction(View v)
+    {
         pronunciationManager.pronounce(roundData.reference.name);
     }
 

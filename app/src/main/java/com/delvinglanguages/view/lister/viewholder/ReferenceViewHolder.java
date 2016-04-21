@@ -13,7 +13,8 @@ public class ReferenceViewHolder extends RecyclerView.ViewHolder {
     private TextView dreference, translation;
     private View noun, verb, adjc, advb, phrv, expr, prep, conj, othr;
 
-    public ReferenceViewHolder(View v) {
+    public ReferenceViewHolder(View v)
+    {
         super(v);
 
         dreference = (TextView) v.findViewById(R.id.word);
@@ -32,7 +33,8 @@ public class ReferenceViewHolder extends RecyclerView.ViewHolder {
         container = v;
     }
 
-    public static void populateViewHolder(ReferenceViewHolder holder, DReference reference, boolean showPhrasal) {
+    public static void populateViewHolder(ReferenceViewHolder holder, DReference reference, boolean showPhrasal)
+    {
         int type = reference.type;
 
         holder.dreference.setText(reference.name);

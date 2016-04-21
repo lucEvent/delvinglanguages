@@ -12,15 +12,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.view.utils.AppAnimator;
 import com.delvinglanguages.view.utils.AppCode;
 
 public class TestWriteFragment extends TestFragment implements TextWatcher {
 
-    public TestWriteFragment() {
+    public TestWriteFragment()
+    {
         super();
     }
 
@@ -31,7 +32,8 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
     private int attempt;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.a_practise_write, container, false);
 
         ((TextView) view.findViewById(R.id.reference_name)).setText(reference.reference.getTranslationsAsString().toUpperCase());
@@ -40,7 +42,7 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
         input.addTextChangedListener(this);
 
         view_progress = (ProgressBar) view.findViewById(R.id.progress);
-        view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_OK, Settings.PROGRESS_COLOR_MODE);
+        view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
         view_progress.setMax(reference.reference.name.length());
         view_progress.setProgress(0);
 
@@ -55,7 +57,8 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         boolean[] shownType = AppAnimator.getTypeStatusVector();
         AppAnimator.typeAnimation(getActivity(), shownType, reference.reference.type);
@@ -65,20 +68,22 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
     }
 
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable s)
+    {
         String answer = input.getText().toString();
         if (reference.reference.name.toLowerCase().startsWith(answer.toLowerCase())) {
 
             view_progress.setProgress(answer.length());
             if (iswrong) {
-                view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_OK, Settings.PROGRESS_COLOR_MODE);
+                view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
                 iswrong = false;
             }
 
@@ -93,7 +98,7 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
             view_progress.setProgress(reference.reference.name.length());
             if (!iswrong) {
                 iswrong = true;
-                view_progress.getProgressDrawable().setColorFilter(Settings.PROGRESS_COLOR_MISS, Settings.PROGRESS_COLOR_MODE);
+                view_progress.getProgressDrawable().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
             }
             if (attempt == 4)
                 next();
@@ -101,14 +106,17 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
     }
 
-    private void fullfill() {
+    private void fullfill()
+    {
         String answer = input.getText().toString();
         StringBuilder toAdd = new StringBuilder();
         int index = answer.length();
@@ -121,21 +129,19 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
                 index++;
                 if (index == length)
                     break loop;
-
                 c = reference.reference.name.charAt(index);
             }
             char end;
             if (c == '(') end = ')';
             else if (c == '[') end = ']';
             else if (c == '{') end = '}';
-            else break loop;
+            else break;
 
             while (c != end) {
                 toAdd.append(c);
                 index++;
                 if (index == length)
                     break loop;
-
                 c = reference.reference.name.charAt(index);
             }
             toAdd.append(c);
@@ -147,12 +153,14 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
         }
     }
 
-    private void next() {
+    private void next()
+    {
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 try {
-                    Thread.sleep(Settings.TEST_AFTER_HIT_WAITING_TIME);
+                    Thread.sleep(AppSettings.TEST_AFTER_HIT_WAITING_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -18,14 +18,16 @@ public class RecycleBinLister extends ArrayAdapter<DReference> {
     private LayoutInflater inflater;
     private OnClickListener onRestoreItemListener;
 
-    public RecycleBinLister(Context context, DReferences values, OnClickListener onClickListener) {
+    public RecycleBinLister(Context context, DReferences values, OnClickListener onClickListener)
+    {
         super(context, R.layout.i_recycle_bin, values);
         this.onRestoreItemListener = onClickListener;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent)
+    {
         if (view == null) {
             view = inflater.inflate(R.layout.i_recycle_bin, parent, false);
         }

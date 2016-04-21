@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="default_" parent="AppTheme.NoActionBar">
+
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="sunny" parent="AppTheme.NoActionBar">
+
+        <item name="android:colorPrimary">#FFEB3B</item><!-- 500 -->
+        <item name="android:colorPrimaryDark">#F9A825</item><!-- 800 -->
+        <item name="android:colorAccent">#29B6F6</item><!-- 400 -->
+
+    </style>
+
+</resources>

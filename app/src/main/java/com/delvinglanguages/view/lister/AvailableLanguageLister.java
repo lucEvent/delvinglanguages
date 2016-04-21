@@ -19,7 +19,8 @@ public class AvailableLanguageLister extends ArrayAdapter<String> {
     private Drawable[] flags;
     private LayoutInflater inflater;
 
-    public AvailableLanguageLister(Context context, String[] values) {
+    public AvailableLanguageLister(Context context, String[] values)
+    {
         super(context, R.layout.i_image_list, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -37,12 +38,14 @@ public class AvailableLanguageLister extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent)
+    {
         return getView(position, convertView, parent);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent)
+    {
         if (view == null) {
             view = inflater.inflate(R.layout.i_image_list, parent, false);
         }

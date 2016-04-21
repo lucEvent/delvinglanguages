@@ -10,13 +10,14 @@ public class ThemeViewHolder extends RecyclerView.ViewHolder {
 
     private TextView view;
 
-    public ThemeViewHolder(View v) {
+    public ThemeViewHolder(View v)
+    {
         super(v);
-
         view = (TextView) v;
     }
 
-    public static void populateViewHolder(ThemeViewHolder holder, Theme theme) {
+    public static void populateViewHolder(ThemeViewHolder holder, Theme theme)
+    {
         holder.view.setText(theme.getName());
         holder.view.setTag(theme);
     }

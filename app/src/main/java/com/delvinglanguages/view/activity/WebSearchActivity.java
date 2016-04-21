@@ -14,14 +14,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.net.external.WordReference;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.lister.WebSearchLister;
+import com.delvinglanguages.view.utils.AppCode;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -35,7 +35,8 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
     private WordReference dictionary;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_web_search);
 
@@ -54,7 +55,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
 
         int from_code = new KernelManager(this).getCurrentLanguage().CODE;
-        int to_code = Settings.getAppLanguageCode();
+        int to_code = AppSettings.getAppLanguageCode();
         dictionary = new WordReference(from_code, to_code, handler);
 
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -67,7 +68,8 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
     private Handler handler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
 
             ArrayList<WebSearchLister.SearchItem> items = new ArrayList<>();
 
@@ -82,7 +84,8 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
     private String searchedWord;
 
-    public void onAddAction(View v) {
+    public void onAddAction(View v)
+    {
         Inflexions inflexions = new Inflexions();
         ArrayList<String> translations = new ArrayList<>();
         for (int i = 0; i < adapter.getItemCount(); i++) {
@@ -110,17 +113,20 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
         searchedWord = input.getText().toString();
         dictionary.searchTerm(searchedWord);
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable s)
+    {
     }
 
 }

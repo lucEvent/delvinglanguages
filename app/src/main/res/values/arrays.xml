@@ -54,6 +54,13 @@
         <item>11</item>
         <item>12</item>
     </string-array>
+    <string-array name="themes">
+        <item>Delving Languages (default)</item>
+   <!--    <item>Sunny</item>-->
+    </string-array>
+    <string-array name="themes_codes">
+        <item>0</item>
+    </string-array>
     <string-array name="phv_opt">
         <item>Practise</item>
         <item>Add phrasal</item>

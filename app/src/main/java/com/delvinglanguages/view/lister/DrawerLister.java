@@ -15,16 +15,17 @@ public class DrawerLister extends ArrayAdapter<DrawerReference> {
 
     private LayoutInflater inflater;
 
-    public DrawerLister(Context context, DrawerReferences values) {
+    public DrawerLister(Context context, DrawerReferences values)
+    {
         super(context, R.layout.i_drawer_word, values);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        if (view == null) {
+    public View getView(int position, View view, ViewGroup parent)
+    {
+        if (view == null)
             view = inflater.inflate(R.layout.i_drawer_word, parent, false);
-        }
 
         ((TextView) view).setText(getItem(position).name);
         return view;

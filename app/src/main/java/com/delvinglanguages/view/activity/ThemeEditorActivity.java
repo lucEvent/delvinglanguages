@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemeManager;
 import com.delvinglanguages.kernel.theme.ThemePair;
@@ -44,7 +44,8 @@ public class ThemeEditorActivity extends AppCompatActivity {
     private EditText in_name;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_theme_editor);
 
@@ -86,18 +87,20 @@ public class ThemeEditorActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         in_pair1.setHint(getString(R.string.hint_in_, dataManager.getCurrentLanguage().language_name));
-        in_pair2.setHint(getString(R.string.hint_in_, getResources().getStringArray(R.array.languages)[Settings.getAppLanguageCode()]));
+        in_pair2.setHint(getString(R.string.hint_in_, getResources().getStringArray(R.array.languages)[AppSettings.getAppLanguageCode()]));
 
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         actionCancel(null);
     }
 
     private View.OnClickListener onModifyThemePair = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             ThemePair pair = (ThemePair) v.getTag();
             int position = data.pairs.indexOf(pair);
             if (v.getId() == R.id.edit) {
@@ -114,7 +117,8 @@ public class ThemeEditorActivity extends AppCompatActivity {
         }
     };
 
-    public void actionAddPair(View v) {
+    public void actionAddPair(View v)
+    {
         String pair1 = in_pair1.getText().toString();
         String pair2 = in_pair2.getText().toString();
         if (pair1.isEmpty() || pair2.isEmpty()) {
@@ -138,7 +142,8 @@ public class ThemeEditorActivity extends AppCompatActivity {
         in_pair1.requestFocus();
     }
 
-    public void actionSave(View v) {
+    public void actionSave(View v)
+    {
         String theme_name = in_name.getText().toString();
         if (theme_name.isEmpty()) {
             showMessage(R.string.msg_missing_theme_name);
@@ -169,12 +174,14 @@ public class ThemeEditorActivity extends AppCompatActivity {
         finish();
     }
 
-    public void actionCancel(View v) {
+    public void actionCancel(View v)
+    {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.msg_go_back_without_saving)
                 .setNegativeButton(R.string.go_out, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         ThemeEditorActivity.this.finish();
                     }
                 })
@@ -182,7 +189,8 @@ public class ThemeEditorActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void showMessage(int text) {
+    private void showMessage(int text)
+    {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 

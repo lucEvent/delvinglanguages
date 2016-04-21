@@ -17,16 +17,17 @@ public class LanguageCheckBoxLister extends ArrayAdapter<Language> implements Vi
     private boolean[] checks;
     private LayoutInflater inflater;
 
-    public LanguageCheckBoxLister(Context context, Languages values) {
+    public LanguageCheckBoxLister(Context context, Languages values)
+    {
         super(context, R.layout.i_checkbox, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         checks = new boolean[values.size()];
-        for (int i = 0; i < checks.length; i++) {
+        for (int i = 0; i < checks.length; i++)
             checks[i] = false;
-        }
     }
 
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent)
+    {
         if (view == null) {
             view = inflater.inflate(R.layout.i_checkbox, parent, false);
 
@@ -45,7 +46,8 @@ public class LanguageCheckBoxLister extends ArrayAdapter<Language> implements Vi
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         CheckBox checkBox;
         if (v instanceof CheckBox) {
             checkBox = (CheckBox) v;
@@ -56,7 +58,8 @@ public class LanguageCheckBoxLister extends ArrayAdapter<Language> implements Vi
         checks[(int) checkBox.getTag()] = checkBox.isChecked();
     }
 
-    public boolean[] getChecks() {
+    public boolean[] getChecks()
+    {
         return checks;
     }
 }

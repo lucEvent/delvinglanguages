@@ -2,52 +2,54 @@ package com.delvinglanguages.kernel;
 
 import android.content.Context;
 
-import com.delvinglanguages.Settings;
-import com.delvinglanguages.data.ControlDisco;
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.DataBaseManager;
+import com.delvinglanguages.data.StorageManager;
 import com.delvinglanguages.kernel.util.Languages;
 
 public class KernelManager {
 
     protected static DataBaseManager dbManager;
-    protected static ControlDisco sdcard;
+    protected static StorageManager storageManager;
     protected static Languages languages;
 
-    public KernelManager(Context context) {
-        if (dbManager == null) {
-            System.out.println("INSTANCIANDO LA DATABASE");
+    public KernelManager(Context context)
+    {
+        if (dbManager == null)
             dbManager = new DataBaseManager(context);
-        }
-        if (sdcard == null) {
-            sdcard = new ControlDisco();
-        }
+        if (storageManager == null)
+            storageManager = new StorageManager();
+
         initializeLanguages();
     }
 
-    private void initializeLanguages() {
+    private void initializeLanguages()
+    {
         if (languages == null) {
             languages = dbManager.readLanguages();
         }
     }
 
-    public Languages getLanguages() {
+    public Languages getLanguages()
+    {
         return languages;
     }
 
-    public int getNumLanguages() {
+    public int getNumLanguages()
+    {
         return languages.size();
     }
 
-    public Language getCurrentLanguage() {
-
-        int lang_id = Settings.getCurrentLanguage();
+    public Language getCurrentLanguage()
+    {
+        int lang_id = AppSettings.getCurrentLanguage();
         if (lang_id == -1) return null;
 
         else return languages.getLanguageById(lang_id);
-
     }
 
-    protected synchronized void loadAllLanguageContent(Language language) {
+    protected synchronized void loadAllLanguageContent(Language language)
+    {
         if (language.dictionary == null)
             language.setReferences(dbManager.readReferences(language.id));
 
@@ -64,13 +66,15 @@ public class KernelManager {
             language.setThemes(dbManager.readThemes(language.id));
     }
 
-    public Language createLanguage(int code, String name, int settings) {
+    public Language createLanguage(int code, String name, int settings)
+    {
         Language new_language = dbManager.insertLanguage(code, name, settings);
         languages.add(new_language);
         return new_language;
     }
 
-    public void updateLanguage(int code, String language_name) {
+    public void updateLanguage(int code, String language_name)
+    {
         Language language = getCurrentLanguage();
         language.setCode(code);
         language.setName(language_name);
@@ -78,14 +82,16 @@ public class KernelManager {
         dbManager.updateLanguage(language);
     }
 
-    public void updateLanguageSettings(boolean setting, int mask) {
+    public void updateLanguageSettings(boolean setting, int mask)
+    {
         Language language = getCurrentLanguage();
         language.setSetting(setting, mask);
 
         dbManager.updateLanguage(language);
     }
 
-    public void invalidateData() {
+    public void invalidateData()
+    {
         languages = null;
         initializeLanguages();
     }

@@ -12,14 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.manager.DReferenceNavigator;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.lister.InflexionLister;
+import com.delvinglanguages.view.utils.AppCode;
 
 public class DReferenceActivity extends AppCompatActivity {
 
@@ -30,7 +30,8 @@ public class DReferenceActivity extends AppCompatActivity {
     private InflexionLister adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_dreference);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -38,7 +39,7 @@ public class DReferenceActivity extends AppCompatActivity {
 
         dataManager = new LanguageManager(this);
         navigator = new DReferenceNavigator(this, dataManager.getCurrentLanguage().getLocale(),
-                Language.getLocale(Settings.getAppLanguageCode()));
+                Language.getLocale(AppSettings.getAppLanguageCode()));
 
         String reference_str = getIntent().getExtras().getString(AppCode.DREFERENCE_NAME);
         DReference reference = dataManager.getReference(reference_str);
@@ -55,25 +56,26 @@ public class DReferenceActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
-    public void onBackPressed() {
-        if (navigator.hasMore()) {
+    public void onBackPressed()
+    {
+        if (navigator.hasMore())
             displayDReference(navigator.back());
-        } else {
+        else
             super.onBackPressed();
-        }
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         navigator.destroy();
     }
 
-    private void displayDReference(DReference reference) {
+    private void displayDReference(DReference reference)
+    {
         if (adapter == null) {
             adapter = new InflexionLister(this, reference.getInflexions(), onNavigationForward);
             findViewById(R.id.textview_pronunciation).setOnClickListener(navigator.onPronunciationAction);
@@ -86,7 +88,8 @@ public class DReferenceActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == AppCode.DREFERENCE_UPDATED) {
             setResult(resultCode);
@@ -94,19 +97,22 @@ public class DReferenceActivity extends AppCompatActivity {
         }
     }
 
-    public void actionEdit(View v) {
+    public void actionEdit(View v)
+    {
         Intent intent = new Intent(this, ReferenceEditorActivity.class);
         intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_MODIFY);
         intent.putExtra(AppCode.DREFERENCE_NAME, navigator.current().name);
         startActivityForResult(intent, 0);
     }
 
-    public void actionDelete(View v) {
+    public void actionDelete(View v)
+    {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.msg_confirm_to_delete_word, navigator.current().name))
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         onConfirmDelete();
                     }
                 })
@@ -115,7 +121,8 @@ public class DReferenceActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void onConfirmDelete() {
+    private void onConfirmDelete()
+    {
         dataManager.deleteReferenceTemporarily(navigator.current());
         setResult(AppCode.DREFERENCE_DELETED);
         finish();
@@ -123,7 +130,8 @@ public class DReferenceActivity extends AppCompatActivity {
 
     private View.OnClickListener onNavigationForward = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             TextView tv = (TextView) v;
             String translation = (String) tv.getText();
             displayDReference(navigator.forward(translation));

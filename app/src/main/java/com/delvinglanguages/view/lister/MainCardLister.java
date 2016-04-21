@@ -38,9 +38,10 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private View.OnClickListener itemListener;
 
-    public MainCardLister(Resources resources, boolean phrasalsEnabled, View.OnClickListener itemListener) {
+    public MainCardLister(Resources resources, boolean phrasalsEnabled, View.OnClickListener itemListener)
+    {
         this.resources = resources;
-        this.dataset = new ArrayList<Object>();
+        this.dataset = new ArrayList<>();
         this.phrasalsEnabled = phrasalsEnabled;
         this.itemListener = itemListener;
 
@@ -49,7 +50,8 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position)
+    {
         Object o = dataset.get(position);
         if (searching) {
             if (o instanceof DReference)
@@ -69,7 +71,8 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case VIEW_TYPES:
@@ -93,7 +96,8 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    {
         Object o = dataset.get(position);
         if (searching) {
             if (o instanceof DReference) {
@@ -111,39 +115,42 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return datasetVisibleCount;
     }
 
-    /**************************************************************************/
-    public void addItem(Object item) {
+    public void addItem(Object item)
+    {
         dataset.add(item);
         notifyItemInserted(datasetVisibleCount);
         datasetVisibleCount++;
     }
 
-    public void setNewDataSet(ArrayList<Object> dataset) {
+    public void setNewDataSet(ArrayList<Object> dataset)
+    {
         searching = true;
         this.dataset.clear();
         this.dataset.addAll(dataset);
 
         int newVisibleCount = Math.min(dataset.size(), CHUNK);
         if (newVisibleCount > datasetVisibleCount) {
-            notifyItemRangeChanged(0, datasetVisibleCount - 1);
-            notifyItemRangeInserted(datasetVisibleCount, newVisibleCount - 1);
+            notifyItemRangeChanged(0, datasetVisibleCount);
+            notifyItemRangeInserted(datasetVisibleCount, newVisibleCount - datasetVisibleCount);
         } else if (newVisibleCount < datasetVisibleCount) {
-            notifyItemRangeChanged(0, newVisibleCount - 1);
-            notifyItemRangeRemoved(newVisibleCount, datasetVisibleCount - 1);
+            notifyItemRangeChanged(0, newVisibleCount);
+            notifyItemRangeRemoved(newVisibleCount, datasetVisibleCount - newVisibleCount);
         } else
             notifyDataSetChanged();
 
         this.datasetVisibleCount = newVisibleCount;
     }
 
-    public void loadMoreData() {
+    public void loadMoreData()
+    {
         int dataAdded = Math.min(this.datasetVisibleCount + CHUNK, dataset.size()) - datasetVisibleCount;
         try {
-            notifyItemRangeInserted(datasetVisibleCount, datasetVisibleCount + dataAdded - 1);
+            notifyItemRangeInserted(datasetVisibleCount, dataAdded);
         } catch (Exception ignored) {
         }
         this.datasetVisibleCount += dataAdded;

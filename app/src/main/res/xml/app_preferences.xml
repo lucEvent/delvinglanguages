@@ -10,12 +10,12 @@
             android:key="@string/pref_app_language_key"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="@string/pref_app_language" />
+            android:title="@string/pref_app_language"/>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/pref_phonetic_keyboard_vibration_key"
-            android:title="@string/pref_phonetic_keyboard_vibration" />
+            android:title="@string/pref_phonetic_keyboard_vibration"/>
 
     </PreferenceCategory>
 
@@ -23,12 +23,12 @@
 
         <ListPreference
             android:defaultValue="0"
-            android:entries="@array/languages"
-            android:entryValues="@array/language_codes"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_codes"
             android:key="@string/pref_app_theme_key"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="@string/pref_app_theme" />
+            android:title="@string/pref_app_theme"/>
 
     </PreferenceCategory>
 
@@ -38,7 +38,7 @@
             android:key="@string/pref_import_data_key"
             android:title="@string/pref_import_data">
 
-            <intent android:action="com.delvinglanguages.backup.IMPORT" />
+            <intent android:action="com.delvinglanguages.backup.IMPORT"/>
 
         </Preference>
 
@@ -46,7 +46,7 @@
             android:key="@string/pref_export_data_key"
             android:title="@string/pref_export_data">
 
-            <intent android:action="com.delvinglanguages.backup.EXPORT" />
+            <intent android:action="com.delvinglanguages.backup.EXPORT"/>
 
         </Preference>
 

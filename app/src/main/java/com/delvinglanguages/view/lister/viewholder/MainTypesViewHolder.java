@@ -21,15 +21,16 @@ public class MainTypesViewHolder extends RecyclerView.ViewHolder {
     private TextView content;
     private Button addReference, addTheme;
 
-    public MainTypesViewHolder(View v) {
+    public MainTypesViewHolder(View v)
+    {
         super(v);
-
         content = (TextView) v.findViewById(R.id.main_types_content);
         addReference = (Button) v.findViewById(R.id.button_add_reference);
         addTheme = (Button) v.findViewById(R.id.button_add_theme);
     }
 
-    public static void populateViewHolder(MainTypesViewHolder holder, Data data, Resources resources) {
+    public static void populateViewHolder(MainTypesViewHolder holder, Data data, Resources resources)
+    {
         String s = resources.getString(R.string.main_types_content_description, data.types[0],
                 data.types[1], data.types[2], data.types[3], data.types[4], data.types[5],
                 data.types[6], data.types[7], data.types[8], data.num_themes, data.num_tests);

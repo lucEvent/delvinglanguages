@@ -1,6 +1,5 @@
 package com.delvinglanguages.kernel.phrasals;
 
-import com.delvinglanguages.Settings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.util.DReferences;
@@ -29,7 +28,8 @@ public class PhrasalVerbs implements Runnable, Serializable {
     private TreeSet<PVLink> prepositions;
 
 
-    public PhrasalVerbs(int language, DReferences words) {
+    public PhrasalVerbs(int language, DReferences words)
+    {
         this.language = language;
         this.words = words;
 
@@ -37,8 +37,9 @@ public class PhrasalVerbs implements Runnable, Serializable {
     }
 
     @Override
-    public void run() {
-        String[] sPrepositions = null;
+    public void run()
+    {
+        String[] sPrepositions;
         switch (language) {
             case Language.UK:
             case Language.US:
@@ -63,7 +64,8 @@ public class PhrasalVerbs implements Runnable, Serializable {
         }
     }
 
-    public void addPhrasalVerb(String ph) {
+    public void addPhrasalVerb(String ph)
+    {
         ph = ph.replaceAll("\\(.*?\\) ?", "").replaceAll("\\[.*?\\] ?", "").replaceAll("\\{.*?\\} ?", "");
         while (ph.endsWith(" "))
             ph = ph.substring(0, ph.length() - 1);
@@ -71,8 +73,6 @@ public class PhrasalVerbs implements Runnable, Serializable {
         int sep = ph.indexOf(" ");
         String verb = ph.substring(0, sep);
         String prep = Character.toUpperCase(ph.charAt(sep + 1)) + ph.substring(sep + 2, ph.length());
-
-        debug("V:[" + verb + "], P:[" + prep + "]");
 
         PVLink pvlVerb = new PVLink(verb);
         if (!verbs.add(pvlVerb)) {
@@ -86,23 +86,28 @@ public class PhrasalVerbs implements Runnable, Serializable {
         pvlPrep.linkTo(pvlVerb);
     }
 
-    public TreeSet<PVLink> getPrepositions() {
+    public TreeSet<PVLink> getPrepositions()
+    {
         return prepositions;
     }
 
-    public TreeSet<PVLink> getVerbs() {
+    public TreeSet<PVLink> getVerbs()
+    {
         return verbs;
     }
 
-    public PVLink getVerb(String verb) {
+    public PVLink getVerb(String verb)
+    {
         return getPVLink(verbs, verb);
     }
 
-    public PVLink getPreposition(String prep) {
+    public PVLink getPreposition(String prep)
+    {
         return getPVLink(prepositions, prep);
     }
 
-    private PVLink getPVLink(TreeSet<PVLink> set, String name) {
+    private PVLink getPVLink(TreeSet<PVLink> set, String name)
+    {
         PVLink cand = set.ceiling(new PVLink(name));
         if (cand != null && cand.name.equalsIgnoreCase(name)) {
             return cand;
@@ -110,19 +115,16 @@ public class PhrasalVerbs implements Runnable, Serializable {
         return null;
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
         out.writeObject(verbs);
         out.writeObject(prepositions);
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    {
         verbs = (TreeSet<PVLink>) in.readObject();
         prepositions = (TreeSet<PVLink>) in.readObject();
-    }
-
-    private void debug(String text) {
-        if (Settings.DEBUG)
-            android.util.Log.d("##PhrasalVerbs##", text);
     }
 
 }

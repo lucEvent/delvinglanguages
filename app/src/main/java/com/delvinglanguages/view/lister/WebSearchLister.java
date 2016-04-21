@@ -30,7 +30,8 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
         public String[] translations;
         public boolean[] selectedTranslations;
 
-        public SearchItem(int type, String[] translations) {
+        public SearchItem(int type, String[] translations)
+        {
             this.type = type;
             this.translations = translations;
             this.selectedTranslations = new boolean[translations.length];
@@ -49,7 +50,8 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
         public TextView text_type;
         public LinearLayout list_translations;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v)
+        {
             super(v);
 
             text_type = (TextView) v.findViewById(R.id.textView_type);
@@ -58,20 +60,22 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
 
     }
 
-    public WebSearchLister(Context context) {
+    public WebSearchLister(Context context)
+    {
         this.inflater = LayoutInflater.from(context);
         this.dataset = new ArrayList<>();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View v = inflater.inflate(R.layout.i_search, parent, false);
-
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position)
+    {
         SearchItem item = dataset.get(position);
 
         for (int i = 0; i < STRING_TYPE.length; ++i)
@@ -98,22 +102,23 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
 
             holder.list_translations.addView(view_translation);
         }
-
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataset.size();
     }
 
-    public SearchItem getItem(int i) {
+    public SearchItem getItem(int i)
+    {
         return dataset.get(i);
     }
 
     private View.OnClickListener onSelectAction = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
-            System.out.println("On Select Action :)");// TODO: 30/03/2016
+        public void onClick(View v)
+        {
             CheckBox checkBox;
             if (v instanceof CheckBox) {
                 checkBox = (CheckBox) v;
@@ -127,30 +132,20 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
         }
     };
 
-    public void setNewDataSet(ArrayList<SearchItem> dataset) {
-        System.out.println("Setting new data [items=" + dataset.size() + "]");
+    public void setNewDataSet(ArrayList<SearchItem> dataset)
+    {
         int oldSize = this.dataset.size();
+        int newSize = dataset.size();
         this.dataset = dataset;
 
-        int changed = Math.min(oldSize, dataset.size());
-        for (int i = 0; i < changed; i++) {
-            System.out.println("Changed " + i);
-            notifyItemChanged(i);
-        }
-        System.out.println("Comprovando 1: " + oldSize + " > " + changed + " = " + (oldSize > changed));
-        System.out.println("Comprovando 2: " + dataset.size() + " > " + changed + " = " + (dataset.size() > changed));
-        if (oldSize > changed) {
-            for (int i = changed; i < oldSize; i++) {
-                System.out.println("Removed " + i);
-                notifyItemRemoved(i);
-            }
-        } else if (dataset.size() > changed) {
-            for (int i = changed; i < dataset.size(); i++) {
-                System.out.println("Added " + i);
-                notifyItemInserted(i);
-            }
-        }
-
+        if (newSize > oldSize) {
+            notifyItemRangeChanged(0, oldSize);
+            notifyItemRangeInserted(oldSize, newSize - oldSize);
+        } else if (newSize < oldSize) {
+            notifyItemRangeChanged(0, newSize);
+            notifyItemRangeRemoved(newSize, oldSize - newSize);
+        } else
+            notifyDataSetChanged();
     }
 
 }
