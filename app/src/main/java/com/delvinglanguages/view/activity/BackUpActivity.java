@@ -1,20 +1,26 @@
 package com.delvinglanguages.view.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
@@ -29,6 +35,8 @@ public class BackUpActivity extends Activity {
     private static final String ACTION_IMPORT = "com.delvinglanguages.backup.IMPORT";
     private static final String ACTION_EXPORT = "com.delvinglanguages.backup.EXPORT";
 
+    private static final int REQUEST_PERMISSION_WRITE_IN_STORAGE = 222;
+
     private static final int IMPORT = 0;
     private static final int EXPORT = 1;
 
@@ -41,12 +49,67 @@ public class BackUpActivity extends Activity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_backup);
 
+        console = (TextView) findViewById(R.id.console);
+        scrollbox = (ScrollView) findViewById(R.id.scrollbox);
+        buttons = findViewById(R.id.import_buttons);
+
         done = false;
 
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION_WRITE_IN_STORAGE);
+
+        } else {
+            actionStart();
+        }
+
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        if (done && action == IMPORT) {
+            Main.handler.obtainMessage(AppCode.LANGUAGE_RECOVERED).sendToTarget();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
+    {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_WRITE_IN_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the contacts-related task you need to do.
+                    importAction();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, R.string.msg_permission_for_backup_denied, Toast.LENGTH_SHORT).show();
+                    finish();
+
+                }
+                break;
+            }
+        }
+    }
+
+    private void actionStart()
+    {
         String action = getIntent().getAction();
         switch (action) {
             case ACTION_IMPORT:
@@ -63,25 +126,12 @@ public class BackUpActivity extends Activity {
                 break;
             default:
                 finish();
-                return;
-        }
-
-        console = (TextView) findViewById(R.id.console);
-        scrollbox = (ScrollView) findViewById(R.id.scrollbox);
-        buttons = findViewById(R.id.import_buttons);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (done && action == IMPORT) {
-            Main.handler.obtainMessage(AppCode.LANGUAGE_RECOVERED).sendToTarget();
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMPORT) {
@@ -94,7 +144,8 @@ public class BackUpActivity extends Activity {
 
                     new Thread(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             new BackUpManager(handler).restoreData(BackUpActivity.this, uri);
                         }
                     }).start();
@@ -110,7 +161,8 @@ public class BackUpActivity extends Activity {
     private Handler handler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
 
             switch (msg.what) {
                 case AppCode.ERROR:
@@ -135,40 +187,43 @@ public class BackUpActivity extends Activity {
         }
     };
 
-    public void more(View view) {
-        if (action == IMPORT) {
+    public void more(View view)
+    {
+        if (action == IMPORT)
             importAction();
-        } else if (action == EXPORT) {
+        else if (action == EXPORT)
             exportAction();
-        }
+
 
         console.setText("");
         buttons.setVisibility(View.GONE);
     }
 
-    public void done(View view) {
+    public void done(View view)
+    {
         finish();
     }
 
-    private void displayButtons() {
+    private void displayButtons()
+    {
         buttons.setVisibility(View.VISIBLE);
 
         Button more = (Button) buttons.findViewById(R.id.more);
-        if (action == IMPORT) {
+        if (action == IMPORT)
             more.setText(R.string.import_more);
-        } else if (action == EXPORT) {
+        else if (action == EXPORT)
             more.setText(R.string.export_more);
-        }
     }
 
-    private void importAction() {
+    private void importAction()
+    {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("file/*");
         startActivityForResult(intent, IMPORT);
     }
 
-    private void exportAction() {
-
+    private void exportAction()
+    {
         KernelManager dataManager = new KernelManager(this);
 
         ListView list = new ListView(this);
@@ -189,7 +244,8 @@ public class BackUpActivity extends Activity {
     private DialogInterface.OnClickListener onClickListenerDialog1 = new DialogInterface.OnClickListener() {
 
         @Override
-        public void onClick(DialogInterface dialog, int which) {
+        public void onClick(DialogInterface dialog, int which)
+        {
             if (which == Dialog.BUTTON_NEGATIVE) {
                 finish();
             } else {
@@ -223,7 +279,6 @@ public class BackUpActivity extends Activity {
                 }
             }
         }
-
     };
 
     private Languages export_languages;
@@ -233,7 +288,8 @@ public class BackUpActivity extends Activity {
     private DialogInterface.OnClickListener onClickListenerDialog2 = new DialogInterface.OnClickListener() {
 
         @Override
-        public void onClick(DialogInterface dialog, int which) {
+        public void onClick(DialogInterface dialog, int which)
+        {
             if (which == Dialog.BUTTON_NEGATIVE) {
                 finish();
             } else {
@@ -247,7 +303,8 @@ public class BackUpActivity extends Activity {
 
                     new Thread(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             new BackUpManager(handler).backupData(BackUpActivity.this, filename, export_languages);
                         }
                     }).start();
@@ -255,7 +312,6 @@ public class BackUpActivity extends Activity {
                 }
             }
         }
-
     };
 
 }

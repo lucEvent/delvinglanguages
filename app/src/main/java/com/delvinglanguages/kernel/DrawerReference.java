@@ -6,7 +6,8 @@ public class DrawerReference {
 
     public String name;
 
-    public DrawerReference(int id, String name) {
+    public DrawerReference(int id, String name)
+    {
         this.id = id;
         this.name = name;
     }

@@ -32,15 +32,18 @@ public class DReference {
 
     private String lower_case_name;
 
-    public static DReference createBait(String name) {
+    public static DReference createBait(String name)
+    {
         return new DReference(-1, name, null, new Inflexions(), -1);
     }
 
-    public DReference(int id, String name, String pronunciation, String inflexions, int priority) {
+    public DReference(int id, String name, String pronunciation, String inflexions, int priority)
+    {
         this(id, name, pronunciation, new Inflexions(inflexions), priority);
     }
 
-    public DReference(int id, String name, String pronunciation, Inflexions inflexions, int priority) {
+    public DReference(int id, String name, String pronunciation, Inflexions inflexions, int priority)
+    {
         this.id = id;
         this.name = name;
         this.lower_case_name = name.toLowerCase();
@@ -55,74 +58,90 @@ public class DReference {
     /**
      * ***************** Getters ******************
      **/
-    public String[] getTranslations() {
+    public String[] getTranslations()
+    {
         return inflexions.getTranslations();
     }
 
-    public String getTranslationsAsString() {
+    public String getTranslationsAsString()
+    {
         return inflexions.getTranslationsAsString();
     }
 
-    public Inflexions getInflexions() {
+    public Inflexions getInflexions()
+    {
         return inflexions;
     }
 
-    public String getInflexionsAsString() {
+    public String getInflexionsAsString()
+    {
         return inflexions.getInflexionsAsString();
     }
 
     /**
      * ***************** Askers ******************
      **/
-    public boolean isNoun() {
+    public boolean isNoun()
+    {
         return (type & NOUN) != 0;
     }
 
-    public boolean isVerb() {
+    public boolean isVerb()
+    {
         return (type & VERB) != 0;
     }
 
-    public boolean isAdjective() {
+    public boolean isAdjective()
+    {
         return (type & ADJECTIVE) != 0;
     }
 
-    public boolean isAdverb() {
+    public boolean isAdverb()
+    {
         return (type & ADVERB) != 0;
     }
 
-    public boolean isPhrasalVerb() {
+    public boolean isPhrasalVerb()
+    {
         return (type & PHRASAL_VERB) != 0;
     }
 
-    public boolean isExpression() {
+    public boolean isExpression()
+    {
         return (type & EXPRESSION) != 0;
     }
 
-    public boolean isPreposition() {
+    public boolean isPreposition()
+    {
         return (type & PREPOSITION) != 0;
     }
 
-    public boolean isConjunction() {
+    public boolean isConjunction()
+    {
         return (type & CONJUNCTION) != 0;
     }
 
-    public boolean isOther() {
+    public boolean isOther()
+    {
         return (type & OTHER) != 0;
     }
 
-    public boolean hasContent(CharSequence s) {
+    public boolean hasContent(CharSequence s)
+    {
         return lower_case_name.contains(s) || inflexions.hasContent(s);
     }
 
     /**
      * ***************** Modifiers ******************
      **/
-    public void addInflexion(Inflexion inflexion) {
+    public void addInflexion(Inflexion inflexion)
+    {
         this.type = this.type | inflexion.getType();
         this.inflexions.add(inflexion);
     }
 
-    public void removeInflexion(Inflexion inflexion) {
+    public void removeInflexion(Inflexion inflexion)
+    {
         for (Inflexion inf : this.inflexions) {
             if (inf.getInflexions() == inflexion.getInflexions()) {
                 this.type = this.type & ~inf.getType();
@@ -132,7 +151,8 @@ public class DReference {
         }
     }
 
-    public void update(String name, String pronunciation, Inflexions inflexions) {
+    public void update(String name, String pronunciation, Inflexions inflexions)
+    {
         this.name = name;
         this.lower_case_name = name.toLowerCase();
         this.inflexions = inflexions;
@@ -143,7 +163,8 @@ public class DReference {
             this.type = this.type | i.getType();
     }
 
-    public static DReference unWrapReference(String wrappedReference) {
+    public static DReference unWrapReference(String wrappedReference)
+    {
         String[] items = wrappedReference.split(SEP);
 
         String name = items[0];
@@ -154,7 +175,8 @@ public class DReference {
         return new DReference(-1, name, pronunciation, inflexions, priority);
     }
 
-    public static String wrapReference(DReference reference) {
+    public static String wrapReference(DReference reference)
+    {
         StringBuilder res = new StringBuilder();
 
         res.append(reference.name);

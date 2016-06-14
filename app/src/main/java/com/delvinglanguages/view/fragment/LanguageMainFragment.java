@@ -56,18 +56,6 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     public void onAttach(Activity context)
     {
         super.onAttach(context);
-        onAttachX(context);
-    }
-
-    @Override
-    public void onAttach(Context context)
-    {
-        super.onAttach(context);
-        onAttachX(context);
-    }
-
-    private void onAttachX(Context context)
-    {
         handler = new Handler(this);
         dataManager = new LanguageFetchManager(context, this.handler);
         currentLanguage = dataManager.getCurrentLanguage();

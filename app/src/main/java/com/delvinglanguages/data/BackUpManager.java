@@ -30,17 +30,18 @@ public class BackUpManager {
 
     private Handler handler;
 
-    public BackUpManager(Handler handler) {
+    public BackUpManager(Handler handler)
+    {
         this.handler = handler;
     }
 
-    public void restoreData(Context context, Uri backupfileuri) {
-        InStream stream = null;
+    public void restoreData(Context context, Uri backupfileuri)
+    {
         DatabaseBackUpManager database = new DatabaseBackUpManager(context);
         database.openWritableDatabase();
         try {
             handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
-            stream = new InStream(context.getContentResolver().openInputStream(backupfileuri));
+            InStream stream = new InStream(context.getContentResolver().openInputStream(backupfileuri));
 
             int nLangs = stream.readInt();
             handler.obtainMessage(AppCode.MESSAGE, "\n" + context.getString(R.string.msg_found_languages, nLangs)).sendToTarget();
@@ -120,7 +121,8 @@ public class BackUpManager {
     }
 
 
-    public void backupData(Context context, String filename, Languages languages) {
+    public void backupData(Context context, String filename, Languages languages)
+    {
         DatabaseBackUpManager database = new DatabaseBackUpManager(context);
         database.openReadableDatabase();
         try {

@@ -1,32 +1,30 @@
 package com.delvinglanguages.kernel.verb;
 
-import android.util.Log;
-
-import com.delvinglanguages.kernel.Tense;
-
 public class EnglishTense extends Tense {
-
-    private final static String DEBUG = "##EnglishTense##";
 
     private int type;
 
-    public EnglishTense(int tenseID, String verb) {
+    public EnglishTense(int tenseID, String verb)
+    {
         super(0, tenseID, verb);
 
         type = getType();
     }
 
-    private int getType() {
+    private int getType()
+    {
         return 0;
     }
 
-    String[] get() {
+    String[] get()
+    {
         return null;
     }
 
     @Override
-    public String[] getConjugations() {
-        Log.d(DEBUG, "Taking conjugations");
+    public String[] getConjugations()
+    {
+        System.out.println("Taking conjugations");
         if (forms == null) {
             switch (tense) {
                 case EN_PRESENT:
@@ -72,72 +70,86 @@ public class EnglishTense extends Tense {
         return forms;
     }
 
-    private String[] getImperative() {
+    private String[] getImperative()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getConditional() {
+    private String[] getConditional()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getFutureGoingTo() {
+    private String[] getFutureGoingTo()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getFuturePerfect() {
+    private String[] getFuturePerfect()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getFutureContinuous() {
+    private String[] getFutureContinuous()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPastPerfectContinuous() {
+    private String[] getPastPerfectContinuous()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPastContinuous() {
+    private String[] getPastContinuous()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPresentPerfectContinuous() {
+    private String[] getPresentPerfectContinuous()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPresentPerfect() {
+    private String[] getPresentPerfect()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPresentContinuous() {
+    private String[] getPresentContinuous()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String[] getPastSimple() {
+    private String[] getPastSimple()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String[] getPronunciations() {
+    public String[] getPronunciations()
+    {
         return getConjugations();
     }
 
-    private String[] getPresent() {
+    private String[] getPresent()
+    {
         String[] res = new String[6];
         return res;
     }
 
-    private String[] getFuture() {
+    private String[] getFuture()
+    {
         String[] res = new String[6];
         return res;
     }

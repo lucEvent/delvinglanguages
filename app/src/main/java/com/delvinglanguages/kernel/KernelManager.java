@@ -4,21 +4,20 @@ import android.content.Context;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.DataBaseManager;
-import com.delvinglanguages.data.StorageManager;
 import com.delvinglanguages.kernel.util.Languages;
 
 public class KernelManager {
 
     protected static DataBaseManager dbManager;
-    protected static StorageManager storageManager;
+    //   protected static StorageManager storageManager;
     protected static Languages languages;
 
     public KernelManager(Context context)
     {
         if (dbManager == null)
             dbManager = new DataBaseManager(context);
-        if (storageManager == null)
-            storageManager = new StorageManager();
+        //   if (storageManager == null)
+        //       storageManager = new StorageManager();
 
         initializeLanguages();
     }

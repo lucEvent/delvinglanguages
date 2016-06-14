@@ -15,7 +15,7 @@ public class StorageManager {
 
     private static File folder;
 
-    public StorageManager()
+    public StorageManager(boolean thisMethodisNotUsed)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             System.err.println("No nay media montada\n");

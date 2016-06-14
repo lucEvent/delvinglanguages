@@ -1,28 +1,25 @@
 package com.delvinglanguages.kernel.verb;
 
-import android.util.Log;
-
-import com.delvinglanguages.kernel.Tense;
-
 public class SvenskTense extends Tense {
-
-    private final static String DEBUG = "##SvenskTense##";
 
     private int type;
 
-    public SvenskTense(int tenseID, String verb) {
+    public SvenskTense(int tenseID, String verb)
+    {
         super(0, tenseID, verb);
 
         type = getType();
     }
 
-    private int getType() {
+    private int getType()
+    {
         return 0;
     }
 
     @Override
-    public String[] getConjugations() {
-        Log.d(DEBUG, "Taking conjugations");
+    public String[] getConjugations()
+    {
+        System.out.println("Taking conjugations");
         if (forms == null) {
             switch (tense) {
                 case SV_PRESENT:
@@ -45,31 +42,37 @@ public class SvenskTense extends Tense {
     }
 
     @Override
-    public String[] getPronunciations() {
+    public String[] getPronunciations()
+    {
         return getConjugations();
     }
 
-    private String[] getPresent() {
+    private String[] getPresent()
+    {
         String[] res = new String[6];
         return res;
     }
 
-    private String[] getPreteritum() {
+    private String[] getPreteritum()
+    {
         String[] res = new String[6];
         return res;
     }
 
-    private String[] getSupinum() {
+    private String[] getSupinum()
+    {
         String[] res = new String[6];
         return res;
     }
 
-    private String[] getFuture() {
+    private String[] getFuture()
+    {
         String[] res = new String[6];
         return res;
     }
 
-    private String[] getImperativ() {
+    private String[] getImperativ()
+    {
         String[] res = new String[6];
         return res;
     }

@@ -10,17 +10,20 @@ public class LanguageFetchManager extends LanguageManager {
 
     private Handler handler;
 
-    public LanguageFetchManager(Context context, Handler handler) {
+    public LanguageFetchManager(Context context, Handler handler)
+    {
         super(context);
         this.handler = handler;
     }
 
-    public void fetchLanguageContents(final Language language) {
+    public void fetchLanguageContents(final Language language)
+    {
         if (!language.isLoaded()) {
 
             new Thread(new Runnable() {
                 @Override
-                public void run() {
+                public void run()
+                {
 
                     loadAllLanguageContent(language);
 
@@ -29,10 +32,12 @@ public class LanguageFetchManager extends LanguageManager {
         }
     }
 
-    public void fetchLanguageContentNumbers(final Language language) {
+    public void fetchLanguageContentNumbers(final Language language)
+    {
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
 
                 loadAllLanguageContent(language);
 

@@ -1,4 +1,4 @@
-package com.delvinglanguages.kernel;
+package com.delvinglanguages.kernel.verb;
 
 public class Tense {
 
@@ -61,7 +61,8 @@ public class Tense {
     protected String forms[];
     protected String pronuntiations[];
 
-    public Tense(int id, int tenseID, String verbName) {
+    public Tense(int id, int tenseID, String verbName)
+    {
         this.id = id;
         this.tense = tenseID;
         this.verbName = verbName;
@@ -69,7 +70,8 @@ public class Tense {
         this.pronuntiations = null;
     }
 
-    public Tense(int id, int tenseID, String verbName, String forms, String prons) {
+    public Tense(int id, int tenseID, String verbName, String forms, String prons)
+    {
         this.id = id;
         this.tense = tenseID;
         this.verbName = verbName;
@@ -77,15 +79,18 @@ public class Tense {
         this.pronuntiations = prons.split(SEPARATOR);
     }
 
-    public int getSize() {
+    public int getSize()
+    {
         return 6;
     }
 
-    public String[] getConjugations() {
+    public String[] getConjugations()
+    {
         return forms;
     }
 
-    public String[] getPronunciations() {
+    public String[] getPronunciations()
+    {
         return pronuntiations;
     }
 

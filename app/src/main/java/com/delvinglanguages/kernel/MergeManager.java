@@ -32,13 +32,14 @@ public class MergeManager extends KernelManager {
 
     private Context context;
 
-    public MergeManager(Context context) {
+    public MergeManager(Context context)
+    {
         super(context);
         this.context = context;
     }
 
-    public Language getLanguageContent(Language language) {
-
+    public Language getLanguageContent(Language language)
+    {
         loadAllLanguageContent(language);
 
         while (!language.isDictionaryCreated()) ;
@@ -46,7 +47,8 @@ public class MergeManager extends KernelManager {
         return language;
     }
 
-    public MergePlan createMergePlan(Language src, Language dst) {
+    public MergePlan createMergePlan(Language src, Language dst)
+    {
         MergePlan plan = new MergePlan();
         plan.dst = dst;
         plan.num_conflicts = 0;
@@ -80,7 +82,8 @@ public class MergeManager extends KernelManager {
         return plan;
     }
 
-    public void merge(Language dst, MergePlan mergePlan) {
+    public void merge(Language dst, MergePlan mergePlan)
+    {
         DataBaseMergeManager database = new DataBaseMergeManager(context);
         database.openWritableDatabase();
 
@@ -106,7 +109,8 @@ public class MergeManager extends KernelManager {
         database.closeWritableDatabase();
     }
 
-    public void clearData(Language language) {
+    public void clearData(Language language)
+    {
         language.clear();
     }
 
