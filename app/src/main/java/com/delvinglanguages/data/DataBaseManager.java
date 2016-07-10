@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.DataBase.DBDrawerReference;
 import com.delvinglanguages.data.DataBase.DBLanguage;
 import com.delvinglanguages.data.DataBase.DBReference;
@@ -65,7 +66,7 @@ public class DataBaseManager {
             cursorS.close();
             database.close();
         }
-        System.out.println("# Languages in DB: " + result.size());
+        AppSettings.printlog("# Languages in DB: " + result.size());
         return result;
     }
 
@@ -90,7 +91,7 @@ public class DataBaseManager {
             cursor.close();
             database.close();
         }
-        System.out.println("# References in DB: " + result.size());
+        AppSettings.printlog("# References in DB: " + result.size());
         return result;
     }
 
@@ -110,7 +111,7 @@ public class DataBaseManager {
             cursor.close();
             database.close();
         }
-        System.out.println("# DrawerReferences in DB: " + result.size());
+        AppSettings.printlog("# DrawerReferences in DB: " + result.size());
         return result;
     }
 
@@ -146,7 +147,7 @@ public class DataBaseManager {
             }
             database.close();
         }
-        System.out.println("# RemovedReferences in DB: " + result.size());
+        AppSettings.printlog("# RemovedReferences in DB: " + result.size());
         return result;
     }
 
@@ -167,7 +168,7 @@ public class DataBaseManager {
             cursor.close();
             database.close();
         }
-        System.out.println("# Tests in DB: " + result.size());
+        AppSettings.printlog("# Tests in DB: " + result.size());
         return result;
     }
 
@@ -189,7 +190,7 @@ public class DataBaseManager {
             cursor.close();
             database.close();
         }
-        System.out.println("# Themes in DB: " + result.size());
+        AppSettings.printlog("# Themes in DB: " + result.size());
         return result;
     }
 

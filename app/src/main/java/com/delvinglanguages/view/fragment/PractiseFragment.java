@@ -16,7 +16,8 @@ import com.delvinglanguages.view.activity.practise.PractiseWriteActivity;
 public class PractiseFragment extends android.app.Fragment implements View.OnClickListener {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.f_practise, container, false);
 
         initViews(view);
@@ -24,18 +25,18 @@ public class PractiseFragment extends android.app.Fragment implements View.OnCli
         return view;
     }
 
-    private void initViews(View parent) {
-
+    private void initViews(View parent)
+    {
         parent.findViewById(R.id.practise_match).setOnClickListener(this);
         parent.findViewById(R.id.practise_complete).setOnClickListener(this);
         parent.findViewById(R.id.practise_write).setOnClickListener(this);
         parent.findViewById(R.id.practise_listening).setOnClickListener(this);
         parent.findViewById(R.id.practise_test).setOnClickListener(this);
-
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         Class practise_selected = null;
         switch (v.getId()) {
             case R.id.practise_match:
@@ -58,7 +59,6 @@ public class PractiseFragment extends android.app.Fragment implements View.OnCli
                 practise_selected = PractiseTestActivity.class;
                 break;
         }
-
         startActivity(new Intent(getActivity(), practise_selected));
     }
 

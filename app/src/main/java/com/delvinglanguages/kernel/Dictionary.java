@@ -50,9 +50,8 @@ public class Dictionary implements Comparator<DReference> {
             if ((type & (1 << i)) != 0)
                 type_counter[i]++;
 
-        if (!dictionary.add(entry)) {
-            System.out.println("La referencia [" + entry.name + "] no se ha añadido :(");
-        }
+        if (!dictionary.add(entry))
+            AppSettings.printlog("Could not add reference [" + entry.name + "] :(");
 
         for (Inflexion inflexion : entry.getInflexions()) {
             Inflexion infD = new Inflexion(inflexion.getInflexions(), new String[]{entry.name}, inflexion.getType());

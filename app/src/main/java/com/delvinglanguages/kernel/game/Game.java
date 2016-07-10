@@ -11,17 +11,20 @@ public abstract class Game extends Random {
     protected PriorityMap priorityMap;
     protected boolean running;
 
-    public Game(DReferences references) {
+    public Game(DReferences references)
+    {
         this.references = references;
         createPriorityMap();
     }
 
-    private void createPriorityMap() {
+    private void createPriorityMap()
+    {
         running = true;
         new Thread(new Runnable() {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 priorityMap = new PriorityMap();
 
                 for (int i = 0; i < references.size(); i++) {
@@ -39,7 +42,8 @@ public abstract class Game extends Random {
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    public DReference nextReference() {
+    public DReference nextReference()
+    {
         while (running) ;
 
         Integer priority = priorityMap.getMaxKey();
@@ -51,16 +55,15 @@ public abstract class Game extends Random {
             if (priorityMap.size() == 0)
                 createPriorityMap();
         }
-        System.out.println("Getting ref with prior:" + priority);
         return ref;
     }
 
-    public char nextLetter(boolean upperCase) {
-        if (upperCase) {
+    public char nextLetter(boolean upperCase)
+    {
+        if (upperCase)
             return (char) (nextInt('Z' - 'A' + 1) + 'A');
-        } else {
+        else
             return (char) (nextInt('z' - 'a' + 1) + 'a');
-        }
     }
 
 }

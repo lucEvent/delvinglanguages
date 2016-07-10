@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 
 public class AppSettings {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static final int PROGRESS_COLOR_OK = 0xff33aa33;
     public static final int PROGRESS_COLOR_MISS = 0xffaa3333;
@@ -84,6 +84,22 @@ public class AppSettings {
     public static int getAppThemeResource()
     {
         return theme_ids[getAppThemeCode()];
+    }
+
+    public static void printlog(String msg)
+    {
+        if (DEBUG)
+            System.out.println(msg);
+    }
+
+    public static void printerror(String msg, Exception e)
+    {
+        if (DEBUG) {
+            System.err.println(msg);
+
+            if (e != null)
+                e.printStackTrace();
+        }
     }
 
 }

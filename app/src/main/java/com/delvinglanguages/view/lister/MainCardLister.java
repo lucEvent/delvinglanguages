@@ -66,7 +66,6 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return VIEW_TYPES;
         if (o instanceof MainStatsViewHolder.Data)
             return VIEW_STATS;
-        System.out.println("Position :" + position + " debuelve -1");
         return -1;
     }
 

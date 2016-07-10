@@ -24,7 +24,8 @@ public class LanguageMergerActivity extends Activity {
     private Languages candidates;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_language_merger);
 
@@ -50,23 +51,24 @@ public class LanguageMergerActivity extends Activity {
 
     private DialogInterface.OnClickListener onCancel = new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-            System.out.println("ON CANCEL :)");
+        public void onClick(DialogInterface dialog, int which)
+        {
             LanguageMergerActivity.this.finish();
         }
     };
 
     private DialogInterface.OnClickListener onLanguageDstSelected = new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-            System.out.println("DST es : " + candidates.get(which).language_name);
+        public void onClick(DialogInterface dialog, int which)
+        {
             estimateMergingWith(candidates.get(which));
         }
     };
 
     private MergeManager.MergePlan mergePlan;
 
-    private void estimateMergingWith(Language language) {
+    private void estimateMergingWith(Language language)
+    {
         language_dst = language;
         final ProgressDialog progressDialog = ProgressDialog.show(this,
                 getString(R.string.msg_estimating_merge_of, language_src.language_name, language_dst.language_name),
@@ -75,12 +77,14 @@ public class LanguageMergerActivity extends Activity {
 
         new Thread(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 mergePlan = estimateMerging(language_src, language_dst, progressDialog);
 
                 handler.post(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
 
                         AlertDialog.Builder dbuilder = new AlertDialog.Builder(LanguageMergerActivity.this)
                                 .setCancelable(false)
@@ -111,12 +115,14 @@ public class LanguageMergerActivity extends Activity {
 
     private Handler handler = new Handler();
 
-    private MergeManager.MergePlan estimateMerging(final Language src, final Language dst, final ProgressDialog dialog) {
+    private MergeManager.MergePlan estimateMerging(final Language src, final Language dst, final ProgressDialog dialog)
+    {
         MergeManager manager = new MergeManager(this);
 
         handler.post(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 dialog.setMessage(getString(R.string.msg_reading, src.language_name));
             }
         });
@@ -124,7 +130,8 @@ public class LanguageMergerActivity extends Activity {
 
         handler.post(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 dialog.setMessage(getString(R.string.msg_reading, dst.language_name));
             }
         });
@@ -132,7 +139,8 @@ public class LanguageMergerActivity extends Activity {
 
         handler.post(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 dialog.setMessage(getString(R.string.msg_calculating_changes));
             }
         });
@@ -145,10 +153,12 @@ public class LanguageMergerActivity extends Activity {
 
     private DialogInterface.OnClickListener onMergeConfirmed = new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
+        public void onClick(DialogInterface dialog, int which)
+        {
             handler.post(new Runnable() {
                 @Override
-                public void run() {
+                public void run()
+                {
 
                     final ProgressDialog progressDialog = ProgressDialog.show(LanguageMergerActivity.this,
                             getString(R.string.msg_merging), getString(R.string.msg_be_patience));
@@ -156,7 +166,8 @@ public class LanguageMergerActivity extends Activity {
 
                     new Thread(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             merge(language_dst, mergePlan);
 
 
@@ -164,7 +175,8 @@ public class LanguageMergerActivity extends Activity {
 
                             handler.post(new Runnable() {
                                 @Override
-                                public void run() {
+                                public void run()
+                                {
                                     dialogRemoveCurrentLanguage();
                                 }
                             });
@@ -177,20 +189,23 @@ public class LanguageMergerActivity extends Activity {
         }
     };
 
-    private void merge(Language dst, MergeManager.MergePlan mergePlan) {
+    private void merge(Language dst, MergeManager.MergePlan mergePlan)
+    {
         MergeManager manager = new MergeManager(this);
         manager.merge(dst, mergePlan);
         manager.clearData(dst);
     }
 
-    private void dialogRemoveCurrentLanguage() {
+    private void dialogRemoveCurrentLanguage()
+    {
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.msg_remove_language_after_merge, language_src.language_name))
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         new LanguageManager(getApplicationContext()).deleteLanguage();
                         LanguageMergerActivity.this.finish();
                     }

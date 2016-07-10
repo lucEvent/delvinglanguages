@@ -2,6 +2,7 @@ package com.delvinglanguages.net.external;
 
 import android.os.Handler;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.AppFormat;
 
@@ -88,7 +89,7 @@ public class WordReference {
         {
             try {
                 URL page = new URL(header + term);
-                System.out.println(header + term);
+                AppSettings.printlog(header + term);
                 //Lectura del contenido de la pagina
                 BufferedReader in = new BufferedReader(new InputStreamReader(page.openStream()));
 
@@ -117,8 +118,7 @@ public class WordReference {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("[WR] Error en run");
-                e.printStackTrace();
+                AppSettings.printerror("[WR] Error in run", e);
             }
             handler.obtainMessage(0, found).sendToTarget();
         }
@@ -230,7 +230,7 @@ public class WordReference {
                     type = 8;
                     break;
                 default:
-                    System.out.println("HEYYY!!!! no tengo este tipo:" + typeCode);
+                    AppSettings.printerror("HEYYY!!!! new word type on WR:" + typeCode, null);
                     type = -1;
                     break;
             }

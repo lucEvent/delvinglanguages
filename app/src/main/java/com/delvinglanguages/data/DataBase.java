@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.delvinglanguages.AppSettings;
+
 public class DataBase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "delving.db";
@@ -29,7 +31,7 @@ public class DataBase extends SQLiteOpenHelper {
                         hits2 + " INTEGER," +
                         hits3 + " INTEGER," +
                         misses + " INTEGER" +
-                ");";
+                        ");";
     }
 
     public static final class DBLanguage {
@@ -51,7 +53,7 @@ public class DataBase extends SQLiteOpenHelper {
                         statistics + " INTEGER," +
                         settings + " INTEGER," +
                         "FOREIGN KEY(" + statistics + ") REFERENCES " + DBStatistics.db + "(" + DBStatistics.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBReference {
@@ -75,7 +77,7 @@ public class DataBase extends SQLiteOpenHelper {
                         pronunciation + " TEXT NOT NULL," +
                         priority + " INTEGER," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBRemovedReference {
@@ -94,7 +96,7 @@ public class DataBase extends SQLiteOpenHelper {
                         reference_id + " INTEGER," +
                         "FOREIGN KEY(" + reference_id + ") REFERENCES " + DBReference.db + "(" + DBReference.id + ")" +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBDrawerReference {
@@ -112,7 +114,7 @@ public class DataBase extends SQLiteOpenHelper {
                         lang_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBTest {
@@ -134,7 +136,7 @@ public class DataBase extends SQLiteOpenHelper {
                         runtimes + " INTEGER," +
                         content + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBTheme {
@@ -152,7 +154,7 @@ public class DataBase extends SQLiteOpenHelper {
                         lang_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
-                ");";
+                        ");";
     }
 
     public static final class DBThemePair {
@@ -172,7 +174,7 @@ public class DataBase extends SQLiteOpenHelper {
                         in_delv + " TEXT NOT NULL," +
                         in_nativ + " TEXT NOT NULL," +
                         "FOREIGN KEY(" + theme_id + ") REFERENCES " + DBTheme.db + "(" + DBTheme.id + ")" +
-                ");";
+                        ");";
     }
 
     public DataBase(Context context)
@@ -183,8 +185,6 @@ public class DataBase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        System.out.println("En onCreate");
-
         db.execSQL(DBStatistics.creator);
         db.execSQL(DBLanguage.creator);
         db.execSQL(DBReference.creator);
@@ -198,7 +198,7 @@ public class DataBase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        System.out.println("Upgrading DB from VERS: " + oldVersion + " to " + newVersion);
+        AppSettings.printlog("Upgrading DB from version: " + oldVersion + " to " + newVersion);
 
         // Delete all needed tables
         // db.execSQL("DROP TABLE "+ "db_tiempo_verbal");

@@ -36,7 +36,8 @@ public class LanguageActivity extends AppCompatActivity {
     private Language currentLanguage;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_language);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,14 +51,16 @@ public class LanguageActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch (item.getItemId()) {
             case R.id.delete_all:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.msg_confirm_to_clear_all_items)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int id) {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
                                 clearRecycleBin();
                             }
                         })
@@ -68,7 +71,8 @@ public class LanguageActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setFragment(Option option) {
+    private void setFragment(Option option)
+    {
         Fragment fragment = null;
         String title = "Fragment not implemented";
         switch (option) {
@@ -89,8 +93,8 @@ public class LanguageActivity extends AppCompatActivity {
                 //title = getString(R.string.title_phrasals);
                 break;
             case VERBS:
-                    //fragment = new VerbsFragment();
-                    //title = currentLanguage.language_delved_name + "'s Verbs";
+                //fragment = new VerbsFragment();
+                //title = currentLanguage.language_delved_name + "'s Verbs";
                 break;
             case PRONUNCIATION:
                 fragment = new PronunciationFragment();
@@ -113,7 +117,8 @@ public class LanguageActivity extends AppCompatActivity {
         setTitle(title);
     }
 
-    private void clearRecycleBin() {
+    private void clearRecycleBin()
+    {
         dataManager.deleteAllRemovedReferences();
         finish();
     }

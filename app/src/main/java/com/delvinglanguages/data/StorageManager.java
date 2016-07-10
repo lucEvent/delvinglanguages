@@ -2,6 +2,7 @@ package com.delvinglanguages.data;
 
 import android.os.Environment;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.util.InStream;
 import com.delvinglanguages.data.util.OutStream;
 import com.delvinglanguages.kernel.HistorialItem;
@@ -18,7 +19,7 @@ public class StorageManager {
     public StorageManager(boolean thisMethodisNotUsed)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            System.err.println("No nay media montada\n");
+            AppSettings.printerror("No nay media montada", null);
             return;
         }
         File extDir = Environment.getExternalStorageDirectory();
@@ -39,7 +40,7 @@ public class StorageManager {
             }
             in.close();
         } catch (Exception e) {
-            System.err.println("Exception: " + e.toString());
+            AppSettings.printerror("Exception: " + e.toString(), e);
         }
         return res;
     }
@@ -54,7 +55,7 @@ public class StorageManager {
             }
             out.close();
         } catch (Exception e) {
-            System.err.println("Exception: " + e.toString());
+            AppSettings.printerror("Exception: " + e.toString(), e);
         }
     }
 

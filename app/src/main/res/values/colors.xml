@@ -2,9 +2,10 @@
 <resources>
 
     <color name="colorPrimary">#3379A0</color>
+    <color name="colorPrimarySoft">#2A7198</color>
     <color name="colorPrimaryDark">#236990</color>
     <color name="colorAccent">#FFD54F</color>
-    <color name="colorPrimarySoft">#2A7198</color>
+    <color name="colorAccentDark">#FFB300</color>
 
     <color name="noun">#E53935</color>
     <color name="verb">#8E24AA</color>

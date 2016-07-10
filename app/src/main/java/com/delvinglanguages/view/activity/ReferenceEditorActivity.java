@@ -18,10 +18,10 @@ import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.util.Inflexions;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.dialog.AddTranslationDialog;
 import com.delvinglanguages.view.lister.InflexionEditLister;
 import com.delvinglanguages.view.lister.InflexionLister;
+import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.utils.PhoneticKeyboard;
 
 public class ReferenceEditorActivity extends AppCompatActivity {
@@ -55,7 +55,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
     private AddTranslationDialog inflexionManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_reference_editor);
 
@@ -111,25 +112,27 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
         inflexionManager = new AddTranslationDialog(this, handler);
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         if (phonetic_keyboard.isVisible())
             phonetic_keyboard.hide();
         else
             actionCancel(null);
     }
 
-    public void actionAddTranslation(View v) {
+    public void actionAddTranslation(View v)
+    {
         data.editingInflexion = null;
         inflexionManager.show();
         phonetic_keyboard.hide();
     }
 
-    public void actionSave(View v) {
+    public void actionSave(View v)
+    {
         String reference = in_reference.getText().toString();
         if (reference.isEmpty()) {
             showMessage(R.string.msg_missing_word);
@@ -164,12 +167,14 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void actionCancel(View v) {
+    public void actionCancel(View v)
+    {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.msg_go_back_without_saving)
                 .setNegativeButton(R.string.go_out, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         ReferenceEditorActivity.this.finish();
                     }
                 })
@@ -179,7 +184,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
 
     private View.OnClickListener onModifyInflexion = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             data.editingInflexion = (Inflexion) v.getTag();
             inflexionManager.show(data.editingInflexion);
         }
@@ -187,7 +193,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
 
     private View.OnClickListener onDeleteInflexion = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
 // TODO: 28/03/2016 Preguntar confirmacion!
             Inflexion inflexion = (Inflexion) v.getTag();
             int index = data.inflexions.indexOf(inflexion);
@@ -199,7 +206,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             switch (msg.what) {
                 case AppCode.MESSAGE_INT:
 
@@ -226,7 +234,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         }
     };
 
-    protected void showMessage(int text) {
+    protected void showMessage(int text)
+    {
         android.widget.Toast.makeText(this, text, android.widget.Toast.LENGTH_SHORT).show();
     }
 

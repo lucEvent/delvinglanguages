@@ -3,6 +3,7 @@ package com.delvinglanguages.kernel.manager;
 import android.content.Context;
 import android.view.View;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
@@ -21,7 +22,8 @@ public class DReferenceNavigator {
     private PronunciationManager delvedPronunciationManager, nativePronunciationManager;
 
 
-    public DReferenceNavigator(Context context, Locale delvedLocale, Locale nativeLocale) {
+    public DReferenceNavigator(Context context, Locale delvedLocale, Locale nativeLocale)
+    {
         index = -1;
         references = new DReferences();
         language = new LanguageManager(context).getCurrentLanguage();
@@ -30,12 +32,14 @@ public class DReferenceNavigator {
         nativePronunciationManager = new PronunciationManager(context, nativeLocale);
     }
 
-    public DReference back() {
+    public DReference back()
+    {
         index--;
         return references.remove(index);
     }
 
-    public DReference forward(String translation) {
+    public DReference forward(String translation)
+    {
         DReference ref;
 
         DReference bait = DReference.createBait(translation);
@@ -43,32 +47,37 @@ public class DReferenceNavigator {
             ref = language.getDiccionary().ceiling(bait);
         else
             ref = language.getDiccionaryInverse().ceiling(bait);
-        System.out.println("->" + ref.name);
+        AppSettings.printlog("->" + ref.name);
         forward(ref);
         return ref;
     }
 
-    public void forward(DReference reference) {
+    public void forward(DReference reference)
+    {
         references.add(reference);
         index++;
     }
 
-    public DReference current() {
+    public DReference current()
+    {
         return references.get(index);
     }
 
-    public boolean hasMore() {
+    public boolean hasMore()
+    {
         return index > 0;
     }
 
-    public void destroy() {
+    public void destroy()
+    {
         delvedPronunciationManager.destroy();
         nativePronunciationManager.destroy();
     }
 
     public View.OnClickListener onPronunciationAction = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             if (index % 2 == 0) {
                 delvedPronunciationManager.pronounce(current().name);
             } else

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,8 @@ public class DReferenceActivity extends AppCompatActivity {
 
     private InflexionLister adapter;
 
+    private FloatingActionButton editButton, deleteButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +44,13 @@ public class DReferenceActivity extends AppCompatActivity {
         navigator = new DReferenceNavigator(this, dataManager.getCurrentLanguage().getLocale(),
                 Language.getLocale(AppSettings.getAppLanguageCode()));
 
+        //Buttons
+        editButton = (FloatingActionButton) findViewById(R.id.edit_button);
+        deleteButton = (FloatingActionButton) findViewById(R.id.delete_button);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
+        //Reference
         String reference_str = getIntent().getExtras().getString(AppCode.DREFERENCE_NAME);
         DReference reference = dataManager.getReference(reference_str);
         navigator.forward(reference);
@@ -85,6 +95,10 @@ public class DReferenceActivity extends AppCompatActivity {
         ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(reference.name);
 
         ((TextView) findViewById(R.id.textview_pronunciation)).setText(reference.pronunciation);
+
+
+        editButton.setEnabled(!editButton.isEnabled());
+        deleteButton.setEnabled(!deleteButton.isEnabled());
     }
 
     @Override

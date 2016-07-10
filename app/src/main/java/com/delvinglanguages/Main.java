@@ -46,7 +46,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         AppSettings.initialize(this);
 
-     //   setTheme(AppSettings.getAppThemeResource());
+        //   setTheme(AppSettings.getAppThemeResource());
         setContentView(R.layout.a_main);
 
         Main.handler = this.phandler;
@@ -109,7 +109,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-
         switch (item.getItemId()) {
             case R.id.nav_create_language:
                 setFragment(MainOption.CREATE_LANGUAGE);
@@ -187,7 +186,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     updateLanguageList();
                     break;
                 case AppCode.LANGUAGE_RECOVERED:
-                    System.out.println("Language recovered receiving and handling it");
                 case AppCode.LANGUAGE_NAME_CHANGED:
                     updateLanguageList();
                     break;
@@ -233,11 +231,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 return;//                break;
         }
 
-        if (currentFragment == null) {
+        if (currentFragment == null)
             previousFragment = MainOption.MAIN;
-        } else {
+        else
             previousFragment = currentFragment;
-        }
+
         currentFragment = option;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content, fragment);

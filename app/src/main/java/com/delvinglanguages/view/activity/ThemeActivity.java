@@ -25,12 +25,12 @@ public class ThemeActivity extends AppCompatActivity {
     private ThemePairLister adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_theme);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         dataManager = new ThemeManager(this);
 
@@ -53,7 +53,8 @@ public class ThemeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == AppCode.THEME_MODIFIED) {
@@ -62,20 +63,21 @@ public class ThemeActivity extends AppCompatActivity {
         }
     }
 
-    public void actionEdit(View v) {
-
+    public void actionEdit(View v)
+    {
         Intent intent = new Intent(this, ThemeEditorActivity.class);
         intent.putExtra(AppCode.THEME_ID, theme.id);
         startActivityForResult(intent, 0);
-
     }
 
-    public void actionDelete(View v) {
+    public void actionDelete(View v)
+    {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.msg_confirm_to_delete_theme, theme.getName()))
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
                         onConfirmDelete();
                     }
                 })
@@ -84,10 +86,12 @@ public class ThemeActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void onConfirmDelete() {
+    private void onConfirmDelete()
+    {
         dataManager.deleteTheme(theme);
         setResult(AppCode.THEME_DELETED);
         finish();
     }
+
 }
 

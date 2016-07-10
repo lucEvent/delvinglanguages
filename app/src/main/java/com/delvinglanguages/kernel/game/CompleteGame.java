@@ -1,5 +1,6 @@
 package com.delvinglanguages.kernel.game;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.util.DReferences;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ public class CompleteGame extends Game {
         public Action replaceBy;
         public int visibleUntil;
 
-        public Action(int pos, char let, String act) {
+        public Action(int pos, char let, String act)
+        {
             position = pos;
             letter = let;
             string = act;
@@ -22,11 +24,13 @@ public class CompleteGame extends Game {
         }
     }
 
-    public CompleteGame(DReferences references) {
+    public CompleteGame(DReferences references)
+    {
         super(references);
     }
 
-    public Action[] char_merger(String word, int size) {
+    public Action[] char_merger(String word, int size)
+    {
         StringBuilder temp = new StringBuilder(word.toUpperCase());
         boolean dictionary[] = new boolean['z' - 'a' + 1];
         for (int i = 0; i < dictionary.length; i++) {
@@ -68,7 +72,7 @@ public class CompleteGame extends Game {
                         dictionary[c - 'A'] = true;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("AIOOBException por: " + c + " (" + (int) c + ")");
+                    AppSettings.printerror("AIOOBException por: " + c + " (" + (int) c + ")", e);
                 }
             }
         }
@@ -145,14 +149,16 @@ public class CompleteGame extends Game {
         return teclado;
     }
 
-    private Action getyoungeraction(Action action) {
+    private Action getyoungeraction(Action action)
+    {
         if (action.replaceBy != null) {
             return getyoungeraction(action.replaceBy);
         }
         return action;
     }
 
-    private Action ischarinto(Action host, Action guest) {
+    private Action ischarinto(Action host, Action guest)
+    {
         if (host.replaceBy != null) {
             return ischarinto(host.replaceBy, guest);
         }

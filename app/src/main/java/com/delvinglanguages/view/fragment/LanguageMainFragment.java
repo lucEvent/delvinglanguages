@@ -98,7 +98,6 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
             }
         };
         layoutManager.setAutoMeasureEnabled(true);
-        //        layoutManager.supp
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -166,19 +165,15 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
         switch (option) {
             case R.id.option_practise:
 
-          /*      if (!currentLanguage.hasEntries()) {
-                    showMessage(R.string.mssNoWords);
+                if (dataManager.getReferences().isEmpty()) {
+                    Toast.makeText(getActivity(), R.string.msg_dictionary_empty, Toast.LENGTH_LONG).show();
                     return;
-                }*/
+                }
                 intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.PRACTISE);
 
                 break;
             case R.id.option_dictionary:
 
-      /*          if (!currentLanguage.hasEntries()) {
-                    showMessage(R.string.mssNoWordsToList);
-                    return;
-                }*/
                 intent = new Intent(getActivity(), DictionaryActivity.class);
                 break;
 
@@ -205,15 +200,15 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
 
                 Toast.makeText(getActivity(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
-                return;
-            //          break;
+                return; // break;
+
             case R.id.option_phrasal_verbs:
 
                 intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.PHRASAL_VERBS);
                 Toast.makeText(getActivity(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
-                return;
-//                break;
+                return; // break;
+
             case R.id.option_web_search:
 
                 intent = new Intent(getActivity(), WebSearchActivity.class);
@@ -228,11 +223,6 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
                 break;
             case R.id.option_recycle_bin:
 
-            /*    if (currentLanguage.removed_words.size() <= 0) {
-                    showMessage(R.string.mssNoTrash);
-                    dialog.dismiss();
-                    return;
-                }*/
                 intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.RECYCLE_BIN);
                 optionsDialog.dismiss();
 

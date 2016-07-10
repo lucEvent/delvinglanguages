@@ -19,7 +19,6 @@ public class SvenskTense extends Tense {
     @Override
     public String[] getConjugations()
     {
-        System.out.println("Taking conjugations");
         if (forms == null) {
             switch (tense) {
                 case SV_PRESENT:

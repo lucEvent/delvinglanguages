@@ -24,7 +24,6 @@ public class EnglishTense extends Tense {
     @Override
     public String[] getConjugations()
     {
-        System.out.println("Taking conjugations");
         if (forms == null) {
             switch (tense) {
                 case EN_PRESENT:

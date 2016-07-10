@@ -26,7 +26,8 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
     private TestManager dataManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_test_editor);
 
@@ -54,16 +55,19 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         actionCancel(null);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         v.setSelected(!v.isSelected());
     }
 
-    public void actionSave(View v) {
+    public void actionSave(View v)
+    {
         String test_name = in_test_name.getText().toString();
         if (test_name.isEmpty()) {
             showMessage(R.string.msg_missing_test_name);
@@ -85,18 +89,25 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
 
         Test test = dataManager.createTest(test_name, numberOfWords, type);
 
+        if (test == null) {
+            showMessage(R.string.msg_cannot_start_test);
+            return;
+        }
+
         Intent intent = new Intent(this, TestActivity.class);
         intent.putExtra(AppCode.TEST_ID, test.id);
         startActivity(intent);
         finish();
     }
 
-    public void actionCancel(View v) {
+    public void actionCancel(View v)
+    {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.msg_go_back_without_saving)
                 .setNegativeButton(R.string.go_out, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         TestEditorActivity.this.finish();
                     }
                 })
@@ -104,7 +115,8 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
                 .show();
     }
 
-    private void showMessage(int text) {
+    private void showMessage(int text)
+    {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 

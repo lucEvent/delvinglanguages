@@ -28,7 +28,8 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     private SearchView search;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_dictionary);
 
@@ -37,7 +38,8 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         search.setOnQueryTextListener(this);
         search.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
-            public boolean onClose() {
+            public boolean onClose()
+            {
                 hideSearchAction();
                 return true;
             }
@@ -58,17 +60,18 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new ContentLoader(layoutManager) {
             @Override
-            public void onLoadMore() {
+            public void onLoadMore()
+            {
                 adapter.loadMoreData();
             }
         });
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == AppCode.DREFERENCE_UPDATED || resultCode == AppCode.DREFERENCE_DELETED) {
@@ -78,14 +81,16 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         }
     }
 
-    public void startSearch(View view) {
+    public void startSearch(View view)
+    {
         title_bar.setVisibility(View.GONE);
         search.setVisibility(SearchView.VISIBLE);
 
         search.setIconified(false);
     }
 
-    private void hideSearchAction() {
+    private void hideSearchAction()
+    {
         title_bar.setVisibility(View.VISIBLE);
         search.setVisibility(SearchView.GONE);
     }
@@ -94,13 +99,15 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     private String lastQuery;
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(String query)
+    {
         hideSearchAction();
         return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String query) {
+    public boolean onQueryTextChange(String query)
+    {
         if (query.startsWith(lastQuery))
             queriedReferences = filter(queriedReferences, query);
         else
@@ -111,19 +118,20 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
-    private DReferences filter(DReferences models, String query) {
+    private DReferences filter(DReferences models, String query)
+    {
         query = query.toLowerCase();
 
         DReferences filteredList = new DReferences();
         for (DReference ref : models)
             if (ref.hasContent(query)) filteredList.add(ref);
 
-
         return filteredList;
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         DReference ref = (DReference) v.getTag();
 
         Intent intent = new Intent(this, DReferenceActivity.class);

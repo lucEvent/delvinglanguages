@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 3.1.0</string>
+    <string name="app_version" translatable="false">version 3.1.1</string>
 
     <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
@@ -64,10 +64,10 @@
     <string name="test">Test</string>
     <string name="type_filter">Type filter</string>
     <string name="number_of_words">Number of words</string>
-    <string name="main_types_content_description">%1$s nouns\n%2$s verbs\n%3$s adjectives\n%4$s adverbs\n%5$s phrasal verbs\n%6$s expressions\n%7$s prepositions\n%8$s conjunctions\n%9$s others\n%10$s themes\n%11$s tests</string>
+    <string name="main_types_content_description">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d phrasal verbs\n%6$d expressions\n%7$d prepositions\n%8$d conjunctions\n%9$d others\n%10$d themes\n%11$d tests</string>
     <string name="content">Content</string>
     <string name="statistics">Statistics</string>
-    <string name="main_stats_content_description">Attempts:\t\t %1$s\nNeat hits:\t\t\t %2$s (%3$s)\nHits at 2nd:\t %4$s (%5$s)\nHits at 3rd:\t\t %6$s (%7$s)\nErrors:\t\t\t\t %8$s (%9$s)</string>
+    <string name="main_stats_content_description">Attempts:\t\t %1$d\nNeat hits:\t\t\t %2$d (%3$.2f%%)\nHits at 2nd:\t %4$d (%5$.2f%%)\nHits at 3rd:\t\t %6$d (%7$.2f%%)\nErrors:\t\t\t\t %8$d (%9$.2f%%)</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -172,21 +172,22 @@
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
-    <string name="title_drawer_fragment">%1$s\'s drawer</string>
+    <string name="title_drawer_fragment">%1$s drawer</string>
     <string name="title_themes_fragment">%1$s themes</string>
-    <string name="title_pronunciation_fragment"> pronunciation</string>
-    <string name="title_practise_fragment">%1$s\'s practise</string>
-    <string name="title_activity_practisetest">%1$s\'s tests</string>
-    <string name="title_recyclebin_fragment">%1$s\'s recycle bin</string>
-    <string name="title_language_settings_fragment">%1$s\'s settings</string>
+    <string name="title_pronunciation_fragment">%1$s pronunciation</string>
+    <string name="title_practise_fragment">%1$s practise</string>
+    <string name="title_activity_practisetest">%1$s tests</string>
+    <string name="title_recyclebin_fragment">%1$s recycle bin</string>
+    <string name="title_language_settings_fragment">%1$s settings</string>
 
 
     <!-- * ******************** ********** **************************** * -->
-    <string name="about_content_header">Delving Languages version 3.1.0</string>
+    <string name="about_content_header">Delving Languages version 3.1.1</string>
     <string name="about_content_contact">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features">New features and improvements:</string>
     <string name="about_content_new_features">
-        Version 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen display changed for better performance.\n
+        Version 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
+        \nVersion 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen display changed for better performance.\n
         \nVersion 3.0.1 2016-04-21:\nFixed error when updating RecyclerViewAdapters.\nFirst steps for themes support, but still not working\n
         \nVersion 3.0.0 2016-04-10:\nLollipop support.\nSettings standardized.\nKernel "word" and "dreference" merged for better performance.\nBetter support/user interaction when TTS is needed.\nListening in practise redesigned.\nTests redesigned.\nListening added in test.\n
         \nVersion 2.3.2 2016-03-08:\nSelection of background changed: Material design colors available now. TTS improved for Lollipop and above versions.\n
@@ -263,6 +264,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="title_activity_dictionary">Dictionary</string>
+    <string name="msg_dictionary_empty">Cannot practise. Dictionary is empty</string>
+    <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
 
 
 </resources>
