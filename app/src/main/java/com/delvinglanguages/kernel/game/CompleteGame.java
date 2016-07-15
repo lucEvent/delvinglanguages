@@ -37,7 +37,7 @@ public class CompleteGame extends Game {
             dictionary[i] = false;
         }
         // Aplicando un filtros y moldeando
-        ArrayList<Action> validChars = new ArrayList<Action>();
+        ArrayList<Action> validChars = new ArrayList<>();
         int position = 0;
         while (temp.length() > 0) {
             char c = temp.charAt(0);
@@ -112,8 +112,8 @@ public class CompleteGame extends Game {
             Action next = validChars.remove(0);
             // Miramos si la letra actual esta (necesitamos recursividad)
             boolean isit = false;
-            for (int j = 0; j < teclado.length; j++) {
-                Action old = ischarinto(teclado[j], next);
+            for (Action tecla : teclado) {
+                Action old = ischarinto(tecla, next);
                 if (old != null) {
                     old.replaceBy = next;
                     isit = true;

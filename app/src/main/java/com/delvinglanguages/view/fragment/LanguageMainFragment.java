@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
@@ -38,13 +38,15 @@ import com.delvinglanguages.view.dialog.LanguageOptionsDialog;
 import com.delvinglanguages.view.lister.MainCardLister;
 import com.delvinglanguages.view.lister.viewholder.MainStatsViewHolder;
 import com.delvinglanguages.view.lister.viewholder.MainTypesViewHolder;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.utils.ContentLoader;
+import com.delvinglanguages.view.utils.DataHandler;
+import com.delvinglanguages.view.utils.DataListener;
+import com.delvinglanguages.view.utils.LanguageListener;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class LanguageMainFragment extends Fragment implements TextWatcher, View.OnClickListener, View.OnFocusChangeListener {
+public class LanguageMainFragment extends Fragment
+        implements TextWatcher, View.OnClickListener, View.OnFocusChangeListener, DataListener {
 
     private LanguageFetchManager dataManager;
     private Language currentLanguage;
@@ -56,8 +58,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     public void onAttach(Activity context)
     {
         super.onAttach(context);
-        handler = new Handler(this);
-        dataManager = new LanguageFetchManager(context, this.handler);
+        dataManager = new LanguageFetchManager(context, new DataHandler(this));
         currentLanguage = dataManager.getCurrentLanguage();
         dataManager.fetchLanguageContents(currentLanguage);
     }
@@ -119,6 +120,13 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
         dataManager.fetchLanguageContentNumbers(currentLanguage);
 
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        listManager.notifyDataSetChanged();
     }
 
     @Override
@@ -242,7 +250,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
-            case AppCode.LANGUAGE_NAME_CHANGED:
+            case LanguageListener.LANGUAGE_NAME_CHANGED:
                 getActivity().setTitle(dataManager.getCurrentLanguage().language_name);
                 break;
         }
@@ -257,6 +265,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
     @Override
     public void onTextChanged(CharSequence search, int start, int before, int count)
     {
+        search = search.toString().toLowerCase();
         ArrayList<Object> matches = new ArrayList<>();
         for (DReference ref : currentLanguage.dictionary.getDictionary())
             if (ref.hasContent(search))
@@ -311,31 +320,13 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
         searchActive = false;
     }
 
-    private Handler handler;
-
-    static class Handler extends android.os.Handler {
-
-        private final WeakReference<LanguageMainFragment> context;
-
-        Handler(LanguageMainFragment context)
-        {
-            this.context = new WeakReference<>(context);
-        }
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            LanguageMainFragment service = context.get();
-            switch (msg.what) {
-                case AppCode.MAIN_DATA_COUNTERS:
-                    MainTypesViewHolder.Data data = (MainTypesViewHolder.Data) msg.obj;
-                    data.onAddReference = service.onAddReference;
-                    data.onAddTheme = service.onAddTheme;
-                    service.listManager.addItem(data);
-                    break;
-            }
-
-        }
+    @Override
+    public void onMainDataCounters(Object obj)
+    {
+        MainTypesViewHolder.Data data = (MainTypesViewHolder.Data) obj;
+        data.onAddReference = onAddReference;
+        data.onAddTheme = onAddTheme;
+        listManager.addItem(data);
     }
 
     private View.OnClickListener onListItemClick = new View.OnClickListener() {
@@ -369,6 +360,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
             }
         }
     };
+
     private View.OnClickListener onResetStatistics = new View.OnClickListener() {
         @Override
         public void onClick(View v)
@@ -377,6 +369,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
             listManager.notifyItemChanged(0);
         }
     };
+
     private View.OnClickListener onAddTheme = new View.OnClickListener() {
         @Override
         public void onClick(View v)
@@ -384,6 +377,7 @@ public class LanguageMainFragment extends Fragment implements TextWatcher, View.
             startActivity(new Intent(getActivity(), ThemeEditorActivity.class));
         }
     };
+
     private View.OnClickListener onAddReference = new View.OnClickListener() {
         @Override
         public void onClick(View v)

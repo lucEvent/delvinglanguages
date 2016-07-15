@@ -5,10 +5,10 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
@@ -18,30 +18,33 @@ import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.fragment.practise.TestCompleteFragment;
 import com.delvinglanguages.view.fragment.practise.TestDelvingFragment;
-import com.delvinglanguages.view.fragment.practise.TestFragment;
 import com.delvinglanguages.view.fragment.practise.TestListeningFragment;
 import com.delvinglanguages.view.fragment.practise.TestMatchFragment;
 import com.delvinglanguages.view.fragment.practise.TestResultFragment;
 import com.delvinglanguages.view.fragment.practise.TestWriteFragment;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.TestHandler;
+import com.delvinglanguages.view.utils.TestListener;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity implements TestListener {
 
     private TestManager dataManager;
     private TestGame testManager;
     private Test currentTest;
     private TestReferenceState currentReference;
 
+    private Handler handler;
     private PronunciationManager pronunciationManager;
 
     private int round;
     private boolean testRunning;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_test);
 
+        handler = new TestHandler(this);
         dataManager = new TestManager(this);
         testManager = new TestGame(new DReferences());
         pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale());
@@ -54,7 +57,8 @@ public class TestActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         if (!testRunning) {
             super.onBackPressed();
             return;
@@ -63,7 +67,9 @@ public class TestActivity extends AppCompatActivity {
                 .setTitle(R.string.msg_go_out_from_test)
                 .setNegativeButton(R.string.go_out, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        testRunning = false;
                         setMainFragment();
                     }
                 })
@@ -72,40 +78,41 @@ public class TestActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         dataManager.updateTest(currentTest);
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         pronunciationManager.destroy();
     }
 
-    private void setFragment(TestReferenceState refState) {
+    private void setFragment(TestReferenceState refState)
+    {
         this.currentReference = refState;
 
         Fragment fragment = null;
         switch (refState.stage) {
             case DELVING:
-                fragment = new TestDelvingFragment();
+                fragment = TestDelvingFragment.getInstance(handler, refState);
                 break;
             case MATCH:
-                fragment = new TestMatchFragment();
+                fragment = TestMatchFragment.getInstance(handler, refState);
                 break;
             case COMPLETE:
-                fragment = new TestCompleteFragment();
+                fragment = TestCompleteFragment.getInstance(handler, refState);
                 break;
             case WRITE:
-                fragment = new TestWriteFragment();
+                fragment = TestWriteFragment.getInstance(handler, refState);
                 break;
             case LISTENING:
-                fragment = new TestListeningFragment();
+                fragment = TestListeningFragment.getInstance(handler, refState);
                 break;
         }
-        ((TestFragment) fragment).setHandler(handler);
-        ((TestFragment) fragment).setReference(refState);
 
         getFragmentManager()
                 .beginTransaction()
@@ -114,44 +121,60 @@ public class TestActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void setMainFragment() {
-        TestResultFragment fragment = new TestResultFragment();
-        fragment.setData(handler, currentTest);
-
+    private void setMainFragment()
+    {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content, fragment)
+                .replace(R.id.content, TestResultFragment.getInstance(handler, currentTest))
                 .commit();
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == AppCode.TEST_START) {
-                testRunning = true;
-                round = 0;
+    @Override
+    public void onTestDeleted()
+    {
+        dataManager.deleteTest(currentTest);
+        setResult(TestListener.TEST_DELETED);
+        finish();
+    }
 
-                for (TestReferenceState refState : currentTest.references)
-                    refState.stage = TestReferenceState.TestStage.DELVING;
+    @Override
+    public void onTestStart()
+    {
+        testRunning = true;
+        round = 0;
 
-                setFragment(testManager.nextTestReference(currentTest));
-                return;
-            }
+        for (TestReferenceState refState : currentTest.references)
+            refState.stage = TestReferenceState.TestStage.DELVING;
 
-            if (msg.what == AppCode.TEST_ROUND_PASSED)
-                round++;
+        setFragment(testManager.nextTestReference(currentTest));
+    }
 
-            if (round == currentTest.references.size() * 5) {
-                currentTest.run_finished();
-                testRunning = false;
-                setMainFragment();
-                return;
-            }
-            setFragment(testManager.nextTestReference(currentTest));
+    @Override
+    public void onTestRoundPassed()
+    {
+        round++;
+        nextStep();
+    }
+
+    @Override
+    public void onTestRoundSkipped()
+    {
+        nextStep();
+    }
+
+    private void nextStep()
+    {
+        if (round == currentTest.references.size() * 5) {
+            currentTest.run_finished();
+            testRunning = false;
+            setMainFragment();
+            return;
         }
-    };
+        setFragment(testManager.nextTestReference(currentTest));
+    }
 
-    public void onPronunciationAction(View v) {
+    public void onPronunciationAction(View v)
+    {
         pronunciationManager.pronounce(currentReference.reference.name);
     }
 

@@ -15,14 +15,16 @@ public class Test {
 
     public TestReferenceStates references;
 
-    public Test(int id, String name, int runTimes, String wrappedContent) {
+    public Test(int id, String name, int runTimes, String wrappedContent)
+    {
         this.id = id;
         this.name = name;
         this.runTimes = runTimes;
         this.references = unWrapContent(wrappedContent);
     }
 
-    public Test(String name, DReferences refs) {
+    public Test(String name, DReferences refs)
+    {
         this.id = -1;
         this.name = name;
         this.runTimes = 0;
@@ -31,7 +33,8 @@ public class Test {
             this.references.add(new TestReferenceState(ref));
     }
 
-    private TestReferenceStates unWrapContent(String wrappedContent) {
+    private TestReferenceStates unWrapContent(String wrappedContent)
+    {
         String[] items = wrappedContent.split(SEP);
         int index = 0;
 
@@ -55,7 +58,8 @@ public class Test {
         return res;
     }
 
-    public static String wrapContent(Test test) {
+    public static String wrapContent(Test test)
+    {
         StringBuilder res = new StringBuilder();
         res.append(test.references.size());
         for (TestReferenceState refState : test.references) {
@@ -70,40 +74,48 @@ public class Test {
         return res.toString();
     }
 
-    public DReferences getReferences() {
+    public DReferences getReferences()
+    {
         DReferences res = new DReferences();
         for (TestReferenceState refState : references)
             res.add(refState.reference);
         return res;
     }
 
-    public boolean hasRun() {
+    public boolean hasRun()
+    {
         return runTimes != 0;
     }
 
-    public void run_finished() {
+    public void run_finished()
+    {
         runTimes++;
     }
 
-    public int getRunTimes() {
+    public int getRunTimes()
+    {
         return runTimes;
     }
 
-    public double getAccuracy() {
+    public double getAccuracy()
+    {
         int attempts = 0;
         int errors = 0;
         for (TestReferenceState refState : references) {
             attempts += refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             errors += refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
         }
-        return getAccurary(attempts, errors);
+        return getAccuracy(attempts, errors);
     }
 
-    private double getAccurary(int attempts, int errors) {
+    private double getAccuracy(int attempts, int errors)
+    {
+        if (attempts == 0) return 0;
         return ((double) (attempts - errors) / (double) attempts) * 100;
     }
 
-    public String getBestReferenceName() {
+    public String getBestReferenceName()
+    {
         int bestAttempt = 0;
         double bestAccuracy = -1.0;
         String bestName = "";
@@ -111,7 +123,7 @@ public class Test {
         for (TestReferenceState refState : references) {
             int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
-            double accuracy = getAccurary(attempts, errors);
+            double accuracy = getAccuracy(attempts, errors);
 
             if (accuracy > bestAccuracy || ((accuracy == bestAccuracy) && (attempts < bestAttempt))) {
                 bestName = refState.reference.name;
@@ -124,7 +136,8 @@ public class Test {
         return bestName;
     }
 
-    public String getWorstReferenceName() {
+    public String getWorstReferenceName()
+    {
         int worstAttempt = 0;
         double worstAccuracy = 100000.0;
         String worstName = "";
@@ -132,7 +145,7 @@ public class Test {
         for (TestReferenceState refState : references) {
             int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
-            double accuracy = getAccurary(attempts, errors);
+            double accuracy = getAccuracy(attempts, errors);
 
             if (accuracy < worstAttempt || ((accuracy == worstAttempt) && (attempts > worstAttempt))) {
                 worstName = refState.reference.name;
@@ -145,8 +158,9 @@ public class Test {
         return worstName;
     }
 
-    public boolean hasContent(CharSequence s) {
-        return name.contains(s);
+    public boolean hasContent(CharSequence s)
+    {
+        return name.toLowerCase().contains(s);
     }
 
 }

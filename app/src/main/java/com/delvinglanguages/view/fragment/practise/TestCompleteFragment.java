@@ -1,6 +1,7 @@
 package com.delvinglanguages.view.fragment.practise;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,16 @@ import com.delvinglanguages.kernel.game.CompleteGame;
 import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.utils.AppAnimator;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.TestListener;
 
 public class TestCompleteFragment extends TestFragment {
 
-    public TestCompleteFragment()
+    public static TestCompleteFragment getInstance(Handler handler, TestReferenceState reference)
     {
-        super();
+        TestCompleteFragment f = new TestCompleteFragment();
+        f.reference = reference;
+        f.handler = handler;
+        return f;
     }
 
     private TextView view_discovering;
@@ -203,10 +207,10 @@ public class TestCompleteFragment extends TestFragment {
                 if (attempt == 1) {
 
                     reference.stage = TestReferenceState.TestStage.WRITE;
-                    handler.obtainMessage(AppCode.TEST_ROUND_PASSED).sendToTarget();
+                    handler.obtainMessage(TestListener.TEST_ROUND_PASSED).sendToTarget();
 
                 } else
-                    handler.obtainMessage(AppCode.TEST_ROUND_SKIPPED).sendToTarget();
+                    handler.obtainMessage(TestListener.TEST_ROUND_SKIPPED).sendToTarget();
             }
         }).start();
     }

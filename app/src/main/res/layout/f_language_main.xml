@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:clipToPadding="false"
         android:paddingTop="60dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:background="@drawable/ripple_round"
             android:padding="5dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"/>
 
         <EditText
             android:id="@+id/search_edittext"
@@ -46,10 +46,10 @@
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="#0fff"
-            android:hint="@string/search"
+            android:hint="@string/hint_search"
             android:lines="1"
             android:maxLines="1"
-            android:padding="5dp" />
+            android:padding="5dp"/>
 
         <ImageButton
             android:id="@+id/search_button_right"
@@ -58,7 +58,7 @@
             android:layout_marginEnd="5dp"
             android:background="@drawable/ripple_round"
             android:padding="5dp"
-            android:src="@drawable/ic_search" />
+            android:src="@drawable/ic_search"/>
 
     </LinearLayout>
 
@@ -75,25 +75,25 @@
             android:id="@+id/option_practise"
             style="@style/Button_in_Bar"
             android:drawableTop="@drawable/ic_practise"
-            android:text="@string/practice" />
+            android:text="@string/practice"/>
 
         <Button
             android:id="@+id/option_dictionary"
             style="@style/Button_in_Bar"
             android:drawableTop="@drawable/ic_dictionary"
-            android:text="@string/dictionary" />
+            android:text="@string/dictionary"/>
 
         <Button
             android:id="@+id/option_drawer"
             style="@style/Button_in_Bar"
             android:drawableTop="@drawable/ic_drawer"
-            android:text="@string/drawer" />
+            android:text="@string/drawer"/>
 
         <Button
             android:id="@+id/option_more"
             style="@style/Button_in_Bar"
             android:drawableTop="@drawable/ic_more"
-            android:text="@string/more" />
+            android:text="@string/more"/>
 
     </LinearLayout>
 

@@ -1,33 +1,44 @@
 package com.delvinglanguages.view.lister;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.Themes;
+import com.delvinglanguages.view.lister.viewholder.ThemeViewHolder;
 
-public class ThemeLister extends ArrayAdapter<Theme> {
+public class ThemeLister extends RecyclerView.Adapter<ThemeViewHolder> {
 
-    private LayoutInflater inflater;
+    private Themes themes;
 
-    public ThemeLister(Context context, Themes values)
+    private View.OnClickListener itemListener;
+
+    public ThemeLister(Themes themes, View.OnClickListener itemListener)
     {
-        super(context, R.layout.i_drawer_word, values);
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.themes = themes;
+        this.itemListener = itemListener;
     }
 
-    public View getView(int position, View view, ViewGroup parent)
+    @Override
+    public ThemeViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if (view == null)
-            view = inflater.inflate(R.layout.i_drawer_word, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_theme, parent, false);
+        v.setOnClickListener(itemListener);
+        return new ThemeViewHolder(v);
+    }
 
-        ((TextView) view).setText(getItem(position).getName());
-        return view;
+    @Override
+    public void onBindViewHolder(ThemeViewHolder holder, int position)
+    {
+        ThemeViewHolder.populateViewHolder(holder, themes.get(position));
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return themes.size();
     }
 
 }

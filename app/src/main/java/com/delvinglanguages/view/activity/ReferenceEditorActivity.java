@@ -4,14 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
@@ -21,10 +20,11 @@ import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.view.dialog.AddTranslationDialog;
 import com.delvinglanguages.view.lister.InflexionEditLister;
 import com.delvinglanguages.view.lister.InflexionLister;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.utils.PhoneticKeyboard;
+import com.delvinglanguages.view.utils.ReferenceHandler;
+import com.delvinglanguages.view.utils.ReferenceListener;
 
-public class ReferenceEditorActivity extends AppCompatActivity {
+public class ReferenceEditorActivity extends AppCompatActivity implements ReferenceListener {
 
     public static final int ACTION_CREATE = 0;
     public static final int ACTION_CREATE_FROM_DRAWER = 1;
@@ -112,7 +112,7 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        inflexionManager = new AddTranslationDialog(this, handler);
+        inflexionManager = new AddTranslationDialog(this, new ReferenceHandler(this));
     }
 
     @Override
@@ -158,7 +158,8 @@ public class ReferenceEditorActivity extends AppCompatActivity {
             case ACTION_MODIFY:
                 dataManager.updateReference(data.reference, reference, pronunciation, data.inflexions);
                 setResult(AppCode.DREFERENCE_UPDATED);
-                break;
+                finish();
+                return;
         }
         finish();
 
@@ -188,6 +189,7 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         {
             data.editingInflexion = (Inflexion) v.getTag();
             inflexionManager.show(data.editingInflexion);
+            phonetic_keyboard.hide();
         }
     };
 
@@ -203,36 +205,40 @@ public class ReferenceEditorActivity extends AppCompatActivity {
         }
     };
 
-    private Handler handler = new Handler() {
+    @Override
+    public void onInflexionAdded(Inflexion inflexion)
+    {
+        if (data.editingInflexion != null) {
+            data.editingInflexion.setTranslations(inflexion.getTranslations());
+            data.editingInflexion.setInflexions(inflexion.getInflexions());
+            data.editingInflexion.setType(inflexion.getType());
 
-        @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what) {
-                case AppCode.MESSAGE_INT:
+            adapter.notifyItemChanged(data.inflexions.indexOf(data.editingInflexion));
 
-                    showMessage((int) msg.obj);
-
-                    break;
-                case AppCode.INFLEXION_ADDED:
-                    Inflexion inflexion = (Inflexion) msg.obj;
-
-                    if (data.editingInflexion != null) {
-                        data.editingInflexion.setTranslations(inflexion.getTranslations());
-                        data.editingInflexion.setInflexions(inflexion.getInflexions());
-                        data.editingInflexion.setType(inflexion.getType());
-
-                        adapter.notifyItemChanged(data.inflexions.indexOf(data.editingInflexion));
-
-                        data.editingInflexion = null;
-                    } else {
-                        data.inflexions.add(inflexion);
-                        adapter.notifyItemInserted(data.inflexions.size());
-                    }
-                    break;
-            }
+            data.editingInflexion = null;
+        } else {
+            data.inflexions.add(inflexion);
+            adapter.notifyItemInserted(data.inflexions.size());
         }
-    };
+    }
+
+    @Override
+    public void onMessage(int res_id)
+    {
+        showMessage(res_id);
+    }
+
+    @Override
+    public void onMessage(String msg)
+    {
+        android.widget.Toast.makeText(this, msg, android.widget.Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError()
+    {
+
+    }
 
     protected void showMessage(int text)
     {

@@ -172,6 +172,23 @@ public class DataBaseManager {
         return result;
     }
 
+    public Test readTestFromTheme(int theme_id)
+    {
+        Test res = null;
+        synchronized (this) {
+            SQLiteDatabase database = gateway.getReadableDatabase();
+            Cursor cursor = database.query(DBTest.db, DBTest.cols, DBTest.theme_id + "=" + theme_id, null, null, null, DBTest.name + " ASC");
+
+            cursor.moveToFirst();
+            if (!cursor.isAfterLast())
+                res = cursorToTest(cursor);
+
+            cursor.close();
+            database.close();
+        }
+        return res;
+    }
+
     public Themes readThemes(int lang_id)
     {
         Themes result = new Themes();
@@ -378,7 +395,7 @@ public class DataBaseManager {
         return new DrawerReference(note_id, note);
     }
 
-    public Test insertTest(String test_name, DReferences refs, int lang_id)
+    public Test insertTest(String test_name, DReferences refs, int lang_id, int theme_id)
     {
         Test test = new Test(test_name, refs);
 
@@ -387,6 +404,7 @@ public class DataBaseManager {
         values.put(DBTest.name, test_name);
         values.put(DBTest.runtimes, test.getRunTimes());
         values.put(DBTest.content, Test.wrapContent(test));
+        values.put(DBTest.theme_id, theme_id);
 
         synchronized (this) {
             SQLiteDatabase database = gateway.getWritableDatabase();

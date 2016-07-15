@@ -10,11 +10,13 @@ import com.delvinglanguages.kernel.util.Tests;
 
 public class TestManager extends KernelManager {
 
-    public TestManager(Context context) {
+    public TestManager(Context context)
+    {
         super(context);
     }
 
-    public Tests getTests() {
+    public Tests getTests()
+    {
         Language language = getCurrentLanguage();
         if (language.tests == null)
             language.setTests(dbManager.readTests(language.id));
@@ -22,24 +24,27 @@ public class TestManager extends KernelManager {
         return language.tests;
     }
 
-    public Test createTest(String test_name, int numberOfWords, int type) {
+    public Test createTest(String test_name, int numberOfWords, int type)
+    {
         Language language = getCurrentLanguage();
 
         DReferences references = new TestGame(language.getReferences()).getRandomReferences(numberOfWords, type);
         if (references.isEmpty())
             return null;
 
-        Test test = dbManager.insertTest(test_name, references, language.id);
+        Test test = dbManager.insertTest(test_name, references, language.id, -1);
         language.tests.add(test);
 
         return test;
     }
 
-    public void updateTest(Test test) {
+    public void updateTest(Test test)
+    {
         dbManager.updateTest(test);
     }
 
-    public void deleteTest(Test test) {
+    public void deleteTest(Test test)
+    {
         getCurrentLanguage().tests.remove(test);
         dbManager.deleteTest(test.id);
     }

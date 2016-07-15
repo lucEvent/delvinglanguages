@@ -79,30 +79,27 @@ public class PractiseMatchActivity extends AppCompatActivity {
         view_inflexions.setText(roundData.reference.getInflexionsAsString());
 
         for (int i = 0; i < n_options; i++) {
-            button_answer[i].getBackground().setColorFilter(0xFFFFFFFF, AppSettings.PROGRESS_COLOR_MODE);
+            button_answer[i].getBackground().setColorFilter(null);
             button_answer[i].setText(roundData.options[i].first);
             button_answer[i].setClickable(true);
             button_answer[i].setTag(roundData.options[i].second);
         }
 
         AppAnimator.typeAnimation(this, shownType, roundData.reference.type);
-
     }
 
     public void onAnswerSelected(View v)
     {
-        if ((Boolean) v.getTag()) {
+        if ((Boolean) v.getTag())
             acierto(v);
-        } else {
+        else
             fallo(v);
-        }
     }
 
     private Handler mHandler = new Handler();
 
     private void acierto(View v)
     {
-
         v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
         for (int i = 0; i < n_options; i++) {
             button_answer[i].setClickable(false);
@@ -134,11 +131,9 @@ public class PractiseMatchActivity extends AppCompatActivity {
         v.setClickable(false);
         v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
         if (attempt == 4) {
-            for (int i = 0; i < n_options; i++) {
-                if (roundData.options[i].second) {
+            for (int i = 0; i < n_options; i++)
+                if (roundData.options[i].second)
                     acierto(button_answer[i]);
-                }
-            }
         }
     }
 

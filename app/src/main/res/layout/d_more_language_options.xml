@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/option_themes"
@@ -10,11 +10,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_theme" />
+            android:src="@drawable/ic_theme"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/themes" />
+            android:text="@string/themes"/>
 
     </LinearLayout>
 
@@ -24,11 +24,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_type" />
+            android:src="@drawable/ic_type"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/phrasalverbs" />
+            android:text="@string/phrasalverbs"/>
 
     </LinearLayout>
 
@@ -38,11 +38,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_type" />
+            android:src="@drawable/ic_type"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/verbs" />
+            android:text="@string/verbs"/>
 
     </LinearLayout>
 
@@ -52,11 +52,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_search" />
+            android:src="@drawable/ic_search"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/web_search" />
+            android:text="@string/web_search"/>
 
     </LinearLayout>
 
@@ -66,11 +66,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_pronunciation" />
+            android:src="@drawable/ic_pronunciation"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/pronunciation" />
+            android:text="@string/pronunciation"/>
 
     </LinearLayout>
 
@@ -80,11 +80,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_delete"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/recycle_bin" />
+            android:text="@string/recycle_bin"/>
 
     </LinearLayout>
 
@@ -94,11 +94,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_settings" />
+            android:src="@drawable/ic_settings"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/language_settings" />
+            android:text="@string/language_settings"/>
 
     </LinearLayout>
 

@@ -8,15 +8,18 @@ public class Inflexions extends ArrayList<Inflexion> {
 
     private static final String SEP = "%I";
 
-    public Inflexions() {
+    public Inflexions()
+    {
         super();
     }
 
-    public Inflexions(int size) {
+    public Inflexions(int size)
+    {
         super(size);
     }
 
-    public Inflexions(String wrapper) {
+    public Inflexions(String wrapper)
+    {
         super();
         String[] parts = wrapper.split(SEP);
 
@@ -41,12 +44,14 @@ public class Inflexions extends ArrayList<Inflexion> {
         }
     }
 
-    public Inflexions(ArrayList<Inflexion> value) {
-        super(value);
+    public Inflexions(ArrayList<Inflexion> values)
+    {
+        super(values);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder res = new StringBuilder().append(this.size());
 
         for (Inflexion inf : this) {
@@ -64,7 +69,8 @@ public class Inflexions extends ArrayList<Inflexion> {
         return res.toString();
     }
 
-    public String[] getTranslations() {
+    public String[] getTranslations()
+    {
         int translation_counter = 0;
         for (Inflexion i : this) {
             translation_counter += i.getTranslations().length;
@@ -80,7 +86,8 @@ public class Inflexions extends ArrayList<Inflexion> {
         return res;
     }
 
-    public String getTranslationsAsString() {
+    public String getTranslationsAsString()
+    {
         StringBuilder res = new StringBuilder();
         boolean first = true;
         for (Inflexion i : this) {
@@ -96,7 +103,8 @@ public class Inflexions extends ArrayList<Inflexion> {
         return res.toString();
     }
 
-    public String getInflexionsAsString() {
+    public String getInflexionsAsString()
+    {
         StringBuilder res = new StringBuilder();
         boolean first = true;
         for (Inflexion i : this) {
@@ -112,7 +120,8 @@ public class Inflexions extends ArrayList<Inflexion> {
         return res.toString();
     }
 
-    public boolean hasContent(CharSequence content) {
+    public boolean hasContent(CharSequence content)
+    {
         for (Inflexion i : this) {
             if (i.hasContent(content)) {
                 return true;
@@ -122,7 +131,8 @@ public class Inflexions extends ArrayList<Inflexion> {
     }
 
     @Override
-    public Inflexions clone() {
+    public Inflexions clone()
+    {
         Inflexions clone = new Inflexions(this.size());
         for (Inflexion inflexion : this)
             clone.add(inflexion.clone());

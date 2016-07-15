@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -19,9 +18,11 @@ import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.util.Languages;
 import com.delvinglanguages.view.fragment.LanguageMainFragment;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.LanguageHandler;
 
-public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        LanguageListener {
 
     private enum MainOption {
         MAIN, CREATE_LANGUAGE, HISTORIAL, SETTINGS, ABOUT, PHONETIC
@@ -49,7 +50,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         //   setTheme(AppSettings.getAppThemeResource());
         setContentView(R.layout.a_main);
 
-        Main.handler = this.phandler;
+        Main.handler = new LanguageHandler(this);
         dataManager = new KernelManager(this);
         previousFragment = MainOption.MAIN;
 
@@ -150,52 +151,71 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.invalidate();
     }
 
-    private Handler phandler = new Handler() {
+    @Override
+    public void onLanguageCreatedOK(Object[] data)
+    {
+        Language language = dataManager.createLanguage((int) data[0], (String) data[1], (int) data[2]);
 
-        @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what) {
-                case AppCode.LANGUAGE_CREATED_OK:
+        AppSettings.setCurrentLanguage(language.id);
 
-                    Object[] data = (Object[]) msg.obj;
-                    Language language = dataManager.createLanguage((int) data[0], (String) data[1], (int) data[2]);
+        setFragment(MainOption.MAIN);
+        updateLanguageList();
 
-                    AppSettings.setCurrentLanguage(language.id);
+        Snackbar.make(drawer, R.string.msg_language_created, Snackbar.LENGTH_SHORT).show();
+    }
 
-                    setFragment(MainOption.MAIN);
-                    updateLanguageList();
-
-                    Snackbar.make(drawer, R.string.msg_language_created, Snackbar.LENGTH_SHORT).show();
-                    break;
-                case AppCode.LANGUAGE_CREATED_CANCELED:
-                    if (flag == MainFlag.FIRST_LAUNCH) {
-                        //// TODO: 11/03/2016
-                    } else {
-                        setFragment(previousFragment);
-                    }
-                    break;
-                case AppCode.LANGUAGE_REMOVED:
-                    Languages languages = dataManager.getLanguages();
-                    if (languages.isEmpty()) {
-                        setFragment(MainOption.CREATE_LANGUAGE);
-                    } else {
-                        AppSettings.setCurrentLanguage(languages.get(0).id);
-                        setFragment(MainOption.MAIN);
-                    }
-                    updateLanguageList();
-                    break;
-                case AppCode.LANGUAGE_RECOVERED:
-                case AppCode.LANGUAGE_NAME_CHANGED:
-                    updateLanguageList();
-                    break;
-                case AppCode.MESSAGE_INT:
-                    Snackbar.make(drawer, (int) msg.obj, Snackbar.LENGTH_SHORT).show();
-
-                    break;
-            }
+    @Override
+    public void onLanguageCreatedCanceled()
+    {
+        if (flag == MainFlag.FIRST_LAUNCH) {
+            //// TODO: 11/03/2016
+        } else {
+            setFragment(previousFragment);
         }
-    };
+    }
+
+    @Override
+    public void onLanguageRemoved()
+    {
+        Languages languages = dataManager.getLanguages();
+        if (languages.isEmpty()) {
+            setFragment(MainOption.CREATE_LANGUAGE);
+        } else {
+            AppSettings.setCurrentLanguage(languages.get(0).id);
+            setFragment(MainOption.MAIN);
+        }
+        updateLanguageList();
+    }
+
+    @Override
+    public void onLanguageRecovered()
+    {
+        updateLanguageList();
+    }
+
+    @Override
+    public void onLanguageNameChanged()
+    {
+        updateLanguageList();
+    }
+
+    @Override
+    public void onMessage(int res_id)
+    {
+        Snackbar.make(drawer, res_id, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMessage(String msg)
+    {
+        Snackbar.make(drawer, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError()
+    {
+        AppSettings.printerror("Error in MAIN through handler", null);
+    }
 
     private void setFragment(MainOption option)
     {

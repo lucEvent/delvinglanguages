@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                style="@style/list_item_layout">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/restore"
-        android:orientation="vertical"
-        android:padding="10dip">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/word"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="Reference name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+            style="@style/list_item_title"/>
 
         <TextView
             android:id="@+id/translation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:paddingLeft="10dip"
-            android:text="Translation"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            style="@style/list_item_subtitle"/>
+
     </LinearLayout>
 
     <ImageButton
@@ -36,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_margin="2.5dp"
         android:background="@drawable/ripple_over_grey"
         android:padding="14dip"
-        android:src="@drawable/ic_undo" />
+        android:src="@drawable/ic_undo"/>
 
 </RelativeLayout>

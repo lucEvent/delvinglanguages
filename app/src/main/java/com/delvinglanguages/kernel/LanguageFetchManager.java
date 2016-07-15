@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.delvinglanguages.view.lister.viewholder.MainTypesViewHolder;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.DataListener;
 
 public class LanguageFetchManager extends LanguageManager {
 
@@ -47,8 +47,9 @@ public class LanguageFetchManager extends LanguageManager {
                 data.types = language.getTypeCounter();
                 data.num_themes = language.themes.size();
                 data.num_tests = language.tests.size();
-                handler.obtainMessage(AppCode.MAIN_DATA_COUNTERS, data).sendToTarget();
+                handler.obtainMessage(DataListener.MAIN_DATA_COUNTERS, data).sendToTarget();
             }
         }).start();
     }
+
 }

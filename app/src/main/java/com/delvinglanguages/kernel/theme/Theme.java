@@ -9,36 +9,43 @@ public class Theme {
     private String name;
     private ThemePairs pairs;
 
-    public Theme(int id, String name) {
+    public Theme(int id, String name)
+    {
         this(id, name, new ThemePairs());
     }
 
-    public Theme(int id, String name, ThemePairs pairs) {
+    public Theme(int id, String name, ThemePairs pairs)
+    {
         this.id = id;
         this.name = name;
         this.pairs = pairs;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public ThemePairs getPairs() {
+    public ThemePairs getPairs()
+    {
         return pairs;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public void setPairs(ThemePairs pairs) {
+    public void setPairs(ThemePairs pairs)
+    {
         this.pairs = pairs;
     }
 
-    public boolean hasContent(CharSequence s) {
-        if (name.contains(s)) return true;
+    public boolean hasContent(CharSequence s)
+    {
+        if (name.toLowerCase().contains(s)) return true;
         for (ThemePair pair : pairs)
-            if (pair.inDelved.contains(s) || pair.inNative.contains(s))
+            if (pair.inDelved.toLowerCase().contains(s) || pair.inNative.toLowerCase().contains(s))
                 return true;
         return false;
     }

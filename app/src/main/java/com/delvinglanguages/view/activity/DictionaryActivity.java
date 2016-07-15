@@ -8,19 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.lister.ReferenceLister;
-import com.delvinglanguages.view.utils.AppCode;
 import com.delvinglanguages.view.utils.ContentLoader;
 
 public class DictionaryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
+    private LanguageManager dataManager;
     private DReferences references;
-
-    private boolean phrasalsEnabled;
 
     private ReferenceLister adapter;
 
@@ -45,13 +45,12 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
             }
         });
 
-        //phrasalsEnabled = LanguageKernelControl.getLanguageSettings(Language.MASK_PH);
-
-        references = new LanguageManager(this).getReferences();
+        dataManager = new LanguageManager(this);
+        references = dataManager.getReferences();
         queriedReferences = references;
         lastQuery = "";
 
-        adapter = new ReferenceLister(references, phrasalsEnabled, this);
+        adapter = new ReferenceLister(references, dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS), this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setAutoMeasureEnabled(true);
@@ -73,11 +72,14 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case AppCode.DREFERENCE_DELETED:
+                references = dataManager.getReferences();
+                queriedReferences = references;
 
-        if (resultCode == AppCode.DREFERENCE_UPDATED || resultCode == AppCode.DREFERENCE_DELETED) {
-            String query = lastQuery;
-            lastQuery = "____";
-            onQueryTextChange(query);
+            case AppCode.DREFERENCE_UPDATED:
+                onQueryTextChange(lastQuery);
+                break;
         }
     }
 

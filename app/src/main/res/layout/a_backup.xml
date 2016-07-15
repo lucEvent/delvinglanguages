@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activity.BackUpActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".view.activity.BackUpActivity">
 
     <ScrollView
         android:id="@+id/scrollbox"
@@ -22,7 +22,7 @@
             android:padding="16dp"
             android:scrollbars="vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:typeface="serif" />
+            android:typeface="serif"/>
 
     </ScrollView>
 
@@ -41,13 +41,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="more"
-            android:text="@string/import_more" />
+            android:text="@string/import_more"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="done"
-            android:text="@string/done" />
+            android:text="@string/done"/>
     </LinearLayout>
 
 </RelativeLayout>

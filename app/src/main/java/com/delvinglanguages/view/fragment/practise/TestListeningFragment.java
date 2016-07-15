@@ -2,6 +2,7 @@ package com.delvinglanguages.view.fragment.practise;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,13 +17,16 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.view.activity.practise.TestActivity;
 import com.delvinglanguages.view.utils.AppAnimator;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.TestListener;
 
 public class TestListeningFragment extends TestFragment implements TextWatcher {
 
-    public TestListeningFragment()
+    public static TestListeningFragment getInstance(Handler handler, TestReferenceState reference)
     {
-        super();
+        TestListeningFragment f = new TestListeningFragment();
+        f.reference = reference;
+        f.handler = handler;
+        return f;
     }
 
     protected ProgressBar view_progress;
@@ -171,10 +175,10 @@ public class TestListeningFragment extends TestFragment implements TextWatcher {
                 if (attempt == 1) {
 
                     reference.stage = TestReferenceState.TestStage.END;
-                    handler.obtainMessage(AppCode.TEST_ROUND_PASSED).sendToTarget();
+                    handler.obtainMessage(TestListener.TEST_ROUND_PASSED).sendToTarget();
 
                 } else
-                    handler.obtainMessage(AppCode.TEST_ROUND_SKIPPED).sendToTarget();
+                    handler.obtainMessage(TestListener.TEST_ROUND_SKIPPED).sendToTarget();
             }
         }).start();
     }

@@ -1,6 +1,5 @@
 package com.delvinglanguages.kernel.game;
 
-
 import android.util.Pair;
 
 import com.delvinglanguages.kernel.DReference;
@@ -13,15 +12,18 @@ public class MatchGame extends Game {
         public Pair<String, Boolean>[] options;
     }
 
-    public MatchGame(DReferences references) {
+    public MatchGame(DReferences references)
+    {
         super(references);
     }
 
-    public RoundData nextRound(int n_options, int own_options_max) { // own_options_max <= n_options
+    public RoundData nextRound(int n_options, int own_options_max)
+    { // own_options_max <= n_options
         return nextRound(nextReference(), n_options, own_options_max);
     }
 
-    public RoundData nextRound(DReference reference, int n_options, int own_options_max) { // own_options_max <= n_options
+    public RoundData nextRound(DReference reference, int n_options, int own_options_max)
+    { // own_options_max <= n_options
         RoundData res = new RoundData();
 
         res.reference = reference;
@@ -44,10 +46,18 @@ public class MatchGame extends Game {
             translations[randomTranslationPosition] = null;
         }
 
+        translations = res.reference.getTranslations();
         for (int i = 0; i < n_options; ++i)
             if (res.options[i] == null) {
                 String[] hooks = references.get(nextInt(references.size())).getTranslations();
-                res.options[i] = new Pair<>(hooks[nextInt(hooks.length)], false);//podria poner una solucion valida a false // TODO: 02/04/2016
+                String hook = hooks[nextInt(hooks.length)];
+                boolean is = false;
+                for (String translation : translations)
+                    if (hook.equals(translation)) {
+                        is = true;
+                        break;
+                    }
+                res.options[i] = new Pair<>(hook, is);
             }
 
         return res;

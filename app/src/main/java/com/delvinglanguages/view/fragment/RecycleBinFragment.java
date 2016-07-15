@@ -1,10 +1,14 @@
 package com.delvinglanguages.view.fragment;
 
-import android.app.ListFragment;
+import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,41 +17,57 @@ import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.view.lister.RecycleBinLister;
 
-public class RecycleBinFragment extends ListFragment {
+public class RecycleBinFragment extends Fragment {
 
     private LanguageManager dataManager;
     private RecycleBinLister adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.f_list_with_button, container, false);
-
-        dataManager = new LanguageManager(getActivity());
-
-        view.findViewById(R.id.button).setVisibility(View.GONE);
-
-        adapter = new RecycleBinLister(getActivity(), dataManager.getRemovedReferences(), onRestoreItem);
-        setListAdapter(adapter);
-
-        return view;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add(0, R.id.delete_all, 0, R.string.delete_all).setIcon(R.drawable.ic_delete_all);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.f_list_with_button, container, false);
+
+        Context context = getActivity();
+
+        dataManager = new LanguageManager(context);
+
+        adapter = new RecycleBinLister(dataManager.getRemovedReferences(), onRestoreItem);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setAutoMeasureEnabled(true);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        view.findViewById(R.id.button).setVisibility(View.GONE);
+
+        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        menu.add(Menu.NONE, R.id.delete_all, 0, R.string.delete_all)
+                .setIcon(R.drawable.ic_delete_all)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     private View.OnClickListener onRestoreItem = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
+            int position = dataManager.getRemovedReferences().indexOf((DReference) v.getTag());
             dataManager.restoreReference((DReference) v.getTag());
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRemoved(position);
         }
     };
 

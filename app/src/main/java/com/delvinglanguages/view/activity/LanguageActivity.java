@@ -19,7 +19,7 @@ import com.delvinglanguages.view.fragment.PractiseFragment;
 import com.delvinglanguages.view.fragment.PronunciationFragment;
 import com.delvinglanguages.view.fragment.RecycleBinFragment;
 import com.delvinglanguages.view.fragment.ThemesFragment;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.AppCode;
 
 public class LanguageActivity extends AppCompatActivity {
 

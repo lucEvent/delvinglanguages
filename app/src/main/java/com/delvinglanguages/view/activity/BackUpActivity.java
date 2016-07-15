@@ -22,13 +22,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.BackUpManager;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.util.Languages;
 import com.delvinglanguages.view.lister.LanguageCheckBoxLister;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.MessageListener;
 
 public class BackUpActivity extends Activity {
 
@@ -80,7 +82,7 @@ public class BackUpActivity extends Activity {
         super.onPause();
 
         if (done && action == IMPORT) {
-            Main.handler.obtainMessage(AppCode.LANGUAGE_RECOVERED).sendToTarget();
+            Main.handler.obtainMessage(LanguageListener.LANGUAGE_RECOVERED).sendToTarget();
         }
     }
 
@@ -137,9 +139,9 @@ public class BackUpActivity extends Activity {
             if (requestCode == IMPORT) {
                 final Uri uri = data.getData();
                 if (uri == null) {
-                    handler.obtainMessage(AppCode.ERROR, getString(R.string.error)).sendToTarget();
+                    handler.obtainMessage(MessageListener.ERROR, getString(R.string.error)).sendToTarget();
                 } else if (!uri.getPath().endsWith(".delv")) {
-                    handler.obtainMessage(AppCode.ERROR, getString(R.string.msg_not_dl_file)).sendToTarget();
+                    handler.obtainMessage(MessageListener.ERROR, getString(R.string.msg_not_dl_file)).sendToTarget();
                 } else {
 
                     new Thread(new Runnable() {
@@ -154,7 +156,7 @@ public class BackUpActivity extends Activity {
             }
 
         } else {
-            handler.obtainMessage(AppCode.ERROR, getString(R.string.error)).sendToTarget();
+            handler.obtainMessage(MessageListener.ERROR, getString(R.string.error)).sendToTarget();
         }
     }
 
@@ -165,12 +167,12 @@ public class BackUpActivity extends Activity {
         {
 
             switch (msg.what) {
-                case AppCode.ERROR:
+                case MessageListener.ERROR:
                     displayButtons();
-                case AppCode.MESSAGE:
+                case MessageListener.MESSAGE:
                     console.append((String) msg.obj);
                     break;
-                case AppCode.MESSAGE_INT:
+                case MessageListener.MESSAGE_INT:
                     console.append(getString((int) msg.obj));
                     break;
                 case AppCode.IMPORT_SUCCESSFUL:
@@ -261,7 +263,7 @@ public class BackUpActivity extends Activity {
 
                 if (export_languages.isEmpty()) {
 
-                    handler.obtainMessage(AppCode.ERROR, getString(R.string.msg_no_language_selected)).sendToTarget();
+                    handler.obtainMessage(MessageListener.ERROR, getString(R.string.msg_no_language_selected)).sendToTarget();
 
                 } else {
 
@@ -297,7 +299,7 @@ public class BackUpActivity extends Activity {
                 final String filename = export_input.getText().toString();
                 if (filename.isEmpty()) {
 
-                    handler.obtainMessage(AppCode.ERROR, getString(R.string.msg_missing_filename)).sendToTarget();
+                    handler.obtainMessage(MessageListener.ERROR, getString(R.string.msg_missing_filename)).sendToTarget();
 
                 } else {
 

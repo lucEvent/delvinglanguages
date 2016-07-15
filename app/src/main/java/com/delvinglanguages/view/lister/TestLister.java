@@ -23,7 +23,7 @@ public class TestLister extends RecyclerView.Adapter<TestViewHolder> {
     @Override
     public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_drawer_word, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_test, parent, false);
         v.setOnClickListener(itemListener);
         return new TestViewHolder(v);
     }

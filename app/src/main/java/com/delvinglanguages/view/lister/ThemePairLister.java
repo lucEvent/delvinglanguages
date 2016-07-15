@@ -54,4 +54,10 @@ public class ThemePairLister extends RecyclerView.Adapter<ThemePairLister.ViewHo
         return dataset.size();
     }
 
+    public void setNewDataSet(ThemePairs newPairs)
+    {
+        this.dataset = newPairs;
+        notifyDataSetChanged();
+    }
+
 }

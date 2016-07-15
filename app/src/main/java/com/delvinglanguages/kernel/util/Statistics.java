@@ -1,7 +1,7 @@
 package com.delvinglanguages.kernel.util;
 
 public class Statistics {
-//// TODO: 08/04/2016  More complete statistics :)
+    //// TODO: 08/04/2016  More complete statistics :)
     public final int id;
 
     public int intentos;
@@ -10,11 +10,13 @@ public class Statistics {
     public int aciertos3;
     public int fallos;
 
-    public Statistics(int id) {
+    public Statistics(int id)
+    {
         this(id, 0, 0, 0, 0, 0);
     }
 
-    public Statistics(int id, int intentos, int aciertos1, int aciertos2, int aciertos3, int fallos) {
+    public Statistics(int id, int intentos, int aciertos1, int aciertos2, int aciertos3, int fallos)
+    {
         this.id = id;
         this.intentos = intentos;
         this.aciertos1 = aciertos1;
@@ -23,31 +25,28 @@ public class Statistics {
         this.fallos = fallos;
     }
 
-    public float porcentageAcertadas1() {
-        if (intentos == 0)
-            return 0;
-        return (float) aciertos1 / (float) intentos;
+    public float porcentageAcertadas1()
+    {
+        return intentos == 0 ? 0 : (float) (aciertos1 * 100) / (float) intentos;
     }
 
-    public float porcentageAcertadas2() {
-        if (intentos == 0)
-            return 0;
-        return (float) aciertos2 / (float) intentos;
+    public float porcentageAcertadas2()
+    {
+        return intentos == 0 ? 0 : (float) (aciertos2 * 100) / (float) intentos;
     }
 
-    public float porcentageAcertadas3() {
-        if (intentos == 0)
-            return 0;
-        return (float) aciertos3 / (float) intentos;
+    public float porcentageAcertadas3()
+    {
+        return intentos == 0 ? 0 : (float) (aciertos3 * 100) / (float) intentos;
     }
 
-    public float porcentageFalladas() {
-        if (intentos == 0)
-            return 0;
-        return (float) fallos / (float) intentos;
+    public float porcentageFalladas()
+    {
+        return intentos == 0 ? 0 : (float) (fallos * 100) / (float) intentos;
     }
 
-    public void nuevoIntento(int resultado) {
+    public void nuevoIntento(int resultado)
+    {
         intentos++;
         switch (resultado) {
             case 1:
@@ -64,7 +63,8 @@ public class Statistics {
         }
     }
 
-    public void reset() {
+    public void reset()
+    {
         intentos = 0;
         aciertos1 = 0;
         aciertos2 = 0;

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
@@ -20,7 +21,6 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.manager.DReferenceNavigator;
 import com.delvinglanguages.view.lister.InflexionLister;
-import com.delvinglanguages.view.utils.AppCode;
 
 public class DReferenceActivity extends AppCompatActivity {
 
@@ -106,8 +106,13 @@ public class DReferenceActivity extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == AppCode.DREFERENCE_UPDATED) {
+            DReference ref = navigator.current();
+
+            ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(ref.name);
+            ((TextView) findViewById(R.id.textview_pronunciation)).setText(ref.pronunciation);
+            adapter.setNewDataSet(ref.getInflexions());
+
             setResult(resultCode);
-            finish();
         }
     }
 
@@ -122,7 +127,7 @@ public class DReferenceActivity extends AppCompatActivity {
     public void actionDelete(View v)
     {
         new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.msg_confirm_to_delete_word, navigator.current().name))
+                .setTitle(R.string.msg_confirm_to_delete_xxx)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id)

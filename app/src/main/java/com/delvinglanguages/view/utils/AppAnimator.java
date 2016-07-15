@@ -9,14 +9,15 @@ import com.delvinglanguages.kernel.DReference;
 
 public class AppAnimator {
 
-    public static boolean[] getTypeStatusVector() {
+    public static boolean[] getTypeStatusVector()
+    {
         boolean[] status = new boolean[DReference.NUMBER_OF_TYPES];
         for (int i = 0; i < status.length; i++) status[i] = true;
         return status;
     }
 
-    public static void typeAnimation(Context context, boolean[] currentStatus, int type) {
-
+    public static void typeAnimation(Context context, boolean[] currentStatus, int type)
+    {
         TranslateAnimation showAnimation = new TranslateAnimation(0, 0, -26, 0);
         showAnimation.setDuration(400);
         showAnimation.setFillAfter(true);

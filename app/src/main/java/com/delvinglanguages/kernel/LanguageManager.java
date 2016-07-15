@@ -119,10 +119,6 @@ public class LanguageManager extends KernelManager {
         languages.remove(language);
     }
 
-    /*****************************************
-     * hasta aqui revisadas
-     ************************************************/
-
     public void deleteReferenceTemporarily(DReference reference)
     {
         Language language = getCurrentLanguage();

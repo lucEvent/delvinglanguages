@@ -7,11 +7,13 @@ import com.delvinglanguages.kernel.util.DReferences;
 
 public class TestGame extends Game {
 
-    public TestGame(DReferences references) {
+    public TestGame(DReferences references)
+    {
         super(references);
     }
 
-    public DReferences getRandomReferences(int number, int type) {
+    public DReferences getRandomReferences(int number, int type)
+    {
         DReferences res = new DReferences(number);
         if (number > references.size())
             number = references.size();
@@ -30,7 +32,8 @@ public class TestGame extends Game {
         return res;
     }
 
-    public TestReferenceState nextTestReference(Test test) {
+    public TestReferenceState nextTestReference(Test test)
+    {
         while (true) {
             int position = nextInt(test.references.size());
 

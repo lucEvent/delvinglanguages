@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.theme.Theme;
@@ -18,7 +19,6 @@ import com.delvinglanguages.kernel.theme.ThemeManager;
 import com.delvinglanguages.kernel.theme.ThemePair;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.view.lister.ThemePairEditLister;
-import com.delvinglanguages.view.utils.AppCode;
 
 public class ThemeEditorActivity extends AppCompatActivity {
 
@@ -61,7 +61,7 @@ public class ThemeEditorActivity extends AppCompatActivity {
             data.state = State.EDIT;
 
             int theme_id = bundle.getInt(AppCode.THEME_ID);
-            data.theme = dataManager.getThemes().get(theme_id);
+            data.theme = dataManager.getThemes().getThemeById(theme_id);
             data.pairs = (ThemePairs) data.theme.getPairs().clone();
 
             in_name.setText(data.theme.getName());
@@ -160,17 +160,15 @@ public class ThemeEditorActivity extends AppCompatActivity {
             data.theme = dataManager.addTheme(theme_name, data.pairs);
             setResult(AppCode.THEME_CREATED);
 
+            Intent intent = new Intent(this, ThemeActivity.class);
+            intent.putExtra(AppCode.THEME_ID, data.theme.id);
+            startActivity(intent);
+
         } else {
 
             dataManager.updateTheme(data.theme, theme_name, data.pairs);
             setResult(AppCode.THEME_MODIFIED);
         }
-
-        Intent intent = new Intent(this, ThemeActivity.class);
-        intent.putExtra(AppCode.THEME_ID, data.theme.id);
-
-        startActivity(intent);
-
         finish();
     }
 

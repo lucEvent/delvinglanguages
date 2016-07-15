@@ -12,10 +12,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestManager;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.TestListener;
 
 public class TestEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -93,6 +94,7 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
             showMessage(R.string.msg_cannot_start_test);
             return;
         }
+        setResult(TestListener.TEST_CREATED);
 
         Intent intent = new Intent(this, TestActivity.class);
         intent.putExtra(AppCode.TEST_ID, test.id);

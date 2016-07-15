@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- * ******************** Types **************************** * -->
+    <string name="nn">SST</string>
+    <string name="noun">Sustantiu</string>
+    <string name="noun_cap">SUSTANTIU</string>
+    <string name="vb">VB</string>
+    <string name="verb">Verb</string>
+    <string name="verbs">Verbs</string>
+    <string name="verb_cap">VERB</string>
+    <string name="adj">ADJ</string>
+    <string name="adjective">Adjectiu</string>
+    <string name="adjective_cap">ADJECTIU</string>
+    <string name="adv">ADV</string>
+    <string name="adverb">Adverbi</string>
+    <string name="adverb_cap">ADVERBI</string>
+    <string name="phv">VP</string>
+    <string name="phrasalverb">Verb Preposicional</string>
+    <string name="phrasalverbs">Verbs Preposicionals</string>
+    <string name="phrasal_cap">VERB PREPOSICIONAL</string>
+    <string name="exp">EXP</string>
+    <string name="expression">Expressió</string>
+    <string name="expression_cap">EXPRESSIÓ</string>
+    <string name="prep">PREP</string>
+    <string name="preposition">Preposició</string>
+    <string name="preposition_cap">PREPOSICIÓ</string>
+    <string name="conj">CONJ</string>
+    <string name="conjunction">Conjunció</string>
+    <string name="conjunction_cap">CONJUNCIÓ</string>
+    <string name="oth">ALT</string>
+    <string name="other">Altres</string>
+    <string name="other_cap">ALTRES</string>
+
+
+    <!-- * ******************** Labels **************************** * -->
+    <string name="create_language">Crea idioma</string>
+    <string name="historial">Historial</string>
+    <string name="settings">Configuració</string>
+    <string name="about">Informació</string>
+    <string name="my_languages">Els meus idiomes</string>
+    <string name="language_features">Característiques</string>
+    <string name="web_search">Cerca online</string>
+    <string name="practice">Pràctica</string>
+    <string name="dictionary">Diccionari</string>
+    <string name="drawer">Esborrany</string>
+    <string name="more">Més</string>
+    <string name="themes">Temes</string>
+    <string name="pronunciation">Pronunciació</string>
+    <string name="recycle_bin">Paperera</string>
+    <string name="language_settings">Opcions de l\'idioma</string>
+    <string name="word">Paraula</string>
+    <string name="translations_cap">TRADUCCIONS</string>
+    <string name="inflexions_cap">FLEXIONS</string>
+    <string name="match">Aparella</string>
+    <string name="complete">Completa</string>
+    <string name="write">Escriu</string>
+    <string name="listening">Escolta</string>
+    <string name="test">Test</string>
+    <string name="type_filter">Filtra per tipus</string>
+    <string name="number_of_words">Número de paraules</string>
+    <string name="main_types_content_description">%1$d sustantius\n%2$d verbs\n%3$d adjectius\n%4$d adverbis\n%5$d verbs preposicionals\n%6$d expressions\n%7$d preposicions\n%8$d conjuncions\n%9$d altres\n%10$d temes\n%11$d tests</string>
+    <string name="content">Contingut</string>
+    <string name="statistics">Estadístiques</string>
+    <string name="main_stats_content_description">Intents:\t\t\t\t\t\t %1$d\nEncerts a la 1a:\t %2$d (%3$.1f%%)\nEncerts a la 2a:\t %4$d (%5$.1f%%)\nEncerts a la 3a:\t %6$d (%7$.1f%%)\nFallades:\t\t\t\t\t %8$d (%9$.1f%%)</string>
+    <string name="x_words">%1$s paraules</string>
+
+
+    <!-- * ******************** Buttons **************************** * -->
+    <string name="cancel">Cancel·lar</string>
+    <string name="create">Crear</string>
+    <string name="add">Afegir</string>
+    <string name="import_more">Importar més</string>
+    <string name="export_more">Exportar més</string>
+    <string name="done">Fet</string>
+    <string name="proceed">Procedir</string>
+    <string name="confirm">Confirmar</string>
+    <string name="save">Guardar</string>
+    <string name="continue_">Continuar</string>
+    <string name="go_out">Anar endarrere</string>
+    <string name="add_translation">Afegir Traducció</string>
+    <string name="dismiss">Descartar</string>
+    <string name="open_google_play">Google Play</string>
+    <string name="open_settings">Configuració</string>
+    <string name="delete_all">Elimina tot</string>
+    <string name="accept">Acceptar</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="add_word">Afegir paraula</string>
+    <string name="add_theme">Afegir tema</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="start">Començar</string>
+
+
+    <!-- * ******************** Hints **************************** * -->
+    <string name="hint_enter_language">Inserta el nom de l\'idioma</string>
+    <string name="hint_enter_theme_name">Nom del tema</string>
+    <string name="hint_search">Cerca</string>
+    <string name="hint_enter_drawer">Inserta una paraula</string>
+    <string name="hint_enter_backup_name">Inserta el nom de l\'arxiu</string>
+    <string name="hint_in_">en %1$s</string>
+    <string name="hint_search_content">Cerca contingut</string>
+    <string name="hint_translations">Traduccions</string>
+    <string name="hint_inflexions">Flexions</string>
+    <string name="hint_enter_text_to_speech">Inserta text per pronunciació</string>
+    <string name="hint_practise_write">Prova algo</string>
+    <string name="hint_practise_listening">Què escoltes?</string>
+    <string name="hint_enter_test_name">Nom del test</string>
+
+
+    <!-- * ******************** Messages **************************** * -->
+    <string name="msg_word_exists">%1$s ja existeix</string>
+    <string name="msg_missing_word">Falta la paraula</string>
+    <string name="msg_missing_translations">Falta la traducció</string>
+    <string name="msg_missing_type">Falta el tipus</string>
+    <string name="msg_missing_language_name">Falta el nom de l\'idioma</string>
+    <string name="msg_language_created">Idioma creat</string>
+    <string name="msg_not_implemented">Funció no accesible</string>
+    <string name="msg_preparing_file">Preparant arxiu</string>
+    <string name="msg_found_languages">S\'ha trobat %1$s idioma(es)</string>
+    <string name="msg_n_references">%1$s paraules</string>
+    <string name="msg_n_drawerreferences">%1$s paraules a l\'esborrany</string>
+    <string name="msg_n_themes">%1$s temes</string>
+    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_import_finished">S\'ha importat amb èxit</string>
+    <string name="msg_export_finished">S\'ha exportat amb èxit</string>
+    <string name="msg_not_dl_file">L\'arxiu sel·leccionat no és vàlid</string>
+    <string name="error">Error</string>
+    <string name="msg_select_languages_backup">Sel·lecciona idiomes per la còpia de seguretat</string>
+    <string name="msg_could_access_disc">No es pot accedir al disc</string>
+    <string name="msg_saving_">Guardant %1$s</string>
+    <string name="msg_language_saved_">%1$s guardat amb %2$s paraules, %3$s paraules a l\'esborrany, %4$s temes i %5$s tests</string>
+    <string name="msg_missing_filename">Falta nom de l\'arxiu</string>
+    <string name="msg_no_language_selected">Cap idioma sel·leccionat</string>
+    <string name="msg_confirm_to_delete_xxx">Confirma per eliminar</string>
+    <string name="msg_go_back_without_saving">Sortir sense guardar canvis</string>
+    <string name="msg_go_out_from_test">Sortir sense acabar el test</string>
+    <string name="msg_missing_theme_name">Falta nom del tema</string>
+    <string name="msg_missing_theme_content">Falta contingut del tema</string>
+    <string name="msg_missing_content">Falta contingut</string>
+    <string name="msg_notifier_tts">El teu dispositiu no té els recursos per pronunciar %1$s. Intenta descarregar-ho a Configuració o descarrega una aplicació TTS de la Google Play.</string>
+    <string name="msg_missing_test_name">Falta nom del test</string>
+    <string name="msg_test_hasnot_run_yet">El test encara no s\'ha fet</string>
+    <string name="msg_test_done_times">Fet %1$s vegades</string>
+    <string name="msg_test_accuracy">Precisió: %1$s%%</string>
+    <string name="msg_test_best_reference">Millor paraula: %1$s</string>
+    <string name="msg_test_worst_reference">Pitjor paraula: %1$s</string>
+    <string name="msg_confirm_to_clear_all_items">Confirma per eliminar tot</string>
+    <string name="msg_confirm_to_reset_statistics">Confirma per restaurar les estadístiques</string>
+    <string name="msg_select_language_to_merge_with">Sel·lecciona l\'idioma per fusionar</string>
+    <string name="msg_no_conflicts_found">Cap conflicte trobat</string>
+    <string name="msg_estimating_merge_of">Estimant la fusió de %1$s amb %2$s</string>
+    <string name="msg_be_patience">Sigues pacient!</string>
+    <string name="msg_conflicts_need_supervision">%1$s conflictes necessiten supervisió</string>
+    <string name="msg_reading">Llegint %1$s</string>
+    <string name="msg_calculating_changes">Calculant canvis</string>
+    <string name="msg_merging">Fusionant</string>
+    <string name="msg_temp_conflicts_treatment">Aquesta versió de l\'app ignorarà tots els conflictes. En el futur et premetrà decidir-ne. Estigues al tanto!</string>
+    <string name="msg_remove_language_after_merge">Vols eliminar aquest idioma?</string>
+    <string name="msg_permission_for_backup_denied">No és possible llegir/escriure de la memòria sense el teu permís</string>
+    <string name="msg_dictionary_empty">No és posible practicar perque el diccionari está buit</string>
+    <string name="msg_cannot_start_test">El test no es pot crear: cap paraula coincideix amb la teva selecció</string>
+
+
+    <!-- * *************** Activities and fragment's titles ********************* * -->
+    <string name="title_drawer_fragment">Esborrany %1$s</string>
+    <string name="title_themes_fragment">Temes %1$s</string>
+    <string name="title_pronunciation_fragment">Pronunciació %1$s</string>
+    <string name="title_practise_fragment">Practica %1$s</string>
+    <string name="title_activity_practisetest">Tests %1$s</string>
+    <string name="title_recyclebin_fragment">Paperera %1$s</string>
+    <string name="title_language_settings_fragment">Configuració %1$s</string>
+    <string name="title_activity_dictionary">Diccionari</string>
+
+
+    <!-- * ********************** App Settings strings ************************* * -->
+    <string name="pref_title_general">General</string>
+    <string name="pref_title_customization">Personalizació</string>
+    <string name="pref_title_data">Dades</string>
+
+    <string name="pref_app_language">El teu idioma</string>
+    <string name="pref_phonetic_keyboard_vibration">Vibració del teclat fonètic</string>
+    <string name="pref_app_theme">Estil de l\'aplicació</string>
+    <string name="pref_import_data">Importar dades</string>
+    <string name="pref_export_data">Exportar dades</string>
+
+
+    <!-- * ********************** Language Settings strings ************************* * -->
+    <string name="pref_title_options">Opcions</string>
+
+    <string name="pref_language_code">Idioma</string>
+    <string name="pref_language_name">Nom de l\'idioma</string>
+    <string name="pref_language_phrasalverbs">Verbs preposicionals</string>
+    <string name="pref_language_merge">Fusionar</string>
+    <string name="pref_language_remove">Eliminar</string>
+    <string name="pref_language_reset_statistics">Restaurar estadístiques</string>
+
+
+</resources>

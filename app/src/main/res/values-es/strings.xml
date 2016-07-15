@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- * ******************** Types **************************** * -->
+    <string name="nn">SST</string>
+    <string name="noun">Sustantivo</string>
+    <string name="noun_cap">SUSTANTIVO</string>
+    <string name="vb">VB</string>
+    <string name="verb">Verbo</string>
+    <string name="verbs">Verbos</string>
+    <string name="verb_cap">VERBO</string>
+    <string name="adj">ADJ</string>
+    <string name="adjective">Adjetivo</string>
+    <string name="adjective_cap">ADJETIVO</string>
+    <string name="adv">ADV</string>
+    <string name="adverb">Adverbio</string>
+    <string name="adverb_cap">ADVERBIO</string>
+    <string name="phv">VF</string>
+    <string name="phrasalverb">Verbo Frasal</string>
+    <string name="phrasalverbs">Verbos Frasales</string>
+    <string name="phrasal_cap">VERBO FRASAL</string>
+    <string name="exp">EXP</string>
+    <string name="expression">Expresión</string>
+    <string name="expression_cap">EXPRESIÓN</string>
+    <string name="prep">PREP</string>
+    <string name="preposition">Preposición</string>
+    <string name="preposition_cap">PREPOSICIÓN</string>
+    <string name="conj">CONJ</string>
+    <string name="conjunction">Conjunción</string>
+    <string name="conjunction_cap">CONJUNCIÓN</string>
+    <string name="oth">OTR</string>
+    <string name="other">Otros</string>
+    <string name="other_cap">OTROS</string>
+
+
+    <!-- * ******************** Labels **************************** * -->
+    <string name="create_language">Crea idioma</string>
+    <string name="historial">Historial</string>
+    <string name="settings">Configuración</string>
+    <string name="about">Información</string>
+    <string name="my_languages">Mis idiomas</string>
+    <string name="language_features">Características</string>
+    <string name="web_search">Búsqueda online</string>
+    <string name="practice">Práctica</string>
+    <string name="dictionary">Diccionario</string>
+    <string name="drawer">Borrador</string>
+    <string name="more">Más</string>
+    <string name="themes">Temas</string>
+    <string name="pronunciation">Pronunciación</string>
+    <string name="recycle_bin">Papelera</string>
+    <string name="language_settings">Opciones del idioma</string>
+    <string name="word">Palabra</string>
+    <string name="translations_cap">TRADUCCIONES</string>
+    <string name="inflexions_cap">FLEXIONES</string>
+    <string name="match">Empareja</string>
+    <string name="complete">Completa</string>
+    <string name="write">Escribe</string>
+    <string name="listening">Escucha</string>
+    <string name="test">Test</string>
+    <string name="type_filter">Filtra por tipo</string>
+    <string name="number_of_words">Número de palabras</string>
+    <string name="main_types_content_description">%1$d sustantivos\n%2$d verbos\n%3$d adjetivos\n%4$d adverbios\n%5$d verbos frasales\n%6$d expresiones\n%7$d preposiciones\n%8$d conjunciones\n%9$d otros\n%10$d temas\n%11$d tests</string>
+    <string name="content">Contenido</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="main_stats_content_description">Intentos:\t\t\t\t\t\t %1$d\nAciertos a la 1a:\t %2$d (%3$.1f%%)\nAciertos a la 2a:\t %4$d (%5$.1f%%)\nAciertos a la 3a:\t %6$d (%7$.1f%%)\nFallos:\t\t\t\t\t\t\t %8$d (%9$.1f%%)</string>
+    <string name="x_words">%1$s palabras</string>
+
+
+    <!-- * ******************** Buttons **************************** * -->
+    <string name="cancel">Cancelar</string>
+    <string name="create">Crear</string>
+    <string name="add">Añadir</string>
+    <string name="import_more">Importar más</string>
+    <string name="export_more">Exportar más</string>
+    <string name="done">Hecho</string>
+    <string name="proceed">Proceder</string>
+    <string name="confirm">Confirmar</string>
+    <string name="save">Guardar</string>
+    <string name="continue_">Continuar</string>
+    <string name="go_out">Ir atrás</string>
+    <string name="add_translation">Añadir Traducción</string>
+    <string name="dismiss">Descartar</string>
+    <string name="open_google_play">Google Play</string>
+    <string name="open_settings">Configuración</string>
+    <string name="delete_all">Elimina todo</string>
+    <string name="accept">Aceptar</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="add_word">Añade palabra</string>
+    <string name="add_theme">Añade tema</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="start">Empezar</string>
+
+
+    <!-- * ******************** Hints **************************** * -->
+    <string name="hint_enter_language">Inserta el nombre del idioma</string>
+    <string name="hint_enter_theme_name">Nombre del tema</string>
+    <string name="hint_search">Busca</string>
+    <string name="hint_enter_drawer">Inserta una palabra</string>
+    <string name="hint_enter_backup_name">Inserta el nombre del archivo</string>
+    <string name="hint_in_">en %1$s</string>
+    <string name="hint_search_content">Busca contenido</string>
+    <string name="hint_translations">Traducciones</string>
+    <string name="hint_inflexions">Flexiones</string>
+    <string name="hint_enter_text_to_speech">Inserta texto para pronunciación</string>
+    <string name="hint_practise_write">Prueba con algo</string>
+    <string name="hint_practise_listening">Qué escuchas?</string>
+    <string name="hint_enter_test_name">Nombre del test</string>
+
+
+    <!-- * ******************** Messages **************************** * -->
+    <string name="msg_word_exists">%1$s ya existe</string>
+    <string name="msg_missing_word">Falta la palabra</string>
+    <string name="msg_missing_translations">Falta la traducción</string>
+    <string name="msg_missing_type">Falta el tipo</string>
+    <string name="msg_missing_language_name">Falta el nombre del idioma</string>
+    <string name="msg_language_created">Idioma creado</string>
+    <string name="msg_not_implemented">Función no accesible</string>
+    <string name="msg_preparing_file">Preparando archivo</string>
+    <string name="msg_found_languages">Se encontró %1$s idioma(s)</string>
+    <string name="msg_n_references">%1$s palabras</string>
+    <string name="msg_n_drawerreferences">%1$s palabras en borrador</string>
+    <string name="msg_n_themes">%1$s temas</string>
+    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_import_finished">Se importó satisfactoriamente</string>
+    <string name="msg_export_finished">Se exportó satisfactoriamente</string>
+    <string name="msg_not_dl_file">El archivo seleccionado no es válido</string>
+    <string name="error">Error</string>
+    <string name="msg_select_languages_backup">Selecciona idiomas para la copia de seguridad</string>
+    <string name="msg_could_access_disc">No se pudo acceder al disco</string>
+    <string name="msg_saving_">Guardando %1$s</string>
+    <string name="msg_language_saved_">%1$s guardado con %2$s palabras, %3$s palabras del borrador, %4$s temas y %5$s tests</string>
+    <string name="msg_missing_filename">Falta nombre del archivo</string>
+    <string name="msg_no_language_selected">Ningún idioma seleccionado</string>
+    <string name="msg_confirm_to_delete_xxx">Confirma para eliminar</string>
+    <string name="msg_go_back_without_saving">Salir sin guardar cambios</string>
+    <string name="msg_go_out_from_test">Salir sin acabar el test</string>
+    <string name="msg_missing_theme_name">Falta nombre del tema</string>
+    <string name="msg_missing_theme_content">Falta contenido del tema</string>
+    <string name="msg_missing_content">Falta contenido</string>
+    <string name="msg_notifier_tts">Tu dispositivo no tiene los recursos para pronunciar %1$s. Intenta descargarlo en Configuración o descarga una aplicación TTS de la Google Play.</string>
+    <string name="msg_missing_test_name">Falta nombre del test</string>
+    <string name="msg_test_hasnot_run_yet">El test aún no se ha hecho</string>
+    <string name="msg_test_done_times">Hecho %1$s veces</string>
+    <string name="msg_test_accuracy">Precisión: %1$s%%</string>
+    <string name="msg_test_best_reference">Mejor palabra: %1$s</string>
+    <string name="msg_test_worst_reference">Peor palabra: %1$s</string>
+    <string name="msg_confirm_to_clear_all_items">Confirma para eliminar todo</string>
+    <string name="msg_confirm_to_reset_statistics">Confirma para restaurar las estadísticas</string>
+    <string name="msg_select_language_to_merge_with">Selecciona el idioma para fusionar</string>
+    <string name="msg_no_conflicts_found">Ningún conflicto encontrado</string>
+    <string name="msg_estimating_merge_of">Estimando la fusión de %1$s con %2$s</string>
+    <string name="msg_be_patience">Ten paciencia!</string>
+    <string name="msg_conflicts_need_supervision">%1$s conflictos necesitan supervisión</string>
+    <string name="msg_reading">Leyendo %1$s</string>
+    <string name="msg_calculating_changes">Calculando cambios</string>
+    <string name="msg_merging">Fusionando</string>
+    <string name="msg_temp_conflicts_treatment">Esta versión de la app ignorará todos los conflictos. En un futuro te dejará decidir sobre ellos. Mantente al tanto!</string>
+    <string name="msg_remove_language_after_merge">Quieres eliminar este idioma?</string>
+    <string name="msg_permission_for_backup_denied">No es posible leer/escribir de la memoria sin tu permiso</string>
+    <string name="msg_dictionary_empty">No es posible practicar porque el diccionario está vacío</string>
+    <string name="msg_cannot_start_test">El test no se puede crear: ninguna palabra coincide con tu selección</string>
+
+
+    <!-- * *************** Activities and fragment's titles ********************* * -->
+    <string name="title_drawer_fragment">Borrador %1$s</string>
+    <string name="title_themes_fragment">Temas %1$s</string>
+    <string name="title_pronunciation_fragment">Pronunciación %1$s</string>
+    <string name="title_practise_fragment">Practica %1$s</string>
+    <string name="title_activity_practisetest">Tests %1$s</string>
+    <string name="title_recyclebin_fragment">Papelera %1$s</string>
+    <string name="title_language_settings_fragment">Configuración %1$s</string>
+    <string name="title_activity_dictionary">Diccionario</string>
+
+
+    <!-- * ********************** App Settings strings ************************* * -->
+    <string name="pref_title_general">General</string>
+    <string name="pref_title_customization">Personalización</string>
+    <string name="pref_title_data">Datos</string>
+
+    <string name="pref_app_language">Tu idioma</string>
+    <string name="pref_phonetic_keyboard_vibration">Vibración del teclado fonético</string>
+    <string name="pref_app_theme">Estilo de la app</string>
+    <string name="pref_import_data">Importar datos</string>
+    <string name="pref_export_data">Exportar datos</string>
+
+
+    <!-- * ********************** Language Settings strings ************************* * -->
+    <string name="pref_title_options">Opciones</string>
+
+    <string name="pref_language_code">Idioma</string>
+    <string name="pref_language_name">Nombre del idioma</string>
+    <string name="pref_language_phrasalverbs">Verbos frasales</string>
+    <string name="pref_language_merge">Fusionar</string>
+    <string name="pref_language_remove">Eliminar</string>
+    <string name="pref_language_reset_statistics">Restaurar estadísticas</string>
+
+
+</resources>

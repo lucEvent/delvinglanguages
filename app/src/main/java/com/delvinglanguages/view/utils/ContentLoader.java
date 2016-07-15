@@ -9,12 +9,14 @@ public abstract class ContentLoader extends RecyclerView.OnScrollListener {
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    public ContentLoader(LinearLayoutManager linearLayoutManager) {
+    public ContentLoader(LinearLayoutManager linearLayoutManager)
+    {
         this.mLinearLayoutManager = linearLayoutManager;
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+    {
         super.onScrolled(recyclerView, dx, dy);
 
         int visibleItemCount = recyclerView.getChildCount();

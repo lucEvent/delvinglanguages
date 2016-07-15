@@ -13,7 +13,8 @@ import android.widget.EditText;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.util.AppFormat;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.MessageListener;
+import com.delvinglanguages.view.utils.ReferenceListener;
 
 public class AddTranslationDialog {
 
@@ -26,7 +27,8 @@ public class AddTranslationDialog {
     private Button[] types;
 
 
-    public AddTranslationDialog(Context context, Handler handler) {
+    public AddTranslationDialog(Context context, Handler handler)
+    {
         this.handler = handler;
 
         //Getting view
@@ -51,7 +53,8 @@ public class AddTranslationDialog {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         clearFields();
                     }
                 })
@@ -60,7 +63,8 @@ public class AddTranslationDialog {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
             @Override
-            public void onShow(DialogInterface di) {
+            public void onShow(DialogInterface di)
+            {
 
                 InputMethodManager imm = (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
@@ -71,32 +75,35 @@ public class AddTranslationDialog {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View view)
+                    {
                         addTranslation();
                     }
                 });
             }
         });
-
     }
 
 
-    public void show() {
+    public void show()
+    {
         dialog.show();
         in_translations.requestFocus();
     }
 
-    public void show(Inflexion inflexion) {
+    public void show(Inflexion inflexion)
+    {
         in_translations.setText(AppFormat.arrayToString(inflexion.getTranslations()));
         in_inflexions.setText(AppFormat.arrayToString(inflexion.getInflexions()));
         setType(inflexion.getType());
         show();
     }
 
-    private void addTranslation() {
+    private void addTranslation()
+    {
         String translations = in_translations.getText().toString();
         if (translations.isEmpty()) {
-            handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_missing_translations).sendToTarget();
+            handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_missing_translations).sendToTarget();
             return;
         }
         int type = 0;
@@ -106,24 +113,26 @@ public class AddTranslationDialog {
             }
         }
         if (type == 0) {
-            handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_missing_type).sendToTarget();
+            handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_missing_type).sendToTarget();
             return;
         }
         String[] a_translations = AppFormat.formatTranslation(translations);
         String[] a_inflexions = AppFormat.formatTranslation(in_inflexions.getText().toString());
 
-        handler.obtainMessage(AppCode.INFLEXION_ADDED, new Inflexion(a_inflexions, a_translations, type)).sendToTarget();
+        handler.obtainMessage(ReferenceListener.INFLEXION_ADDED, new Inflexion(a_inflexions, a_translations, type)).sendToTarget();
         clearFields();
         dialog.dismiss();
     }
 
-    private void clearFields() {
+    private void clearFields()
+    {
         in_translations.setText("");
         in_inflexions.setText("");
         setType(0);
     }
 
-    private void setType(int type) {
+    private void setType(int type)
+    {
         for (int i = 0; i < types.length; ++i) {
             if ((type & (1 << i)) != 0) {
                 types[i].setSelected(true);
@@ -135,7 +144,8 @@ public class AddTranslationDialog {
 
     private View.OnClickListener onTypeSelected = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             for (Button b : types)
                 if (b.isSelected())
                     b.setSelected(false);

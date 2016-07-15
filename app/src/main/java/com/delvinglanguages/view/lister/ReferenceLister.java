@@ -16,13 +16,13 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     private int datasetVisibleCount;
 
     private DReferences dataset;
-    private final boolean phrasalsEnabled;
+    private final boolean phv_enabled;
     private View.OnClickListener itemListener;
 
-    public ReferenceLister(DReferences dataset, boolean phrasalsEnabled, View.OnClickListener itemListener)
+    public ReferenceLister(DReferences dataset, boolean phv_enabled, View.OnClickListener itemListener)
     {
         this.dataset = dataset;
-        this.phrasalsEnabled = phrasalsEnabled;
+        this.phv_enabled = phv_enabled;
         this.itemListener = itemListener;
 
         this.datasetVisibleCount = Math.min(CHUNK, dataset.size());
@@ -39,7 +39,7 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     @Override
     public void onBindViewHolder(ReferenceViewHolder holder, int position)
     {
-        ReferenceViewHolder.populateViewHolder(holder, dataset.get(position), phrasalsEnabled);
+        ReferenceViewHolder.populateViewHolder(holder, dataset.get(position), phv_enabled);
     }
 
     @Override

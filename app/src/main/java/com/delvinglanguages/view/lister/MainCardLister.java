@@ -83,7 +83,7 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 view.setOnClickListener(itemListener);
                 return new ReferenceViewHolder(view);
             case VIEW_THEME:
-                view = inflater.inflate(R.layout.i_drawer_word, parent, false);
+                view = inflater.inflate(R.layout.i_theme, parent, false);
                 view.setOnClickListener(itemListener);
                 return new ThemeViewHolder(view);
             case VIEW_TEST:

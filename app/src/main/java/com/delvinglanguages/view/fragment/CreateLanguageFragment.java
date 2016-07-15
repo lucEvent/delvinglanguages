@@ -13,7 +13,8 @@ import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.view.lister.AvailableLanguageLister;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.MessageListener;
 
 public class CreateLanguageFragment extends android.app.Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -24,7 +25,8 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
     private EditText input;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.f_create_language, container, false);
 
         languages = getResources().getStringArray(R.array.languages);
@@ -34,7 +36,8 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
         return view;
     }
 
-    private void initViews(View parent) {
+    private void initViews(View parent)
+    {
         spinner = (Spinner) parent.findViewById(R.id.spinner);
         spinner.setAdapter(new AvailableLanguageLister(getActivity(), languages));
         spinner.setOnItemSelectedListener(this);
@@ -50,7 +53,8 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+    {
         String in = input.getText().toString();
         boolean update = in.length() == 0;
         if (!update)
@@ -66,16 +70,18 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent)
+    {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId()) {
             case R.id.button_create:
                 String name = input.getText().toString();
                 if (name.isEmpty()) {
-                    Main.handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_missing_language_name).sendToTarget();
+                    Main.handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_missing_language_name).sendToTarget();
                     return;
                 }
                 int code = spinner.getSelectedItemPosition();
@@ -83,10 +89,10 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
                 boolean ph = s_phrasals.isChecked();
                 int settings = Language.configure(ph);
 
-                Main.handler.obtainMessage(AppCode.LANGUAGE_CREATED_OK, new Object[]{code, name, settings}).sendToTarget();
+                Main.handler.obtainMessage(LanguageListener.LANGUAGE_CREATED_OK, new Object[]{code, name, settings}).sendToTarget();
                 break;
             case R.id.button_cancel:
-                Main.handler.obtainMessage(AppCode.LANGUAGE_CREATED_CANCELED, null).sendToTarget();
+                Main.handler.obtainMessage(LanguageListener.LANGUAGE_CREATED_CANCELED, null).sendToTarget();
                 break;
             case R.id.container_phrasal_verbs:
                 s_phrasals.toggle();

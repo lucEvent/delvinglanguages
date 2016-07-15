@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/main_item_layout">
+              style="@style/main_item_layout">
 
     <TextView
         style="@style/main_item_title"
@@ -8,12 +8,12 @@
         android:layout_height="wrap_content"
         android:text="@string/statistics"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/main_stats_content"
         style="@style/main_item_content"
-        android:text="@string/main_stats_content_description" />
+        android:text="@string/main_stats_content_description"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pref_language_reset_statistics" />
+            android:text="@string/pref_language_reset_statistics"/>
     </LinearLayout>
 
 </LinearLayout>

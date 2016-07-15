@@ -44,9 +44,9 @@ public class DReferenceNavigator {
 
         DReference bait = DReference.createBait(translation);
         if (index % 2 != 0)
-            ref = language.getDiccionary().ceiling(bait);
+            ref = language.getDictionary().ceiling(bait);
         else
-            ref = language.getDiccionaryInverse().ceiling(bait);
+            ref = language.getDictionaryInverse().ceiling(bait);
         AppSettings.printlog("->" + ref.name);
         forward(ref);
         return ref;

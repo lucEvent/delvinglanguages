@@ -125,8 +125,9 @@ public class DataBase extends SQLiteOpenHelper {
         public static String name = "name";
         public static String runtimes = "runtimes";
         public static String content = "content";
+        public static String theme_id = "theme_id";
 
-        public static String[] cols = {id, lang_id, name, runtimes, content};
+        public static String[] cols = {id, lang_id, name, runtimes, content, theme_id};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
@@ -135,6 +136,7 @@ public class DataBase extends SQLiteOpenHelper {
                         name + " TEXT NOT NULL," +
                         runtimes + " INTEGER," +
                         content + " TEXT NOT NULL," +
+                        theme_id + " INTEGER," +
                         "FOREIGN KEY(" + lang_id + ") REFERENCES " + DBLanguage.db + "(" + DBLanguage.id + ")" +
                         ");";
     }

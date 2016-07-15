@@ -13,9 +13,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <!-- * ************************* App custom styles ************************* * -->
 
@@ -95,7 +95,7 @@
         <item name="android:paddingBottom">20dp</item>
         <item name="android:paddingLeft">40dp</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/ripple_over_grey</item>
+        <item name="android:background">@drawable/ripple_transparent</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
@@ -140,7 +140,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/ripple</item>
+        <item name="android:background">@drawable/ripple_transparent</item>
     </style>
 
     <style name="Option_Imageview" parent="AppTheme">
@@ -180,7 +180,7 @@
     </style>
 
     <style name="Button_practise_match">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/ripple_over_grey</item>
@@ -234,11 +234,51 @@
         <item name="android:layout_marginRight">9dp</item>
         <item name="android:layout_marginLeft">9dp</item>
         <item name="android:background">#fff</item>
-        <item name="android:elevation">3dp</item>
+        <item name="android:elevation">@dimen/list_item_elevation</item>
         <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
         <item name="android:paddingTop">12dp</item>
+    </style>
+
+    <style name="list_item_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:background">@drawable/ripple</item>
+        <item name="android:elevation">@dimen/list_item_elevation</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="list_item_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:text">@string/word</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">#FF000000</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="list_item_subtitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">#FF444444</item>
+        <item name="android:text">@string/hint_translations</item>
     </style>
 
     <!--     <item name="android:xxxxxxxxx">xxxxxxxxxxx</item>  -->

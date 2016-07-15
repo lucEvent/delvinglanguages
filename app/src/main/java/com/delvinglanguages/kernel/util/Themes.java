@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 public class Themes extends ArrayList<Theme> {
 
-    public Themes() {
+    public Themes()
+    {
         super();
     }
 
-    public Theme getThemeById(int id) {
+    public Theme getThemeById(int id)
+    {
         for (Theme theme : this)
             if (theme.id == id)
                 return theme;

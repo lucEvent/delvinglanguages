@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 3.1.1</string>
+    <string name="app_version" translatable="false">version 3.2.0</string>
 
     <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
@@ -9,6 +9,7 @@
     <string name="noun_cap">NOUN</string>
     <string name="vb">VB</string>
     <string name="verb">Verb</string>
+    <string name="verbs">Verbs</string>
     <string name="verb_cap">VERB</string>
     <string name="adj">ADJ</string>
     <string name="adjective">Adjective</string>
@@ -18,6 +19,7 @@
     <string name="adverb_cap">ADVERB</string>
     <string name="phv">PHV</string>
     <string name="phrasalverb">Phrasal Verb</string>
+    <string name="phrasalverbs">Phrasal verbs</string>
     <string name="phrasal_cap">PHRASAL VERB</string>
     <string name="exp">EXP</string>
     <string name="expression">Expression</string>
@@ -39,18 +41,13 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="my_languages">My languages</string>
-    <string name="phrasalverbs">Phrasal verbs</string>
-    <string name="adjectives">Adjectives</string>
-    <string name="specialcharacters">Special characters</string>
     <string name="language_features">Language features</string>
     <string name="web_search">Web search</string>
-    <string name="search">Search</string>
     <string name="practice">Practice</string>
     <string name="dictionary">Dictionary</string>
     <string name="drawer">Drawer</string>
     <string name="more">More</string>
     <string name="themes">Themes</string>
-    <string name="verbs">Verbs</string>
     <string name="pronunciation">Pronunciation</string>
     <string name="recycle_bin">Recycle bin</string>
     <string name="language_settings">Language settings</string>
@@ -67,7 +64,8 @@
     <string name="main_types_content_description">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d phrasal verbs\n%6$d expressions\n%7$d prepositions\n%8$d conjunctions\n%9$d others\n%10$d themes\n%11$d tests</string>
     <string name="content">Content</string>
     <string name="statistics">Statistics</string>
-    <string name="main_stats_content_description">Attempts:\t\t %1$d\nNeat hits:\t\t\t %2$d (%3$.2f%%)\nHits at 2nd:\t %4$d (%5$.2f%%)\nHits at 3rd:\t\t %6$d (%7$.2f%%)\nErrors:\t\t\t\t %8$d (%9$.2f%%)</string>
+    <string name="main_stats_content_description">Attempts:\t\t %1$d\nNeat hits:\t\t\t %2$d (%3$.1f%%)\nHits at 2nd:\t %4$d (%5$.1f%%)\nHits at 3rd:\t\t %6$d (%7$.1f%%)\nErrors:\t\t\t\t %8$d (%9$.1f%%)</string>
+    <string name="x_words">%1$s words</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -88,17 +86,16 @@
     <string name="open_settings">Settings</string>
     <string name="delete_all">Delete all</string>
     <string name="accept">Accept</string>
-    <string name="see_them">See them</string>
-    <string name="ignore_all">Ignore all</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="add_word">Add word</string>
     <string name="add_theme">Add theme</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="start">Start</string>
 
 
     <!-- * ******************** Hints **************************** * -->
-    <string name="hint_enter_word">Enter word in %1$s</string>
-    <string name="hint_enter_pronunciation">Enter pronunciation in %1$s</string>
     <string name="hint_enter_language">Enter language name</string>
     <string name="hint_enter_theme_name">Theme name</string>
     <string name="hint_search">Search</string>
@@ -106,8 +103,6 @@
     <string name="hint_enter_backup_name">Enter a name for the backup file</string>
     <string name="hint_in_">in %1$s</string>
     <string name="hint_search_content">Search content</string>
-    <string name="hint_enter_translations">Enter translations</string>
-    <string name="hint_enter_inflexions">Enter inflexions</string>
     <string name="hint_translations">Translations</string>
     <string name="hint_inflexions">Inflexions</string>
     <string name="hint_enter_text_to_speech">Enter text to speech</string>
@@ -140,9 +135,7 @@
     <string name="msg_language_saved_">%1$s saved with %2$s words, %3$s words in drawer, %4$s themes and %5$s tests</string>
     <string name="msg_missing_filename">Missing file name</string>
     <string name="msg_no_language_selected">No language selected</string>
-    <string name="msg_confirm_to_delete_theme">Confirm to delete %1$s theme</string>
-    <string name="msg_confirm_to_delete_word">Confirm to delete %1$s</string>
-    <string name="msg_confirm_to_delete_test">Confirm to delete %1$s test</string>
+    <string name="msg_confirm_to_delete_xxx">Confirm to delete %1$s</string>
     <string name="msg_go_back_without_saving">Go out without saving changes</string>
     <string name="msg_go_out_from_test">Go out without finishing the test</string>
     <string name="msg_missing_theme_name">Missing theme name</string>
@@ -156,8 +149,7 @@
     <string name="msg_test_best_reference">Easiest word: %1$s</string>
     <string name="msg_test_worst_reference">Most difficult word: %1$s</string>
     <string name="msg_confirm_to_clear_all_items">Confirm to clear all items</string>
-    <string name="msg_confirm_to_remove_language">Confirm to remove %1$s language</string>
-    <string name="msg_confirm_to_reset_statistics">Confirm to reset %1$s statistics</string>
+    <string name="msg_confirm_to_reset_statistics">Confirm to reset statistics</string>
     <string name="msg_select_language_to_merge_with">Select language to merge with</string>
     <string name="msg_no_conflicts_found">No conflicts found</string>
     <string name="msg_estimating_merge_of">Estimating merge of %1$s and %2$s</string>
@@ -169,6 +161,8 @@
     <string name="msg_temp_conflicts_treatment">This app version will just ignore any conflict. A coming update may let you decide what to do. Stay updated!</string>
     <string name="msg_remove_language_after_merge">Do you want to remove this language?</string>
     <string name="msg_permission_for_backup_denied">We CANNOT read/write storage without your permission</string>
+    <string name="msg_dictionary_empty">Cannot practise. Dictionary is empty</string>
+    <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -179,47 +173,42 @@
     <string name="title_activity_practisetest">%1$s tests</string>
     <string name="title_recyclebin_fragment">%1$s recycle bin</string>
     <string name="title_language_settings_fragment">%1$s settings</string>
+    <string name="title_activity_dictionary">Dictionary</string>
 
 
     <!-- * ******************** ********** **************************** * -->
-    <string name="about_content_header">Delving Languages version 3.1.1</string>
+    <string name="about_content_header">Delving Languages version 3.2.0</string>
     <string name="about_content_contact">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features">New features and improvements:</string>
     <string name="about_content_new_features">
-        Version 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
-        \nVersion 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen display changed for better performance.\n
-        \nVersion 3.0.1 2016-04-21:\nFixed error when updating RecyclerViewAdapters.\nFirst steps for themes support, but still not working\n
+        Version 3.2.0 2016-07-15:\nHandler leaks fixed.\nTranslated to spanish and catalan.\nThemes editing improved.\nNew: Theme to test, start practising your themes.\nBug (list not updated) when removing a word fixed.\nPerformance improved when updating words and themes.\nTheme and test lists display improved.\nSeveral bugs fixed.\n
+        \nVersion 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
+        \nVersion 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen displaying improved.\n
         \nVersion 3.0.0 2016-04-10:\nLollipop support.\nSettings standardized.\nKernel "word" and "dreference" merged for better performance.\nBetter support/user interaction when TTS is needed.\nListening in practise redesigned.\nTests redesigned.\nListening added in test.\n
-        \nVersion 2.3.2 2016-03-08:\nSelection of background changed: Material design colors available now. TTS improved for Lollipop and above versions.\n
-        \nVersion 2.3.1 2016-03-06:\nSearch function working again. Now it supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.\n
-        \nVersion 2.3.0 2016-03-05:\nNEW: Prepositions and Conjunctions supported (yet partially).\nAdded icons for language options.\nUpdated language option\'s pad look.\n
-        \nVersion 2.1.0 2016-01-08:\nApp look updated.\nNew kernel feature: inflexions, that replace translations.\nMany changes and improvements.
+        \nVersion 2.3.2 2016-03-08:\nTTS improved for Lollipop and above versions.\n
+        \nVersion 2.3.1 2016-03-06:\nSearch function now supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.\n
+        \nVersion 2.3.0 2016-03-05:\nIntroducing Prepositions and Conjunctions.\n
+        \nVersion 2.1.0 2016-01-08:\nIntroducing inflexions (replace translations).\n
     </string>
     <string name="about_content_title_old_features">Old improvements:</string>
     <string name="about_content_old_features">
-        Version 1.6.1 2015-07-04:\nIMPROVED: Touch interaction in language options menu, and kernel for managing phrasal verbs in english\n
-        \nVersion 1.6.0 2015-07-03:\nNEW: Support for Swedish word inflexions.\nSome other changes and improvements\n
-        \nVersion 1.5.1 2015-05-16:\nNEW: Pronunciation for words\n
+        Version 1.6.0 2015-07-03:\nIntroducing Support for Swedish word inflexions.\n
+        \nVersion 1.5.1 2015-05-16:\nIntroducing Pronunciation for words.\n
         \nVersion 1.5.0 2015-05-14:\nNew Translation organization.\nNew Database format.\n
-        \nVersion 1.4.1 2015-03-11:\nNew kernel\n
-        \nVersion 1.4.0 2015-03-09:\nNew feature: THEMES. Learn faster. Create your own themes and make studying easier :)\n
-        \nVersion 1.3.4 2015-03-06:\nImproved: word\'s priority, tests, Special characters.\nSome other bugs fixed.\n
-        \nVersion 1.3.3 2014-11-08:\nImproved performance.\nNew features\n
-        \nVersion 1.3.0 2014-10-28:\n"Translation" change to "Search".\nAdded Add word from Search.\nSolved problems.\nInternal improvements.\nUpdated: "About"\n
-        \nVersion 1.2.3 2014-10-25:\nUpdated: Language Menu\n
-        \nVersion 1.2.0 2014-05-13:\nUpdated: Dictionary
+        \nVersion 1.4.1 2015-03-11:\nNew kernel.\n
+        \nVersion 1.4.0 2015-03-09:\nIntroducing Themes.\n
+        \nVersion 1.3.0 2014-10-28:\nIntroducing Add word from Search.\n
+        \nVersion 1.2.3 2014-10-25:\nNew Language Menu.\n
+        \nVersion 1.2.0 2014-05-13:\nNew Dictionary.\n
     </string>
     <string name="about_content_title_next_releases">In next releases:</string>
     <string name="about_content_next_releases">
         Change listviews by recycleviews\n
-        \nChange Handler by static classes extending Handler to avoid leaks (like in LanguageMainFragment)\n
         \nError in tests while accessing Listening in a language not supported\n
-        \nAdd theme to tests (or practise theme or both)\n
-        \nChange theme and test itemListers appearance\n
         \nImprove search method in LanguageMain like in dictionary (a method in KernelManager can be made)\n
-        \nTranslation to spanish and catalan\n
         \nImplement phrasal verb setting features\n
-        \nImplement Phrasal verbs and Verbs features
+        \nImplement Phrasal verbs and Verbs features\n
+        \nCases when Online Search is not available
     </string>
 
     <!-- * ********************** App Settings strings ************************* * -->
@@ -232,7 +221,6 @@
     <string name="pref_app_theme">App theme</string>
     <string name="pref_import_data">Import data</string>
     <string name="pref_export_data">Export data</string>
-    <string name="pref_current_language">Current language</string>
 
     <string name="pref_app_language_key" translatable="false">pref1</string>
     <string name="pref_phonetic_keyboard_vibration_key" translatable="false">pref2</string>
@@ -248,7 +236,7 @@
     <string name="pref_language_name">Language name</string>
     <string name="pref_language_phrasalverbs">Phrasal verbs</string>
     <string name="pref_language_merge">Merge</string>
-    <string name="pref_language_remove">Remove</string>
+    <string name="pref_language_remove">Delete</string>
     <string name="pref_language_reset_statistics">Reset statistics</string>
 
     <string name="pref_language_code_key" translatable="false">langpref1</string>
@@ -260,12 +248,8 @@
 
 
     <!-- ********************************************************************************* -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="title_activity_dictionary">Dictionary</string>
-    <string name="msg_dictionary_empty">Cannot practise. Dictionary is empty</string>
-    <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
 
 </resources>

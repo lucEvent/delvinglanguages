@@ -1,47 +1,43 @@
 package com.delvinglanguages.view.lister;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.view.lister.viewholder.RecycledItemViewHolder;
 
-public class RecycleBinLister extends ArrayAdapter<DReference> {
+public class RecycleBinLister extends RecyclerView.Adapter<RecycledItemViewHolder> {
 
-    private LayoutInflater inflater;
-    private OnClickListener onRestoreItemListener;
+    private DReferences items;
 
-    public RecycleBinLister(Context context, DReferences values, OnClickListener onClickListener)
+    private View.OnClickListener onRestoreItemListener;
+
+    public RecycleBinLister(DReferences items, View.OnClickListener itemListener)
     {
-        super(context, R.layout.i_recycle_bin, values);
-        this.onRestoreItemListener = onClickListener;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.items = items;
+        this.onRestoreItemListener = itemListener;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public RecycledItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if (view == null) {
-            view = inflater.inflate(R.layout.i_recycle_bin, parent, false);
-        }
-        DReference reference = getItem(position);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_recycle_bin, parent, false);
+        return new RecycledItemViewHolder(v, onRestoreItemListener);
+    }
 
-        TextView name = (TextView) view.findViewById(R.id.word);
-        TextView translation = (TextView) view.findViewById(R.id.translation);
-        ImageButton restore = (ImageButton) view.findViewById(R.id.restore);
+    @Override
+    public void onBindViewHolder(RecycledItemViewHolder holder, int position)
+    {
+        RecycledItemViewHolder.populateViewHolder(holder, items.get(position));
+    }
 
-        name.setText(reference.name);
-        translation.setText(reference.getTranslationsAsString());
-        restore.setTag(reference);
-        restore.setOnClickListener(onRestoreItemListener);
-        return view;
+    @Override
+    public int getItemCount()
+    {
+        return items.size();
     }
 
 }

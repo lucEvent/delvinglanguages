@@ -21,7 +21,7 @@ import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.net.external.WordReference;
 import com.delvinglanguages.view.lister.WebSearchLister;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.AppCode;
 
 import java.util.ArrayList;
 import java.util.TreeSet;

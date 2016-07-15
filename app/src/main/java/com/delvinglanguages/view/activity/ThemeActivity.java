@@ -1,20 +1,24 @@
 package com.delvinglanguages.view.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemeManager;
+import com.delvinglanguages.view.activity.practise.TestActivity;
 import com.delvinglanguages.view.lister.ThemePairLister;
-import com.delvinglanguages.view.utils.AppCode;
 
 public class ThemeActivity extends AppCompatActivity {
 
@@ -58,13 +62,38 @@ public class ThemeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == AppCode.THEME_MODIFIED) {
-            setResult(resultCode);
-            finish();
+
+            CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+            toolbar.setTitle(theme.getName());
+
+            adapter.setNewDataSet(theme.getPairs());
+
         }
+    }
+
+    public void actionPractise(View v)
+    {
+        Test test = dataManager.toTest(this, theme);
+
+        Intent intent = new Intent(this, TestActivity.class);
+        intent.putExtra(AppCode.TEST_ID, test.id);
+        startActivity(intent);
+    }
+
+    private Dialog editOptionsDialog;
+
+    public void actionSelectOption(View v)
+    {
+        editOptionsDialog = new AlertDialog.Builder(this)
+                .setView(R.layout.d_edit_delete)
+                .create();
+
+        editOptionsDialog.show();
     }
 
     public void actionEdit(View v)
     {
+        editOptionsDialog.dismiss();
         Intent intent = new Intent(this, ThemeEditorActivity.class);
         intent.putExtra(AppCode.THEME_ID, theme.id);
         startActivityForResult(intent, 0);
@@ -72,8 +101,9 @@ public class ThemeActivity extends AppCompatActivity {
 
     public void actionDelete(View v)
     {
+        editOptionsDialog.dismiss();
         new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.msg_confirm_to_delete_theme, theme.getName()))
+                .setTitle(R.string.msg_confirm_to_delete_xxx)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id)

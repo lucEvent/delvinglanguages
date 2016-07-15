@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.util.InStream;
 import com.delvinglanguages.data.util.OutStream;
@@ -22,7 +23,7 @@ import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.kernel.util.Tests;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Themes;
-import com.delvinglanguages.view.utils.AppCode;
+import com.delvinglanguages.view.utils.MessageListener;
 
 import java.io.File;
 
@@ -40,11 +41,11 @@ public class BackUpManager {
         DatabaseBackUpManager database = new DatabaseBackUpManager(context);
         database.openWritableDatabase();
         try {
-            handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
+            handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
             InStream stream = new InStream(context.getContentResolver().openInputStream(backupfileuri));
 
             int nLangs = stream.readInt();
-            handler.obtainMessage(AppCode.MESSAGE, "\n" + context.getString(R.string.msg_found_languages, nLangs)).sendToTarget();
+            handler.obtainMessage(MessageListener.MESSAGE, "\n" + context.getString(R.string.msg_found_languages, nLangs)).sendToTarget();
             for (int i = 0; i < nLangs; i++) {    // Por cada idioma
                 int Lcode = stream.readInt();
                 String Lname = stream.readString();
@@ -102,13 +103,13 @@ public class BackUpManager {
                         context.getString(R.string.msg_n_themes, nThemes) + "\n  " +
                         context.getString(R.string.msg_n_tests, nTests);
 
-                handler.obtainMessage(AppCode.MESSAGE, message).sendToTarget();
+                handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
             }
             stream.close();
 
         } catch (Exception e) {
 
-            handler.obtainMessage(AppCode.ERROR, "\nException:" + e.toString()).sendToTarget();
+            handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
             e.printStackTrace();
 
         } finally {
@@ -127,10 +128,10 @@ public class BackUpManager {
         database.openReadableDatabase();
         try {
             // Gettings backup file
-            handler.obtainMessage(AppCode.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
+            handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
             String estado = Environment.getExternalStorageState();
             if (!estado.equals(Environment.MEDIA_MOUNTED)) {
-                handler.obtainMessage(AppCode.ERROR, "\n" + context.getString(R.string.msg_could_access_disc)).sendToTarget();
+                handler.obtainMessage(MessageListener.ERROR, "\n" + context.getString(R.string.msg_could_access_disc)).sendToTarget();
             }
             File externalDir = Environment.getExternalStorageDirectory();
 
@@ -143,7 +144,7 @@ public class BackUpManager {
 
             stream.writeInt(languages.size());
             for (Language language : languages) { // For each language
-                handler.obtainMessage(AppCode.MESSAGE, "\n" + context.getString(R.string.msg_saving_, language.language_name)).sendToTarget();
+                handler.obtainMessage(MessageListener.MESSAGE, "\n" + context.getString(R.string.msg_saving_, language.language_name)).sendToTarget();
                 stream.writeInt(language.CODE);
                 stream.writeString(language.language_name);
                 stream.writeInt(language.settings);
@@ -190,11 +191,11 @@ public class BackUpManager {
                 }
 
                 String message = "\n" + context.getString(R.string.msg_language_saved_, language.language_name, references.size(), drawer.size(), themes.size(), tests.size());
-                handler.obtainMessage(AppCode.MESSAGE, message).sendToTarget();
+                handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
             }
             stream.close();
         } catch (Exception e) {
-            handler.obtainMessage(AppCode.ERROR, "\nException:" + e.toString()).sendToTarget();
+            handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
             e.printStackTrace();
         } finally {
 

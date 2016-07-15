@@ -10,16 +10,9 @@ public abstract class TestFragment extends Fragment {
     protected Handler handler;
     protected TestReferenceState reference;
 
-    public TestFragment() {
+    public TestFragment()
+    {
         super();
-    }
-
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void setReference(TestReferenceState reference) {
-        this.reference = reference;
     }
 
 }
