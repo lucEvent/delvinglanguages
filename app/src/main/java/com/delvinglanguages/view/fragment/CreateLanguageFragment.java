@@ -12,11 +12,12 @@ import android.widget.Switch;
 import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.view.lister.AvailableLanguageLister;
+import com.delvinglanguages.view.lister.SpinnerLanguageLister;
 import com.delvinglanguages.view.utils.LanguageListener;
 import com.delvinglanguages.view.utils.MessageListener;
 
-public class CreateLanguageFragment extends android.app.Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class CreateLanguageFragment extends android.app.Fragment
+        implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private String[] languages;
 
@@ -31,25 +32,20 @@ public class CreateLanguageFragment extends android.app.Fragment implements View
 
         languages = getResources().getStringArray(R.array.languages);
 
-        initViews(view);
-
-        return view;
-    }
-
-    private void initViews(View parent)
-    {
-        spinner = (Spinner) parent.findViewById(R.id.spinner);
-        spinner.setAdapter(new AvailableLanguageLister(getActivity(), languages));
+        spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner.setAdapter(new SpinnerLanguageLister(getActivity(), languages));
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(0);
 
-        parent.findViewById(R.id.button_create).setOnClickListener(this);
-        parent.findViewById(R.id.button_cancel).setOnClickListener(this);
-        parent.findViewById(R.id.container_phrasal_verbs).setOnClickListener(this);
+        view.findViewById(R.id.button_create).setOnClickListener(this);
+        view.findViewById(R.id.button_cancel).setOnClickListener(this);
+        view.findViewById(R.id.container_phrasal_verbs).setOnClickListener(this);
 
-        s_phrasals = (Switch) parent.findViewById(R.id.switch_phrasal_verbs);
+        s_phrasals = (Switch) view.findViewById(R.id.switch_phrasal_verbs);
 
-        input = (EditText) parent.findViewById(R.id.input);
+        input = (EditText) view.findViewById(R.id.input);
+
+        return view;
     }
 
     @Override

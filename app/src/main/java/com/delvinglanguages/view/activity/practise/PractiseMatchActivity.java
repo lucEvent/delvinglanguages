@@ -39,7 +39,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
         // Iniciamos elementos del kernel
         dataManager = new LanguageManager(this);
         gameManager = new MatchGame(dataManager.getReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale());
+        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), true);
 
         view_reference = (TextView) findViewById(R.id.reference_name);
         view_inflexions = (TextView) findViewById(R.id.reference_inflexions);

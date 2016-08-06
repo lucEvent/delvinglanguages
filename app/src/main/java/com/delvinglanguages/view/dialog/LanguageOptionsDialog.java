@@ -12,17 +12,19 @@ public class LanguageOptionsDialog {
 
     public AlertDialog dialog;
 
-    public LanguageOptionsDialog(Context context, View.OnClickListener listener, boolean phrasals_enabled) {
-
+    public LanguageOptionsDialog(Context context, View.OnClickListener listener, boolean enablePhrasal)
+    {
         View view = LayoutInflater.from(context).inflate(R.layout.d_more_language_options, null);
 
         view.findViewById(R.id.option_themes).setOnClickListener(listener);
-        if (!phrasals_enabled) {
+        if (!enablePhrasal)
             view.findViewById(R.id.option_phrasal_verbs).setVisibility(LinearLayout.GONE);
-        } else {
+        else
             view.findViewById(R.id.option_phrasal_verbs).setOnClickListener(listener);
-        }
-        view.findViewById(R.id.option_verbs).setOnClickListener(listener);
+
+        view.findViewById(R.id.option_verbs).setVisibility(LinearLayout.GONE);
+        // view.findViewById(R.id.option_verbs).setOnClickListener(listener);
+
         view.findViewById(R.id.option_web_search).setOnClickListener(listener);
         view.findViewById(R.id.option_pronunciation).setOnClickListener(listener);
         view.findViewById(R.id.option_recycle_bin).setOnClickListener(listener);
@@ -33,7 +35,8 @@ public class LanguageOptionsDialog {
                 .create();
     }
 
-    public void show() {
+    public void show()
+    {
         dialog.show();
     }
 

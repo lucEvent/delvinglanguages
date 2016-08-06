@@ -21,7 +21,7 @@
         <item>Portuguese</item>
         <item>Russian</item>
     </string-array>
-    <string-array name="language_codes">
+    <string-array name="language_codes" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -41,67 +41,12 @@
         <item>16</item>
         <item>17</item>
     </string-array>
-    <string-array name="number_of_languages">
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-    </string-array>
     <string-array name="themes">
         <item>Delving Languages (default)</item>
-   <!--    <item>Sunny</item>-->
+        <!--    <item>Sunny</item>-->
     </string-array>
-    <string-array name="themes_codes">
+    <string-array name="themes_codes" translatable="false">
         <item>0</item>
-    </string-array>
-    <string-array name="phv_opt">
-        <item>Practise</item>
-        <item>Add phrasal</item>
-        <item>Phrasal\'s list</item>
-    </string-array>
-    <string-array name="fonetics_consonant_symbols">
-        <item>/&#98;/</item>
-        <item>/&#100;/</item>
-        <item>/&#676;/</item>
-        <item>/&#102;/</item>
-        <item>/&#103;/</item>
-        <item>/&#104;/</item>
-        <item>/&#104;&#119;/</item>
-        <item>/&#106;/</item>
-        <item>/&#107;/</item>
-        <item>/&#108;/</item>
-        <item>/&#316;/</item>
-        <item>/&#109;/</item>
-        <item>/&#110;/</item>
-        <item>/&#326;/</item>
-        <item>/&#331;/</item>
-        <item>/&#112;/</item>
-        <item>/&#114;/</item>
-        <item>/&#115;/</item>
-        <item>/&#643;/</item>
-        <item>/&#116;/</item>
-        <item>/&#679;/</item>
-        <item>/&#1256;/</item>
-        <item>/&#240;/</item>
-        <item>/&#118;/</item>
-        <item>/&#119;/</item>
-        <item>/&#120;/</item>
-        <item>/&#122;/</item>
-        <item>/&#658;/</item>
-    </string-array>
-    <string-array name="settings">
-        <item>Native Language</item>
-        <item>Double direction</item>
-        <item>Fonetics</item>
-        <item>Background</item>
-        <item>About</item>
     </string-array>
     <string-array name="es_tenses">
         <item>Presente</item>
@@ -171,7 +116,7 @@
         <item>Ni</item>
         <item>De</item>
     </string-array>
-    <integer-array name="colors">
+    <integer-array name="colors" translatable="false">
         <item>@color/noun</item>
         <item>@color/verb</item>
         <item>@color/adjective</item>

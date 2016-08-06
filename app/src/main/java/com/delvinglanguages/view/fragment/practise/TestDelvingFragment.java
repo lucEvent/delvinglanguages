@@ -18,11 +18,12 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestDelvingFragment extends TestFragment {
 
-    public static TestDelvingFragment getInstance(Handler handler, TestReferenceState reference)
+    public static TestDelvingFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
     {
         TestDelvingFragment f = new TestDelvingFragment();
         f.reference = reference;
         f.handler = handler;
+        f.nextStage = nextStage;
         return f;
     }
 
@@ -60,14 +61,13 @@ public class TestDelvingFragment extends TestFragment {
         adapter.setNewDataSet(reference.reference.getInflexions());
         ((CollapsingToolbarLayout) getActivity().findViewById(R.id.toolbar_layout)).setTitle(reference.reference.name);
         ((TextView) getActivity().findViewById(R.id.textview_pronunciation)).setText(reference.reference.pronunciation);
-
     }
 
     private View.OnClickListener onContinueAction = new View.OnClickListener() {
         @Override
         public void onClick(View v)
         {
-            reference.stage = TestReferenceState.TestStage.MATCH;
+            reference.stage = nextStage;
             handler.obtainMessage(TestListener.TEST_ROUND_PASSED).sendToTarget();
         }
     };

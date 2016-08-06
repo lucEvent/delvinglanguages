@@ -10,6 +10,8 @@ public abstract class TestFragment extends Fragment {
     protected Handler handler;
     protected TestReferenceState reference;
 
+    protected TestReferenceState.TestStage nextStage;
+
     public TestFragment()
     {
         super();

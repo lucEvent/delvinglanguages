@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/image"
@@ -13,7 +13,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="10dp"
-        android:background="@mipmap/ic_launcher" />
+        android:background="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/title"
@@ -22,6 +22,6 @@
         android:layout_gravity="center"
         android:padding="10dip"
         android:text="Delving Languages"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

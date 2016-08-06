@@ -28,8 +28,8 @@ public class DReferenceNavigator {
         references = new DReferences();
         language = new LanguageManager(context).getCurrentLanguage();
 
-        delvedPronunciationManager = new PronunciationManager(context, delvedLocale);
-        nativePronunciationManager = new PronunciationManager(context, nativeLocale);
+        delvedPronunciationManager = new PronunciationManager(context, delvedLocale, true);
+        nativePronunciationManager = new PronunciationManager(context, nativeLocale, true);
     }
 
     public DReference back()

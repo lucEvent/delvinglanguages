@@ -3,7 +3,6 @@ package com.delvinglanguages.net.external;
 import android.os.Handler;
 
 import com.delvinglanguages.AppSettings;
-import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.AppFormat;
 
 import org.json.JSONException;
@@ -13,9 +12,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.TreeSet;
 
-public class WordReference {
+public class WordReference extends OnlineDictionary {
 
     private final static String CODE_ARABIC = "ar";
     private final static String CODE_CHINESE = "zh";
@@ -44,23 +42,33 @@ public class WordReference {
     private final static String API_VERSION = "0.8";
     private final static String API_KEY = "a51d4";
 
-    private final Handler handler;
-    private final String header;
+    private String header;
 
     public WordReference(int from_language_code, int to_language_code, Handler handler)
     {
-        String from = CODES[from_language_code];
-        String to = CODES[to_language_code];
-
-        if (from != null && to != null && (from == CODE_ENGLISH || to == CODE_ENGLISH)) {
-            header = URL_BASE + API_VERSION + "/" + API_KEY + "/json/" + from + to + "/";
-        } else {
-            header = null;
-        }
-        this.handler = handler;
+        super(handler);
+        updateLanguages(from_language_code, to_language_code);
     }
 
-    public boolean searchTerm(String search)
+    @Override
+    public void updateLanguages(int from_language_code, int to_language_code)
+    {
+        if (isTranslationAvailable(from_language_code, to_language_code))
+            header = URL_BASE + API_VERSION + "/" + API_KEY + "/json/" + CODES[from_language_code] + CODES[to_language_code] + "/";
+        else
+            header = null;
+    }
+
+    @Override
+    public boolean isTranslationAvailable(int from, int to)
+    {
+        String sfrom = CODES[from];
+        String sto = CODES[to];
+        return sfrom != null && sto != null && sfrom != sto && (sfrom == CODE_ENGLISH || sto == CODE_ENGLISH);
+    }
+
+    @Override
+    public boolean search(Search search)
     {
         if (header == null) {
             return false;
@@ -69,27 +77,21 @@ public class WordReference {
         return true;
     }
 
-    private class WRSearch extends Thread implements Runnable {
+    private class WRSearch extends Thread {
 
-        TreeSet<String>[] found;
+        private final Search search;
 
-        final String term;
-
-        WRSearch(String term)
+        WRSearch(Search search)
         {
-            this.term = term;
-            found = new TreeSet[DReference.NUMBER_OF_TYPES];
-            for (int i = 0; i < found.length; i++) {
-                found[i] = new TreeSet<>();
-            }
+            this.search = search;
         }
 
         @Override
         public void run()
         {
             try {
-                URL page = new URL(header + term);
-                AppSettings.printlog(header + term);
+                URL page = new URL(header + search.searchTerm);
+                AppSettings.printlog(header + search.searchTerm);
                 //Lectura del contenido de la pagina
                 BufferedReader in = new BufferedReader(new InputStreamReader(page.openStream()));
 
@@ -120,7 +122,7 @@ public class WordReference {
             } catch (Exception e) {
                 AppSettings.printerror("[WR] Error in run", e);
             }
-            handler.obtainMessage(0, found).sendToTarget();
+            handler.obtainMessage(0, search).sendToTarget();
         }
 
         void addAll(JSONObject translations) throws JSONException
@@ -159,7 +161,7 @@ public class WordReference {
         {
             if (type != -1) {
                 String name = data.getString("term");
-                found[type].addAll(Arrays.asList(AppFormat.formatTranslation(name)));
+                search.translations[type].addAll(Arrays.asList(AppFormat.formatTranslation(name)));
             }
         }
 

@@ -1,34 +1,47 @@
 package com.delvinglanguages.view.lister;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.util.DrawerReferences;
+import com.delvinglanguages.view.lister.viewholder.DrawerItemViewHolder;
 
-public class DrawerLister extends ArrayAdapter<DrawerReference> {
+public class DrawerLister extends RecyclerView.Adapter<DrawerItemViewHolder> {
 
+    private DrawerReferences items;
+
+    private View.OnClickListener onClickItemListener;
     private LayoutInflater inflater;
 
-    public DrawerLister(Context context, DrawerReferences values)
+    public DrawerLister(Context context, DrawerReferences items, View.OnClickListener itemListener)
     {
-        super(context, R.layout.i_drawer_word, values);
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.items = items;
+        this.onClickItemListener = itemListener;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public DrawerItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if (view == null)
-            view = inflater.inflate(R.layout.i_drawer_word, parent, false);
+        View v = inflater.inflate(R.layout.i_drawer_word, parent, false);
+        v.setOnClickListener(onClickItemListener);
+        return new DrawerItemViewHolder(v);
+    }
 
-        ((TextView) view).setText(getItem(position).name);
-        return view;
+    @Override
+    public void onBindViewHolder(DrawerItemViewHolder holder, int position)
+    {
+        DrawerItemViewHolder.populateViewHolder(holder, items.get(position));
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return items.size();
     }
 
 }

@@ -143,7 +143,7 @@
     <string name="msg_missing_test_name">Falta nom del test</string>
     <string name="msg_test_hasnot_run_yet">El test encara no s\'ha fet</string>
     <string name="msg_test_done_times">Fet %1$s vegades</string>
-    <string name="msg_test_accuracy">Precisió: %1$s%%</string>
+    <string name="msg_test_accuracy">Precisió: %1$.1f%%</string>
     <string name="msg_test_best_reference">Millor paraula: %1$s</string>
     <string name="msg_test_worst_reference">Pitjor paraula: %1$s</string>
     <string name="msg_confirm_to_clear_all_items">Confirma per eliminar tot</string>
@@ -161,6 +161,10 @@
     <string name="msg_permission_for_backup_denied">No és possible llegir/escriure de la memòria sense el teu permís</string>
     <string name="msg_dictionary_empty">No és posible practicar perque el diccionari está buit</string>
     <string name="msg_cannot_start_test">El test no es pot crear: cap paraula coincideix amb la teva selecció</string>
+    <string name="msg_no_results_found">No hi ha resultats</string>
+    <string name="msg_cannot_translate_from_to">No es possible traduïr de %1$s a %2$s ni viceversa</string>
+    <string name="msg_pronunciation_not_available">Pronunciació no disponible</string>
+    <string name="available_in_future_releases">Disponible en properes actualitzacions</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->

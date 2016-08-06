@@ -21,11 +21,12 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestListeningFragment extends TestFragment implements TextWatcher {
 
-    public static TestListeningFragment getInstance(Handler handler, TestReferenceState reference)
+    public static TestListeningFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
     {
         TestListeningFragment f = new TestListeningFragment();
         f.reference = reference;
         f.handler = handler;
+        f.nextStage = nextStage;
         return f;
     }
 
@@ -174,7 +175,7 @@ public class TestListeningFragment extends TestFragment implements TextWatcher {
 
                 if (attempt == 1) {
 
-                    reference.stage = TestReferenceState.TestStage.END;
+                    reference.stage = nextStage;
                     handler.obtainMessage(TestListener.TEST_ROUND_PASSED).sendToTarget();
 
                 } else

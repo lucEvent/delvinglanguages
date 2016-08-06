@@ -34,9 +34,8 @@ public class PractiseTestActivity extends AppCompatActivity {
 
         Tests tests = new TestManager(this).getTests();
 
-        if (tests.isEmpty()) {
+        if (tests.isEmpty())
             onAddAction(null);
-        }
 
         adapter = new TestLister(tests, onTestSelected);
 
@@ -47,7 +46,13 @@ public class PractiseTestActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

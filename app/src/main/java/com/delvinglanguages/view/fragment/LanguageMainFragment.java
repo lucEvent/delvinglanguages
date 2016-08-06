@@ -192,7 +192,7 @@ public class LanguageMainFragment extends Fragment
 
             case R.id.option_more:
 
-                optionsDialog = new LanguageOptionsDialog(getActivity(), onMoreOptionsClick, /*actualPHMode*/true).dialog;
+                optionsDialog = new LanguageOptionsDialog(getActivity(), onMoreOptionsClick, currentLanguage.getSetting(Language.MASK_PHRASAL_VERBS)).dialog;
                 optionsDialog.show();
                 return;
 
@@ -203,17 +203,17 @@ public class LanguageMainFragment extends Fragment
 
                 break;
             case R.id.option_verbs:
-
+                // TODO: 21/07/2016
                 intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.VERBS);
 
-                Toast.makeText(getActivity(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.available_in_future_releases, Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
                 return; // break;
 
             case R.id.option_phrasal_verbs:
-
+                // TODO: 21/07/2016
                 intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.PHRASAL_VERBS);
-                Toast.makeText(getActivity(), "Not implemented yet!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.available_in_future_releases, Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
                 return; // break;
 

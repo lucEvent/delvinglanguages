@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
@@ -37,6 +38,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
 
     private int round;
     private boolean testRunning;
+    private boolean ttsAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +49,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         handler = new TestHandler(this);
         dataManager = new TestManager(this);
         testManager = new TestGame(new DReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale());
+        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), false);
 
         int test_id = getIntent().getExtras().getInt(AppCode.TEST_ID);
         currentTest = dataManager.getTests().getTestById(test_id);
@@ -94,23 +96,24 @@ public class TestActivity extends AppCompatActivity implements TestListener {
     private void setFragment(TestReferenceState refState)
     {
         this.currentReference = refState;
+        ttsAvailable = pronunciationManager.isLanguageAvailable();
 
         Fragment fragment = null;
         switch (refState.stage) {
             case DELVING:
-                fragment = TestDelvingFragment.getInstance(handler, refState);
+                fragment = TestDelvingFragment.getInstance(handler, refState, TestReferenceState.TestStage.MATCH);
                 break;
             case MATCH:
-                fragment = TestMatchFragment.getInstance(handler, refState);
+                fragment = TestMatchFragment.getInstance(handler, refState, TestReferenceState.TestStage.COMPLETE);
                 break;
             case COMPLETE:
-                fragment = TestCompleteFragment.getInstance(handler, refState);
+                fragment = TestCompleteFragment.getInstance(handler, refState, TestReferenceState.TestStage.WRITE);
                 break;
             case WRITE:
-                fragment = TestWriteFragment.getInstance(handler, refState);
+                fragment = TestWriteFragment.getInstance(handler, refState, ttsAvailable ? TestReferenceState.TestStage.LISTENING : TestReferenceState.TestStage.END);
                 break;
             case LISTENING:
-                fragment = TestListeningFragment.getInstance(handler, refState);
+                fragment = TestListeningFragment.getInstance(handler, refState, TestReferenceState.TestStage.END);
                 break;
         }
 
@@ -164,7 +167,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
 
     private void nextStep()
     {
-        if (round == currentTest.references.size() * 5) {
+        if (round >= currentTest.references.size() * (ttsAvailable ? 5 : 4)) {
             currentTest.run_finished();
             testRunning = false;
             setMainFragment();
@@ -175,7 +178,10 @@ public class TestActivity extends AppCompatActivity implements TestListener {
 
     public void onPronunciationAction(View v)
     {
-        pronunciationManager.pronounce(currentReference.reference.name);
+        if (ttsAvailable)
+            pronunciationManager.pronounce(currentReference.reference.name);
+        else
+            Toast.makeText(this, R.string.msg_pronunciation_not_available, Toast.LENGTH_SHORT).show();
     }
 
 }

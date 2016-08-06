@@ -2,6 +2,8 @@ package com.delvinglanguages.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,26 +15,35 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.net.external.MicrosoftTranslator;
+import com.delvinglanguages.net.external.OnlineDictionary;
+import com.delvinglanguages.net.external.Search;
 import com.delvinglanguages.net.external.WordReference;
 import com.delvinglanguages.view.lister.WebSearchLister;
-import com.delvinglanguages.AppCode;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class WebSearchActivity extends AppCompatActivity implements TextWatcher {
 
+    private String lto, lfrom;
+    private int to, from;
+    private Drawable dto, dfrom;
+    private OnlineDictionary dictionary;
+
     private EditText input;
 
     private WebSearchLister adapter;
-
-    private WordReference dictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +52,6 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         setContentView(R.layout.a_web_search);
 
         input = (EditText) findViewById(R.id.input);
-        input.addTextChangedListener(this);
 
         adapter = new WebSearchLister(this);
 
@@ -53,10 +63,39 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        from = new KernelManager(this).getCurrentLanguage().CODE;
+        to = AppSettings.getAppLanguageCode();
+        dictionary = new WordReference(from, to, handler);
 
-        int from_code = new KernelManager(this).getCurrentLanguage().CODE;
-        int to_code = AppSettings.getAppLanguageCode();
-        dictionary = new WordReference(from_code, to_code, handler);
+        String[] slanguages = getResources().getStringArray(R.array.languages);
+        lfrom = slanguages[from];
+        lto = slanguages[to];
+
+        if (!dictionary.isTranslationAvailable(from, to))
+            dictionary = new MicrosoftTranslator(from, to, handler);
+
+        if (dictionary.isTranslationAvailable(from, to))
+            input.addTextChangedListener(this);
+        else {
+            TextView msgr = (TextView) findViewById(R.id.messager);
+            msgr.setVisibility(View.VISIBLE);
+            msgr.setText(getString(R.string.msg_cannot_translate_from_to, lfrom, lto));
+        }
+
+        AssetManager amanager = getAssets();
+        try {
+            InputStream reader = amanager.open(from + ".png");
+            dfrom = Drawable.createFromStream(reader, null);
+            dfrom.setBounds(0, 0, 10, 10);
+            reader.close();
+
+            reader = amanager.open(to + ".png");
+            dto = Drawable.createFromStream(reader, null);
+            dto.setBounds(0, 0, 10, 10);
+            reader.close();
+        } catch (IOException ignored) {
+        }
+        updateLanguages();
 
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -65,27 +104,51 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         input.requestFocus();
     }
 
+    @SuppressWarnings("ConstantConditions")
+    private void updateLanguages()
+    {
+        ((TextView) findViewById(R.id.from_language)).setText(lfrom);
+        ((TextView) findViewById(R.id.to_language)).setText(lto);
+
+        findViewById(R.id.from_flag).setBackground(dfrom);
+        findViewById(R.id.to_flag).setBackground(dto);
+    }
+
+    private int currentSearchCode = -1;
+    private Search currentSearch;
+    private boolean addEnabled = true;
+
     private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg)
         {
+            Search data = (Search) msg.obj;
+            if (data.code > currentSearchCode) {
+                currentSearchCode = data.code;
+                currentSearch = data;
 
-            ArrayList<WebSearchLister.SearchItem> items = new ArrayList<>();
+                ArrayList<WebSearchLister.SearchItem> items = new ArrayList<>();
 
-            TreeSet<String>[] data = (TreeSet<String>[]) msg.obj;
-            for (int i = 0; i < data.length; i++)
-                if (!data[i].isEmpty())
-                    items.add(new WebSearchLister.SearchItem(1 << i, data[i].toArray(new String[data[i].size()])));
+                for (int i = 0; i < data.translations.length; i++) {
+                    TreeSet<String> t = data.translations[i];
+                    if (!t.isEmpty())
+                        items.add(new WebSearchLister.SearchItem(1 << i, t.toArray(new String[t.size()])));
+                }
+                adapter.setNewDataSet(items);
 
-            adapter.setNewDataSet(items);
+                findViewById(R.id.messager).setVisibility(items.isEmpty() ? View.VISIBLE : View.GONE);
+                if (items.isEmpty())
+                    currentSearch = null;
+            }
         }
     };
 
-    private String searchedWord;
-
     public void onAddAction(View v)
     {
+        if (currentSearch == null || !addEnabled)
+            return;
+
         Inflexions inflexions = new Inflexions();
         ArrayList<String> translations = new ArrayList<>();
         for (int i = 0; i < adapter.getItemCount(); i++) {
@@ -102,7 +165,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
             }
         }
 
-        searchedWord = Character.toUpperCase(searchedWord.charAt(0)) + searchedWord.substring(1);
+        String searchedWord = Character.toUpperCase(currentSearch.searchTerm.charAt(0)) + currentSearch.searchTerm.substring(1);
 
         Intent intent = new Intent(getApplicationContext(), ReferenceEditorActivity.class);
         intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_SEARCH);
@@ -111,6 +174,24 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         startActivity(intent);
     }
 
+    public void onSwapAction(View v)
+    {
+        int aux = from;
+        from = to;
+        to = aux;
+        dictionary.updateLanguages(from, to);
+
+        String laux = lfrom;
+        lfrom = lto;
+        lto = laux;
+
+        Drawable daux = dfrom;
+        dfrom = dto;
+        dto = daux;
+        updateLanguages();
+
+        addEnabled = !addEnabled;
+    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -120,8 +201,13 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
-        searchedWord = input.getText().toString();
-        dictionary.searchTerm(searchedWord);
+        String searchedWord = input.getText().toString();
+        if (!searchedWord.isEmpty())
+            dictionary.search(new Search(searchedWord));
+        else {
+            currentSearch = null;
+            adapter.clearDataSet();
+        }
     }
 
     @Override

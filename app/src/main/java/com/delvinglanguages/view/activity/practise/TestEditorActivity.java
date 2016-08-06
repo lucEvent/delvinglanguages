@@ -37,8 +37,8 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
         in_test_name = (EditText) findViewById(R.id.in_test_name);
         number_of_words = (Spinner) findViewById(R.id.number_of_words);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.number_of_languages, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         number_of_words.setAdapter(adapter);
 
@@ -76,7 +76,7 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
             return;
         }
 
-        int numberOfWords = Integer.parseInt((String) number_of_words.getSelectedItem());
+        int numberOfWords = (Integer) number_of_words.getSelectedItem();
 
         int type = 0;
         for (int i = 0; i < type_filter.length; i++)

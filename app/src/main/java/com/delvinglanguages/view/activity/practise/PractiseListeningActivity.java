@@ -44,7 +44,7 @@ public class PractiseListeningActivity extends Activity implements TextWatcher {
 
         dataManager = new LanguageManager(this);
         gameManager = new WriteGame(dataManager.getReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale());
+        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), true);
 
         handler = new Handler();
 

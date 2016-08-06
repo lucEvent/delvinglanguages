@@ -148,4 +148,11 @@ public class WebSearchLister extends RecyclerView.Adapter<WebSearchLister.ViewHo
             notifyDataSetChanged();
     }
 
+    public void clearDataSet()
+    {
+        int size = dataset.size();
+        dataset.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
 }

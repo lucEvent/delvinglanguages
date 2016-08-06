@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 3.2.0</string>
+    <string name="app_version" translatable="false">version 3.3.0</string>
 
     <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
@@ -145,7 +145,7 @@
     <string name="msg_missing_test_name">Missing test name</string>
     <string name="msg_test_hasnot_run_yet">The test has not been done yet</string>
     <string name="msg_test_done_times">Done %1$s times</string>
-    <string name="msg_test_accuracy">Accuracy: %1$s%%</string>
+    <string name="msg_test_accuracy">Accuracy: %1$.1f%%</string>
     <string name="msg_test_best_reference">Easiest word: %1$s</string>
     <string name="msg_test_worst_reference">Most difficult word: %1$s</string>
     <string name="msg_confirm_to_clear_all_items">Confirm to clear all items</string>
@@ -163,6 +163,10 @@
     <string name="msg_permission_for_backup_denied">We CANNOT read/write storage without your permission</string>
     <string name="msg_dictionary_empty">Cannot practise. Dictionary is empty</string>
     <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
+    <string name="msg_no_results_found">No results have been found</string>
+    <string name="msg_cannot_translate_from_to">Can not translate from %1$s to %2$s nor from %2$s nor vice versa</string>
+    <string name="available_in_future_releases">Feature available in future releases</string>
+    <string name="msg_pronunciation_not_available">Pronunciation not available</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -177,11 +181,12 @@
 
 
     <!-- * ******************** ********** **************************** * -->
-    <string name="about_content_header">Delving Languages version 3.2.0</string>
+    <string name="about_content_header">Delving Languages version 3.3.0</string>
     <string name="about_content_contact">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features">New features and improvements:</string>
     <string name="about_content_new_features">
-        Version 3.2.0 2016-07-15:\nHandler leaks fixed.\nTranslated to spanish and catalan.\nThemes editing improved.\nNew: Theme to test, start practising your themes.\nBug (list not updated) when removing a word fixed.\nPerformance improved when updating words and themes.\nTheme and test lists display improved.\nSeveral bugs fixed.\n
+        Version 3.3.0 2016-08-06:\nFixed phonetic keyboard vibration.\nLeft menu reorganized.\nDrawer words can now be deleted by swiping.\nWeb search improved, plus added support for more languages.\nTests improved when dealing with no tts.\nSome translations.\nBugs fixed.\n
+        \nVersion 3.2.0 2016-07-15:\nHandler leaks fixed.\nTranslated to spanish and catalan.\nThemes editing improved.\nNew: Theme to test, start practising your themes.\nBug (list not updated) when removing a word fixed.\nPerformance improved when updating words and themes.\nTheme and test lists display improved.\nSeveral bugs fixed.\n
         \nVersion 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
         \nVersion 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen displaying improved.\n
         \nVersion 3.0.0 2016-04-10:\nLollipop support.\nSettings standardized.\nKernel "word" and "dreference" merged for better performance.\nBetter support/user interaction when TTS is needed.\nListening in practise redesigned.\nTests redesigned.\nListening added in test.\n
@@ -203,8 +208,7 @@
     </string>
     <string name="about_content_title_next_releases">In next releases:</string>
     <string name="about_content_next_releases">
-        Change listviews by recycleviews\n
-        \nError in tests while accessing Listening in a language not supported\n
+        Error in tests while accessing Listening in a language not supported\n
         \nImprove search method in LanguageMain like in dictionary (a method in KernelManager can be made)\n
         \nImplement phrasal verb setting features\n
         \nImplement Phrasal verbs and Verbs features\n

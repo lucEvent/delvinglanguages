@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="languages">
+        <item>Anglès Britànic</item>
+        <item>Anglès Americà</item>
+        <item>Suec</item>
+        <item>Finlandès</item>
+        <item>Espanyol</item>
+        <item>Català</item>
+        <item>Euskera</item>
+        <item>Txec</item>
+        <item>Danès</item>
+        <item>Holandès</item>
+        <item>Estonià</item>
+        <item>Francès</item>
+        <item>Alemany</item>
+        <item>Grec</item>
+        <item>Italiè</item>
+        <item>Noruec</item>
+        <item>Portuguès</item>
+        <item>Rus</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Delving Languages (per defecte)</item>
+        <!--    <item>Assolellat</item>-->
+    </string-array>
+
+</resources>

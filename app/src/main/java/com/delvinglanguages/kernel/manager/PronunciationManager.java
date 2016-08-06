@@ -15,6 +15,8 @@ public class PronunciationManager implements TextToSpeech.OnInitListener {
 
     private NotifierDialog notifier;
 
+    private boolean askToUser;
+
     /**
      * This variable indicates if onInit method has already been called by the system
      */
@@ -25,18 +27,22 @@ public class PronunciationManager implements TextToSpeech.OnInitListener {
      */
     private String advanced;
 
-    public PronunciationManager(Context context, Locale locale) {
+    public PronunciationManager(Context context, Locale locale, boolean askToUser)
+    {
         this.locale = locale;
         this.speechEngine = new TextToSpeech(context, this);
-        this.notifier = new NotifierDialog(context);
+        if (askToUser)
+            this.notifier = new NotifierDialog(context);
         this.initialized = false;
+        this.askToUser = askToUser;
     }
 
     @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
+    public void onInit(int status)
+    {
+        if (status == TextToSpeech.SUCCESS)
             speechEngine.setLanguage(locale);
-        }
+
         initialized = true;
         if (advanced != null) {
             pronounce(advanced);
@@ -44,7 +50,8 @@ public class PronunciationManager implements TextToSpeech.OnInitListener {
         }
     }
 
-    public void pronounce(String text) {
+    public void pronounce(String text)
+    {
         if (!initialized) {
             advanced = text;
             return;
@@ -53,16 +60,21 @@ public class PronunciationManager implements TextToSpeech.OnInitListener {
         int availability = speechEngine.isLanguageAvailable(locale);
         if (availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED) {
 
-            notifier.notify_languageTTSnotAvailable(locale.getDisplayLanguage());
+            if (askToUser)
+                notifier.notify_languageTTSnotAvailable(locale.getDisplayLanguage());
 
-        } else {
-
+        } else
             speechEngine.speak(text, TextToSpeech.QUEUE_FLUSH, null, "");
-
-        }
     }
 
-    public void destroy() {
+    public boolean isLanguageAvailable()
+    {
+        int availability = speechEngine.isLanguageAvailable(locale);
+        return !(availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED);
+    }
+
+    public void destroy()
+    {
         if (speechEngine != null) {
             speechEngine.stop();
             speechEngine.shutdown();

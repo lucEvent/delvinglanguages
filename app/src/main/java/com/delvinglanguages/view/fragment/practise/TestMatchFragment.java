@@ -19,11 +19,12 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestMatchFragment extends TestFragment {
 
-    public static TestMatchFragment getInstance(Handler handler, TestReferenceState reference)
+    public static TestMatchFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
     {
         TestMatchFragment f = new TestMatchFragment();
         f.reference = reference;
         f.handler = handler;
+        f.nextStage = nextStage;
         return f;
     }
 
@@ -124,7 +125,7 @@ public class TestMatchFragment extends TestFragment {
 
                 if (attempt == 1) {
 
-                    reference.stage = TestReferenceState.TestStage.COMPLETE;
+                    reference.stage = nextStage;
                     handler.obtainMessage(TestListener.TEST_ROUND_PASSED).sendToTarget();
 
                 } else

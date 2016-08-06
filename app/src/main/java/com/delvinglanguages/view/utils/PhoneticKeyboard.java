@@ -58,8 +58,6 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         keyboardView.setKeyboard(keyboard_empty);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(this);
-
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void hide()
@@ -112,7 +110,7 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
     public void onKey(int primaryCode, int[] keyCodes)
     {
         if (vibrator != null) {
-            vibrator.vibrate(15);
+            vibrator.vibrate(25);
         }
 
         Editable editable = edittext.getText();
