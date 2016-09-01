@@ -11,6 +11,11 @@ public class Themes extends ArrayList<Theme> {
         super();
     }
 
+    public Themes(int capacity)
+    {
+        super(capacity);
+    }
+
     public Theme getThemeById(int id)
     {
         for (Theme theme : this)

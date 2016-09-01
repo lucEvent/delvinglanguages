@@ -12,14 +12,16 @@ public class HistorialItem {
 
     public final int[] ids;
 
-    public HistorialItem(int type, String[] descriptions, int[] itemIDs, long time) {
+    public HistorialItem(int type, String[] descriptions, int[] itemIDs, long time)
+    {
         this.type = type;
         this.descriptions = descriptions;
         this.time = time;
         this.ids = itemIDs;
     }
 
-    public HistorialItem(String params) {
+    public HistorialItem(String params)
+    {
         String[] info = params.split("" + SEP);
         type = Integer.parseInt(info[0]);
         int ndesc = Integer.parseInt(info[1]);
@@ -36,7 +38,8 @@ public class HistorialItem {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder res = new StringBuilder();
         res.append(type).append(SEP);
         res.append(descriptions.length).append(SEP);

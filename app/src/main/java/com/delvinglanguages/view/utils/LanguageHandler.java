@@ -17,19 +17,20 @@ public class LanguageHandler extends android.os.Handler {
     public void handleMessage(Message msg)
     {
         switch (msg.what) {
-            case LanguageListener.LANGUAGE_CREATED_OK:
-                messager.get().onLanguageCreatedOK((Object[]) msg.obj);
-                break;
-            case LanguageListener.LANGUAGE_CREATED_CANCELED:
-                messager.get().onLanguageCreatedCanceled();
-                break;
             case LanguageListener.LANGUAGE_REMOVED:
                 messager.get().onLanguageRemoved();
                 break;
             case LanguageListener.LANGUAGE_RECOVERED:
                 messager.get().onLanguageRecovered();
+                break;
             case LanguageListener.LANGUAGE_NAME_CHANGED:
                 messager.get().onLanguageNameChanged();
+                break;
+            case LanguageListener.ENABLE_SYNCHRONIZATION:
+                messager.get().onSynchronizationStateChanged(true);
+                break;
+            case LanguageListener.DISABLE_SYNCHRONIZATION:
+                messager.get().onSynchronizationStateChanged(false);
                 break;
             case LanguageListener.MESSAGE_INT:
                 messager.get().onMessage((int) msg.obj);

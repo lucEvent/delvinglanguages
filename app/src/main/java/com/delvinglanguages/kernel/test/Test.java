@@ -1,31 +1,39 @@
 package com.delvinglanguages.kernel.test;
 
+import android.support.annotation.NonNull;
+
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.TestReferenceStates;
+import com.delvinglanguages.kernel.util.Wrapper;
 
-public class Test {
+public class Test implements Wrapper<Test> {
 
     private final static String SEP = "%Tt";
+    private final static String SEP2 = "%T%";
 
-    public int id;
+    public final int id;
+    public final int theme_id;
+
     public String name;
 
     private int runTimes;
 
     public TestReferenceStates references;
 
-    public Test(int id, String name, int runTimes, String wrappedContent)
+    public Test(int id, String name, int runTimes, @NonNull String wrappedContent, int theme_id)
     {
         this.id = id;
+        this.theme_id = theme_id;
         this.name = name;
         this.runTimes = runTimes;
         this.references = unWrapContent(wrappedContent);
     }
 
-    public Test(String name, DReferences refs)
+    public Test(int id, String name, @NonNull DReferences refs, int theme_id)
     {
-        this.id = -1;
+        this.id = id;
+        this.theme_id = theme_id;
         this.name = name;
         this.runTimes = 0;
         this.references = new TestReferenceStates(refs.size());
@@ -33,17 +41,19 @@ public class Test {
             this.references.add(new TestReferenceState(ref));
     }
 
-    private TestReferenceStates unWrapContent(String wrappedContent)
+    private TestReferenceStates unWrapContent(@NonNull String wrappedContent)
     {
         String[] items = wrappedContent.split(SEP);
         int index = 0;
+
+        DReference refAux = DReference.createBait("");
 
         int nRefs = Integer.parseInt(items[index++]);
         TestReferenceStates res = new TestReferenceStates(nRefs);
         for (int i = 0; i < nRefs; i++) {
             TestReferenceState refState = new TestReferenceState(null);
 
-            refState.reference = DReference.unWrapReference(items[index++]);
+            refState.reference = refAux.unWrap(items[index++]);
             refState.match.attempts = Integer.parseInt(items[index++]);
             refState.match.errors = Integer.parseInt(items[index++]);
             refState.complete.attempts = Integer.parseInt(items[index++]);
@@ -58,13 +68,13 @@ public class Test {
         return res;
     }
 
-    public static String wrapContent(Test test)
+    public static String wrapContent(@NonNull Test test)
     {
         StringBuilder res = new StringBuilder();
         res.append(test.references.size());
         for (TestReferenceState refState : test.references) {
 
-            res.append(SEP).append(DReference.wrapReference(refState.reference));
+            res.append(SEP).append(refState.reference.wrap());
             res.append(SEP).append(refState.match.attempts).append(SEP).append(refState.match.errors);
             res.append(SEP).append(refState.complete.attempts).append(SEP).append(refState.complete.errors);
             res.append(SEP).append(refState.write.attempts).append(SEP).append(refState.write.errors);
@@ -161,6 +171,28 @@ public class Test {
     public boolean hasContent(CharSequence s)
     {
         return name.toLowerCase().contains(s);
+    }
+
+    @Override
+    public String wrap()
+    {
+        return name + SEP2 +
+                runTimes + SEP2 +
+                Test.wrapContent(this) + SEP2 +
+                theme_id;
+    }
+
+    @Override
+    public Test unWrap(@NonNull String wrapper)
+    {
+        String[] parts = wrapper.split(SEP2);
+        return new Test(-1, parts[0], Integer.parseInt(parts[1]), parts[2], Integer.parseInt(parts[3]));
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return Wrapper.TYPE_TEST;
     }
 
 }

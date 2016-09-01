@@ -5,9 +5,10 @@ public class ThemePair {
     public String inDelved;
     public String inNative;
 
-    public ThemePair(String delved, String nativ) {
+    public ThemePair(String delved, String _native)
+    {
         this.inDelved = delved;
-        this.inNative = nativ;
+        this.inNative = _native;
     }
 
 }

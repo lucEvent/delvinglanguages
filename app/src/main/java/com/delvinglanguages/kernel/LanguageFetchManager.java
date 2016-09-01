@@ -25,7 +25,7 @@ public class LanguageFetchManager extends LanguageManager {
                 public void run()
                 {
 
-                    loadAllLanguageContent(language);
+                    loadContentOf(language);
 
                 }
             }).start();
@@ -39,7 +39,7 @@ public class LanguageFetchManager extends LanguageManager {
             public void run()
             {
 
-                loadAllLanguageContent(language);
+                loadContentOf(language);
 
                 while (!language.isDictionaryCreated()) ;
 

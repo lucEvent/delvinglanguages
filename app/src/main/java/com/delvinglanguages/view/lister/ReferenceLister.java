@@ -68,11 +68,13 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     public void loadMoreData()
     {
         int dataAdded = Math.min(this.datasetVisibleCount + CHUNK, dataset.size()) - datasetVisibleCount;
-        try {
-            notifyItemRangeInserted(datasetVisibleCount, dataAdded);
-        } catch (Exception ignored) {
+        if (dataAdded > 0) {
+            try {
+                notifyItemRangeInserted(datasetVisibleCount - 1, dataAdded);
+            } catch (Exception ignored) {
+            }
+            this.datasetVisibleCount += dataAdded;
         }
-        this.datasetVisibleCount += dataAdded;
     }
 
 }

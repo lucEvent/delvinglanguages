@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 3.3.0</string>
+    <string name="app_version" translatable="false">version 4.0.0</string>
 
     <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
@@ -66,7 +66,10 @@
     <string name="statistics">Statistics</string>
     <string name="main_stats_content_description">Attempts:\t\t %1$d\nNeat hits:\t\t\t %2$d (%3$.1f%%)\nHits at 2nd:\t %4$d (%5$.1f%%)\nHits at 3rd:\t\t %6$d (%7$.1f%%)\nErrors:\t\t\t\t %8$d (%9$.1f%%)</string>
     <string name="x_words">%1$s words</string>
-
+    <string name="create_a_language">Create a language</string>
+    <string name="import_from_file">Import from file</string>
+    <string name="synchronize_your_account">Synchronize your account</string>
+    <string name="how_do_we_start">How do we start?</string>
 
     <!-- * ******************** Buttons **************************** * -->
     <string name="cancel">Cancel</string>
@@ -165,8 +168,13 @@
     <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
     <string name="msg_no_results_found">No results have been found</string>
     <string name="msg_cannot_translate_from_to">Can not translate from %1$s to %2$s nor from %2$s nor vice versa</string>
-    <string name="available_in_future_releases">Feature available in future releases</string>
     <string name="msg_pronunciation_not_available">Pronunciation not available</string>
+    <string name="msg_permission_for_login_denied">The app needs your permission to log in with your account. We won\'t store any personal data.</string>
+    <string name="msg_connecting_to_server">Connecting to the server</string>
+    <string name="msg_synchronizing">Synchronizing</string>
+    <string name="msg_no_internet_connection">No internet connection available</string>
+    <string name="msg_no_languages_found">No languages found</string>
+    <string name="available_in_future_releases">Feature available in future releases</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -181,22 +189,21 @@
 
 
     <!-- * ******************** ********** **************************** * -->
-    <string name="about_content_header">Delving Languages version 3.3.0</string>
-    <string name="about_content_contact">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
-    <string name="about_content_title_new_features">New features and improvements:</string>
-    <string name="about_content_new_features">
-        Version 3.3.0 2016-08-06:\nFixed phonetic keyboard vibration.\nLeft menu reorganized.\nDrawer words can now be deleted by swiping.\nWeb search improved, plus added support for more languages.\nTests improved when dealing with no tts.\nSome translations.\nBugs fixed.\n
+    <string name="about_content_header" translatable="false">Delving Languages version 4.0.0</string>
+    <string name="about_content_contact" translatable="false">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
+    <string name="about_content_title_new_features" translatable="false">New features and improvements:</string>
+    <string name="about_content_new_features" translatable="false">
+        Version 4.0.0 2016-08-30:\nIntroducing Data backup in server and synchronization.\nBugs fixed.\n
+        \nVersion 3.3.0 2016-08-06:\nFixed phonetic keyboard vibration.\nLeft menu reorganized.\nDrawer words can now be deleted by swiping.\nWeb search improved, plus added support for more languages.\nTests improved when dealing with no tts.\nSome translations.\nBugs fixed.\n
         \nVersion 3.2.0 2016-07-15:\nHandler leaks fixed.\nTranslated to spanish and catalan.\nThemes editing improved.\nNew: Theme to test, start practising your themes.\nBug (list not updated) when removing a word fixed.\nPerformance improved when updating words and themes.\nTheme and test lists display improved.\nSeveral bugs fixed.\n
         \nVersion 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
         \nVersion 3.1.0 2016-06-15:\nMarshmallow support: permissions are asked when they are needed.\nRace conditions in DB fixed.\nConflict with deprecated function in marshmallow fixed.\nAbout screen displaying improved.\n
         \nVersion 3.0.0 2016-04-10:\nLollipop support.\nSettings standardized.\nKernel "word" and "dreference" merged for better performance.\nBetter support/user interaction when TTS is needed.\nListening in practise redesigned.\nTests redesigned.\nListening added in test.\n
-        \nVersion 2.3.2 2016-03-08:\nTTS improved for Lollipop and above versions.\n
-        \nVersion 2.3.1 2016-03-06:\nSearch function now supports Spanish, Czech, French, Greek, Italian and Portuguese, from and to English.\n
         \nVersion 2.3.0 2016-03-05:\nIntroducing Prepositions and Conjunctions.\n
         \nVersion 2.1.0 2016-01-08:\nIntroducing inflexions (replace translations).\n
     </string>
-    <string name="about_content_title_old_features">Old improvements:</string>
-    <string name="about_content_old_features">
+    <string name="about_content_title_old_features" translatable="false">Old improvements:</string>
+    <string name="about_content_old_features" translatable="false">
         Version 1.6.0 2015-07-03:\nIntroducing Support for Swedish word inflexions.\n
         \nVersion 1.5.1 2015-05-16:\nIntroducing Pronunciation for words.\n
         \nVersion 1.5.0 2015-05-14:\nNew Translation organization.\nNew Database format.\n
@@ -206,8 +213,8 @@
         \nVersion 1.2.3 2014-10-25:\nNew Language Menu.\n
         \nVersion 1.2.0 2014-05-13:\nNew Dictionary.\n
     </string>
-    <string name="about_content_title_next_releases">In next releases:</string>
-    <string name="about_content_next_releases">
+    <string name="about_content_title_next_releases" translatable="false">In next releases:</string>
+    <string name="about_content_next_releases" translatable="false">
         Error in tests while accessing Listening in a language not supported\n
         \nImprove search method in LanguageMain like in dictionary (a method in KernelManager can be made)\n
         \nImplement phrasal verb setting features\n
@@ -223,6 +230,7 @@
     <string name="pref_app_language">App language</string>
     <string name="pref_phonetic_keyboard_vibration">Phonetic keyboard vibration</string>
     <string name="pref_app_theme">App theme</string>
+    <string name="pref_backup_n_synchronization">Online security backup</string>
     <string name="pref_import_data">Import data</string>
     <string name="pref_export_data">Export data</string>
 
@@ -232,6 +240,7 @@
     <string name="pref_import_data_key" translatable="false">pref4</string>
     <string name="pref_export_data_key" translatable="false">pref5</string>
     <string name="pref_current_language_key" translatable="false">pref6</string>
+    <string name="pref_backup_n_synchronization_key" translatable="false">pref7</string>
 
     <!-- * ********************** Language Settings strings ************************* * -->
     <string name="pref_title_options">Options</string>
@@ -254,6 +263,5 @@
     <!-- ********************************************************************************* -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-
 
 </resources>

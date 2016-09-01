@@ -6,11 +6,18 @@ import java.util.ArrayList;
 
 public class Tests extends ArrayList<Test> {
 
-    public Tests() {
+    public Tests()
+    {
         super();
     }
 
-    public Test getTestById(int id) {
+    public Tests(int capacity)
+    {
+        super(capacity);
+    }
+
+    public Test getTestById(int id)
+    {
         for (Test t : this)
             if (t.id == id)
                 return t;

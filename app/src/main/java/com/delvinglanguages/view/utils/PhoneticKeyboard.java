@@ -34,9 +34,8 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
     {
         this.context = context;
 
-        if (AppSettings.getPreferencePhonKBVibration()) {
+        if (AppSettings.isPhoneticKBVibrationEnabled())
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        }
 
         this.edittext = edittext;
         this.edittext.setOnFocusChangeListener(this);
@@ -46,7 +45,7 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         keyboard_punctuation = new Keyboard(context, R.xml.keyboard_punctuation);
         keyboard_empty = new Keyboard(context, R.xml.keyboard_empty);
         switch (langCode) {
-            case Language.SV:
+            case Language.SWEDISH:
                 keyboard_symbols = new Keyboard(context, R.xml.keyboard_phonetic_swedish);
                 break;
             default:

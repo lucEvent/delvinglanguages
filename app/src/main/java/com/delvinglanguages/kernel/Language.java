@@ -16,78 +16,37 @@ import java.util.TreeSet;
 
 public class Language {
 
-    private static final Character CAPS[][] = {
-            /** UK **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** US **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** SV **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ä', 'Ö', 'Å'},
-            /** FI **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ä', 'Ö', 'Å'},
-            /** ES **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** CA **/
-            {'A', 'B', 'C', 'Ç', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, // CA
-            /** BA **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** CZ **/
-            {'A', 'B', 'C', 'Č', 'D', 'Ď', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ň', 'O', 'P', 'Q', 'R', 'Ř', 'S', 'Š', 'T', 'Ť', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ž'},
-            /** DA **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'},
-            /** DU **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** EST **/
-            {'A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'Š', 'Z', 'Ž', 'T', 'U', 'V', 'Õ', 'Ä', 'Ö', 'Ü'},
-            /** FR **/
-            {'A', 'B', 'C', 'Ç', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}, // CA
-            /** GE **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-            /** GR **/
-            {'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'},
-            /** IT **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'Z'},
-            /** NO **/
-            {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'},
-            /** PO **/
-            {'A', 'Ą', 'B', 'C', 'Ć', 'D', 'E', 'Ę', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Ł', 'M', 'N', 'Ń', 'O', 'Ó', 'P', 'R', 'S', 'Ś', 'T', 'U', 'W', 'Y', 'Z', 'Ź', 'Ż'},
-            /** RU **/
-            {'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'}
-    };
-
     // Language CODE
-    public static final int UK = 0;
-    public static final int US = 1;
-    public static final int SV = 2;
-    public static final int FI = 3;
-    public static final int ES = 4;
-    public static final int CA = 5;
-    public static final int BA = 6;
-    public static final int CZ = 7;
-    public static final int DA = 8;
-    public static final int DU = 9;
-    public static final int EST = 10;
-    public static final int FR = 11;
-    public static final int GE = 12;
-    public static final int GR = 13;
-    public static final int IT = 14;
-    public static final int NO = 15;
-    public static final int PO = 16;
-    public static final int RU = 17;
+    public static final int ENGLISH_UK = 0;
+    public static final int ENGLISH_US = 1;
+    public static final int SWEDISH = 2;
+    public static final int FINNISH = 3;
+    public static final int SPANISH = 4;
+    public static final int CATALAN = 5;
+    public static final int BASQUE = 6;
+    public static final int CZECH = 7;
+    public static final int DANISH = 8;
+    public static final int DUTCH = 9;
+    public static final int ESTONIAN = 10;
+    public static final int FRENCH = 11;
+    public static final int GERMAN = 12;
+    public static final int GREEK = 13;
+    public static final int ITALIAN = 14;
+    public static final int NORWEGIAN = 15;
+    public static final int PORTUGUESE = 16;
+    public static final int RUSSIAN = 17;
 
     // Settings masks
     public static final int MASK_PHRASAL_VERBS = 0x1;
-
+    public static final int MASK_PUBLIC = 0x2;
 
     private Locale locale;
 
-    public int CODE;
-
     public final int id;
 
-    public String language_name;
+    public int code, settings;
 
-    public int settings;
+    public String language_name;
 
     public Dictionary dictionary;
     public DReferences removed_references;
@@ -98,10 +57,16 @@ public class Language {
 
     public Language(int id, int code, String language_name, int settings)
     {
+        this(id, code, language_name, settings, null);
+    }
+
+    public Language(int id, int code, String language_name, int settings, Statistics statistics)
+    {
         this.id = id;
-        this.CODE = code;
+        this.code = code;
         this.language_name = language_name;
         this.settings = settings;
+        this.statistics = statistics;
 
         locale = getLocale(code);
     }
@@ -109,41 +74,41 @@ public class Language {
     public static Locale getLocale(int language_code)
     {
         switch (language_code) {
-            case UK:
+            case ENGLISH_UK:
                 return Locale.UK;
-            case US:
+            case ENGLISH_US:
                 return Locale.US;
-            case SV:
+            case SWEDISH:
                 return new Locale("sv", "SE", "SE");
-            case FI:
+            case FINNISH:
                 return new Locale("fi", "FI", "FI");
-            case ES:
+            case SPANISH:
                 return new Locale("es", "ES", "ES");
-            case CA:
+            case CATALAN:
                 return new Locale("ca", "ES");
-            case BA:
+            case BASQUE:
                 return new Locale("eu", "ES");
-            case CZ:
+            case CZECH:
                 return new Locale("cs", "CZ");
-            case DA:
+            case DANISH:
                 return new Locale("da", "DK");
-            case DU:
+            case DUTCH:
                 return new Locale("nl", "NL");
-            case EST:
+            case ESTONIAN:
                 return new Locale("et", "EE");
-            case FR:
+            case FRENCH:
                 return Locale.FRANCE;
-            case GE:
+            case GERMAN:
                 return Locale.GERMANY;
-            case GR:
+            case GREEK:
                 return new Locale("el", "GR");
-            case IT:
+            case ITALIAN:
                 return Locale.ITALY;
-            case NO:
+            case NORWEGIAN:
                 return new Locale("nb", "NO");
-            case PO:
+            case PORTUGUESE:
                 return new Locale("pl", "PL");
-            case RU:
+            case RUSSIAN:
                 return new Locale("ru", "RU");
         }
         return null;
@@ -177,11 +142,6 @@ public class Language {
         return dictionary.getDictionaryInverse();
     }
 
-    public Character[] getDictionaryIndexes()
-    {
-        return CAPS[CODE];
-    }
-
     public boolean getSetting(int mask)
     {
         return (settings & mask) != 0;
@@ -200,16 +160,20 @@ public class Language {
     public int getTensesArrayResId()
     {
         int res;
-        if (CODE == Language.ES) {
-            res = R.array.es_tenses;
-        } else if (CODE == Language.UK || CODE == Language.US) {
-            res = R.array.en_tenses;
-        } else if (CODE == Language.SV) {
-            res = R.array.sv_tenses;
-        } else if (CODE == Language.FI) {
-            res = R.array.fi_tenses;
-        } else {
-            res = R.array.en_tenses;
+        switch (code) {
+            case SPANISH:
+                res = R.array.es_tenses;
+                break;
+            case ENGLISH_UK:
+            case ENGLISH_US:
+                res = R.array.en_tenses;
+                break;
+            case SWEDISH:
+                res = R.array.sv_tenses;
+                break;
+            default:
+                res = R.array.en_tenses;
+                break;
         }
         return res;
     }
@@ -217,14 +181,20 @@ public class Language {
     public int getSubjectArrayResId()
     {
         int res;
-        if (CODE == Language.ES) {
-            res = R.array.es_subjects;
-        } else if (CODE == Language.UK || CODE == Language.US) {
-            res = R.array.en_subjects;
-        } else if (CODE == Language.SV) {
-            res = R.array.sv_subjects;
-        } else {
-            res = R.array.en_subjects;
+        switch (code) {
+            case SPANISH:
+                res = R.array.es_subjects;
+                break;
+            case ENGLISH_UK:
+            case ENGLISH_US:
+                res = R.array.en_subjects;
+                break;
+            case SWEDISH:
+                res = R.array.sv_subjects;
+                break;
+            default:
+                res = R.array.en_subjects;
+                break;
         }
         return res;
     }
@@ -237,11 +207,6 @@ public class Language {
     /**
      * ********************** Setters ***********************
      **/
-
-    public void setStatistics(Statistics s)
-    {
-        statistics = s;
-    }
 
     public void setReferences(DReferences references)
     {
@@ -299,7 +264,7 @@ public class Language {
 
     public void setCode(int code)
     {
-        this.CODE = code;
+        this.code = code;
         this.locale = getLocale(code);
     }
 

@@ -1,75 +1,107 @@
 package com.delvinglanguages.kernel.util;
 
-public class Statistics {
-    //// TODO: 08/04/2016  More complete statistics :)
+import android.support.annotation.NonNull;
+
+public class Statistics implements Wrapper<Statistics> {     //// TODO: 08/04/2016  More complete statistics :)
+
+    private static final String SEP = "%S";
+
     public final int id;
 
-    public int intentos;
-    public int aciertos1;
-    public int aciertos2;
-    public int aciertos3;
-    public int fallos;
+    public int attempts;
+    public int hits_at_1st;
+    public int hits_at_2nd;
+    public int hits_at_3rd;
+    public int misses;
 
     public Statistics(int id)
     {
         this(id, 0, 0, 0, 0, 0);
     }
 
-    public Statistics(int id, int intentos, int aciertos1, int aciertos2, int aciertos3, int fallos)
+    public Statistics(int id, int attempts, int hits_at_1st, int hits_at_2nd, int hits_at_3rd, int misses)
     {
         this.id = id;
-        this.intentos = intentos;
-        this.aciertos1 = aciertos1;
-        this.aciertos2 = aciertos2;
-        this.aciertos3 = aciertos3;
-        this.fallos = fallos;
+        this.attempts = attempts;
+        this.hits_at_1st = hits_at_1st;
+        this.hits_at_2nd = hits_at_2nd;
+        this.hits_at_3rd = hits_at_3rd;
+        this.misses = misses;
     }
 
-    public float porcentageAcertadas1()
+    public float percentageHitsAt1st()
     {
-        return intentos == 0 ? 0 : (float) (aciertos1 * 100) / (float) intentos;
+        return attempts == 0 ? 0 : (float) (hits_at_1st * 100) / (float) attempts;
     }
 
-    public float porcentageAcertadas2()
+    public float percentageHitsAt2nd()
     {
-        return intentos == 0 ? 0 : (float) (aciertos2 * 100) / (float) intentos;
+        return attempts == 0 ? 0 : (float) (hits_at_2nd * 100) / (float) attempts;
     }
 
-    public float porcentageAcertadas3()
+    public float percentageHitsAt3rd()
     {
-        return intentos == 0 ? 0 : (float) (aciertos3 * 100) / (float) intentos;
+        return attempts == 0 ? 0 : (float) (hits_at_3rd * 100) / (float) attempts;
     }
 
-    public float porcentageFalladas()
+    public float percentageMisses()
     {
-        return intentos == 0 ? 0 : (float) (fallos * 100) / (float) intentos;
+        return attempts == 0 ? 0 : (float) (misses * 100) / (float) attempts;
     }
 
-    public void nuevoIntento(int resultado)
+    public void newAttempt(int result)
     {
-        intentos++;
-        switch (resultado) {
+        attempts++;
+        switch (result) {
             case 1:
-                aciertos1++;
+                hits_at_1st++;
                 break;
             case 2:
-                aciertos2++;
+                hits_at_2nd++;
                 break;
             case 3:
-                aciertos3++;
+                hits_at_3rd++;
                 break;
             default:
-                fallos++;
+                misses++;
         }
     }
 
     public void reset()
     {
-        intentos = 0;
-        aciertos1 = 0;
-        aciertos2 = 0;
-        aciertos3 = 0;
-        fallos = 0;
+        attempts = 0;
+        hits_at_1st = 0;
+        hits_at_2nd = 0;
+        hits_at_3rd = 0;
+        misses = 0;
+    }
+
+    @Override
+    public String wrap()
+    {
+        return attempts
+                + SEP + hits_at_1st
+                + SEP + hits_at_2nd
+                + SEP + hits_at_3rd
+                + SEP + misses;
+    }
+
+    @Override
+    public Statistics unWrap(@NonNull String wrapper)
+    {
+        String[] parts = wrapper.split("SEP");
+        return new Statistics(-1,
+                Integer.parseInt(parts[0]),
+                Integer.parseInt(parts[1]),
+                Integer.parseInt(parts[2]),
+                Integer.parseInt(parts[3]),
+                Integer.parseInt(parts[4]));
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return TYPE_STATISTICS;
     }
 
 }

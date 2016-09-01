@@ -4,15 +4,10 @@ import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.util.DReferences;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.TreeSet;
 
 public class PhrasalVerbs implements Runnable, Serializable {
-
-    private static final long serialVersionUID = -3561298495761959147L;
 
     private static final String[] englishPreps = {"About", "Across", "After", "Against", "Ahead", "Along", "Apart", "Around", "As", "Aside", "At",
             "Away", "Back", "By", "Down", "For", "Forth", "Forward", "From", "In", "Into", "It", "Of", "Off", "On", "Onto", "Out", "Over", "Round",
@@ -41,22 +36,22 @@ public class PhrasalVerbs implements Runnable, Serializable {
     {
         String[] sPrepositions;
         switch (language) {
-            case Language.UK:
-            case Language.US:
+            case Language.ENGLISH_UK:
+            case Language.ENGLISH_US:
                 sPrepositions = englishPreps;
                 break;
-            case Language.SV:
+            case Language.SWEDISH:
                 sPrepositions = swedishPreps;
                 break;
             default:
                 sPrepositions = new String[]{};
         }
-        prepositions = new TreeSet<PVLink>();
+        prepositions = new TreeSet<>();
         for (String p : sPrepositions) {
             prepositions.add(new PVLink(p));
         }
 
-        verbs = new TreeSet<PVLink>();
+        verbs = new TreeSet<>();
         for (DReference ref : words) {
             if (ref.isPhrasalVerb()) {
                 addPhrasalVerb(ref.name);
@@ -113,18 +108,6 @@ public class PhrasalVerbs implements Runnable, Serializable {
             return cand;
         }
         return null;
-    }
-
-    private void writeObject(ObjectOutputStream out) throws IOException
-    {
-        out.writeObject(verbs);
-        out.writeObject(prepositions);
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-    {
-        verbs = (TreeSet<PVLink>) in.readObject();
-        prepositions = (TreeSet<PVLink>) in.readObject();
     }
 
 }

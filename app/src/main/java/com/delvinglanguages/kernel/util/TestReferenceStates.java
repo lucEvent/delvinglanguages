@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 public class TestReferenceStates extends ArrayList<TestReferenceState> {
 
-    public TestReferenceStates() {
+    public TestReferenceStates()
+    {
         super();
     }
 
-    public TestReferenceStates(int capacity) {
+    public TestReferenceStates(int capacity)
+    {
         super(capacity);
     }
 

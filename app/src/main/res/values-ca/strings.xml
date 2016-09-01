@@ -64,6 +64,10 @@
     <string name="statistics">Estadístiques</string>
     <string name="main_stats_content_description">Intents:\t\t\t\t\t\t %1$d\nEncerts a la 1a:\t %2$d (%3$.1f%%)\nEncerts a la 2a:\t %4$d (%5$.1f%%)\nEncerts a la 3a:\t %6$d (%7$.1f%%)\nFallades:\t\t\t\t\t %8$d (%9$.1f%%)</string>
     <string name="x_words">%1$s paraules</string>
+    <string name="create_a_language">Crea un idioma</string>
+    <string name="import_from_file">Importa des d\'arxiu</string>
+    <string name="synchronize_your_account">Sincronitza compte</string>
+    <string name="how_do_we_start">Com començem?</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -164,6 +168,11 @@
     <string name="msg_no_results_found">No hi ha resultats</string>
     <string name="msg_cannot_translate_from_to">No es possible traduïr de %1$s a %2$s ni viceversa</string>
     <string name="msg_pronunciation_not_available">Pronunciació no disponible</string>
+    <string name="msg_permission_for_login_denied">Es necessita permís per identificar-te amb el teu compte al nostre servidor. No emmagatzemarem cap dada personal.</string>
+    <string name="msg_connecting_to_server">Connectant al servidor</string>
+    <string name="msg_synchronizing">Sincronitzant</string>
+    <string name="msg_no_internet_connection">No s\'ha trobat connexió a internet</string>
+    <string name="msg_no_languages_found">No s\'han trobat dades</string>
     <string name="available_in_future_releases">Disponible en properes actualitzacions</string>
 
 
@@ -186,6 +195,7 @@
     <string name="pref_app_language">El teu idioma</string>
     <string name="pref_phonetic_keyboard_vibration">Vibració del teclat fonètic</string>
     <string name="pref_app_theme">Estil de l\'aplicació</string>
+    <string name="pref_backup_n_synchronization">Còpia de seguretat online</string>
     <string name="pref_import_data">Importar dades</string>
     <string name="pref_export_data">Exportar dades</string>
 
@@ -199,6 +209,5 @@
     <string name="pref_language_merge">Fusionar</string>
     <string name="pref_language_remove">Eliminar</string>
     <string name="pref_language_reset_statistics">Restaurar estadístiques</string>
-
 
 </resources>

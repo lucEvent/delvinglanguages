@@ -1,10 +1,12 @@
 package com.delvinglanguages.kernel.util;
 
+import android.support.annotation.NonNull;
+
 import com.delvinglanguages.kernel.Inflexion;
 
 import java.util.ArrayList;
 
-public class Inflexions extends ArrayList<Inflexion> {
+public class Inflexions extends ArrayList<Inflexion> implements Wrapper<Inflexions> {
 
     private static final String SEP = "%I";
 
@@ -21,52 +23,12 @@ public class Inflexions extends ArrayList<Inflexion> {
     public Inflexions(String wrapper)
     {
         super();
-        String[] parts = wrapper.split(SEP);
-
-        int index = 1;
-        int num = Integer.parseInt(parts[0]);
-        for (int i = 0; i < num; i++) {
-            int nInfs = Integer.parseInt(parts[index++]);
-            String[] inflexions = new String[nInfs];
-            for (int j = 0; j < nInfs; j++) {
-                inflexions[j] = parts[index++];
-            }
-
-            int nTrans = Integer.parseInt(parts[index++]);
-            String[] translations = new String[nTrans];
-            for (int j = 0; j < nTrans; j++) {
-                translations[j] = parts[index++];
-            }
-
-            int type = Integer.parseInt(parts[index++]);
-
-            this.add(new Inflexion(inflexions, translations, type));
-        }
+        unWrap(wrapper);
     }
 
     public Inflexions(ArrayList<Inflexion> values)
     {
         super(values);
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder res = new StringBuilder().append(this.size());
-
-        for (Inflexion inf : this) {
-
-            String[] inflexions = inf.getInflexions();
-            res.append(SEP).append(inflexions.length);
-            for (String s : inflexions) res.append(SEP).append(s);
-
-            String[] translations = inf.getTranslations();
-            res.append(SEP).append(translations.length);
-            for (String s : translations) res.append(SEP).append(s);
-
-            res.append(SEP).append(inf.getType());
-        }
-        return res.toString();
     }
 
     public String[] getTranslations()
@@ -138,6 +100,59 @@ public class Inflexions extends ArrayList<Inflexion> {
             clone.add(inflexion.clone());
 
         return clone;
+    }
+
+    @Override
+    public String wrap()
+    {
+        StringBuilder res = new StringBuilder().append(this.size());
+
+        for (Inflexion inf : this) {
+
+            String[] inflexions = inf.getInflexions();
+            res.append(SEP).append(inflexions.length);
+            for (String s : inflexions) res.append(SEP).append(s);
+
+            String[] translations = inf.getTranslations();
+            res.append(SEP).append(translations.length);
+            for (String s : translations) res.append(SEP).append(s);
+
+            res.append(SEP).append(inf.getType());
+        }
+        return res.toString();
+    }
+
+    @Override
+    public Inflexions unWrap(@NonNull String wrapper)
+    {
+        String[] parts = wrapper.split(SEP);
+
+        int index = 1;
+        int num = Integer.parseInt(parts[0]);
+        for (int i = 0; i < num; i++) {
+            int nInfs = Integer.parseInt(parts[index++]);
+            String[] inflexions = new String[nInfs];
+            for (int j = 0; j < nInfs; j++) {
+                inflexions[j] = parts[index++];
+            }
+
+            int nTrans = Integer.parseInt(parts[index++]);
+            String[] translations = new String[nTrans];
+            for (int j = 0; j < nTrans; j++) {
+                translations[j] = parts[index++];
+            }
+
+            int type = Integer.parseInt(parts[index++]);
+
+            this.add(new Inflexion(inflexions, translations, type));
+        }
+        return this;
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return Wrapper.TYPE_INFLEXIONS;
     }
 
 }

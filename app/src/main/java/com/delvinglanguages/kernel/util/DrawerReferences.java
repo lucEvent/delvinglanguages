@@ -6,11 +6,18 @@ import java.util.ArrayList;
 
 public class DrawerReferences extends ArrayList<DrawerReference> {
 
-    public DrawerReferences() {
+    public DrawerReferences()
+    {
         super();
     }
 
-    public DrawerReference getReferenceById(int id) {
+    public DrawerReferences(int capacity)
+    {
+        super(capacity);
+    }
+
+    public DrawerReference getReferenceById(int id)
+    {
         for (DrawerReference dref : this)
             if (dref.id == id)
                 return dref;
@@ -18,7 +25,8 @@ public class DrawerReferences extends ArrayList<DrawerReference> {
         return null;
     }
 
-    public boolean contains(String ref) {
+    public boolean contains(String ref)
+    {
         for (DrawerReference dref : this)
             if (ref.equalsIgnoreCase(dref.name))
                 return true;

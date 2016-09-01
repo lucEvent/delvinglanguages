@@ -48,7 +48,7 @@
     <string-array name="themes_codes" translatable="false">
         <item>0</item>
     </string-array>
-    <string-array name="es_tenses">
+    <string-array name="es_tenses" translatable="false">
         <item>Presente</item>
         <item>Pretérido imperfecto</item>
         <item>Pretérito perfecto simple</item>
@@ -64,7 +64,7 @@
         <item>Imperativo afirmativo</item>
         <item>Imperativo negativo</item>
     </string-array>
-    <string-array name="en_tenses">
+    <string-array name="en_tenses" translatable="false">
         <item>Present</item>
         <item>Past simple</item>
         <item>Future</item>
@@ -80,19 +80,14 @@
         <item>Conditional</item>
         <item>Imperative</item>
     </string-array>
-    <string-array name="sv_tenses">
+    <string-array name="sv_tenses" translatable="false">
         <item>Present</item>
         <item>Supinum</item>
         <item>Preteritum</item>
         <item>Future</item>
         <item>Imperativ</item>
     </string-array>
-    <string-array name="fi_tenses">
-        <item>Present</item>
-        <item>Imperfect</item>
-        <item>Conditional</item>
-    </string-array>
-    <string-array name="es_subjects">
+    <string-array name="es_subjects" translatable="false">
         <item>Yo</item>
         <item>Tú</item>
         <item>El/Ella</item>
@@ -100,7 +95,7 @@
         <item>Vosotros</item>
         <item>Ellos</item>
     </string-array>
-    <string-array name="en_subjects">
+    <string-array name="en_subjects" translatable="false">
         <item>I</item>
         <item>You</item>
         <item>He/She</item>
@@ -108,7 +103,7 @@
         <item>You</item>
         <item>They</item>
     </string-array>
-    <string-array name="sv_subjects">
+    <string-array name="sv_subjects" translatable="false">
         <item>Jag</item>
         <item>Du</item>
         <item>Han/Hon</item>

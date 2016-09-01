@@ -12,7 +12,8 @@ public class TestReferenceState {
         public int attempts;
         public int errors;
 
-        public Stats() {
+        public Stats()
+        {
             this.attempts = 0;
             this.errors = 0;
         }
@@ -24,7 +25,8 @@ public class TestReferenceState {
 
     public Stats match, complete, write, listening;
 
-    public TestReferenceState(DReference reference) {
+    public TestReferenceState(DReference reference)
+    {
         this.reference = reference;
         this.match = new Stats();
         this.complete = new Stats();

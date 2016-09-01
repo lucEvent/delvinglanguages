@@ -41,7 +41,7 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
         language = dataManager.getCurrentLanguage();
 
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-        editor.putString(getString(R.string.pref_language_code_key), Integer.toString(language.CODE));
+        editor.putString(getString(R.string.pref_language_code_key), Integer.toString(language.code));
         editor.putString(getString(R.string.pref_language_name_key), language.language_name);
         editor.putBoolean(getString(R.string.pref_language_phrasalverbs_key), language.getSetting(Language.MASK_PHRASAL_VERBS));
         editor.apply();
@@ -85,7 +85,7 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
 
             String language_name = sharedPreferences.getString(key, "").trim();
             if (language_name.length() > 0) {
-                dataManager.updateLanguage(language.CODE, language_name);
+                dataManager.updateLanguage(language.code, language_name);
                 setUpSummaries(PREF_LANGUAGE_NAME);
                 getActivity().setResult(LanguageListener.LANGUAGE_NAME_CHANGED);
                 getActivity().setTitle(language_name);
@@ -104,7 +104,7 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
 
         if ((PREF_LANGUAGE_CODE & settings) != 0) {
 
-            findPreference(resources.getString(R.string.pref_language_code_key)).setSummary(languages[language.CODE]);
+            findPreference(resources.getString(R.string.pref_language_code_key)).setSummary(languages[language.code]);
 
         }
         if ((PREF_LANGUAGE_NAME & settings) != 0) {
@@ -145,7 +145,7 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
         public boolean onPreferenceClick(Preference preference)
         {
             new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.msg_confirm_to_reset_statistics, language.language_name))
+                    .setTitle(getString(R.string.msg_confirm_to_reset_statistics))
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which)

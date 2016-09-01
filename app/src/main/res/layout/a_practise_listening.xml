@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +16,7 @@
             layout="@layout/v_bar_types"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"/>
 
         <ImageView
             android:id="@+id/configuration"
@@ -27,7 +28,7 @@
             android:onClick="onConfigurationAction"
             android:padding="10dp"
             android:src="@drawable/ic_configuration"
-            android:tint="@android:color/darker_gray" />
+            android:tint="@android:color/darker_gray"/>
 
         <ImageView
             android:id="@+id/button_speaker"
@@ -43,7 +44,7 @@
             android:scaleType="center"
             android:scaleX="1.5"
             android:scaleY="1.5"
-            android:src="@drawable/ic_speaker" />
+            android:src="@drawable/ic_speaker"/>
 
         <EditText
             android:id="@+id/input"
@@ -53,7 +54,7 @@
             android:gravity="center_horizontal"
             android:hint="@string/hint_practise_listening">
 
-            <requestFocus />
+            <requestFocus/>
         </EditText>
 
         <ProgressBar
@@ -64,13 +65,13 @@
             android:layout_alignEnd="@+id/input"
             android:layout_alignStart="@+id/input"
             android:layout_below="@+id/input"
-            android:translationY="-8dp" />
+            android:translationY="-8dp"/>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/progress"
-            android:contentDescription="this view helps to keep the buttons align to the bottom. weird, i know" />
+            android:contentDescription="this view helps to keep the buttons align to the bottom. weird, i know"/>
 
         <ImageButton
             android:id="@+id/next"
@@ -81,7 +82,7 @@
             android:background="@drawable/ripple_round"
             android:onClick="onNextAction"
             android:padding="10dip"
-            android:src="@drawable/ic_redo" />
+            android:src="@drawable/ic_redo"/>
 
         <ImageButton
             android:id="@+id/help"
@@ -92,7 +93,7 @@
             android:background="@drawable/ripple_round"
             android:onClick="onHelpAction"
             android:padding="10dip"
-            android:src="@drawable/ic_help" />
+            android:src="@drawable/ic_help"/>
 
     </RelativeLayout>
 

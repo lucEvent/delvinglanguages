@@ -30,11 +30,11 @@ public class MainStatsViewHolder extends RecyclerView.ViewHolder {
 
     public static void populateViewHolder(MainStatsViewHolder holder, Data data, Resources resources)
     {
-        String s = resources.getString(R.string.main_stats_content_description, data.statistics.intentos,
-                data.statistics.aciertos1, data.statistics.porcentageAcertadas1(),
-                data.statistics.aciertos2, data.statistics.porcentageAcertadas2(),
-                data.statistics.aciertos3, data.statistics.porcentageAcertadas3(),
-                data.statistics.fallos, data.statistics.porcentageFalladas());
+        String s = resources.getString(R.string.main_stats_content_description, data.statistics.attempts,
+                data.statistics.hits_at_1st, data.statistics.percentageHitsAt1st(),
+                data.statistics.hits_at_2nd, data.statistics.percentageHitsAt2nd(),
+                data.statistics.hits_at_3rd, data.statistics.percentageHitsAt3rd(),
+                data.statistics.misses, data.statistics.percentageMisses());
         holder.content.setText(s);
         holder.resetStatistics.setOnClickListener(data.onResetStatistics);
     }

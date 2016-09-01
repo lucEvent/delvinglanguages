@@ -6,6 +6,7 @@ import com.delvinglanguages.kernel.util.AppFormat;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 public class LanguageManager extends KernelManager {
 
@@ -47,22 +48,32 @@ public class LanguageManager extends KernelManager {
         return l.removed_references;
     }
 
+    public void getContentOf(Language language)
+    {
+        loadContentOf(language);
+    }
+
     /**
      * Creates
      **/
     public void createReference(String reference)
     {
         Language l = getCurrentLanguage();
-        l.addReference(dbManager.insertDrawerReference(reference, l.id));
+        DrawerReference newReference = dbManager.insertDrawerReference(l.id, reference);
+        l.addReference(newReference);
+
+        synchronizeNewItem(l.id, newReference.id, newReference);
     }
 
     public void createReference(String name, String pronunciation, Inflexions inflexions)
     {
-        DReference R = dbManager.insertReference(
-                AppFormat.formatReferenceName(name), inflexions, getCurrentLanguage().id,
-                pronunciation, DReference.INITIAL_PRIORITY);
+        Language language = getCurrentLanguage();
 
-        getCurrentLanguage().addReference(R);
+        DReference newReference = dbManager.insertReference(language.id, AppFormat.formatReferenceName(name),
+                inflexions, pronunciation);
+        language.addReference(newReference);
+
+        synchronizeNewItem(language.id, newReference.id, newReference);
     }
 
     public void createReference(DrawerReference drawerReference, String name, String pronunciation, Inflexions inflexions)
@@ -76,8 +87,11 @@ public class LanguageManager extends KernelManager {
      **/
     public void updateReference(DReference reference, String name, String pronunciation, Inflexions inflexions)
     {
-        getCurrentLanguage().updateReference(reference, name, pronunciation, inflexions);
-        dbManager.updateReference(reference);
+        Language language = getCurrentLanguage();
+        language.updateReference(reference, name, pronunciation, inflexions);
+        dbManager.updateReference(reference, language.id);
+
+        synchronizeUpdateItem(language.id, reference.id, reference);
     }
 
     /**
@@ -85,38 +99,11 @@ public class LanguageManager extends KernelManager {
      **/
     public void deleteReference(DrawerReference drawerReference)
     {
-        getCurrentLanguage().deleteDrawerReference(drawerReference);
-        dbManager.deleteDrawerReference(drawerReference.id);
-    }
-
-    /**
-     * Not distributed yet. Just revised
-     */
-    public void exercise(DReference reference, int attempt)
-    {
-        getCurrentLanguage().statistics.nuevoIntento(attempt);
-        if (attempt == 1) {
-            reference.priority -= 1;
-            dbManager.updateReferencePriority(reference);
-        }
-    }
-
-    public void saveStatistics()
-    {
-        dbManager.updateStatistics(getCurrentLanguage().statistics);
-    }
-
-    public void resetStatistics()
-    {
-        getCurrentLanguage().statistics.reset();
-        saveStatistics();
-    }
-
-    public void deleteLanguage()
-    {
         Language language = getCurrentLanguage();
-        dbManager.deleteLanguage(language);
-        languages.remove(language);
+        language.deleteDrawerReference(drawerReference);
+        dbManager.deleteDrawerReference(drawerReference.id, language.id);
+
+        synchronizeDeleteItem(language.id, drawerReference.id, Wrapper.TYPE_DRAWER_REFERENCE);
     }
 
     public void deleteReferenceTemporarily(DReference reference)
@@ -124,13 +111,8 @@ public class LanguageManager extends KernelManager {
         Language language = getCurrentLanguage();
         dbManager.deleteReferenceTemporarily(language.id, reference.id);
         language.removeReference(reference);
-    }
 
-    public void restoreReference(DReference reference)
-    {
-        Language language = getCurrentLanguage();
-        dbManager.restoreReference(reference.id);
-        language.restoreReference(reference);
+        synchronizeDeleteItem(language.id, reference.id, Wrapper.TYPE_REFERENCE);
     }
 
     public void deleteAllRemovedReferences()
@@ -138,6 +120,48 @@ public class LanguageManager extends KernelManager {
         Language language = getCurrentLanguage();
         language.deleteAllRemovedReferences();
         dbManager.deleteAllRemovedReferences(language.id);
+    }
+
+    /**
+     * Restores
+     **/
+    public void restoreReference(DReference reference)
+    {
+        Language language = getCurrentLanguage();
+        dbManager.restoreReference(reference.id, language.id);
+        language.restoreReference(reference);
+
+        synchronizeNewItem(language.id, reference.id, reference);
+    }
+
+    /**
+     * Others
+     */
+    public void saveStatistics()
+    {
+        Language language = getCurrentLanguage();
+        dbManager.updateStatistics(language.statistics);
+
+        synchronizeUpdateItem(language.id, language.statistics.id, language.statistics);
+    }
+
+    public void resetStatistics()
+    {
+        Language language = getCurrentLanguage();
+        language.statistics.reset();
+        dbManager.updateStatistics(language.statistics);
+
+        synchronizeUpdateItem(language.id, language.statistics.id, language.statistics);
+    }
+
+    public void exercise(DReference reference, int attempt)
+    {
+        Language language = getCurrentLanguage();
+        language.statistics.newAttempt(attempt);
+        if (attempt == 1) {
+            reference.priority -= 1;
+            dbManager.updateReferencePriority(reference, language.id);
+        }
     }
 
 }

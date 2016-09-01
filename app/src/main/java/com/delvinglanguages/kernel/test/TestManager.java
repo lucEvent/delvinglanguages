@@ -7,6 +7,7 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Tests;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 public class TestManager extends KernelManager {
 
@@ -32,21 +33,28 @@ public class TestManager extends KernelManager {
         if (references.isEmpty())
             return null;
 
-        Test test = dbManager.insertTest(test_name, references, language.id, -1);
+        Test test = dbManager.insertTest(language.id, test_name, references, -1);
         language.tests.add(test);
 
+        synchronizeNewItem(language.id, test.id, test);
         return test;
     }
 
     public void updateTest(Test test)
     {
-        dbManager.updateTest(test);
+        Language language = getCurrentLanguage();
+        dbManager.updateTest(test, language.id);
+
+        synchronizeUpdateItem(language.id, test.id, test);
     }
 
     public void deleteTest(Test test)
     {
-        getCurrentLanguage().tests.remove(test);
-        dbManager.deleteTest(test.id);
+        Language language = getCurrentLanguage();
+        language.tests.remove(test);
+        dbManager.deleteTest(test.id, language.id);
+
+        synchronizeDeleteItem(language.id, test.id, Wrapper.TYPE_TEST);
     }
 
 }

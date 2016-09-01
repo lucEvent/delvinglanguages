@@ -3,30 +3,28 @@ package com.delvinglanguages.kernel;
 import android.content.Context;
 
 import com.delvinglanguages.AppSettings;
-import com.delvinglanguages.data.DataBaseManager;
+import com.delvinglanguages.data.DatabaseManager;
 import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.net.SyncManager;
 
-public class KernelManager {
+public class KernelManager extends SyncManager {
 
-    protected static DataBaseManager dbManager;
+    protected static DatabaseManager dbManager;
     //   protected static StorageManager storageManager;
     protected static Languages languages;
 
     public KernelManager(Context context)
     {
+        super(context);
+
         if (dbManager == null)
-            dbManager = new DataBaseManager(context);
+            dbManager = new DatabaseManager(context);
+
+        if (languages == null)
+            languages = dbManager.readLanguages();
+
         //   if (storageManager == null)
         //       storageManager = new StorageManager();
-
-        initializeLanguages();
-    }
-
-    private void initializeLanguages()
-    {
-        if (languages == null) {
-            languages = dbManager.readLanguages();
-        }
     }
 
     public Languages getLanguages()
@@ -34,7 +32,7 @@ public class KernelManager {
         return languages;
     }
 
-    public int getNumLanguages()
+    public int getNumberOfLanguages()
     {
         return languages.size();
     }
@@ -43,11 +41,10 @@ public class KernelManager {
     {
         int lang_id = AppSettings.getCurrentLanguage();
         if (lang_id == -1) return null;
-
         else return languages.getLanguageById(lang_id);
     }
 
-    protected synchronized void loadAllLanguageContent(Language language)
+    protected synchronized void loadContentOf(Language language)
     {
         if (language.dictionary == null)
             language.setReferences(dbManager.readReferences(language.id));
@@ -69,6 +66,7 @@ public class KernelManager {
     {
         Language new_language = dbManager.insertLanguage(code, name, settings);
         languages.add(new_language);
+        synchronizeNewLanguage(new_language.id);
         return new_language;
     }
 
@@ -79,6 +77,7 @@ public class KernelManager {
         language.setName(language_name);
 
         dbManager.updateLanguage(language);
+        synchronizeUpdatedLanguage(language.id);
     }
 
     public void updateLanguageSettings(boolean setting, int mask)
@@ -87,12 +86,20 @@ public class KernelManager {
         language.setSetting(setting, mask);
 
         dbManager.updateLanguage(language);
+        synchronizeUpdatedLanguage(language.id);
+    }
+
+    public void deleteLanguage()
+    {
+        Language language = getCurrentLanguage();
+        dbManager.deleteLanguage(language);
+        languages.remove(language);
+        synchronizeDeleteLanguage(language.id);
     }
 
     public void invalidateData()
     {
-        languages = null;
-        initializeLanguages();
+        languages = dbManager.readLanguages();
     }
 
 }

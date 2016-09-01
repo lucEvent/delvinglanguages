@@ -15,11 +15,11 @@ import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.MergeManager;
 import com.delvinglanguages.kernel.util.Languages;
 
+// // TODO: 19/08/2016 This activity must implement a asynctask
 public class LanguageMergerActivity extends Activity {
 
     private Language language_src;
     private Language language_dst;
-    private KernelManager dataManager;
 
     private Languages candidates;
 
@@ -29,7 +29,7 @@ public class LanguageMergerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_language_merger);
 
-        dataManager = new KernelManager(this);
+        KernelManager dataManager = new KernelManager(this);
         language_src = dataManager.getCurrentLanguage();
 
         candidates = new Languages(dataManager.getLanguages());
@@ -85,32 +85,22 @@ public class LanguageMergerActivity extends Activity {
                     @Override
                     public void run()
                     {
-
                         AlertDialog.Builder dbuilder = new AlertDialog.Builder(LanguageMergerActivity.this)
                                 .setCancelable(false)
                                 .setNegativeButton(R.string.cancel, onCancel)
                                 .setMessage(R.string.msg_temp_conflicts_treatment)
                                 .setPositiveButton(R.string.continue_, onMergeConfirmed);
-//
-                        if (mergePlan.num_conflicts == 0) {
 
+                        if (mergePlan.num_conflicts == 0)
                             dbuilder.setTitle(R.string.msg_no_conflicts_found);
-                        } else {
-
+                        else
                             dbuilder.setTitle(getString(R.string.msg_conflicts_need_supervision, mergePlan.num_conflicts));
-                        }
-/*                            .setPositiveButton(R.string.ignore_all, onMergeConfirmed)
-                            .setNeutralButton(R.string.see_them, onConflictProcessing);
-*/
-                        //              }
-                        dbuilder.create().show();
 
+                        dbuilder.create().show();
                     }
                 });
-
             }
         }).start();
-
     }
 
     private Handler handler = new Handler();
@@ -170,7 +160,6 @@ public class LanguageMergerActivity extends Activity {
                         {
                             merge(language_dst, mergePlan);
 
-
                             progressDialog.dismiss();
 
                             handler.post(new Runnable() {
@@ -180,12 +169,10 @@ public class LanguageMergerActivity extends Activity {
                                     dialogRemoveCurrentLanguage();
                                 }
                             });
-
                         }
                     }).start();
                 }
             });
-
         }
     };
 
@@ -193,14 +180,13 @@ public class LanguageMergerActivity extends Activity {
     {
         MergeManager manager = new MergeManager(this);
         manager.merge(dst, mergePlan);
-        manager.clearData(dst);
+        dst.clear();
     }
 
     private void dialogRemoveCurrentLanguage()
     {
-
         new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.msg_remove_language_after_merge, language_src.language_name))
+                .setTitle(getString(R.string.msg_remove_language_after_merge))
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -213,7 +199,6 @@ public class LanguageMergerActivity extends Activity {
                 .setNegativeButton(R.string.no, onCancel)
                 .create()
                 .show();
-
     }
 
 }

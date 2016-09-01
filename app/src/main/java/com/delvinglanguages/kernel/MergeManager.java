@@ -2,7 +2,7 @@ package com.delvinglanguages.kernel;
 
 import android.content.Context;
 
-import com.delvinglanguages.data.DataBaseMergeManager;
+import com.delvinglanguages.data.MergeDatabaseManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.DReferences;
@@ -17,6 +17,7 @@ public class MergeManager extends KernelManager {
         public int num_conflicts_accepted;
         public int num_conflicts;
 
+        public Language src;
         public Language dst;
 
         public DReferences src_references;
@@ -40,7 +41,7 @@ public class MergeManager extends KernelManager {
 
     public Language getLanguageContent(Language language)
     {
-        loadAllLanguageContent(language);
+        loadContentOf(language);
 
         while (!language.isDictionaryCreated()) ;
 
@@ -50,6 +51,7 @@ public class MergeManager extends KernelManager {
     public MergePlan createMergePlan(Language src, Language dst)
     {
         MergePlan plan = new MergePlan();
+        plan.src = src;
         plan.dst = dst;
         plan.num_conflicts = 0;
 
@@ -84,34 +86,27 @@ public class MergeManager extends KernelManager {
 
     public void merge(Language dst, MergePlan mergePlan)
     {
-        DataBaseMergeManager database = new DataBaseMergeManager(context);
+        MergeDatabaseManager database = new MergeDatabaseManager(context);
         database.openWritableDatabase();
 
         for (DReference ref : mergePlan.src_references)
-            database.updateReferenceLanguage(ref.id, dst.id);
+            database.updateReferenceLanguage(ref.id, dst.id, mergePlan.src.id);
 
         for (DrawerReference dref : mergePlan.src_drawerReferences)
-            database.updateDrawerReferenceLanguage(dref.id, dst.id);
+            database.updateDrawerReferenceLanguage(dref.id, dst.id, mergePlan.src.id);
 
         //      for (DReference ref : mergePlan.src_removedReferences)// TODO: 07/04/2016
         //        database.updateReferenceLanguage(ref.id, dst.id);
 
         for (Theme theme : mergePlan.src_themes)
-            database.updateThemeLanguage(theme.id, dst.id);
+            database.updateThemeLanguage(theme.id, dst.id, mergePlan.src.id);
 
         for (Test test : mergePlan.src_tests)
-            database.updateTestLanguage(test.id, dst.id);
-
-        //  for(DReference ref : mergePlan.src_hot_references) {
-
-        // }
+            database.updateTestLanguage(test.id, dst.id, mergePlan.src.id);
 
         database.closeWritableDatabase();
-    }
 
-    public void clearData(Language language)
-    {
-        language.clear();
+//        synchronizeUpdate(dst.id);//// TODO: 20/08/2016
     }
 
 }

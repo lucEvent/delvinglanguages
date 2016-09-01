@@ -23,10 +23,10 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.util.Inflexions;
-import com.delvinglanguages.net.external.MicrosoftTranslator;
-import com.delvinglanguages.net.external.OnlineDictionary;
-import com.delvinglanguages.net.external.Search;
-import com.delvinglanguages.net.external.WordReference;
+import com.delvinglanguages.net.MicrosoftTranslator;
+import com.delvinglanguages.net.WordReference;
+import com.delvinglanguages.net.utils.OnlineDictionary;
+import com.delvinglanguages.net.utils.Search;
 import com.delvinglanguages.view.lister.WebSearchLister;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        from = new KernelManager(this).getCurrentLanguage().CODE;
+        from = new KernelManager(this).getCurrentLanguage().code;
         to = AppSettings.getAppLanguageCode();
         dictionary = new WordReference(from, to, handler);
 
@@ -170,7 +170,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         Intent intent = new Intent(getApplicationContext(), ReferenceEditorActivity.class);
         intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_SEARCH);
         intent.putExtra(AppCode.DREFERENCE_NAME, searchedWord);
-        intent.putExtra(AppCode.DREFERENCE_INFLEXIONS, inflexions.toString());
+        intent.putExtra(AppCode.DREFERENCE_INFLEXIONS, inflexions.wrap());
         startActivity(intent);
     }
 

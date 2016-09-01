@@ -23,7 +23,7 @@ public class LanguageOptionsDialog {
             view.findViewById(R.id.option_phrasal_verbs).setOnClickListener(listener);
 
         view.findViewById(R.id.option_verbs).setVisibility(LinearLayout.GONE);
-        // view.findViewById(R.id.option_verbs).setOnClickListener(listener);
+        //   view.findViewById(R.id.option_verbs).setOnClickListener(listener);
 
         view.findViewById(R.id.option_web_search).setOnClickListener(listener);
         view.findViewById(R.id.option_pronunciation).setOnClickListener(listener);

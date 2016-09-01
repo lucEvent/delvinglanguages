@@ -64,6 +64,10 @@
     <string name="statistics">Estadísticas</string>
     <string name="main_stats_content_description">Intentos:\t\t\t\t\t\t %1$d\nAciertos a la 1a:\t %2$d (%3$.1f%%)\nAciertos a la 2a:\t %4$d (%5$.1f%%)\nAciertos a la 3a:\t %6$d (%7$.1f%%)\nFallos:\t\t\t\t\t\t\t %8$d (%9$.1f%%)</string>
     <string name="x_words">%1$s palabras</string>
+    <string name="create_a_language">Crea un idioma</string>
+    <string name="import_from_file">Importa desde archivo</string>
+    <string name="synchronize_your_account">Sincroniza tu cuenta</string>
+    <string name="how_do_we_start">¿Cómo empezamos?</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -164,6 +168,11 @@
     <string name="msg_no_results_found">No hay resultados</string>
     <string name="msg_cannot_translate_from_to">No es posible traducir de %1$s a %2$s ni viceversa</string>
     <string name="msg_pronunciation_not_available">Pronunciación no disponible</string>
+    <string name="msg_permission_for_login_denied">Se necesita permiso para identificarte con tu cuenta en nuestro servidor. No almacenaremos ningún dato personal.</string>
+    <string name="msg_connecting_to_server">Conectando al servidor</string>
+    <string name="msg_synchronizing">Sincronizando</string>
+    <string name="msg_no_internet_connection">No se ha encontrado conexion a internet</string>
+    <string name="msg_no_languages_found">No se encontraron datos</string>
     <string name="available_in_future_releases">Disponible en próximas actualizaciones</string>
 
 
@@ -186,6 +195,7 @@
     <string name="pref_app_language">Tu idioma</string>
     <string name="pref_phonetic_keyboard_vibration">Vibración del teclado fonético</string>
     <string name="pref_app_theme">Estilo de la app</string>
+    <string name="pref_backup_n_synchronization">Copia de seguridad online</string>
     <string name="pref_import_data">Importar datos</string>
     <string name="pref_export_data">Exportar datos</string>
 
@@ -199,6 +209,5 @@
     <string name="pref_language_merge">Fusionar</string>
     <string name="pref_language_remove">Eliminar</string>
     <string name="pref_language_reset_statistics">Restaurar estadísticas</string>
-
 
 </resources>

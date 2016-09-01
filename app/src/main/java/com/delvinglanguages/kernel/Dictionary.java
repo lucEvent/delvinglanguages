@@ -165,4 +165,9 @@ public class Dictionary implements Comparator<DReference> {
         return collator.compare(lhs.name, rhs.name);
     }
 
+    public int size()
+    {
+        return dictionary.size();
+    }
+
 }

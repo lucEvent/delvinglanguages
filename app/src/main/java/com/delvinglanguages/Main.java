@@ -2,8 +2,10 @@ package com.delvinglanguages;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -17,23 +19,26 @@ import android.view.SubMenu;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.view.activity.BackUpActivity;
+import com.delvinglanguages.view.activity.CreateLanguageActivity;
+import com.delvinglanguages.view.activity.StartActivity;
 import com.delvinglanguages.view.fragment.LanguageMainFragment;
-import com.delvinglanguages.view.utils.LanguageListener;
 import com.delvinglanguages.view.utils.LanguageHandler;
+import com.delvinglanguages.view.utils.LanguageListener;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         LanguageListener {
 
     private enum MainOption {
-        MAIN, CREATE_LANGUAGE, HISTORIAL, SETTINGS, ABOUT, PHONETIC
+        MAIN, HISTORIAL, SETTINGS, ABOUT, PHONETIC
     }
 
-    private enum MainFlag {
-        FIRST_LAUNCH
+    private enum MainState {
+        FIRST_LAUNCH, OTHERWISE
     }
 
     private MainOption currentFragment, previousFragment;
-    private MainFlag flag;
+    private MainState state;
 
     private KernelManager dataManager;
 
@@ -52,6 +57,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         Main.handler = new LanguageHandler(this);
         dataManager = new KernelManager(this);
+        dataManager.synchronize();
         previousFragment = MainOption.MAIN;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,7 +66,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -70,24 +76,20 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         Language currentLanguage = dataManager.getCurrentLanguage();
         if (currentLanguage == null) {
-            if (dataManager.getNumLanguages() == 0) {
-                //// TODO: 08/01/2016 Crear pantalla de primer inicio
-                flag = MainFlag.FIRST_LAUNCH;
-                setFragment(MainOption.CREATE_LANGUAGE);
+            if (dataManager.getNumberOfLanguages() == 0) {
+                state = MainState.FIRST_LAUNCH;
+                startActivityForResult(new Intent(this, StartActivity.class), 0);
                 return;
             } else {
-                currentLanguage = dataManager.getLanguages().get(0);
+                currentLanguage = dataManager.getLanguages().first();
                 AppSettings.setCurrentLanguage(currentLanguage.id);
             }
         }
 
-        // TODO: 11/03/2016 Mejorar el rendimiento usando attach and dettach fragment????
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
             setFragment((MainOption) savedInstanceState.get("fragment"));
-        } else {
-            currentFragment = MainOption.MAIN;
-            getFragmentManager().beginTransaction().add(R.id.content, new LanguageMainFragment()).commit();
-        }
+        else
+            displayLanguageFragment(currentLanguage);
     }
 
     @Override
@@ -108,12 +110,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         switch (item.getItemId()) {
             case R.id.nav_create_language:
-                setFragment(MainOption.CREATE_LANGUAGE);
-                break;
+                startActivityForResult(new Intent(this, CreateLanguageActivity.class), 0);
+                return true;
             case R.id.nav_historial:
                 setFragment(MainOption.HISTORIAL);
                 break;
@@ -134,6 +136,75 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (resultCode) {
+            case AppCode.ACTION_CREATE:
+
+                startActivityForResult(new Intent(this, CreateLanguageActivity.class), 0);
+
+                break;
+            case AppCode.RESULT_LANGUAGE_CREATED:
+
+                state = MainState.OTHERWISE;
+                AppSettings.setCurrentLanguage(dataManager.getLanguages().last().id);
+
+                setFragment(MainOption.MAIN);
+                updateLanguageList();
+
+                Snackbar.make(drawer, R.string.msg_language_created, Snackbar.LENGTH_SHORT).show();
+
+                break;
+            case AppCode.RESULT_LANGUAGE_CREATED_CANCELED:
+
+                if (state == MainState.FIRST_LAUNCH)
+                    startActivityForResult(new Intent(this, StartActivity.class), 0);
+
+                break;
+
+            case AppCode.ACTION_IMPORT:
+
+                startActivityForResult(new Intent(this, BackUpActivity.class).setAction(BackUpActivity.ACTION_IMPORT), 0);
+
+                break;
+            case AppCode.RESULT_IMPORT_DONE:
+
+                if (dataManager.getCurrentLanguage() == null)
+                    displayLanguageFragment(dataManager.getLanguages().first());
+
+                break;
+            case AppCode.RESULT_IMPORT_CANCELED:
+
+                if (state == MainState.FIRST_LAUNCH)
+                    startActivityForResult(new Intent(this, StartActivity.class), 0);
+
+                break;
+            case AppCode.RESULT_SYNC_DONE:
+
+                updateLanguageList();
+
+                Language currentLanguage = dataManager.getCurrentLanguage();
+                if (currentLanguage == null)
+                    currentLanguage = dataManager.getLanguages().first();
+
+                displayLanguageFragment(currentLanguage);
+                break;
+            case AppCode.START_ABORTED:
+                finish();
+                break;
+        }
+    }
+
+    private void displayLanguageFragment(Language currentLanguage)
+    {
+        AppSettings.setCurrentLanguage(currentLanguage.id);
+        currentFragment = MainOption.MAIN;
+        getFragmentManager().beginTransaction().replace(R.id.content, new LanguageMainFragment()).commit();
+    }
+
     private void updateLanguageList()
     {
         Languages languages = dataManager.getLanguages();
@@ -152,36 +223,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public void onLanguageCreatedOK(Object[] data)
-    {
-        Language language = dataManager.createLanguage((int) data[0], (String) data[1], (int) data[2]);
-
-        AppSettings.setCurrentLanguage(language.id);
-
-        setFragment(MainOption.MAIN);
-        updateLanguageList();
-
-        Snackbar.make(drawer, R.string.msg_language_created, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onLanguageCreatedCanceled()
-    {
-        if (flag == MainFlag.FIRST_LAUNCH) {
-            //// TODO: 11/03/2016
-        } else {
-            setFragment(previousFragment);
-        }
-    }
-
-    @Override
     public void onLanguageRemoved()
     {
         Languages languages = dataManager.getLanguages();
         if (languages.isEmpty()) {
-            setFragment(MainOption.CREATE_LANGUAGE);
+            state = MainState.FIRST_LAUNCH;
+            startActivityForResult(new Intent(this, StartActivity.class), 0);
         } else {
-            AppSettings.setCurrentLanguage(languages.get(0).id);
+            AppSettings.setCurrentLanguage(languages.first().id);
             setFragment(MainOption.MAIN);
         }
         updateLanguageList();
@@ -197,6 +246,17 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public void onLanguageNameChanged()
     {
         updateLanguageList();
+    }
+
+    @Override
+    public void onSynchronizationStateChanged(boolean enabled)
+    {
+        if (enabled) {
+            dataManager.setState();
+            dataManager.synchronize();
+        } else {
+            dataManager.stopSynchronize();
+        }
     }
 
     @Override
@@ -226,10 +286,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case MAIN:
                 fragment = new LanguageMainFragment();
                 title = dataManager.getCurrentLanguage().language_name;
-                break;
-            case CREATE_LANGUAGE:
-                fragment = new com.delvinglanguages.view.fragment.CreateLanguageFragment();
-                title = getString(R.string.create_language);
                 break;
             case HISTORIAL:
                 title = getString(R.string.historial);

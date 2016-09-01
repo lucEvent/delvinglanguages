@@ -12,6 +12,7 @@ import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Themes;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 public class ThemeManager extends KernelManager {
 
@@ -23,9 +24,9 @@ public class ThemeManager extends KernelManager {
     public Themes getThemes()
     {
         Language language = getCurrentLanguage();
-        if (language.themes == null) {
+        if (language.themes == null)
             language.setThemes(dbManager.readThemes(language.id));
-        }
+
         return language.themes;
     }
 
@@ -36,6 +37,7 @@ public class ThemeManager extends KernelManager {
         Theme theme = dbManager.insertTheme(language.id, theme_name, theme_pairs);
         language.addTheme(theme);
 
+        synchronizeNewItem(language.id, theme.id, theme);
         return theme;
     }
 
@@ -43,13 +45,20 @@ public class ThemeManager extends KernelManager {
     {
         theme.setName(new_name);
         theme.setPairs(new_pairs);
-        dbManager.updateTheme(theme);
+
+        Language language = getCurrentLanguage();
+        dbManager.updateTheme(theme, language.id);
+
+        synchronizeUpdateItem(language.id, theme.id, theme);
     }
 
     public void deleteTheme(Theme theme)
     {
-        getCurrentLanguage().themes.remove(theme);
-        dbManager.deleteTheme(theme.id);
+        Language language = getCurrentLanguage();
+        language.themes.remove(theme);
+        dbManager.deleteTheme(theme.id, language.id);
+
+        synchronizeDeleteItem(getCurrentLanguage().id, theme.id, Wrapper.TYPE_THEME);
     }
 
     public Test toTest(Context context, Theme theme)
@@ -68,7 +77,8 @@ public class ThemeManager extends KernelManager {
                 references.add(new DReference(-1, pair.inDelved, "", inflexions, 0));
             }
 
-            test = dbManager.insertTest(test_name, references, language.id, theme.id);
+            test = dbManager.insertTest(language.id, test_name, references, theme.id);
+            synchronizeNewItem(language.id, test.id, test);
         }
         Test replaceable = language.tests.getTestById(test.id);
         if (replaceable != null) test = replaceable;

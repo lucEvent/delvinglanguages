@@ -1,12 +1,18 @@
 package com.delvinglanguages.view.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
+import android.support.annotation.NonNull;
 
 import com.delvinglanguages.AppSettings;
+import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
+import com.delvinglanguages.net.CredentialsManager;
+import com.delvinglanguages.view.utils.LanguageListener;
 
 public class AppSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -15,6 +21,8 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
 
     private String[] themes;
     private String[] languages;
+
+    private CredentialsManager credentialsManager;
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
@@ -25,6 +33,9 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
         languages = getResources().getStringArray(R.array.languages);
         themes = getResources().getStringArray(R.array.themes);
         setUpPreferenceSummaries(0xff);
+
+        findPreference(AppSettings.ONLINE_BACKUP)
+                .setOnPreferenceChangeListener(onBackUpChangeListener);
     }
 
     @Override
@@ -62,6 +73,63 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
             Preference app_theme = findPreference(AppSettings.APP_THEME_KEY);
             app_theme.setSummary(themes[AppSettings.getAppThemeCode()]);
         }
+    }
+
+    private Preference.OnPreferenceChangeListener onBackUpChangeListener = new Preference.OnPreferenceChangeListener() {
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue)
+        {
+            System.out.println("onPreferenceChange!! with:" + ((boolean) newValue));
+            if ((boolean) newValue) {
+                if (credentialsManager == null)
+                    credentialsManager = new CredentialsManager(getActivity());
+
+                if (!credentialsManager.hasPermissions()) {
+
+                    credentialsManager.askPermissions(AppSettingsFragment.this);
+
+                    return false;
+
+                } else if (!credentialsManager.hasCredentials()) {
+                    credentialsManager.askCredentials(AppSettingsFragment.this);
+
+                    return false;
+                }
+                Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+
+            } else
+                Main.handler.obtainMessage(LanguageListener.DISABLE_SYNCHRONIZATION).sendToTarget();
+
+            return true;
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        credentialsManager.onActivityResult(requestCode, resultCode, data);
+
+        if (credentialsManager.hasCredentials()) {
+            ((SwitchPreference) findPreference(AppSettings.ONLINE_BACKUP)).setChecked(true);
+            Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        credentialsManager.onRequestPermissionsResult(requestCode, grantResults);
+
+        if (credentialsManager.hasPermissions())
+            if (credentialsManager.hasCredentials()) {
+                ((SwitchPreference) findPreference(AppSettings.ONLINE_BACKUP)).setChecked(true);
+                Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+            } else
+                credentialsManager.askCredentials(this);
     }
 
 }

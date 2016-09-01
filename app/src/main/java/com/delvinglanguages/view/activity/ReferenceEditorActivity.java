@@ -66,7 +66,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
         in_reference = (EditText) findViewById(R.id.in_reference);
         in_pronunciation = (EditText) findViewById(R.id.in_pronunciation);
 
-        phonetic_keyboard = new PhoneticKeyboard(this, in_pronunciation, dataManager.getCurrentLanguage().CODE);
+        phonetic_keyboard = new PhoneticKeyboard(this, in_pronunciation, dataManager.getCurrentLanguage().code);
 
         Bundle bundle = getIntent().getExtras();
         data.action = bundle.getInt(AppCode.ACTION);

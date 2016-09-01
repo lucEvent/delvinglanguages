@@ -6,11 +6,13 @@ import java.util.HashMap;
 
 public class PriorityMap extends HashMap<Integer, DReferences> {
 
-    public PriorityMap() {
+    public PriorityMap()
+    {
         super();
     }
 
-    public Integer getMaxKey() {
+    public Integer getMaxKey()
+    {
         int max = Integer.MIN_VALUE;
         for (int priority : keySet())
             if (priority > max)

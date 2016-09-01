@@ -1,8 +1,11 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.kernel.util.Inflexions;
+import android.support.annotation.NonNull;
 
-public class DReference {
+import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Wrapper;
+
+public class DReference implements Wrapper<DReference> {
 
     private final static String SEP = "%Dr";
 
@@ -163,9 +166,19 @@ public class DReference {
             this.type = this.type | i.getType();
     }
 
-    public static DReference unWrapReference(String wrappedReference)
+    @Override
+    public String wrap()
     {
-        String[] items = wrappedReference.split(SEP);
+        return name +
+                SEP + inflexions.wrap() +
+                SEP + pronunciation +
+                SEP + priority;
+    }
+
+    @Override
+    public DReference unWrap(@NonNull String wrapper)
+    {
+        String[] items = wrapper.split(SEP);
 
         String name = items[0];
         Inflexions inflexions = new Inflexions(items[1]);
@@ -175,16 +188,10 @@ public class DReference {
         return new DReference(-1, name, pronunciation, inflexions, priority);
     }
 
-    public static String wrapReference(DReference reference)
+    @Override
+    public int wrapType()
     {
-        StringBuilder res = new StringBuilder();
-
-        res.append(reference.name);
-        res.append(SEP).append(reference.getInflexions().toString());
-        res.append(SEP).append(reference.pronunciation);
-        res.append(SEP).append(reference.priority);
-
-        return res.toString();
+        return Wrapper.TYPE_REFERENCE;
     }
 
 }

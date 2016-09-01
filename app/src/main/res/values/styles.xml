@@ -30,7 +30,7 @@
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
-        <item name="android:background">#88FFFFFF</item>
+        <item name="android:background">#afefefef</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:maxLines">1</item>
         <item name="android:lines">1</item>
@@ -279,6 +279,23 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">#FF444444</item>
         <item name="android:text">@string/hint_translations</item>
+    </style>
+
+    <style name="AppTheme.Button.Colored" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorPrimarySoft</item>
+        <item name="android:textColor">@color/colorAccentDark</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:theme">@style/AppTheme.Button.Colored</item>
     </style>
 
     <!--     <item name="android:xxxxxxxxx">xxxxxxxxxxx</item>  -->

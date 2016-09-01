@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +27,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".view.activity.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".view.activity.CreateLanguageActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".view.activity.BackUpActivity">
             <intent-filter>
                 <action android:name="com.delvinglanguages.backup.IMPORT"/>
@@ -32,11 +43,9 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.LanguageActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-
         <activity
             android:name=".view.activity.ThemeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -77,7 +86,6 @@
         <activity
             android:name=".view.activity.practise.TestActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-
         <activity android:name=".view.activity.LanguageMergerActivity">
             <intent-filter>
                 <action android:name="com.delvinglanguages.merger.MERGE"/>
@@ -86,6 +94,9 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".net.SyncService"
+            android:exported="false"/>
     </application>
 
 </manifest>

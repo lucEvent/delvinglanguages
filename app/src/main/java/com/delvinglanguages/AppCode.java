@@ -4,6 +4,14 @@ public final class AppCode {
 
     public static final int ACTION_CREATE = 10;
     public static final int ACTION_MODIFY = 11;
+    public static final int ACTION_IMPORT = 12;
+    public static final int START_ABORTED = 13;
+
+    public static final int RESULT_LANGUAGE_CREATED = 20;
+    public static final int RESULT_LANGUAGE_CREATED_CANCELED = 21;
+    public static final int RESULT_IMPORT_DONE = 22;
+    public static final int RESULT_IMPORT_CANCELED = 23;
+    public static final int RESULT_SYNC_DONE = 24;
 
     public static final int IMPORT_SUCCESSFUL = 30;
     public static final int EXPORT_SUCCESSFUL = 31;
@@ -16,6 +24,12 @@ public final class AppCode {
     public static final int DREFERENCE_UPDATED = 51;
     public static final int DREFERENCE_DELETED = 52;
 
+    public static final int SYNC_START = 60;
+    public static final int SYNC_UPLOADING = 61;
+    public static final int SYNC_SAVING = 62;
+    public static final int SYNC_OK = 63;
+    public static final int SYNC_NO_INTERNET = 64;
+
     public static final String FRAGMENT = "fragment";
     public static final String ACTION = "action";
 
@@ -25,5 +39,7 @@ public final class AppCode {
     public static final String DRAWER_ID = "did";
     public static final String TEST_ID = "testid";
     public static final String THEME_ID = "themeid";
+
+    public static final String ACTION_SYNC = "com.delvinglanguages.sync";
 
 }

@@ -34,6 +34,11 @@
 
     <PreferenceCategory android:title="@string/pref_title_data">
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/pref_backup_n_synchronization_key"
+            android:title="@string/pref_backup_n_synchronization"/>
+
         <Preference
             android:key="@string/pref_import_data_key"
             android:title="@string/pref_import_data">

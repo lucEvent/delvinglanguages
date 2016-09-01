@@ -34,8 +34,8 @@ import com.delvinglanguages.view.utils.MessageListener;
 
 public class BackUpActivity extends Activity {
 
-    private static final String ACTION_IMPORT = "com.delvinglanguages.backup.IMPORT";
-    private static final String ACTION_EXPORT = "com.delvinglanguages.backup.EXPORT";
+    public static final String ACTION_IMPORT = "com.delvinglanguages.backup.IMPORT";
+    public static final String ACTION_EXPORT = "com.delvinglanguages.backup.EXPORT";
 
     private static final int REQUEST_PERMISSION_WRITE_IN_STORAGE = 222;
 
@@ -77,16 +77,6 @@ public class BackUpActivity extends Activity {
     }
 
     @Override
-    protected void onPause()
-    {
-        super.onPause();
-
-        if (done && action == IMPORT) {
-            Main.handler.obtainMessage(LanguageListener.LANGUAGE_RECOVERED).sendToTarget();
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
     {
         switch (requestCode) {
@@ -94,13 +84,12 @@ public class BackUpActivity extends Activity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    importAction();
+                    // permission was granted, yay!.
+                    actionStart();
 
                 } else {
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    // permission denied, boo!
                     Toast.makeText(this, R.string.msg_permission_for_backup_denied, Toast.LENGTH_SHORT).show();
                     finish();
 
@@ -108,6 +97,13 @@ public class BackUpActivity extends Activity {
                 break;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        setChanges();
+        super.onBackPressed();
     }
 
     private void actionStart()
@@ -203,7 +199,17 @@ public class BackUpActivity extends Activity {
 
     public void done(View view)
     {
+        setChanges();
         finish();
+    }
+
+    private void setChanges()
+    {
+        if (done && action == IMPORT) {
+            Main.handler.obtainMessage(LanguageListener.LANGUAGE_RECOVERED).sendToTarget();
+            setResult(AppCode.RESULT_IMPORT_DONE);
+        } else
+            setResult(AppCode.RESULT_IMPORT_CANCELED);
     }
 
     private void displayButtons()

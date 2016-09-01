@@ -39,7 +39,7 @@ public class AppFormat {
     {
         if (string.isEmpty()) return new String[]{};
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
 
         int indi = 0, caps = 0;
         int indf;

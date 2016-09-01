@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +30,7 @@
                     android:background="@drawable/ripple_round"
                     android:contentDescription="@string/cancel"
                     android:onClick="actionCancel"
-                    android:src="@drawable/ic_cancel_accent" />
+                    android:src="@drawable/ic_cancel_accent"/>
 
                 <Button
                     style="?android:attr/buttonBarButtonStyle"
@@ -38,7 +39,7 @@
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
                     android:onClick="actionSave"
-                    android:text="@string/save" />
+                    android:text="@string/save"/>
 
             </RelativeLayout>
 
@@ -59,7 +60,7 @@
                     android:textAlignment="textStart"
                     android:textAppearance="?android:attr/textAppearanceLarge">
 
-                    <requestFocus />
+                    <requestFocus/>
                 </EditText>
 
             </android.support.design.widget.TextInputLayout>
@@ -78,7 +79,7 @@
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textAlignment="textStart"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -89,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/phonetic_keyboard"
-            android:layout_below="@+id/top_bar" />
+            android:layout_below="@+id/top_bar"/>
 
         <Button
             android:id="@+id/button_add_translation"
@@ -98,7 +99,7 @@
             android:layout_above="@+id/phonetic_keyboard"
             android:layout_alignParentEnd="true"
             android:onClick="actionAddTranslation"
-            android:text="@string/add_translation" />
+            android:text="@string/add_translation"/>
 
         <android.inputmethodservice.KeyboardView
             android:id="@+id/phonetic_keyboard"
@@ -106,7 +107,7 @@
             android:layout_height="0dip"
             android:layout_alignParentBottom="true"
             android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"/>
 
     </RelativeLayout>
 
