@@ -26,52 +26,20 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:text="@string/about_content_title_new_features"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            style="@style/about_sec_title"
+            android:text="@string/about_content_title_new_features"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:padding="6dp"
-            android:text="@string/about_content_new_features"
-            android:textSize="14sp"/>
+            style="@style/about_sec_content"
+            android:text="@string/about_content_new_features"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:text="@string/about_content_title_old_features"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
+            style="@style/about_sec_title"
+            android:text="@string/about_content_title_next_releases"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:padding="6dp"
-            android:text="@string/about_content_old_features"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:text="@string/about_content_title_next_releases"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:padding="6dp"
-            android:text="@string/about_content_next_releases"
-            android:textSize="14sp"/>
+            style="@style/about_sec_content"
+            android:text="@string/about_content_next_releases"/>
 
     </LinearLayout>
 

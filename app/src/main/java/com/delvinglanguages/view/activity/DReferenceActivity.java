@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.manager.DReferenceNavigator;
 import com.delvinglanguages.view.lister.InflexionLister;
@@ -39,10 +40,12 @@ public class DReferenceActivity extends AppCompatActivity {
         setContentView(R.layout.a_dreference);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         dataManager = new LanguageManager(this);
         navigator = new DReferenceNavigator(this, dataManager.getCurrentLanguage().getLocale(),
-                Language.getLocale(AppSettings.getAppLanguageCode()));
+                LanguageCode.getLocale(AppSettings.getAppLanguageCode()));
 
         //Buttons
         editButton = (FloatingActionButton) findViewById(R.id.edit_button);
@@ -75,6 +78,17 @@ public class DReferenceActivity extends AppCompatActivity {
             displayDReference(navigator.back());
         else
             super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return true;
     }
 
     @Override

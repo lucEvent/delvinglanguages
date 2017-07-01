@@ -167,7 +167,7 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
                 try {
                     Thread.sleep(AppSettings.TEST_AFTER_HIT_WAITING_TIME);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    AppSettings.printerror("[TWF] Exception in next", e);
                 }
 
                 reference.write.attempts++;

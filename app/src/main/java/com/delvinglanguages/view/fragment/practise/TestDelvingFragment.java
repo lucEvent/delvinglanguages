@@ -45,7 +45,7 @@ public class TestDelvingFragment extends TestFragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

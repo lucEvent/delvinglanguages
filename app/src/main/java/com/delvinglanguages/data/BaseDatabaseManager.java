@@ -128,7 +128,7 @@ public abstract class BaseDatabaseManager {
     public DrawerReferences readDrawerReferences(int language_id)
     {
         DrawerReferences result = new DrawerReferences();
-        Cursor cursor = db.query(DBDrawerReference.db, DBDrawerReference.cols, Database.lang_id + EQ + language_id, null, null, null, null);
+        Cursor cursor = db.query(DBDrawerReference.db, DBDrawerReference.cols, Database.lang_id + EQ + language_id, null, null, null, Database.name + " ASC");
 
         if (cursor.moveToFirst())
             do {

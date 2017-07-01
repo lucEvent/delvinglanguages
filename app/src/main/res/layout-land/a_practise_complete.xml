@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
             layout="@layout/v_bar_types"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"/>
 
         <ImageView
             android:id="@+id/configuration"
@@ -28,7 +29,7 @@
             android:onClick="onConfigurationAction"
             android:padding="10dp"
             android:src="@drawable/ic_configuration"
-            android:tint="@android:color/darker_gray" />
+            android:tint="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/reference_name"
@@ -44,7 +45,7 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/reference_discovering"
@@ -58,7 +59,7 @@
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="32sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:id="@+id/keyboard"
@@ -69,35 +70,35 @@
 
             <Button
                 android:id="@+id/key_a1"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_b1"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_a2"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_b2"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_a3"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_b3"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_a4"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
             <Button
                 android:id="@+id/key_b4"
-                style="@style/Button_practise_complete" />
+                style="@style/Button_practise_complete"/>
 
         </LinearLayout>
 

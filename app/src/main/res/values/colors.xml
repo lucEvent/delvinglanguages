@@ -23,4 +23,7 @@
     <color name="default_background">#feee</color>
     <color name="activity_title">#ffff</color>
 
+    <color name="drawer_btn_pressed">#ffebebeb</color>
+    <color name="drawer_btn_checked">#ffdcdcdc</color>
+
 </resources>

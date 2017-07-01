@@ -3,9 +3,10 @@ package com.delvinglanguages.kernel;
 import android.support.annotation.NonNull;
 
 import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class DReference implements Wrapper<DReference> {
+public class DReference extends Item implements Wrapper<DReference>, Comparable<DReference> {
 
     private final static String SEP = "%Dr";
 
@@ -26,7 +27,6 @@ public class DReference implements Wrapper<DReference> {
     /**
      * DReference parameters
      **/
-    public final int id;
     public String name;
     private Inflexions inflexions;
     public String pronunciation;
@@ -47,7 +47,7 @@ public class DReference implements Wrapper<DReference> {
 
     public DReference(int id, String name, String pronunciation, Inflexions inflexions, int priority)
     {
-        this.id = id;
+        super(id, Item.DREFERENCE);
         this.name = name;
         this.lower_case_name = name.toLowerCase();
         this.inflexions = inflexions;
@@ -192,6 +192,12 @@ public class DReference implements Wrapper<DReference> {
     public int wrapType()
     {
         return Wrapper.TYPE_REFERENCE;
+    }
+
+    @Override
+    public int compareTo(@NonNull DReference o)
+    {
+        return this.name.compareTo(o.name);
     }
 
 }

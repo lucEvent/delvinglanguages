@@ -2,9 +2,11 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.WebSearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,33 +15,63 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:orientation="horizontal">
+            android:elevation="4dp">
 
             <LinearLayout
+                android:id="@+id/itembox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/swap"
-                android:gravity="center">
+                android:gravity="start"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp">
 
-                <ImageView
-                    android:id="@+id/from_flag"
-                    android:layout_width="30dp"
-                    android:layout_height="23.5dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@mipmap/ic_launcher"/>
-
-                <TextView
-                    android:id="@+id/from_language"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Basque"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:paddingBottom="4dp">
 
+                    <ImageView
+                        android:id="@+id/from_flag"
+                        android:layout_width="36dp"
+                        android:layout_height="28.2dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/flag_es"/>
+
+                    <TextView
+                        android:id="@+id/from_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Basque"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp">
+
+                    <ImageView
+                        android:id="@+id/to_flag"
+                        android:layout_width="36dp"
+                        android:layout_height="28.2dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/flag_sv"/>
+
+                    <TextView
+                        android:id="@+id/to_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="English"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                </LinearLayout>
             </LinearLayout>
 
             <ImageButton
@@ -47,33 +79,13 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:onClick="onSwapAction"
-                android:src="@drawable/ic_swap"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/itembox"
                 android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/itembox"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/swap"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/to_flag"
-                    android:layout_width="30dp"
-                    android:layout_height="23.5dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@mipmap/ic_launcher"/>
-
-                <TextView
-                    android:id="@+id/to_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="English"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            </LinearLayout>
+                android:onClick="onSwapAction"
+                android:src="@drawable/ic_swap_vert"
+                android:tint="@color/colorAccentDark"/>
 
         </RelativeLayout>
 
@@ -124,4 +136,12 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/websearchToolbar"/>
+
 </android.support.design.widget.CoordinatorLayout>

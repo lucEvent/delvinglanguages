@@ -38,12 +38,9 @@ import com.delvinglanguages.view.dialog.LanguageOptionsDialog;
 import com.delvinglanguages.view.lister.MainCardLister;
 import com.delvinglanguages.view.lister.viewholder.MainStatsViewHolder;
 import com.delvinglanguages.view.lister.viewholder.MainTypesViewHolder;
-import com.delvinglanguages.view.utils.ContentLoader;
 import com.delvinglanguages.view.utils.DataHandler;
 import com.delvinglanguages.view.utils.DataListener;
 import com.delvinglanguages.view.utils.LanguageListener;
-
-import java.util.ArrayList;
 
 public class LanguageMainFragment extends Fragment
         implements TextWatcher, View.OnClickListener, View.OnFocusChangeListener, DataListener {
@@ -101,25 +98,25 @@ public class LanguageMainFragment extends Fragment
         layoutManager.setAutoMeasureEnabled(true);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener(new ContentLoader(layoutManager) {
-            @Override
-            public void onLoadMore()
-            {
-                listManager.loadMoreData();
-            }
-        });
+        recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(listManager);
 
-        MainStatsViewHolder.Data statsData = new MainStatsViewHolder.Data();
-        statsData.statistics = currentLanguage.statistics;
-        statsData.onResetStatistics = onResetStatistics;
-        listManager.addItem(statsData);
-
-        dataManager.fetchLanguageContentNumbers(currentLanguage);
+        displayLanguageData();
 
         return view;
+    }
+
+    public void invalidate()
+    {
+        if (dataManager != null) {
+            currentLanguage = dataManager.getCurrentLanguage();
+
+            listManager.setPhrasals(currentLanguage.getSetting(Language.MASK_PHRASAL_VERBS));
+
+            displayLanguageData();
+            dataManager.fetchLanguageContents(currentLanguage);
+        }
     }
 
     @Override
@@ -133,7 +130,6 @@ public class LanguageMainFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
         getActivity().setTitle(currentLanguage.language_name);
     }
 
@@ -204,16 +200,15 @@ public class LanguageMainFragment extends Fragment
                 break;
             case R.id.option_verbs:
                 // TODO: 21/07/2016
-                intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.VERBS);
-
-                Toast.makeText(getActivity(), R.string.available_in_future_releases, Toast.LENGTH_SHORT).show();
+                //intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.VERBS);
+                Toast.makeText(getActivity(), R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
                 return; // break;
 
             case R.id.option_phrasal_verbs:
                 // TODO: 21/07/2016
-                intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.PHRASAL_VERBS);
-                Toast.makeText(getActivity(), R.string.available_in_future_releases, Toast.LENGTH_SHORT).show();
+                //intent.putExtra(AppCode.FRAGMENT, LanguageActivity.Option.PHRASAL_VERBS);
+                Toast.makeText(getActivity(), R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
                 optionsDialog.dismiss();
                 return; // break;
 
@@ -266,20 +261,38 @@ public class LanguageMainFragment extends Fragment
     public void onTextChanged(CharSequence search, int start, int before, int count)
     {
         search = search.toString().toLowerCase();
-        ArrayList<Object> matches = new ArrayList<>();
+
+        if (search.length() == 0) {
+            displayLanguageData();
+            return;
+        }
+
+        listManager.clear();
+
         for (DReference ref : currentLanguage.dictionary.getDictionary())
             if (ref.hasContent(search))
-                matches.add(ref);
+                listManager.addItem(ref);
 
         for (Theme theme : currentLanguage.themes)
             if (theme.hasContent(search))
-                matches.add(theme);
+                listManager.addItem(theme);
 
         for (Test test : currentLanguage.tests)
             if (test.hasContent(search))
-                matches.add(test);
+                listManager.addItem(test);
 
-        listManager.setNewDataSet(matches);
+    }
+
+    private void displayLanguageData()
+    {
+        listManager.clear();
+
+        MainStatsViewHolder.Data statsData = new MainStatsViewHolder.Data();
+        statsData.statistics = currentLanguage.statistics;
+        statsData.onResetStatistics = onResetStatistics;
+        listManager.addItem(statsData);
+
+        dataManager.fetchLanguageContentNumbers(currentLanguage);
     }
 
     @Override

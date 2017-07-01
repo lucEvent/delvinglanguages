@@ -298,6 +298,37 @@
         <item name="android:theme">@style/AppTheme.Button.Colored</item>
     </style>
 
+    <style name="about_sec">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="about_sec_title" parent="about_sec">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="about_sec_content" parent="about_sec">
+        <item name="android:layout_marginStart">10dp</item>
+    </style>
+
+    <style name="btnDrawerActionbar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bg_btn_drawer_action_bar</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:tint">@drawable/tint_btn_drawer_action_bar</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="websearchToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
     <!--     <item name="android:xxxxxxxxx">xxxxxxxxxxx</item>  -->
 
 </resources>

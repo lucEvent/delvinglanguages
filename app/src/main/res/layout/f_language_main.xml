@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:background="#0fff"
             android:hint="@string/hint_search"
-            android:lines="1"
+            android:inputType="text"
             android:maxLines="1"
             android:padding="5dp"/>
 

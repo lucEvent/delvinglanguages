@@ -1,8 +1,8 @@
 package com.delvinglanguages.view.lister;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,47 +10,36 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-
-import java.io.IOException;
-import java.io.InputStream;
+import com.delvinglanguages.kernel.LanguageCode;
 
 public class SpinnerLanguageLister extends ArrayAdapter<String> {
 
-    private Drawable[] flags;
+    private int[] codes;
     private LayoutInflater inflater;
 
-    public SpinnerLanguageLister(Context context, String[] values)
+    public SpinnerLanguageLister(Context context, String[] values, int[] codes)
     {
         super(context, R.layout.i_spinner_language, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        AssetManager amanager = context.getAssets();
-        flags = new Drawable[values.length];
-        for (int i = 0; i < values.length; i++) {
-            try {
-                InputStream reader = amanager.open(i + ".png");
-                flags[i] = Drawable.createFromStream(reader, null);
-                flags[i].setBounds(0, 0, 10, 10);
-                reader.close();
-            } catch (IOException ignored) {
-            }
-        }
+        this.codes = codes;
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent)
+    public View getDropDownView(int position, @Nullable View view, @NonNull ViewGroup parent)
     {
-        return getView(position, convertView, parent);
+        return getView(position, view, parent);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public
+    @NonNull
+    View getView(int position, @Nullable View view, @NonNull ViewGroup parent)
     {
         if (view == null)
             view = inflater.inflate(R.layout.i_spinner_language, parent, false);
 
         ((TextView) view.findViewById(R.id.title)).setText(getItem(position));
-        view.findViewById(R.id.image).setBackground(flags[position]);
+        view.findViewById(R.id.image).setBackgroundResource(LanguageCode.getFlagResId(codes[position]));
 
         return view;
     }

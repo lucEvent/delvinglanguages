@@ -6,26 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.lister.viewholder.ReferenceViewHolder;
+import com.delvinglanguages.view.utils.ReferenceRVListAdapter;
 
 public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
 
-    public static final int CHUNK = 20;
-
-    private int datasetVisibleCount;
-
-    private DReferences dataset;
+    private final ReferenceRVListAdapter dataSet;
     private final boolean phv_enabled;
     private View.OnClickListener itemListener;
 
-    public ReferenceLister(DReferences dataset, boolean phv_enabled, View.OnClickListener itemListener)
+    public ReferenceLister(DReferences dataSet, boolean phv_enabled, View.OnClickListener itemListener)
     {
-        this.dataset = dataset;
         this.phv_enabled = phv_enabled;
         this.itemListener = itemListener;
 
-        this.datasetVisibleCount = Math.min(CHUNK, dataset.size());
+        this.dataSet = new ReferenceRVListAdapter(this);
+        this.dataSet.addAll(dataSet);
     }
 
     @Override
@@ -39,41 +37,26 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     @Override
     public void onBindViewHolder(ReferenceViewHolder holder, int position)
     {
-        ReferenceViewHolder.populateViewHolder(holder, dataset.get(position), phv_enabled);
+        ReferenceViewHolder.populateViewHolder(holder, dataSet.get(position), phv_enabled);
     }
 
     @Override
     public int getItemCount()
     {
-        return datasetVisibleCount;
+        return dataSet.size();
     }
 
-    public void setNewDataSet(DReferences dataset)
+    public void setNewDataSet(DReferences newDataSet)
     {
-        this.dataset = dataset;
+        synchronized (this.dataSet) {
+            dataSet.beginBatchedUpdates();
 
-        int newVisibleCount = Math.min(dataset.size(), CHUNK);
-        if (newVisibleCount > datasetVisibleCount) {
-            notifyItemRangeChanged(0, datasetVisibleCount);
-            notifyItemRangeInserted(datasetVisibleCount, newVisibleCount - datasetVisibleCount);
-        } else if (newVisibleCount < datasetVisibleCount) {
-            notifyItemRangeChanged(0, newVisibleCount);
-            notifyItemRangeRemoved(newVisibleCount, datasetVisibleCount - newVisibleCount);
-        } else
-            notifyDataSetChanged();
+            dataSet.clear();
 
-        this.datasetVisibleCount = newVisibleCount;
-    }
+            for (DReference n : newDataSet)
+                dataSet.add(n);
 
-    public void loadMoreData()
-    {
-        int dataAdded = Math.min(this.datasetVisibleCount + CHUNK, dataset.size()) - datasetVisibleCount;
-        if (dataAdded > 0) {
-            try {
-                notifyItemRangeInserted(datasetVisibleCount - 1, dataAdded);
-            } catch (Exception ignored) {
-            }
-            this.datasetVisibleCount += dataAdded;
+            dataSet.endBatchedUpdates();
         }
     }
 

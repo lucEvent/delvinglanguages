@@ -4,15 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.TestReferenceStates;
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class Test implements Wrapper<Test> {
+public class Test extends Item implements Wrapper<Test> {
 
     private final static String SEP = "%Tt";
     private final static String SEP2 = "%T%";
 
-    public final int id;
     public final int theme_id;
 
     public String name;
@@ -23,7 +23,7 @@ public class Test implements Wrapper<Test> {
 
     public Test(int id, String name, int runTimes, @NonNull String wrappedContent, int theme_id)
     {
-        this.id = id;
+        super(id, Item.TEST);
         this.theme_id = theme_id;
         this.name = name;
         this.runTimes = runTimes;
@@ -32,7 +32,7 @@ public class Test implements Wrapper<Test> {
 
     public Test(int id, String name, @NonNull DReferences refs, int theme_id)
     {
-        this.id = id;
+        super(id, Item.TEST);
         this.theme_id = theme_id;
         this.name = name;
         this.runTimes = 0;

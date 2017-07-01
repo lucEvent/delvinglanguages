@@ -114,7 +114,7 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            AppSettings.printerror("[PWA] Exception in afterTextChanged (1)", e);
                         }
                         handler.post(new Runnable() {
                             @Override
@@ -123,7 +123,7 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    AppSettings.printerror("[PWA] Exception in afterTextChanged (2)", e);
                                 }
                                 nextReference();
                             }
@@ -192,7 +192,7 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
     public void onConfigurationAction(View v)
     {
         // TODO: 02/04/2016
-        Toast.makeText(this, "Available in coming releases. Stay updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
     }
 
     public void onNextAction(View v)

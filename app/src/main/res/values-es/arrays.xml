@@ -2,24 +2,74 @@
 <resources>
 
     <string-array name="languages">
-        <item>Inglés Británico</item>
-        <item>Inglés Americano</item>
-        <item>Sueco</item>
-        <item>Finlandés</item>
-        <item>Español</item>
-        <item>Catalán</item>
-        <item>Euskera</item>
-        <item>Checo</item>
-        <item>Danés</item>
-        <item>Holandés</item>
-        <item>Estonio</item>
-        <item>Francés</item>
         <item>Alemán</item>
+        <item>Árabe</item>
+        <item>Catalán</item>
+        <item>Checo</item>
+        <item>Chino</item>
+        <item>Coreano</item>
+        <item>Danés</item>
+        <item>Español</item>
+        <item>Euskera</item>
+        <item>Finlandés</item>
+        <item>Francés</item>
+        <item>Galés</item>
         <item>Griego</item>
+        <item>Hebreo</item>
+        <item>Hindi</item>
+        <item>Húngaro</item>
+        <item>Indonesio</item>
+        <item>Inglés</item>
+        <item>Irlandés</item>
         <item>Italiano</item>
+        <item>Japonés</item>
+        <item>Neerlandés</item>
         <item>Noruego</item>
+        <item>Polaco</item>
         <item>Portugués</item>
+        <item>Rumano</item>
         <item>Ruso</item>
+        <item>Suajili</item>
+        <item>Sueco</item>
+        <item>Tailandés</item>
+        <item>Turco</item>
+        <item>Ucraniano</item>
+        <item>Vietnamita</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>10</item>
+        <item>0</item>
+        <item>2</item>
+        <item>4</item>
+        <item>3</item>
+        <item>19</item>
+        <item>5</item>
+        <item>25</item>
+        <item>1</item>
+        <item>8</item>
+        <item>9</item>
+        <item>32</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>7</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>6</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
     </string-array>
     <string-array name="themes">
         <item>Delving Languages (por defecto)</item>

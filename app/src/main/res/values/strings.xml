@@ -1,7 +1,8 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">version 4.0.0</string>
+    <string name="app_version" translatable="false">4.1.0</string>
+    <string name="version">version</string>
 
     <!-- * ******************** Types **************************** * -->
     <string name="nn">NN</string>
@@ -123,19 +124,19 @@
     <string name="msg_language_created">Language created</string>
     <string name="msg_not_implemented">Function not implement yet</string>
     <string name="msg_preparing_file">Preparing file</string>
-    <string name="msg_found_languages">Found %1$s language(s)</string>
-    <string name="msg_n_references">%1$s words</string>
-    <string name="msg_n_drawerreferences">%1$s words in the drawer</string>
-    <string name="msg_n_themes">%1$s themes</string>
-    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_found_languages">Found %1$d language(s)</string>
+    <string name="msg_n_references">%1$d words</string>
+    <string name="msg_n_drawerreferences">%1$d words in the drawer</string>
+    <string name="msg_n_themes">%1$d themes</string>
+    <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">Import finished successfully</string>
     <string name="msg_export_finished">Export finished successfully</string>
     <string name="msg_not_dl_file">Selected file is not a Delving Languages file</string>
     <string name="error">Error</string>
     <string name="msg_select_languages_backup">Select languages to backup</string>
-    <string name="msg_could_access_disc">Could\'nt access to disc</string>
+    <string name="msg_could_access_disc">Couldn\'t access to disc</string>
     <string name="msg_saving_">Saving %1$s</string>
-    <string name="msg_language_saved_">%1$s saved with %2$s words, %3$s words in drawer, %4$s themes and %5$s tests</string>
+    <string name="msg_language_saved_">%1$s saved with %2$d words, %3$d words in drawer, %4$d themes and %5$d tests</string>
     <string name="msg_missing_filename">Missing file name</string>
     <string name="msg_no_language_selected">No language selected</string>
     <string name="msg_confirm_to_delete_xxx">Confirm to delete %1$s</string>
@@ -147,7 +148,7 @@
     <string name="msg_notifier_tts">Your device does not have the needed resources for pronunciation in %1$s. Try to download them in Settings or get a TTS application from the Google Play store.</string>
     <string name="msg_missing_test_name">Missing test name</string>
     <string name="msg_test_hasnot_run_yet">The test has not been done yet</string>
-    <string name="msg_test_done_times">Done %1$s times</string>
+    <string name="msg_test_done_times">Done %1$d times</string>
     <string name="msg_test_accuracy">Accuracy: %1$.1f%%</string>
     <string name="msg_test_best_reference">Easiest word: %1$s</string>
     <string name="msg_test_worst_reference">Most difficult word: %1$s</string>
@@ -174,7 +175,9 @@
     <string name="msg_synchronizing">Synchronizing</string>
     <string name="msg_no_internet_connection">No internet connection available</string>
     <string name="msg_no_languages_found">No languages found</string>
-    <string name="available_in_future_releases">Feature available in future releases</string>
+    <string name="msg_in_next_releases">Available in coming releases. Stay updated!</string>
+    <string name="msg_title_synching_account">Synchronizing account</string>
+    <string name="msg_starting_process">Starting process…</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -189,11 +192,13 @@
 
 
     <!-- * ******************** ********** **************************** * -->
-    <string name="about_content_header" translatable="false">Delving Languages version 4.0.0</string>
+    <string name="about_content_header" translatable="false">Delving Languages version 4.1.0</string>
     <string name="about_content_contact" translatable="false">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features" translatable="false">New features and improvements:</string>
     <string name="about_content_new_features" translatable="false">
-        Version 4.0.0 2016-08-30:\nIntroducing Data backup in server and synchronization.\nBugs fixed.\n
+        Version 4.1.0 2017-07-01:\nMore languages supported.\nFlags improved.\nNavigation improved (+ new navigation list).\nMatch practise improved.\nImport fixes.\nBug fixes and other improvements.\n
+        \nVersion 4.0.1 2016-11-01:\nMinor bug fixed.\n
+        \nVersion 4.0.0 2016-08-30:\nIntroducing Data backup in server and synchronization.\nBugs fixed.\n
         \nVersion 3.3.0 2016-08-06:\nFixed phonetic keyboard vibration.\nLeft menu reorganized.\nDrawer words can now be deleted by swiping.\nWeb search improved, plus added support for more languages.\nTests improved when dealing with no tts.\nSome translations.\nBugs fixed.\n
         \nVersion 3.2.0 2016-07-15:\nHandler leaks fixed.\nTranslated to spanish and catalan.\nThemes editing improved.\nNew: Theme to test, start practising your themes.\nBug (list not updated) when removing a word fixed.\nPerformance improved when updating words and themes.\nTheme and test lists display improved.\nSeveral bugs fixed.\n
         \nVersion 3.1.1 2016-07-10:\nError in \'practise\' when there are no words fixed. Error when trying to remove/edit words in the native language fixed.\nStatistics display in main screen improved.\n
@@ -201,17 +206,6 @@
         \nVersion 3.0.0 2016-04-10:\nLollipop support.\nSettings standardized.\nKernel "word" and "dreference" merged for better performance.\nBetter support/user interaction when TTS is needed.\nListening in practise redesigned.\nTests redesigned.\nListening added in test.\n
         \nVersion 2.3.0 2016-03-05:\nIntroducing Prepositions and Conjunctions.\n
         \nVersion 2.1.0 2016-01-08:\nIntroducing inflexions (replace translations).\n
-    </string>
-    <string name="about_content_title_old_features" translatable="false">Old improvements:</string>
-    <string name="about_content_old_features" translatable="false">
-        Version 1.6.0 2015-07-03:\nIntroducing Support for Swedish word inflexions.\n
-        \nVersion 1.5.1 2015-05-16:\nIntroducing Pronunciation for words.\n
-        \nVersion 1.5.0 2015-05-14:\nNew Translation organization.\nNew Database format.\n
-        \nVersion 1.4.1 2015-03-11:\nNew kernel.\n
-        \nVersion 1.4.0 2015-03-09:\nIntroducing Themes.\n
-        \nVersion 1.3.0 2014-10-28:\nIntroducing Add word from Search.\n
-        \nVersion 1.2.3 2014-10-25:\nNew Language Menu.\n
-        \nVersion 1.2.0 2014-05-13:\nNew Dictionary.\n
     </string>
     <string name="about_content_title_next_releases" translatable="false">In next releases:</string>
     <string name="about_content_next_releases" translatable="false">

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="version">versió</string>
+
     <!-- * ******************** Types **************************** * -->
     <string name="nn">SST</string>
     <string name="noun">Sustantiu</string>
@@ -122,11 +124,11 @@
     <string name="msg_language_created">Idioma creat</string>
     <string name="msg_not_implemented">Funció no accesible</string>
     <string name="msg_preparing_file">Preparant arxiu</string>
-    <string name="msg_found_languages">S\'ha trobat %1$s idioma(es)</string>
-    <string name="msg_n_references">%1$s paraules</string>
-    <string name="msg_n_drawerreferences">%1$s paraules a l\'esborrany</string>
-    <string name="msg_n_themes">%1$s temes</string>
-    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_found_languages">S\'ha trobat %1$d idioma(es)</string>
+    <string name="msg_n_references">%1$d paraules</string>
+    <string name="msg_n_drawerreferences">%1$d paraules a l\'esborrany</string>
+    <string name="msg_n_themes">%1$d temes</string>
+    <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">S\'ha importat amb èxit</string>
     <string name="msg_export_finished">S\'ha exportat amb èxit</string>
     <string name="msg_not_dl_file">L\'arxiu sel·leccionat no és vàlid</string>
@@ -134,7 +136,7 @@
     <string name="msg_select_languages_backup">Sel·lecciona idiomes per la còpia de seguretat</string>
     <string name="msg_could_access_disc">No es pot accedir al disc</string>
     <string name="msg_saving_">Guardant %1$s</string>
-    <string name="msg_language_saved_">%1$s guardat amb %2$s paraules, %3$s paraules a l\'esborrany, %4$s temes i %5$s tests</string>
+    <string name="msg_language_saved_">%1$s guardat amb %2$d paraules, %3$d paraules a l\'esborrany, %4$d temes i %5$d tests</string>
     <string name="msg_missing_filename">Falta nom de l\'arxiu</string>
     <string name="msg_no_language_selected">Cap idioma sel·leccionat</string>
     <string name="msg_confirm_to_delete_xxx">Confirma per eliminar</string>
@@ -146,7 +148,7 @@
     <string name="msg_notifier_tts">El teu dispositiu no té els recursos per pronunciar %1$s. Intenta descarregar-ho a Configuració o descarrega una aplicació TTS de la Google Play.</string>
     <string name="msg_missing_test_name">Falta nom del test</string>
     <string name="msg_test_hasnot_run_yet">El test encara no s\'ha fet</string>
-    <string name="msg_test_done_times">Fet %1$s vegades</string>
+    <string name="msg_test_done_times">Fet %1$d vegades</string>
     <string name="msg_test_accuracy">Precisió: %1$.1f%%</string>
     <string name="msg_test_best_reference">Millor paraula: %1$s</string>
     <string name="msg_test_worst_reference">Pitjor paraula: %1$s</string>
@@ -160,20 +162,22 @@
     <string name="msg_reading">Llegint %1$s</string>
     <string name="msg_calculating_changes">Calculant canvis</string>
     <string name="msg_merging">Fusionant</string>
-    <string name="msg_temp_conflicts_treatment">Aquesta versió de l\'app ignorarà tots els conflictes. En el futur et premetrà decidir-ne. Estigues al tanto!</string>
+    <string name="msg_temp_conflicts_treatment">Aquesta versió de l\'app ignorarà tots els conflictes. En el futur et permetrà decidir-ne. Estigues al tanto!</string>
     <string name="msg_remove_language_after_merge">Vols eliminar aquest idioma?</string>
     <string name="msg_permission_for_backup_denied">No és possible llegir/escriure de la memòria sense el teu permís</string>
-    <string name="msg_dictionary_empty">No és posible practicar perque el diccionari está buit</string>
+    <string name="msg_dictionary_empty">No és possible practicar perque el diccionari està buit</string>
     <string name="msg_cannot_start_test">El test no es pot crear: cap paraula coincideix amb la teva selecció</string>
     <string name="msg_no_results_found">No hi ha resultats</string>
     <string name="msg_cannot_translate_from_to">No es possible traduïr de %1$s a %2$s ni viceversa</string>
     <string name="msg_pronunciation_not_available">Pronunciació no disponible</string>
-    <string name="msg_permission_for_login_denied">Es necessita permís per identificar-te amb el teu compte al nostre servidor. No emmagatzemarem cap dada personal.</string>
+    <string name="msg_permission_for_login_denied">Es necessita permís per identificar-te amb el teu compte al nostre servidor. No guardem cap dada personal.</string>
     <string name="msg_connecting_to_server">Connectant al servidor</string>
     <string name="msg_synchronizing">Sincronitzant</string>
     <string name="msg_no_internet_connection">No s\'ha trobat connexió a internet</string>
     <string name="msg_no_languages_found">No s\'han trobat dades</string>
-    <string name="available_in_future_releases">Disponible en properes actualitzacions</string>
+    <string name="msg_in_next_releases">Disponible en properes actualitzacions</string>
+    <string name="msg_title_synching_account">Sincronitzant compte</string>
+    <string name="msg_starting_process">Inicialitzant…</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->

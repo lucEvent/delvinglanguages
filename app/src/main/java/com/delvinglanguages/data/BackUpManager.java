@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.Handler;
 
 import com.delvinglanguages.AppCode;
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.util.InStream;
 import com.delvinglanguages.data.util.OutStream;
@@ -122,7 +123,7 @@ public class BackUpManager {
         } catch (Exception e) {
 
             handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
-            e.printStackTrace();
+            AppSettings.printerror("[BUM] Exception in restoreData", e);
             database.closeWritableDatabase();
             return;
         }
@@ -137,15 +138,17 @@ public class BackUpManager {
         BackUpDatabaseManager database = new BackUpDatabaseManager(context);
         database.openReadableDatabase();
         try {
-            // Gettings backup file
+            // Getting backup file
             handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_preparing_file).sendToTarget();
-            String estado = Environment.getExternalStorageState();
-            if (!estado.equals(Environment.MEDIA_MOUNTED)) {
+
+            String state = Environment.getExternalStorageState();
+            if (!Environment.MEDIA_MOUNTED.equals(state)) {
                 handler.obtainMessage(MessageListener.ERROR, "\n" + context.getString(R.string.msg_could_access_disc)).sendToTarget();
+                return;
             }
             File externalDir = Environment.getExternalStorageDirectory();
 
-            File folder = new File(externalDir.getAbsolutePath() + File.separator + "Delving");
+            File folder = new File(externalDir, "Delving");
             folder.mkdirs();
             File backupfile = new File(folder, filename + ".delv");
 
@@ -175,7 +178,7 @@ public class BackUpManager {
                     stream.writeString(w.name);
                     stream.writeString(w.pronunciation);
                     stream.writeInt(w.priority);
-                    stream.writeString(w.getInflexions().toString());
+                    stream.writeString(w.getInflexions().wrap());
                 }
 
                 DrawerReferences drawer = database.readDrawerReferences(language.id);
@@ -213,7 +216,7 @@ public class BackUpManager {
             stream.close();
         } catch (Exception e) {
             handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
-            e.printStackTrace();
+            AppSettings.printerror("[BUM] Exception in backupData", e);
         } finally {
 
             database.closeReadableDatabase();

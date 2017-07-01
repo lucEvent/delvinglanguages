@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -27,6 +28,11 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        initUI();
+    }
+
+    public void initUI()
+    {
         setContentView(R.layout.a_start);
 
         findViewById(R.id.option_create).setOnClickListener(new View.OnClickListener() {
@@ -50,6 +56,13 @@ public class StartActivity extends Activity {
                 onSyncSelected();
             }
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        initUI();
     }
 
     @Override
@@ -121,7 +134,7 @@ public class StartActivity extends Activity {
             SyncManager syncService = new SyncManager(this);
             syncService.synchronize();
             //handle result receiving
-            dialog = ProgressDialog.show(this, "Full upload", "Starting service...", true, false, null);
+            dialog = ProgressDialog.show(this, getString(R.string.msg_title_synching_account), getString(R.string.msg_starting_process), true, false, null);
 
         }
     }

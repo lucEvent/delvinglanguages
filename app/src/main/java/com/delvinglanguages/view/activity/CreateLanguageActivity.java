@@ -1,6 +1,7 @@
 package com.delvinglanguages.view.activity;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ public class CreateLanguageActivity extends AppCompatActivity
         implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private String[] languages;
+    private int[] codes;
 
     private Switch s_phrasals;
     private Spinner spinner;
@@ -37,10 +39,15 @@ public class CreateLanguageActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle(R.string.create_language);
 
-        languages = getResources().getStringArray(R.array.languages);
+        Resources r = getResources();
+        languages = r.getStringArray(R.array.languages);
+        String[] sCodes = r.getStringArray(R.array.language_codes);
+        codes = new int[sCodes.length];
+        for (int i = 0; i < sCodes.length; i++)
+            codes[i] = Integer.parseInt(sCodes[i]);
 
         spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new SpinnerLanguageLister(this, languages));
+        spinner.setAdapter(new SpinnerLanguageLister(this, languages, codes));
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(0);
 
@@ -101,7 +108,7 @@ public class CreateLanguageActivity extends AppCompatActivity
                     Toast.makeText(this, R.string.msg_missing_language_name, Toast.LENGTH_LONG).show();
                     return;
                 }
-                int code = spinner.getSelectedItemPosition();
+                int code = codes[spinner.getSelectedItemPosition()];
 
                 boolean ph = s_phrasals.isChecked();
                 int settings = Language.configure(ph);

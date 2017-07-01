@@ -1,53 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp">
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-            <TextView
-                android:id="@+id/test_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@+id/button_delete"
-                android:padding="14dp"
-                android:text="Test title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/activity_title"
-                android:textStyle="bold" />
+    </android.support.design.widget.AppBarLayout>
 
-            <ImageButton
-                android:id="@+id/button_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toStartOf="@+id/button_start_test"
-                android:background="@drawable/ripple_round"
-                android:padding="14dp"
-                android:src="@drawable/ic_delete" />
-
-            <ImageButton
-                android:id="@+id/button_start_test"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/ripple_round"
-                android:padding="14dp"
-                android:src="@drawable/ic_play" />
-
-        </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -68,12 +45,12 @@
                     android:elevation="3dp"
                     android:padding="20dp"
                     android:text="Test statistics"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

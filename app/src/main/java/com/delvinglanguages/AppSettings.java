@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
 
+import com.delvinglanguages.kernel.LanguageCode;
+
 public class AppSettings {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static final int PROGRESS_COLOR_OK = 0xff33aa33;
     public static final int PROGRESS_COLOR_MISS = 0xffaa3333;
@@ -21,7 +23,7 @@ public class AppSettings {
     /**
      * ************** Default values *********************
      **/
-    private static final String DEFAULT_APP_LANGUAGE_CODE = "0";
+    private static final String DEFAULT_APP_LANGUAGE_CODE = Integer.toString(LanguageCode.ENGLISH);
     private static final boolean DEFAULT_PHONKB_VIBRATION = true;
     private static final String DEFAULT_APP_THEME = "0";
     private static final boolean DEFAULT_ONLINE_BACKUP = false;
@@ -128,6 +130,11 @@ public class AppSettings {
             if (e != null)
                 e.printStackTrace();
         }
+    }
+
+    public static String getAppLanguageName()
+    {
+        return AppData.getLanguageName(getAppLanguageCode());
     }
 
 }

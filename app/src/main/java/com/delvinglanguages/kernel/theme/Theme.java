@@ -2,14 +2,13 @@ package com.delvinglanguages.kernel.theme;
 
 import android.support.annotation.NonNull;
 
+import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class Theme implements Wrapper<Theme> {
+public class Theme extends Item implements Wrapper<Theme> {
 
     private static final String SEP = "%Th";
-
-    public final int id;
 
     private String name;
     private ThemePairs pairs;
@@ -22,7 +21,7 @@ public class Theme implements Wrapper<Theme> {
 
     public Theme(int id, String name, ThemePairs pairs)
     {
-        this.id = id;
+        super(id, Item.THEME);
         this.name = name;
         this.pairs = pairs;
     }

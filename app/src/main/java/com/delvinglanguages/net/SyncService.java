@@ -103,7 +103,7 @@ public class SyncService extends IntentService {
         int petition = extras.getInt(PETITION_KEY);
         int language_id = extras.getInt(LANGUAGE_ID_KEY);
         LanguageManager dataManager = new LanguageManager(this);
-        System.out.println("[SS] Connection with the server for " + petition);
+        AppSettings.printlog("[SS] Connection with the server for " + petition);
         try {
             switch (petition) {
                 case SYNCHRONIZE:
@@ -174,8 +174,7 @@ public class SyncService extends IntentService {
                     break;
             }
         } catch (Exception e) {
-            System.out.println("Exception on server");
-            e.printStackTrace();
+            AppSettings.printerror("Exception on server", e);
         }
     }
 

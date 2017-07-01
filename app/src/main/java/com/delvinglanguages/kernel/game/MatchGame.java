@@ -1,15 +1,26 @@
 package com.delvinglanguages.kernel.game;
 
-import android.util.Pair;
-
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
 
 public class MatchGame extends Game {
 
+    public class Choice {
+        public String value;
+        public Boolean isCorrect;
+        public Boolean isChecked;
+
+        public Choice(String value, Boolean isCorrect)
+        {
+            this.value = value;
+            this.isCorrect = isCorrect;
+            this.isChecked = false;
+        }
+    }
+
     public class RoundData {
         public DReference reference;
-        public Pair<String, Boolean>[] options;
+        public Choice[] options;
     }
 
     public MatchGame(DReferences references)
@@ -27,7 +38,7 @@ public class MatchGame extends Game {
         RoundData res = new RoundData();
 
         res.reference = reference;
-        res.options = new Pair[n_options];
+        res.options = new Choice[n_options];
 
         String[] translations = res.reference.getTranslations();
         own_options_max = Math.min(own_options_max, translations.length);
@@ -42,7 +53,7 @@ public class MatchGame extends Game {
                 randomTranslationPosition = nextInt(translations.length);
             } while (translations[randomTranslationPosition] == null);
 
-            res.options[randomPosition] = new Pair<>(translations[randomTranslationPosition], true);
+            res.options[randomPosition] = new Choice(translations[randomTranslationPosition], true);
             translations[randomTranslationPosition] = null;
         }
 
@@ -57,7 +68,7 @@ public class MatchGame extends Game {
                         is = true;
                         break;
                     }
-                res.options[i] = new Pair<>(hook, is);
+                res.options[i] = new Choice(hook, is);
             }
 
         return res;

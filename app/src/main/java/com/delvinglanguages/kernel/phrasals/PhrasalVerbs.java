@@ -1,7 +1,7 @@
 package com.delvinglanguages.kernel.phrasals;
 
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.util.DReferences;
 
 import java.io.Serializable;
@@ -36,11 +36,10 @@ public class PhrasalVerbs implements Runnable, Serializable {
     {
         String[] sPrepositions;
         switch (language) {
-            case Language.ENGLISH_UK:
-            case Language.ENGLISH_US:
+            case LanguageCode.ENGLISH:
                 sPrepositions = englishPreps;
                 break;
-            case Language.SWEDISH:
+            case LanguageCode.SWEDISH:
                 sPrepositions = swedishPreps;
                 break;
             default:

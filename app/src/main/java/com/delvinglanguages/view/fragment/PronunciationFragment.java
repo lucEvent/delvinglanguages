@@ -25,7 +25,8 @@ public class PronunciationFragment extends android.app.Fragment implements View.
     private Locale locale;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         speechEngine = new TextToSpeech(getActivity(), this);
@@ -33,7 +34,8 @@ public class PronunciationFragment extends android.app.Fragment implements View.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.f_pronunciation, container, false);
 
         input = (EditText) view.findViewById(R.id.input);
@@ -42,14 +44,15 @@ public class PronunciationFragment extends android.app.Fragment implements View.
         ib.setOnClickListener(this);
 
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
+        if (imm != null)
             imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
-        }
+
         return view;
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
 
         if (speechEngine != null) {
@@ -59,39 +62,32 @@ public class PronunciationFragment extends android.app.Fragment implements View.
     }
 
     @Override
-    public void onInit(int status) {
-
+    public void onInit(int status)
+    {
         if (status == TextToSpeech.SUCCESS) {
 
             int availability = speechEngine.isLanguageAvailable(locale);
-            if (availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED) {
+            if (availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED)
 
                 new NotifierDialog(getActivity()).notify_languageTTSnotAvailable(locale.getDisplayLanguage());
 
-            } else {
-
+            else
                 speechEngine.setLanguage(locale);
-
-            }
-
         }
     }
 
     @Override
-    public void onClick(View button) {
+    public void onClick(View button)
+    {
         String tts = input.getText().toString();
 
         int availability = speechEngine.isLanguageAvailable(locale);
-        if (availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED) {
+        if (availability == TextToSpeech.LANG_MISSING_DATA || availability == TextToSpeech.LANG_NOT_SUPPORTED)
 
             new NotifierDialog(getActivity()).notify_languageTTSnotAvailable(locale.getDisplayLanguage());
 
-        } else {
-
+        else
             speechEngine.speak(tts, TextToSpeech.QUEUE_FLUSH, null, "");
-
-        }
-
     }
 
 }

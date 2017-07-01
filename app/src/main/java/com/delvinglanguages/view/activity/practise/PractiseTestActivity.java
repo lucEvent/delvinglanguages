@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.delvinglanguages.AppCode;
@@ -31,6 +32,8 @@ public class PractiseTestActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(
                 getString(R.string.title_activity_practisetest,
                         new KernelManager(this).getCurrentLanguage().language_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         Tests tests = new TestManager(this).getTests();
 
@@ -53,6 +56,17 @@ public class PractiseTestActivity extends AppCompatActivity {
     {
         super.onResume();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 
     @Override

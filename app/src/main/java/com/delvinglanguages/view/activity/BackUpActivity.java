@@ -226,7 +226,7 @@ public class BackUpActivity extends Activity {
     private void importAction()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("file/*");
+        intent.setType("*/*");
         startActivityForResult(intent, IMPORT);
     }
 

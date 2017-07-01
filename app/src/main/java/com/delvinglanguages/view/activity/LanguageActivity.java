@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.delvinglanguages.AppCode;
+import com.delvinglanguages.AppData;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
@@ -19,7 +21,6 @@ import com.delvinglanguages.view.fragment.PractiseFragment;
 import com.delvinglanguages.view.fragment.PronunciationFragment;
 import com.delvinglanguages.view.fragment.RecycleBinFragment;
 import com.delvinglanguages.view.fragment.ThemesFragment;
-import com.delvinglanguages.AppCode;
 
 public class LanguageActivity extends AppCompatActivity {
 
@@ -42,6 +43,8 @@ public class LanguageActivity extends AppCompatActivity {
         setContentView(R.layout.a_language);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         dataManager = new LanguageManager(this);
         currentLanguage = dataManager.getCurrentLanguage();
@@ -53,6 +56,7 @@ public class LanguageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.delete_all:
                 new AlertDialog.Builder(this)
@@ -67,6 +71,8 @@ public class LanguageActivity extends AppCompatActivity {
                         .setNegativeButton(R.string.cancel, null)
                         .create().show();
                 break;
+            case android.R.id.home:
+                finish();
         }
         return true;
     }
@@ -98,7 +104,7 @@ public class LanguageActivity extends AppCompatActivity {
                 break;
             case PRONUNCIATION:
                 fragment = new PronunciationFragment();
-                title = getString(R.string.title_pronunciation_fragment, currentLanguage.language_name);
+                title = getString(R.string.title_pronunciation_fragment, AppData.getLanguageName(currentLanguage.code));
                 break;
             case RECYCLE_BIN:
                 fragment = new RecycleBinFragment();

@@ -87,7 +87,7 @@ public class ThemeEditorActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         in_pair1.setHint(getString(R.string.hint_in_, dataManager.getCurrentLanguage().language_name));
-        in_pair2.setHint(getString(R.string.hint_in_, getResources().getStringArray(R.array.languages)[AppSettings.getAppLanguageCode()]));
+        in_pair2.setHint(getString(R.string.hint_in_, AppSettings.getAppLanguageName()));
 
     }
 

@@ -33,9 +33,10 @@ public class WordReference extends OnlineDictionary {
     private final static String CODE_TURKISH = "tr";
 
     private final static String[] CODES = new String[]{
-            CODE_ENGLISH, CODE_ENGLISH, null, null, CODE_SPANISH, null,
-            null, CODE_CZECH, null, null, null, CODE_FRENCH, null,
-            CODE_GREEK, CODE_ITALIAN, null, CODE_PORTUGUESE, null
+            CODE_ARABIC, null, null, CODE_CHINESE, CODE_CZECH, null, null, CODE_ENGLISH, null,
+            CODE_FRENCH, null, CODE_GREEK, null, null, null, null, null, CODE_ITALIAN,
+            CODE_JAPANESE, CODE_KOREAN, null, CODE_POLISH, CODE_PORTUGUESE, CODE_ROMANIAN, null, CODE_SPANISH,
+            null, null, null, CODE_TURKISH, null, null, null
     };
 
     // http://api.wordreference.com/a51d4/enes/welcome

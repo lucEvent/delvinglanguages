@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="version">versión</string>
+
     <!-- * ******************** Types **************************** * -->
     <string name="nn">SST</string>
     <string name="noun">Sustantivo</string>
@@ -122,11 +124,11 @@
     <string name="msg_language_created">Idioma creado</string>
     <string name="msg_not_implemented">Función no accesible</string>
     <string name="msg_preparing_file">Preparando archivo</string>
-    <string name="msg_found_languages">Se encontró %1$s idioma(s)</string>
-    <string name="msg_n_references">%1$s palabras</string>
-    <string name="msg_n_drawerreferences">%1$s palabras en borrador</string>
-    <string name="msg_n_themes">%1$s temas</string>
-    <string name="msg_n_tests">%1$s tests</string>
+    <string name="msg_found_languages">Se encontró %1$d idioma(s)</string>
+    <string name="msg_n_references">%1$d palabras</string>
+    <string name="msg_n_drawerreferences">%1$d palabras en borrador</string>
+    <string name="msg_n_themes">%1$d temas</string>
+    <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">Se importó satisfactoriamente</string>
     <string name="msg_export_finished">Se exportó satisfactoriamente</string>
     <string name="msg_not_dl_file">El archivo seleccionado no es válido</string>
@@ -134,7 +136,7 @@
     <string name="msg_select_languages_backup">Selecciona idiomas para la copia de seguridad</string>
     <string name="msg_could_access_disc">No se pudo acceder al disco</string>
     <string name="msg_saving_">Guardando %1$s</string>
-    <string name="msg_language_saved_">%1$s guardado con %2$s palabras, %3$s palabras del borrador, %4$s temas y %5$s tests</string>
+    <string name="msg_language_saved_">%1$s guardado con %2$d palabras, %3$d palabras del borrador, %4$d temas y %5$d tests</string>
     <string name="msg_missing_filename">Falta nombre del archivo</string>
     <string name="msg_no_language_selected">Ningún idioma seleccionado</string>
     <string name="msg_confirm_to_delete_xxx">Confirma para eliminar</string>
@@ -146,7 +148,7 @@
     <string name="msg_notifier_tts">Tu dispositivo no tiene los recursos para pronunciar %1$s. Intenta descargarlo en Configuración o descarga una aplicación TTS de la Google Play.</string>
     <string name="msg_missing_test_name">Falta nombre del test</string>
     <string name="msg_test_hasnot_run_yet">El test aún no se ha hecho</string>
-    <string name="msg_test_done_times">Hecho %1$s veces</string>
+    <string name="msg_test_done_times">Hecho %1$d veces</string>
     <string name="msg_test_accuracy">Precisión: %1$.1f%%</string>
     <string name="msg_test_best_reference">Mejor palabra: %1$s</string>
     <string name="msg_test_worst_reference">Peor palabra: %1$s</string>
@@ -173,7 +175,9 @@
     <string name="msg_synchronizing">Sincronizando</string>
     <string name="msg_no_internet_connection">No se ha encontrado conexion a internet</string>
     <string name="msg_no_languages_found">No se encontraron datos</string>
-    <string name="available_in_future_releases">Disponible en próximas actualizaciones</string>
+    <string name="msg_in_next_releases">Disponible en próximas actualizaciones</string>
+    <string name="msg_title_synching_account">Sincronizando cuenta</string>
+    <string name="msg_starting_process">Inicializando…</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->

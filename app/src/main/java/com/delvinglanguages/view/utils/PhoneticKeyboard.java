@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.LanguageCode;
 
 public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         View.OnFocusChangeListener, View.OnClickListener, View.OnTouchListener {
@@ -45,7 +45,7 @@ public class PhoneticKeyboard implements KeyboardView.OnKeyboardActionListener,
         keyboard_punctuation = new Keyboard(context, R.xml.keyboard_punctuation);
         keyboard_empty = new Keyboard(context, R.xml.keyboard_empty);
         switch (langCode) {
-            case Language.SWEDISH:
+            case LanguageCode.SWEDISH:
                 keyboard_symbols = new Keyboard(context, R.xml.keyboard_phonetic_swedish);
                 break;
             default:

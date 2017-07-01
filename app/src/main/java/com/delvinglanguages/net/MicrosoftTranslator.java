@@ -2,6 +2,7 @@ package com.delvinglanguages.net;
 
 import android.os.Handler;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.net.utils.OnlineDictionary;
 import com.delvinglanguages.net.utils.Search;
 
@@ -80,9 +81,10 @@ public final class MicrosoftTranslator extends OnlineDictionary {
     private final static String CODE_WELSH = "cy";
 
     private final static String[] CODES = new String[]{
-            CODE_ENGLISH, CODE_ENGLISH, CODE_SWEDISH, CODE_FINNISH, CODE_SPANISH, CODE_CATALAN,
-            null, CODE_CZECH, CODE_DANISH, CODE_DUTCH, CODE_ESTONIAN, CODE_FRENCH, CODE_GERMAN,
-            CODE_GREEK, CODE_ITALIAN, CODE_NORWEGIAN, CODE_PORTUGUESE, CODE_ROMANIAN
+            CODE_ARABIC, null, CODE_CATALAN, CODE_CHINESE, CODE_CZECH, CODE_DANISH, CODE_DUTCH, CODE_ENGLISH, CODE_FINNISH,
+            CODE_FRENCH, CODE_GERMAN, CODE_GREEK, CODE_HEBREW, CODE_HINDI, CODE_HUNGARIAN, null, null, CODE_ITALIAN,
+            CODE_JAPANESE, CODE_KOREAN, CODE_NORWEGIAN, CODE_POLISH, CODE_PORTUGUESE, CODE_ROMANIAN, CODE_RUSSIAN, CODE_SPANISH,
+            null, CODE_SWEDISH, CODE_THAI, CODE_TURKISH, CODE_UKRAINIAN, CODE_VIETNAMESE, CODE_WELSH
     };
 
     private String header;
@@ -137,8 +139,7 @@ public final class MicrosoftTranslator extends OnlineDictionary {
                 URL url = new URL(header + URLEncoder.encode(search.searchTerm, ENCODING));
                 result = retrieveResponse(url);
             } catch (Exception e) {
-                System.out.println("Exception en MTSearch.run");
-                e.printStackTrace();
+                AppSettings.printerror("Exception en MTSearch.run", e);
             }
 
             if (!result.isEmpty())
@@ -181,8 +182,7 @@ public final class MicrosoftTranslator extends OnlineDictionary {
             }
             return inputStreamToString(uc.getInputStream());
         } catch (Exception e) {
-            System.out.println("Exception en retrieveResponse");
-            e.printStackTrace();
+            AppSettings.printerror("Exception en retrieveResponse", e);
         } finally {
             if (uc != null)
                 uc.disconnect();
@@ -211,9 +211,8 @@ public final class MicrosoftTranslator extends OnlineDictionary {
                     outputBuilder.append(string.replaceAll("\uFEFF", ""));
                 }
             }
-        } catch (Exception ex) {
-            System.out.println("Exception en inputStreamToString");
-            ex.printStackTrace();
+        } catch (Exception e) {
+            AppSettings.printerror("Exception en inputStreamToString", e);
         }
         return outputBuilder.toString();
     }
@@ -245,8 +244,7 @@ public final class MicrosoftTranslator extends OnlineDictionary {
 
             return inputStreamToString(uc.getInputStream());
         } catch (Exception e) {
-            System.out.println("Exception en getToken");
-            e.printStackTrace();
+            AppSettings.printerror("Exception en getToken", e);
         } finally {
             if (uc != null)
                 uc.disconnect();

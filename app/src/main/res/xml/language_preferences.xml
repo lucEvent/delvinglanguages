@@ -11,19 +11,19 @@
             android:key="@string/pref_language_code_key"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="@string/pref_language_code" />
+            android:title="@string/pref_language_code"/>
 
         <EditTextPreference
             android:dialogTitle="EditText Dialog"
             android:key="@string/pref_language_name_key"
             android:negativeButtonText="@string/cancel"
             android:positiveButtonText="@string/accept"
-            android:title="@string/pref_language_name" />
+            android:title="@string/pref_language_name"/>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/pref_language_phrasalverbs_key"
-            android:title="@string/pref_language_phrasalverbs" />
+            android:title="@string/pref_language_phrasalverbs"/>
 
     </PreferenceCategory>
 
@@ -33,17 +33,17 @@
             android:key="@string/pref_language_merge_key"
             android:title="@string/pref_language_merge">
 
-            <intent android:action="com.delvinglanguages.merger.MERGE" />
+            <intent android:action="com.delvinglanguages.merger.MERGE"/>
 
         </Preference>
 
         <Preference
             android:key="@string/pref_language_remove_key"
-            android:title="@string/pref_language_remove" />
+            android:title="@string/pref_language_remove"/>
 
         <Preference
             android:key="@string/pref_language_reset_statistics_key"
-            android:title="@string/pref_language_reset_statistics" />
+            android:title="@string/pref_language_reset_statistics"/>
 
     </PreferenceCategory>
 

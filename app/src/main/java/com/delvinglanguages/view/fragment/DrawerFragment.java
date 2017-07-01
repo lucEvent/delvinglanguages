@@ -79,7 +79,7 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
     {
-        String in = input.getText().toString();
+        String in = input.getText().toString().trim();
         if (in.length() == 0) {
             Toast.makeText(getActivity(), R.string.msg_missing_word, Toast.LENGTH_SHORT).show();
         } else {

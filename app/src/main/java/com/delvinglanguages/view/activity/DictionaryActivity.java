@@ -1,12 +1,19 @@
 package com.delvinglanguages.view.activity;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
+import android.view.inputmethod.InputMethodManager;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
@@ -15,7 +22,6 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.lister.ReferenceLister;
-import com.delvinglanguages.view.utils.ContentLoader;
 
 public class DictionaryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
@@ -24,7 +30,6 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
 
     private ReferenceLister adapter;
 
-    private View title_bar;
     private SearchView search;
 
     @Override
@@ -32,18 +37,10 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_dictionary);
-
-        title_bar = findViewById(R.id.title_bar);
-        search = (SearchView) findViewById(R.id.search_bar);
-        search.setOnQueryTextListener(this);
-        search.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose()
-            {
-                hideSearchAction();
-                return true;
-            }
-        });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         dataManager = new LanguageManager(this);
         references = dataManager.getReferences();
@@ -56,14 +53,7 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         layoutManager.setAutoMeasureEnabled(true);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener(new ContentLoader(layoutManager) {
-            @Override
-            public void onLoadMore()
-            {
-                adapter.loadMoreData();
-            }
-        });
+        recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -83,18 +73,29 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         }
     }
 
-    public void startSearch(View view)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        title_bar.setVisibility(View.GONE);
-        search.setVisibility(SearchView.VISIBLE);
+        getMenuInflater().inflate(R.menu.m_dictionary, menu);
 
-        search.setIconified(false);
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        search = (SearchView) menu.findItem(R.id.search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        search.setOnQueryTextListener(this);
+
+        return true;
     }
 
-    private void hideSearchAction()
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
     {
-        title_bar.setVisibility(View.VISIBLE);
-        search.setVisibility(SearchView.GONE);
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 
     private DReferences queriedReferences;
@@ -103,7 +104,9 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     @Override
     public boolean onQueryTextSubmit(String query)
     {
-        hideSearchAction();
+        invalidateOptionsMenu();
+        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(search.getWindowToken(), 0);
         return true;
     }
 

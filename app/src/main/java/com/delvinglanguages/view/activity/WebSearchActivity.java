@@ -2,26 +2,28 @@ package com.delvinglanguages.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.delvinglanguages.AppCode;
+import com.delvinglanguages.AppData;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.net.MicrosoftTranslator;
 import com.delvinglanguages.net.WordReference;
@@ -29,8 +31,6 @@ import com.delvinglanguages.net.utils.OnlineDictionary;
 import com.delvinglanguages.net.utils.Search;
 import com.delvinglanguages.view.lister.WebSearchLister;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -38,7 +38,6 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
     private String lto, lfrom;
     private int to, from;
-    private Drawable dto, dfrom;
     private OnlineDictionary dictionary;
 
     private EditText input;
@@ -50,6 +49,11 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_web_search);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        setTitle("");
 
         input = (EditText) findViewById(R.id.input);
 
@@ -67,9 +71,8 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         to = AppSettings.getAppLanguageCode();
         dictionary = new WordReference(from, to, handler);
 
-        String[] slanguages = getResources().getStringArray(R.array.languages);
-        lfrom = slanguages[from];
-        lto = slanguages[to];
+        lfrom = AppData.getLanguageName(from);
+        lto = AppData.getLanguageName(to);
 
         if (!dictionary.isTranslationAvailable(from, to))
             dictionary = new MicrosoftTranslator(from, to, handler);
@@ -82,19 +85,6 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
             msgr.setText(getString(R.string.msg_cannot_translate_from_to, lfrom, lto));
         }
 
-        AssetManager amanager = getAssets();
-        try {
-            InputStream reader = amanager.open(from + ".png");
-            dfrom = Drawable.createFromStream(reader, null);
-            dfrom.setBounds(0, 0, 10, 10);
-            reader.close();
-
-            reader = amanager.open(to + ".png");
-            dto = Drawable.createFromStream(reader, null);
-            dto.setBounds(0, 0, 10, 10);
-            reader.close();
-        } catch (IOException ignored) {
-        }
         updateLanguages();
 
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -104,14 +94,25 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         input.requestFocus();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void updateLanguages()
     {
         ((TextView) findViewById(R.id.from_language)).setText(lfrom);
         ((TextView) findViewById(R.id.to_language)).setText(lto);
 
-        findViewById(R.id.from_flag).setBackground(dfrom);
-        findViewById(R.id.to_flag).setBackground(dto);
+        findViewById(R.id.from_flag).setBackgroundResource(LanguageCode.getFlagResId(from));
+        findViewById(R.id.to_flag).setBackgroundResource(LanguageCode.getFlagResId(to));
     }
 
     private int currentSearchCode = -1;
@@ -185,9 +186,6 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         lfrom = lto;
         lto = laux;
 
-        Drawable daux = dfrom;
-        dfrom = dto;
-        dto = daux;
         updateLanguages();
 
         addEnabled = !addEnabled;

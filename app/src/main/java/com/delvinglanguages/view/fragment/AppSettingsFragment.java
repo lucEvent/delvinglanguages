@@ -3,6 +3,7 @@ package com.delvinglanguages.view.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
@@ -19,9 +20,6 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     private static final int PREF_MASK_APP_LANGUAGE_NAME = 0x01;
     private static final int PREF_MASK_APP_THEME = 0x02;
 
-    private String[] themes;
-    private String[] languages;
-
     private CredentialsManager credentialsManager;
 
     @Override
@@ -30,8 +28,6 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.app_preferences);
 
-        languages = getResources().getStringArray(R.array.languages);
-        themes = getResources().getStringArray(R.array.themes);
         setUpPreferenceSummaries(0xff);
 
         findPreference(AppSettings.ONLINE_BACKUP)
@@ -66,12 +62,12 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     private void setUpPreferenceSummaries(int mask)
     {
         if ((mask & PREF_MASK_APP_LANGUAGE_NAME) != 0) {
-            Preference app_name = findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
-            app_name.setSummary(languages[AppSettings.getAppLanguageCode()]);
+            ListPreference app_name = (ListPreference) findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
+            app_name.setSummary(app_name.getEntry());
         }
         if ((mask & PREF_MASK_APP_THEME) != 0) {
-            Preference app_theme = findPreference(AppSettings.APP_THEME_KEY);
-            app_theme.setSummary(themes[AppSettings.getAppThemeCode()]);
+            ListPreference app_theme = (ListPreference) findPreference(AppSettings.APP_THEME_KEY);
+            app_theme.setSummary(app_theme.getEntry());
         }
     }
 
@@ -80,7 +76,6 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue)
         {
-            System.out.println("onPreferenceChange!! with:" + ((boolean) newValue));
             if ((boolean) newValue) {
                 if (credentialsManager == null)
                     credentialsManager = new CredentialsManager(getActivity());

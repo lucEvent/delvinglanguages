@@ -1,6 +1,7 @@
 package com.delvinglanguages.view.activity.practise;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.LanguageManager;
@@ -38,14 +40,22 @@ public class PractiseCompleteActivity extends Activity {
     private boolean shownType[];
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_practise_complete);
 
         dataManager = new LanguageManager(this);
         gameManager = new CompleteGame(dataManager.getReferences());
 
         handler = new Handler();
+
+        initUI();
+        nextReference(gameManager.nextReference());
+    }
+
+    public void initUI()
+    {
+        setContentView(R.layout.a_practise_complete);
 
         view_reference = (TextView) findViewById(R.id.reference_name);
         view_discovering = (TextView) findViewById(R.id.reference_discovering);
@@ -63,23 +73,31 @@ public class PractiseCompleteActivity extends Activity {
             key[i].setTag(i);
 
         shownType = AppAnimator.getTypeStatusVector();
-
-        nextReference(gameManager.nextReference());
     }
 
     @Override
-    protected void onPause() {
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        initUI();
+        displayFields();
+    }
+
+
+    @Override
+    protected void onPause()
+    {
         super.onPause();
         dataManager.saveStatistics();
     }
 
-    protected void nextReference(DReference ref) {
+    protected void nextReference(DReference ref)
+    {
         intento = 1;
         currentReference = ref;
         palabraUpp = ref.name.toUpperCase();
 
         position = 0;
-        AppAnimator.typeAnimation(this, shownType, currentReference.type);
         char c = palabraUpp.charAt(0);
         int pos = 1;
         if (!Character.isLetter(c)) {
@@ -105,27 +123,33 @@ public class PractiseCompleteActivity extends Activity {
             descubierta = new StringBuilder("_");
             cursor = 0;
         }
-        for (; pos < palabraUpp.length(); pos++) {
+        for (; pos < palabraUpp.length(); pos++)
             descubierta.append(" _");
-        }
+
+        teclas = gameManager.char_merger(palabraUpp, 8);
+
+        displayFields();
+    }
+
+    private void displayFields()
+    {
+        AppAnimator.typeAnimation(this, shownType, currentReference.type);
 
         view_discovering.setText(descubierta);
         view_reference.setText(currentReference.getTranslationsAsString().toUpperCase());
-
-        teclas = gameManager.char_merger(palabraUpp, 8);
 
         for (int i = 0; i < key.length; i++) {
             key[i].setEnabled(true);
             key[i].setClickable(true);
             key[i].setText("" + teclas[i].letter);
-
         }
     }
 
-    public void onKey(View v) {
+    public void onKey(View v)
+    {
         int tecla = (Integer) v.getTag();
         if (teclas[tecla].position == position) {
-            flashcolor(0xFF00FF00);
+            flashcolor(AppSettings.PROGRESS_COLOR_OK);
 
             String toappend = teclas[tecla].string;
             descubierta.replace(cursor, cursor + (toappend.length() << 1), toappend);
@@ -141,7 +165,8 @@ public class PractiseCompleteActivity extends Activity {
                     k.setEnabled(false);
                 }
                 new Thread(new Runnable() {
-                    public void run() {
+                    public void run()
+                    {
                         dataManager.exercise(currentReference, intento);
                         try {
                             Thread.sleep(2000);
@@ -149,7 +174,8 @@ public class PractiseCompleteActivity extends Activity {
                         }
                         handler.post(new Runnable() {
                             @Override
-                            public void run() {
+                            public void run()
+                            {
                                 nextReference(gameManager.nextReference());
                             }
                         });
@@ -164,23 +190,26 @@ public class PractiseCompleteActivity extends Activity {
             }
         } else {
             intento++;
-            flashcolor(0xFFFF0000);
+            flashcolor(AppSettings.PROGRESS_COLOR_MISS);
         }
     }
 
     /**
      * ******************** OPERACIONES FLASH ********************** /
      **/
-    protected Thread createFlashThread() {
+    protected Thread createFlashThread()
+    {
         return new Thread(new Runnable() {
 
             @Override
-            public void run() {
+            public void run()
+            {
                 while ((fcolor & 0xFF000000) != 0 && !muststop) {
                     fcolor -= 0x11000000;
                     handler.post(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             view_discovering.setBackgroundColor(fcolor);
                         }
                     });
@@ -194,7 +223,8 @@ public class PractiseCompleteActivity extends Activity {
         });
     }
 
-    protected void flashcolor(int color) {
+    protected void flashcolor(int color)
+    {
         fcolor = color;
         if (flash != null && flash.getState() == Thread.State.RUNNABLE) {
             muststop = true;
@@ -205,9 +235,10 @@ public class PractiseCompleteActivity extends Activity {
         flash.start();
     }
 
-    public void onConfigurationAction(View v) {
+    public void onConfigurationAction(View v)
+    {
         // TODO: 02/04/2016
-        Toast.makeText(this, "Available in coming releases. Stay updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.delvinglanguages.view.activity.practise;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseMatchActivity extends AppCompatActivity {
+
+    private static final long TIME_UNVEILING = 1500;
 
     protected LanguageManager dataManager;
     protected MatchGame gameManager;
@@ -34,13 +37,18 @@ public class PractiseMatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_practise_match);
 
-        // Iniciamos elementos del kernel
         dataManager = new LanguageManager(this);
         gameManager = new MatchGame(dataManager.getReferences());
         pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), true);
 
+        initUI();
+        nextReference();
+    }
+
+    public void initUI()
+    {
+        setContentView(R.layout.a_practise_match);
         view_reference = (TextView) findViewById(R.id.reference_name);
         view_inflexions = (TextView) findViewById(R.id.reference_inflexions);
 
@@ -52,8 +60,14 @@ public class PractiseMatchActivity extends AppCompatActivity {
             button_answer[i] = (Button) findViewById(button_ids[i]);
 
         shownType = AppAnimator.getTypeStatusVector();
+    }
 
-        nextReference();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        initUI();
+        displayFields();
     }
 
     @Override
@@ -75,14 +89,25 @@ public class PractiseMatchActivity extends AppCompatActivity {
         attempt = 1;
         roundData = gameManager.nextRound(n_options, own_options_max);
 
+        displayFields();
+    }
+
+    private void displayFields()
+    {
         view_reference.setText(roundData.reference.name);
         view_inflexions.setText(roundData.reference.getInflexionsAsString());
 
         for (int i = 0; i < n_options; i++) {
-            button_answer[i].getBackground().setColorFilter(null);
-            button_answer[i].setText(roundData.options[i].first);
-            button_answer[i].setClickable(true);
-            button_answer[i].setTag(roundData.options[i].second);
+            button_answer[i].setText(roundData.options[i].value);
+            button_answer[i].setTag(i);
+
+            if (attempt > 1 && roundData.options[i].isChecked) {
+                button_answer[i].setClickable(false);
+                button_answer[i].getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
+            } else {
+                button_answer[i].setClickable(true);
+                button_answer[i].getBackground().setColorFilter(null);
+            }
         }
 
         AppAnimator.typeAnimation(this, shownType, roundData.reference.type);
@@ -90,7 +115,9 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
     public void onAnswerSelected(View v)
     {
-        if ((Boolean) v.getTag())
+        int pos = (int) v.getTag();
+        roundData.options[pos].isChecked = true;
+        if (roundData.options[pos].isCorrect)
             acierto(v);
         else
             fallo(v);
@@ -98,12 +125,11 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
 
-    private void acierto(View v)
+    private void acierto(View view)
     {
-        v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
-        for (int i = 0; i < n_options; i++) {
+        unveilCorrectAnswers();
+        for (int i = 0; i < n_options; i++)
             button_answer[i].setClickable(false);
-        }
 
         new Thread(new Runnable() {
 
@@ -111,7 +137,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
             {
                 dataManager.exercise(roundData.reference, attempt);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(TIME_UNVEILING);
                 } catch (InterruptedException ignored) {
                 }
                 mHandler.post(new Runnable() {
@@ -130,17 +156,23 @@ public class PractiseMatchActivity extends AppCompatActivity {
         attempt++;
         v.setClickable(false);
         v.getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_MISS, AppSettings.PROGRESS_COLOR_MODE);
-        if (attempt == 4) {
-            for (int i = 0; i < n_options; i++)
-                if (roundData.options[i].second)
-                    acierto(button_answer[i]);
-        }
+        if (attempt == 4)
+            acierto(null);
+    }
+
+    private void unveilCorrectAnswers()
+    {
+        for (int i = 0; i < n_options; i++)
+            if (roundData.options[i].isCorrect) {
+                button_answer[i].getBackground().setColorFilter(AppSettings.PROGRESS_COLOR_OK, AppSettings.PROGRESS_COLOR_MODE);
+                button_answer[i].invalidate();
+            }
     }
 
     public void onConfigurationAction(View v)
     {
         // TODO: 02/04/2016
-        Toast.makeText(this, "Available in coming releases. Stay updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
     }
 
     public void onPronunciationAction(View v)

@@ -1,6 +1,5 @@
 package com.delvinglanguages.kernel;
 
-import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.DReferences;
@@ -15,26 +14,6 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 public class Language {
-
-    // Language CODE
-    public static final int ENGLISH_UK = 0;
-    public static final int ENGLISH_US = 1;
-    public static final int SWEDISH = 2;
-    public static final int FINNISH = 3;
-    public static final int SPANISH = 4;
-    public static final int CATALAN = 5;
-    public static final int BASQUE = 6;
-    public static final int CZECH = 7;
-    public static final int DANISH = 8;
-    public static final int DUTCH = 9;
-    public static final int ESTONIAN = 10;
-    public static final int FRENCH = 11;
-    public static final int GERMAN = 12;
-    public static final int GREEK = 13;
-    public static final int ITALIAN = 14;
-    public static final int NORWEGIAN = 15;
-    public static final int PORTUGUESE = 16;
-    public static final int RUSSIAN = 17;
 
     // Settings masks
     public static final int MASK_PHRASAL_VERBS = 0x1;
@@ -68,50 +47,7 @@ public class Language {
         this.settings = settings;
         this.statistics = statistics;
 
-        locale = getLocale(code);
-    }
-
-    public static Locale getLocale(int language_code)
-    {
-        switch (language_code) {
-            case ENGLISH_UK:
-                return Locale.UK;
-            case ENGLISH_US:
-                return Locale.US;
-            case SWEDISH:
-                return new Locale("sv", "SE", "SE");
-            case FINNISH:
-                return new Locale("fi", "FI", "FI");
-            case SPANISH:
-                return new Locale("es", "ES", "ES");
-            case CATALAN:
-                return new Locale("ca", "ES");
-            case BASQUE:
-                return new Locale("eu", "ES");
-            case CZECH:
-                return new Locale("cs", "CZ");
-            case DANISH:
-                return new Locale("da", "DK");
-            case DUTCH:
-                return new Locale("nl", "NL");
-            case ESTONIAN:
-                return new Locale("et", "EE");
-            case FRENCH:
-                return Locale.FRANCE;
-            case GERMAN:
-                return Locale.GERMANY;
-            case GREEK:
-                return new Locale("el", "GR");
-            case ITALIAN:
-                return Locale.ITALY;
-            case NORWEGIAN:
-                return new Locale("nb", "NO");
-            case PORTUGUESE:
-                return new Locale("pl", "PL");
-            case RUSSIAN:
-                return new Locale("ru", "RU");
-        }
-        return null;
+        locale = LanguageCode.getLocale(code);
     }
 
     /**
@@ -155,48 +91,6 @@ public class Language {
     public DReferences getVerbs()
     {
         return dictionary.getVerbs(false);
-    }
-
-    public int getTensesArrayResId()
-    {
-        int res;
-        switch (code) {
-            case SPANISH:
-                res = R.array.es_tenses;
-                break;
-            case ENGLISH_UK:
-            case ENGLISH_US:
-                res = R.array.en_tenses;
-                break;
-            case SWEDISH:
-                res = R.array.sv_tenses;
-                break;
-            default:
-                res = R.array.en_tenses;
-                break;
-        }
-        return res;
-    }
-
-    public int getSubjectArrayResId()
-    {
-        int res;
-        switch (code) {
-            case SPANISH:
-                res = R.array.es_subjects;
-                break;
-            case ENGLISH_UK:
-            case ENGLISH_US:
-                res = R.array.en_subjects;
-                break;
-            case SWEDISH:
-                res = R.array.sv_subjects;
-                break;
-            default:
-                res = R.array.en_subjects;
-                break;
-        }
-        return res;
     }
 
     public boolean isLoaded()
@@ -265,7 +159,7 @@ public class Language {
     public void setCode(int code)
     {
         this.code = code;
-        this.locale = getLocale(code);
+        this.locale = LanguageCode.getLocale(code);
     }
 
     /**

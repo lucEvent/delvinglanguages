@@ -7,14 +7,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.util.Item;
 
 public class MainTypesViewHolder extends RecyclerView.ViewHolder {
 
-    public static class Data {
+    public static class Data extends Item {
 
         public int[] types;
         public int num_themes, num_tests;
         public View.OnClickListener onAddReference, onAddTheme;
+
+        public Data()
+        {
+            super(-3, Item.TYPES_DATA);
+        }
 
     }
 

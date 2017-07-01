@@ -3,7 +3,7 @@
     <PreferenceCategory android:title="@string/pref_title_general">
 
         <ListPreference
-            android:defaultValue="0"
+            android:defaultValue="7"
             android:dialogIcon="@drawable/ic_language"
             android:entries="@array/languages"
             android:entryValues="@array/language_codes"

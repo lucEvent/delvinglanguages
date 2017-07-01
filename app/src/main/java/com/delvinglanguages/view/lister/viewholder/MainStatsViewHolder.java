@@ -7,14 +7,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.Statistics;
 
 public class MainStatsViewHolder extends RecyclerView.ViewHolder {
 
-    public static class Data {
+    public static class Data extends Item {
 
         public Statistics statistics;
         public View.OnClickListener onResetStatistics;
+
+        public Data()
+        {
+            super(-2, Item.STATS_DATA);
+        }
 
     }
 

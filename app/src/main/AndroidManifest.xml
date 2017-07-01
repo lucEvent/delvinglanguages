@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Main"
-            android:configChanges="keyboard|keyboardHidden"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,13 +29,17 @@
 
         <activity
             android:name=".view.activity.StartActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".view.activity.CreateLanguageActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".view.activity.BackUpActivity">
+        <activity
+            android:name=".view.activity.BackUpActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="com.delvinglanguages.backup.IMPORT"/>
                 <action android:name="com.delvinglanguages.backup.EXPORT"/>
@@ -45,48 +49,84 @@
         </activity>
         <activity
             android:name=".view.activity.LanguageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"/>
+        </activity>
         <activity
             android:name=".view.activity.ThemeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.LanguageActivity"/>
+        </activity>
         <activity
             android:name=".view.activity.ThemeEditorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.DictionaryActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_dictionary"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"/>
+        </activity>
         <activity
             android:name=".view.activity.DReferenceActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.DictionaryActivity"/>
+        </activity>
         <activity
             android:name=".view.activity.ReferenceEditorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.WebSearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"/>
+        </activity>
         <activity
             android:name=".view.activity.practise.PractiseMatchActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.PractiseCompleteActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.PractiseWriteActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.PractiseListeningActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.PractiseTestActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.TestEditorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view.activity.practise.TestActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".view.activity.LanguageMergerActivity">
+        <activity
+            android:name=".view.activity.LanguageMergerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="com.delvinglanguages.merger.MERGE"/>
 

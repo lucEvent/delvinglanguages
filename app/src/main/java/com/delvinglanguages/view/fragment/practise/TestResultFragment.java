@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.test.Test;
@@ -34,6 +38,13 @@ public class TestResultFragment extends android.app.Fragment {
     private ReferenceLister adapter;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.f_test, container, false);
@@ -41,13 +52,6 @@ public class TestResultFragment extends android.app.Fragment {
         Context context = getActivity();
 
         adapter = new ReferenceLister(test.getReferences(), true, null);
-
-        View button_delete = view.findViewById(R.id.button_delete);
-        View button_start_test = view.findViewById(R.id.button_start_test);
-        button_delete.setOnClickListener(onDeleteAction);
-        button_start_test.setOnClickListener(onStartTestAction);
-        button_delete.setOnLongClickListener(onDeleteLongPress);
-        button_start_test.setOnLongClickListener(onStartTestLongPress);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setAutoMeasureEnabled(true);
@@ -58,9 +62,6 @@ public class TestResultFragment extends android.app.Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        ((TextView) view.findViewById(R.id.test_name)).setText(test.name);
-
 
         if (!test.hasRun())
             ((TextView) view.findViewById(R.id.content_test_stats)).setText(R.string.msg_test_hasnot_run_yet);
@@ -79,61 +80,61 @@ public class TestResultFragment extends android.app.Fragment {
         return view;
     }
 
-    private View.OnClickListener onDeleteAction = new View.OnClickListener() {
-        @Override
-        public void onClick(View v)
-        {
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.msg_confirm_to_delete_xxx)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                            onConfirmDelete();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .create()
-                    .show();
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.setTitle(test.name);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        menu.add(Menu.NONE, R.id.delete, 0, R.string.delete)
+                .setIcon(R.drawable.ic_delete_white)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, R.id.start, 1, R.string.start)
+                .setIcon(R.drawable.ic_play_white)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                break;
+            case R.id.delete:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.msg_confirm_to_delete_xxx)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                onConfirmDelete();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create()
+                        .show();
+                break;
+            case R.id.start:
+                handler.obtainMessage(TestListener.TEST_START).sendToTarget();
         }
-    };
+        return true;
+    }
 
     private void onConfirmDelete()
     {
         handler.obtainMessage(TestListener.TEST_DELETED).sendToTarget();
-    }
-
-    private View.OnClickListener onStartTestAction = new View.OnClickListener() {
-        @Override
-        public void onClick(View v)
-        {
-            handler.obtainMessage(TestListener.TEST_START).sendToTarget();
-        }
-    };
-
-    private View.OnLongClickListener onDeleteLongPress = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v)
-        {
-            showMenuItemToast(v, R.string.delete);
-            return true;
-        }
-    };
-
-    private View.OnLongClickListener onStartTestLongPress = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v)
-        {
-            showMenuItemToast(v, R.string.start);
-            return true;
-        }
-    };
-
-    private void showMenuItemToast(View v, int msg_id)
-    {
-        Toast toast = Toast.makeText(v.getContext(), msg_id, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP | Gravity.START, v.getLeft(), v.getTop() + v.getHeight());
-        toast.show();
     }
 
 }

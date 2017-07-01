@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
@@ -27,7 +28,6 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
     private static final int PREF_LANGUAGE_CODE = 0x1;
     private static final int PREF_LANGUAGE_NAME = 0x2;
 
-    private String[] languages;
     private LanguageManager dataManager;
     private Language language;
 
@@ -37,7 +37,6 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
         super.onCreate(savedInstanceState);
 
         dataManager = new LanguageManager(getActivity());
-        languages = getResources().getStringArray(R.array.languages);
         language = dataManager.getCurrentLanguage();
 
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
@@ -104,7 +103,8 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
 
         if ((PREF_LANGUAGE_CODE & settings) != 0) {
 
-            findPreference(resources.getString(R.string.pref_language_code_key)).setSummary(languages[language.code]);
+            ListPreference pref = (ListPreference) findPreference(resources.getString(R.string.pref_language_code_key));
+            pref.setSummary(pref.getEntry());
 
         }
         if ((PREF_LANGUAGE_NAME & settings) != 0) {

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.delvinglanguages.AppCode;
@@ -35,6 +36,8 @@ public class ThemeActivity extends AppCompatActivity {
         setContentView(R.layout.a_theme);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         dataManager = new ThemeManager(this);
 
@@ -54,6 +57,17 @@ public class ThemeActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         setTitle(theme.getName());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 
     @Override
