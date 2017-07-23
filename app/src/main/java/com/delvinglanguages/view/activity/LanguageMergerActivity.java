@@ -4,16 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ArrayAdapter;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.MergeManager;
 import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.view.utils.LanguageListener;
 
 // // TODO: 19/08/2016 This activity must implement a asynctask
 public class LanguageMergerActivity extends Activity {
@@ -192,13 +195,21 @@ public class LanguageMergerActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        new LanguageManager(getApplicationContext()).deleteLanguage();
-                        LanguageMergerActivity.this.finish();
+                        onRemoveLanguage();
                     }
                 })
                 .setNegativeButton(R.string.no, onCancel)
                 .create()
                 .show();
+    }
+
+    private void onRemoveLanguage()
+    {
+        new LanguageManager(this).deleteLanguage();
+        Intent intent = new Intent();
+        intent.putExtra(AppCode.LANGUAGE_ID, language_dst.id);
+        setResult(LanguageListener.LANGUAGE_MERGED_AND_REMOVED, intent);
+        finish();
     }
 
 }

@@ -106,6 +106,7 @@ public class MergeManager extends KernelManager {
 
         database.closeWritableDatabase();
 
+        RecordManager.languageIntegrated(mergePlan.src.id, mergePlan.src.code, mergePlan.src.language_name, mergePlan.dst.language_name);
 //        synchronizeUpdate(dst.id);//// TODO: 20/08/2016
     }
 

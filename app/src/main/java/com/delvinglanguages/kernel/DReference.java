@@ -6,7 +6,7 @@ import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class DReference extends Item implements Wrapper<DReference>, Comparable<DReference> {
+public class DReference extends Item implements Wrapper, Comparable<DReference> {
 
     private final static String SEP = "%Dr";
 
@@ -40,9 +40,9 @@ public class DReference extends Item implements Wrapper<DReference>, Comparable<
         return new DReference(-1, name, null, new Inflexions(), -1);
     }
 
-    public DReference(int id, String name, String pronunciation, String inflexions, int priority)
+    public DReference(int id, String name, String pronunciation, String inflexionWrapper, int priority)
     {
-        this(id, name, pronunciation, new Inflexions(inflexions), priority);
+        this(id, name, pronunciation, Inflexions.fromWrapper(inflexionWrapper), priority);
     }
 
     public DReference(int id, String name, String pronunciation, Inflexions inflexions, int priority)
@@ -56,6 +56,33 @@ public class DReference extends Item implements Wrapper<DReference>, Comparable<
 
         for (Inflexion i : inflexions)
             this.type = this.type | i.getType();
+    }
+
+    public static DReference fromWrapper(int id, @NonNull String wrapper)
+    {
+        String[] items = wrapper.split(SEP);
+
+        String name = items[0];
+        Inflexions inflexions = Inflexions.fromWrapper(items[1]);
+        String pronunciation = items[2];
+        int priority = Integer.parseInt(items[3]);
+
+        return new DReference(id, name, pronunciation, inflexions, priority);
+    }
+
+    @Override
+    public String wrap()
+    {
+        return name +
+                SEP + inflexions.wrap() +
+                SEP + pronunciation +
+                SEP + priority;
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return Wrapper.TYPE_REFERENCE;
     }
 
     /**
@@ -164,34 +191,6 @@ public class DReference extends Item implements Wrapper<DReference>, Comparable<
         this.type = 0;
         for (Inflexion i : inflexions)
             this.type = this.type | i.getType();
-    }
-
-    @Override
-    public String wrap()
-    {
-        return name +
-                SEP + inflexions.wrap() +
-                SEP + pronunciation +
-                SEP + priority;
-    }
-
-    @Override
-    public DReference unWrap(@NonNull String wrapper)
-    {
-        String[] items = wrapper.split(SEP);
-
-        String name = items[0];
-        Inflexions inflexions = new Inflexions(items[1]);
-        String pronunciation = items[2];
-        int priority = Integer.parseInt(items[3]);
-
-        return new DReference(-1, name, pronunciation, inflexions, priority);
-    }
-
-    @Override
-    public int wrapType()
-    {
-        return Wrapper.TYPE_REFERENCE;
     }
 
     @Override

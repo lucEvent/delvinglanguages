@@ -1,7 +1,9 @@
 package com.delvinglanguages.view.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.preference.PreferenceManager;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.view.activity.LanguageMergerActivity;
 import com.delvinglanguages.view.utils.LanguageListener;
 
 public class LanguageSettingsFragment extends android.preference.PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -47,10 +50,10 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
 
         addPreferencesFromResource(R.xml.language_preferences);
 
-        Preference pref_remove = getPreferenceManager().findPreference(getString(R.string.pref_language_remove_key));
-        pref_remove.setOnPreferenceClickListener(onRemoveLanguageAction);
-        Preference pref_reset_statistics = getPreferenceManager().findPreference(getString(R.string.pref_language_reset_statistics_key));
-        pref_reset_statistics.setOnPreferenceClickListener(onResetStatisticsAction);
+        PreferenceManager pm = getPreferenceManager();
+        pm.findPreference(getString(R.string.pref_language_remove_key)).setOnPreferenceClickListener(onRemoveLanguageAction);
+        pm.findPreference(getString(R.string.pref_language_reset_statistics_key)).setOnPreferenceClickListener(onResetStatisticsAction);
+        pm.findPreference(getString(R.string.pref_language_merge_key)).setOnPreferenceClickListener(onMergeAction);
 
         setUpSummaries(0xFF);
     }
@@ -77,14 +80,14 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
         if (key.equals(resources.getString(R.string.pref_language_code_key))) {
 
             int code = Integer.parseInt(sharedPreferences.getString(key, "0"));
-            dataManager.updateLanguage(code, language.language_name);
+            dataManager.updateLanguageCode(code);
             setUpSummaries(PREF_LANGUAGE_CODE);
 
         } else if (key.equals(resources.getString(R.string.pref_language_name_key))) {
 
             String language_name = sharedPreferences.getString(key, "").trim();
             if (language_name.length() > 0) {
-                dataManager.updateLanguage(language.code, language_name);
+                dataManager.updateLanguageName(language_name);
                 setUpSummaries(PREF_LANGUAGE_NAME);
                 getActivity().setResult(LanguageListener.LANGUAGE_NAME_CHANGED);
                 getActivity().setTitle(language_name);
@@ -119,7 +122,7 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
         public boolean onPreferenceClick(Preference preference)
         {
             new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.msg_confirm_to_delete_xxx)
+                    .setTitle(R.string.msg_confirm_to_remove)
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
@@ -163,5 +166,15 @@ public class LanguageSettingsFragment extends android.preference.PreferenceFragm
     {
         dataManager.resetStatistics();
     }
+
+    private Preference.OnPreferenceClickListener onMergeAction = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference)
+        {
+            Activity context = getActivity();
+            context.startActivityForResult(new Intent(context, LanguageMergerActivity.class), 0);
+            return true;
+        }
+    };
 
 }

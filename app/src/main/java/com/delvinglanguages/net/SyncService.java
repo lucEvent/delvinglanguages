@@ -10,6 +10,7 @@ import android.os.IBinder;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
+import com.delvinglanguages.Main;
 import com.delvinglanguages.data.SyncDatabaseManager;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
@@ -17,16 +18,15 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
-import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Languages;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Wrapper;
 import com.delvinglanguages.net.utils.SyncWrapper;
 import com.delvinglanguages.net.utils.SyncWrappers;
 import com.delvinglanguages.server.delvingApi.DelvingApi;
 import com.delvinglanguages.server.delvingApi.model.LanguageItem;
 import com.delvinglanguages.server.delvingApi.model.UpdateWrapper;
+import com.delvinglanguages.view.utils.LanguageListener;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -113,7 +113,10 @@ public class SyncService extends IntentService {
 
                     // 1. Download changes from the server and store them in DB
                     AppSettings.printlog("1. Download changes from the server and store them in DB (lastSyncTime:" + lastSync + ")");
-                    downloadChanges(lastSync);
+                    boolean changed = downloadChanges(lastSync);
+
+                    if (changed)
+                        Main.handler.obtainMessage(LanguageListener.SYNC_DATA_CHANGED).sendToTarget();
 
                     // 2. Update last sync time
                     AppSettings.printlog("2. Update last sync time");
@@ -175,54 +178,56 @@ public class SyncService extends IntentService {
             }
         } catch (Exception e) {
             AppSettings.printerror("Exception on server", e);
+            sendBroadcast(new Intent(AppCode.ACTION_SYNC).putExtra(AppCode.ACTION_SYNC, AppCode.SYNC_ERROR));
         }
     }
 
-    private void downloadChanges(long lastSync) throws IOException
+    private boolean downloadChanges(long lastSync) throws IOException
     {
         UpdateWrapper update = apiService.getServerUpdate(lastSync).execute();
 
         sendBroadcast(new Intent(AppCode.ACTION_SYNC).putExtra(AppCode.ACTION_SYNC, AppCode.SYNC_SAVING));
 
+        boolean changes = false;
 
         syncDatabase.openWritableDatabase();
 
-        if (update.getLanguagesToAdd() != null)
+        if (update.getLanguagesToAdd() != null) {
+            changes = true;
             for (com.delvinglanguages.server.delvingApi.model.Language sl : update.getLanguagesToAdd())
                 syncDatabase.insertLanguage(sl.getId(), sl.getCode(), sl.getName(), sl.getSettings());
+        }
 
-        if (update.getLanguagesToUpdate() != null)
+        if (update.getLanguagesToUpdate() != null) {
+            changes = true;
             for (com.delvinglanguages.server.delvingApi.model.Language sl : update.getLanguagesToUpdate())
                 syncDatabase.updateLanguage(sl.getId(), sl.getCode(), sl.getName(), sl.getSettings());
+        }
 
-        if (update.getLanguagesToRemove() != null)
+        if (update.getLanguagesToRemove() != null) {
+            changes = true;
             for (int id : update.getLanguagesToRemove())
                 syncDatabase.deleteLanguage(id);
-
-        DReference refWrapper = DReference.createBait("");
-        DrawerReference drefWrapper = new DrawerReference(0, "");
-        Theme thAux = new Theme(0, "", new ThemePairs());
-        Test tsAux = new Test(0, "", new DReferences(), -1);
-        Statistics stsAux = new Statistics(0);
+        }
 
         if (update.getItemsToAdd() != null)
             for (LanguageItem item : update.getItemsToAdd())
                 switch (item.getType()) {
                     case Wrapper.TYPE_REFERENCE:
-                        DReference ref = refWrapper.unWrap(item.getWrapper());
-                        syncDatabase.insertReference(item.getId(), item.getLanguageId(), ref.name, ref.getInflexions().wrap(), ref.pronunciation, ref.priority);
+                        DReference ref = DReference.fromWrapper(item.getId(), item.getWrapper());
+                        syncDatabase.insertReference(ref.id, item.getLanguageId(), ref.name, ref.getInflexions().wrap(), ref.pronunciation, ref.priority);
                         break;
                     case Wrapper.TYPE_DRAWER_REFERENCE:
-                        DrawerReference dref = drefWrapper.unWrap(item.getWrapper());
+                        DrawerReference dref = DrawerReference.fromWrapper(item.getId(), item.getWrapper());
                         syncDatabase.insertDrawerReference(item.getId(), item.getLanguageId(), dref.name);
                         break;
                     case Wrapper.TYPE_THEME:
-                        Theme theme = thAux.unWrap(item.getWrapper());
-                        syncDatabase.insertTheme(item.getId(), item.getLanguageId(), theme.getName(), theme.getPairs());
+                        Theme theme = Theme.fromWrapper(item.getId(), item.getWrapper());
+                        syncDatabase.insertTheme(theme.id, item.getLanguageId(), theme.getName(), theme.getPairs());
                         break;
                     case Wrapper.TYPE_TEST:
-                        Test test = tsAux.unWrap(item.getWrapper());
-                        syncDatabase.insertTest(item.getId(), item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.theme_id);
+                        Test test = Test.fromWrapper(item.getId(), item.getWrapper());
+                        syncDatabase.insertTest(test.id, item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.theme_id);
                         break;
                 }
 
@@ -230,16 +235,16 @@ public class SyncService extends IntentService {
             for (LanguageItem item : update.getItemsToUpdate())
                 switch (item.getType()) {
                     case Wrapper.TYPE_REFERENCE:
-                        syncDatabase.updateReference(refWrapper.unWrap(item.getWrapper()), item.getLanguageId());
+                        syncDatabase.updateReference(DReference.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
                         break;
                     case Wrapper.TYPE_THEME:
-                        syncDatabase.updateTheme(thAux.unWrap(item.getWrapper()), item.getLanguageId());
+                        syncDatabase.updateTheme(Theme.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
                         break;
                     case Wrapper.TYPE_TEST:
-                        syncDatabase.updateTest(tsAux.unWrap(item.getWrapper()), item.getLanguageId());
+                        syncDatabase.updateTest(Test.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
                         break;
                     case Wrapper.TYPE_STATISTICS:
-                        syncDatabase.updateStatistics(stsAux.unWrap(item.getWrapper()));
+                        syncDatabase.updateStatistics(Statistics.fromWrapper(item.getId(), item.getWrapper()));
                         break;
                 }
 
@@ -261,6 +266,8 @@ public class SyncService extends IntentService {
                 }
 
         syncDatabase.closeWritableDatabase();
+
+        return changes;
     }
 
     private void uploadChanges() throws IOException
@@ -325,8 +332,8 @@ public class SyncService extends IntentService {
                 ).execute();
             syncDatabase.syncTests();
         }
-
-        SyncWrappers removes = syncDatabase.readRemoves();
+//// TODO: 12/07/2017  Falta sincronizar los nuevos RemovedItems
+        SyncWrappers removes = syncDatabase.readDeletes();
         if (!removes.isEmpty()) {
             for (SyncWrapper removedItem : removes) {
                 if (removedItem.wrap_type == Wrapper.TYPE_LANGUAGE)
@@ -377,14 +384,18 @@ public class SyncService extends IntentService {
                 break;
             case DELETE_LANGUAGE:
 
+                syncDatabase.openWritableDatabase();
                 syncDatabase.insertSyncItem(language_id, language_id, Wrapper.TYPE_LANGUAGE);
+                syncDatabase.closeWritableDatabase();
 
                 break;
             case DELETE_ITEM:
 
                 int item_id = extras.getInt(ITEM_ID_KEY);
                 int type = extras.getInt(ITEM_TYPE_KEY);
+                syncDatabase.openWritableDatabase();
                 syncDatabase.insertSyncItem(item_id, language_id, type);
+                syncDatabase.closeWritableDatabase();
 
                 break;
         }

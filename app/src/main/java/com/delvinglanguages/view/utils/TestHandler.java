@@ -20,8 +20,8 @@ public class TestHandler extends android.os.Handler {
             case TestListener.TEST_START:
                 messager.get().onTestStart();
                 break;
-            case TestListener.TEST_DELETED:
-                messager.get().onTestDeleted();
+            case TestListener.TEST_REMOVED:
+                messager.get().onTestRemoved();
                 break;
             case TestListener.TEST_ROUND_PASSED:
                 messager.get().onTestRoundPassed();
@@ -30,7 +30,6 @@ public class TestHandler extends android.os.Handler {
                 messager.get().onTestRoundSkipped();
                 break;
         }
-
     }
 
 }

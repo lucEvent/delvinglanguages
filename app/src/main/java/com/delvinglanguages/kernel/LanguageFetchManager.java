@@ -44,9 +44,7 @@ public class LanguageFetchManager extends LanguageManager {
                 while (!language.isDictionaryCreated()) ;
 
                 MainTypesViewHolder.Data data = new MainTypesViewHolder.Data();
-                data.types = language.getTypeCounter();
-                data.num_themes = language.themes.size();
-                data.num_tests = language.tests.size();
+                data.language = language;
                 handler.obtainMessage(DataListener.MAIN_DATA_COUNTERS, data).sendToTarget();
             }
         }).start();

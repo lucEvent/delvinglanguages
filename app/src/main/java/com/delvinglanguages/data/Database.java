@@ -11,13 +11,14 @@ import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
+import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.net.utils.SyncWrapper;
 
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "delving.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String id = "_id";
     public static final String code = "code";
@@ -40,6 +41,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String pairs = "pairs";
     public static final String type = "type";
     public static final String synced = "synced";
+    public static final String wrappedContent = "wrappedContent";
 
     public static final int SYNCED = 1;
     public static final int NOT_SYNCED = 0;
@@ -116,26 +118,6 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-    public static final class DBRemovedReference {
-
-        public static String db = "removedreference";
-
-        public static String[] cols = {lang_id, reference_id};
-
-        public static String creator =
-                "CREATE TABLE " + db + " (" +
-                        lang_id + " INTEGER," +
-                        reference_id + " INTEGER," +
-                        synced + " INTEGER" +
-                        ");";
-
-        public static int parse(Cursor c)
-        {
-            return c.getInt(1);
-        }
-
-    }
-
     public static final class DBDrawerReference {
 
         public static String db = "drawerreference";
@@ -203,9 +185,31 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-    public static final class DBItemeRemoved {
+    public static final class DBRemovedItem {
 
-        public static String db = "item_removed";
+        public static String db = "removed_item";
+
+        public static String[] cols = {id, lang_id, type, wrappedContent};
+
+        public static String creator =
+                "CREATE TABLE " + db + " (" +
+                        id + " INTEGER," +
+                        lang_id + " INTEGER," +
+                        type + " INTEGER," +
+                        wrappedContent + " TEXT NOT NULL," +
+                        synced + " INTEGER" +
+                        ");";
+
+        public static RemovedItem parse(Cursor c)
+        {
+            return new RemovedItem(c.getInt(0), c.getInt(1), c.getInt(2), c.getString(3));
+        }
+
+    }
+
+    public static final class DBDeletedItem {
+
+        public static String db = "deleted_item";
 
         public static String[] cols = {id, lang_id, type};
 
@@ -234,10 +238,11 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(DBLanguage.creator);
         db.execSQL(DBStatistics.creator);
         db.execSQL(DBReference.creator);
-        db.execSQL(DBRemovedReference.creator);
         db.execSQL(DBDrawerReference.creator);
         db.execSQL(DBTest.creator);
         db.execSQL(DBTheme.creator);
+        db.execSQL(DBRemovedItem.creator);
+        db.execSQL(DBDeletedItem.creator);
     }
 
     @Override
@@ -245,6 +250,12 @@ public class Database extends SQLiteOpenHelper {
     {
         AppSettings.printlog("Upgrading DB from version: " + oldVersion + " to " + newVersion);
 
+        switch (oldVersion) {
+            case 1:
+                db.execSQL("DROP TABLE removedreference");
+                db.execSQL(DBRemovedItem.creator);
+                db.execSQL(DBDeletedItem.creator);
+        }
         // Delete all needed tables
         // db.execSQL("DROP TABLE "+ "db_languages");
         // Create all needed tables

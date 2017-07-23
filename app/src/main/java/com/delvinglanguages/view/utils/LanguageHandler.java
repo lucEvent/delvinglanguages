@@ -26,6 +26,12 @@ public class LanguageHandler extends android.os.Handler {
             case LanguageListener.LANGUAGE_NAME_CHANGED:
                 messager.get().onLanguageNameChanged();
                 break;
+            case LanguageListener.LANGUAGE_MERGED_AND_REMOVED:
+                messager.get().onLanguageMergeAndRemoved(msg.arg1);
+                break;
+            case LanguageListener.SYNC_DATA_CHANGED:
+                messager.get().onSyncDataChanged();
+                break;
             case LanguageListener.ENABLE_SYNCHRONIZATION:
                 messager.get().onSynchronizationStateChanged(true);
                 break;

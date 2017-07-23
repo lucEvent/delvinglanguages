@@ -2,7 +2,7 @@ package com.delvinglanguages.kernel.util;
 
 import android.support.annotation.NonNull;
 
-public class Statistics implements Wrapper<Statistics> {     //// TODO: 08/04/2016  More complete statistics :)
+public class Statistics implements Wrapper {     //// TODO: 08/04/2016  More complete statistics :)
 
     private static final String SEP = "%S";
 
@@ -27,6 +27,33 @@ public class Statistics implements Wrapper<Statistics> {     //// TODO: 08/04/20
         this.hits_at_2nd = hits_at_2nd;
         this.hits_at_3rd = hits_at_3rd;
         this.misses = misses;
+    }
+
+    public static Statistics fromWrapper(int id, @NonNull String wrapper)
+    {
+        String[] parts = wrapper.split("SEP");
+        return new Statistics(id,
+                Integer.parseInt(parts[0]),
+                Integer.parseInt(parts[1]),
+                Integer.parseInt(parts[2]),
+                Integer.parseInt(parts[3]),
+                Integer.parseInt(parts[4]));
+    }
+
+    @Override
+    public String wrap()
+    {
+        return attempts
+                + SEP + hits_at_1st
+                + SEP + hits_at_2nd
+                + SEP + hits_at_3rd
+                + SEP + misses;
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return TYPE_STATISTICS;
     }
 
     public float percentageHitsAt1st()
@@ -74,34 +101,6 @@ public class Statistics implements Wrapper<Statistics> {     //// TODO: 08/04/20
         hits_at_2nd = 0;
         hits_at_3rd = 0;
         misses = 0;
-    }
-
-    @Override
-    public String wrap()
-    {
-        return attempts
-                + SEP + hits_at_1st
-                + SEP + hits_at_2nd
-                + SEP + hits_at_3rd
-                + SEP + misses;
-    }
-
-    @Override
-    public Statistics unWrap(@NonNull String wrapper)
-    {
-        String[] parts = wrapper.split("SEP");
-        return new Statistics(-1,
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2]),
-                Integer.parseInt(parts[3]),
-                Integer.parseInt(parts[4]));
-    }
-
-    @Override
-    public int wrapType()
-    {
-        return TYPE_STATISTICS;
     }
 
 }

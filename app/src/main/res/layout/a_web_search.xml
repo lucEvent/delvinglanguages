@@ -120,6 +120,16 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:onClick="onCopyright"
+            android:padding="5dp"
+            android:text="Copyright"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <TextView
             android:id="@+id/messager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

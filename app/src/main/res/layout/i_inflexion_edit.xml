@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -21,7 +22,7 @@
             android:paddingRight="10dip"
             android:paddingTop="1dip"
             android:text="EXPRESSION"
-            android:textSize="10sp" />
+            android:textSize="10sp"/>
 
         <ImageView
             android:id="@+id/edit"
@@ -29,7 +30,7 @@
             android:layout_height="30dp"
             android:layout_toStartOf="@+id/delete"
             android:padding="5dp"
-            android:src="@drawable/ic_edit" />
+            android:src="@drawable/ic_edit"/>
 
         <ImageView
             android:id="@+id/delete"
@@ -37,7 +38,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:padding="5dp"
-            android:src="@drawable/ic_delete" />
+            android:src="@drawable/ic_delete"/>
 
 
     </RelativeLayout>
@@ -63,12 +64,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/translations_cap"
                 android:textColor="#AA000000"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="#444" />
+                android:background="#444"/>
 
         </LinearLayout>
 
@@ -80,7 +81,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="8dp"
-            android:orientation="vertical" />
+            android:orientation="vertical"/>
 
         <LinearLayout
             android:id="@+id/title_inflexions"
@@ -97,12 +98,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/inflexions_cap"
                 android:textColor="#AA000000"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="#444" />
+                android:background="#444"/>
 
         </LinearLayout>
 
@@ -114,7 +115,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:text="Lämna"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     </LinearLayout>
 

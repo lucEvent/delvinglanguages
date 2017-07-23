@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:fitsSystemWindows="true"
     tools:context="com.delvinglanguages.view.activity.DReferenceActivity">
 
@@ -66,28 +67,11 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:onClick="actionDelete"
-        android:src="@drawable/ic_delete"
-        app:backgroundTint="@color/floatingbutton"
-        app:backgroundTintMode="multiply"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="center_vertical|end"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:onClick="actionEdit"
-        android:src="@drawable/ic_edit"
-        app:backgroundTint="@color/floatingbutton"
-        app:backgroundTintMode="multiply"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"/>
+    <com.delvinglanguages.view.utils.HorizontalFloatingButtonBar
+        android:id="@+id/option_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/floating_button_margin"
+        android:clipChildren="false"/>
 
 </android.support.design.widget.CoordinatorLayout>

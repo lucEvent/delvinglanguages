@@ -27,7 +27,7 @@ public class AddTranslationDialog {
     private Button[] types;
 
 
-    public AddTranslationDialog(Context context, Handler handler)
+    public AddTranslationDialog(Context context, Handler handler, boolean arePhrasalsEnabled)
     {
         this.handler = handler;
 
@@ -46,6 +46,9 @@ public class AddTranslationDialog {
             types[i] = (Button) view.findViewById(i_types[i]);
             types[i].setOnClickListener(onTypeSelected);
         }
+
+        if (!arePhrasalsEnabled)
+            types[4].setVisibility(View.GONE);
 
         dialog = new AlertDialog.Builder(context)
                 .setView(view)
@@ -67,9 +70,9 @@ public class AddTranslationDialog {
             {
 
                 InputMethodManager imm = (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
+                if (imm != null)
                     imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
-                }
+
                 in_translations.setSelection(in_translations.getText().length());
 
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -107,11 +110,11 @@ public class AddTranslationDialog {
             return;
         }
         int type = 0;
-        for (int i = 0; i < types.length; i++) {
-            if (types[i].isSelected()) {
+        for (int i = 0; i < types.length; i++)
+            if (types[i].isSelected())
                 type += (1 << i);
-            }
-        }
+
+
         if (type == 0) {
             handler.obtainMessage(MessageListener.MESSAGE_INT, R.string.msg_missing_type).sendToTarget();
             return;
@@ -133,13 +136,11 @@ public class AddTranslationDialog {
 
     private void setType(int type)
     {
-        for (int i = 0; i < types.length; ++i) {
-            if ((type & (1 << i)) != 0) {
+        for (int i = 0; i < types.length; ++i)
+            if ((type & (1 << i)) != 0)
                 types[i].setSelected(true);
-            } else if (types[i].isSelected()) {
+            else if (types[i].isSelected())
                 types[i].setSelected(false);
-            }
-        }
     }
 
     private View.OnClickListener onTypeSelected = new View.OnClickListener() {

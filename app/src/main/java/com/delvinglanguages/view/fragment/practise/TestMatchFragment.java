@@ -22,12 +22,13 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestMatchFragment extends TestFragment {
 
-    public static TestMatchFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
+    public static TestMatchFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage, boolean showPhrasal)
     {
         TestMatchFragment f = new TestMatchFragment();
         f.reference = reference;
         f.handler = handler;
         f.nextStage = nextStage;
+        f.showPhrasal = showPhrasal;
         return f;
     }
 
@@ -84,6 +85,10 @@ public class TestMatchFragment extends TestFragment {
                 button_answer[i].getBackground().setColorFilter(null);
             }
         }
+
+        if (!showPhrasal)
+            view.findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
+
         return view;
     }
 

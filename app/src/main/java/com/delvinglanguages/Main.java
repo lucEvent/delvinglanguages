@@ -26,6 +26,7 @@ import com.delvinglanguages.view.activity.CreateLanguageActivity;
 import com.delvinglanguages.view.activity.StartActivity;
 import com.delvinglanguages.view.fragment.FragmentManager;
 import com.delvinglanguages.view.fragment.LanguageMainFragment;
+import com.delvinglanguages.view.fragment.RecordsFragment;
 import com.delvinglanguages.view.utils.LanguageHandler;
 import com.delvinglanguages.view.utils.LanguageListener;
 
@@ -123,6 +124,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         } else super.onBackPressed();
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        if (fragmentManager.currentFragment instanceof LanguageMainFragment)
+            ((LanguageMainFragment) fragmentManager.currentFragment).refreshValues();
+    }
+
     public void onDrawerActionBarItemSelected(View v)
     {
         navigateTo(v.getId());
@@ -145,9 +155,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 return true;
             case R.id.nav_historial:
                 title = getString(R.string.historial);
-                //      fragment = new HistorialFragment();
-                Snackbar.make(drawer, R.string.msg_not_implemented, Snackbar.LENGTH_SHORT).show();
-                return false;//   break;
+                fragment = new RecordsFragment();
+                break;
             case R.id.nav_app_settings:
                 fragment = new com.delvinglanguages.view.fragment.AppSettingsFragment();
                 title = getString(R.string.settings);
@@ -205,7 +214,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
                 Language language = dataManager.getLanguages().last();
 
-                if (fragmentManager.getBackStackEntryCount() == 0) {
+                if (fragmentManager.currentFragment == null) {
                     displayFirstFragment(language);
                     languageFragment.invalidate();
                     setTitle(dataManager.getLanguages().first().language_name);
@@ -343,14 +352,30 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
+    public void onLanguageMergeAndRemoved(int id)
+    {
+        updateLanguageList();
+
+        Language next = dataManager.getLanguages().getLanguageById(id);
+        navigateTo(next.id);
+    }
+
+    @Override
+    public void onSyncDataChanged()
+    {
+        dataManager.invalidateData();
+        updateLanguageList();
+    }
+
+    @Override
     public void onSynchronizationStateChanged(boolean enabled)
     {
-        if (enabled) {
-            dataManager.setState();
+        dataManager.setState();
+
+        if (enabled)
             dataManager.synchronize();
-        } else {
+        else
             dataManager.stopSynchronize();
-        }
     }
 
     @Override

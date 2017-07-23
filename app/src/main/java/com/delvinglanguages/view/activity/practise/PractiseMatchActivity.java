@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.MatchGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
+import com.delvinglanguages.kernel.record.Record;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseMatchActivity extends AppCompatActivity {
@@ -58,6 +60,9 @@ public class PractiseMatchActivity extends AppCompatActivity {
         button_answer = new Button[button_ids.length];
         for (int i = 0; i < button_answer.length; i++)
             button_answer[i] = (Button) findViewById(button_ids[i]);
+
+        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+            findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownType = AppAnimator.getTypeStatusVector();
     }
@@ -135,7 +140,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
             public void run()
             {
-                dataManager.exercise(roundData.reference, attempt);
+                dataManager.exercise(Record.PRACTISED_MATCH, roundData.reference, attempt);
                 try {
                     Thread.sleep(TIME_UNVEILING);
                 } catch (InterruptedException ignored) {

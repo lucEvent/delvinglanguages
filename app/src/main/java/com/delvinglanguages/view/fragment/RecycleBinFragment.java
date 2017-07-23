@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.view.lister.RecycleBinLister;
 
 public class RecycleBinFragment extends Fragment {
@@ -38,7 +38,7 @@ public class RecycleBinFragment extends Fragment {
 
         dataManager = new LanguageManager(context);
 
-        adapter = new RecycleBinLister(dataManager.getRemovedReferences(), onRestoreItem);
+        adapter = new RecycleBinLister(dataManager.getRemovedItems(), onRestoreItem);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setAutoMeasureEnabled(true);
@@ -56,8 +56,8 @@ public class RecycleBinFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        menu.add(Menu.NONE, R.id.delete_all, 0, R.string.delete_all)
-                .setIcon(R.drawable.ic_delete_all)
+        menu.add(Menu.NONE, R.id.clear_recycler_bin, 0, R.string.delete_all)
+                .setIcon(R.drawable.ic_delete_all_white)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
@@ -65,8 +65,8 @@ public class RecycleBinFragment extends Fragment {
         @Override
         public void onClick(View v)
         {
-            int position = dataManager.getRemovedReferences().indexOf((DReference) v.getTag());
-            dataManager.restoreReference((DReference) v.getTag());
+            int position = dataManager.getRemovedItems().indexOf((RemovedItem) v.getTag());
+            dataManager.restoreItem((RemovedItem) v.getTag());
             adapter.notifyItemRemoved(position);
         }
     };

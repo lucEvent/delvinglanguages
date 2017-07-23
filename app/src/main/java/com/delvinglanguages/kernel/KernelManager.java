@@ -10,7 +10,7 @@ import com.delvinglanguages.net.SyncManager;
 public class KernelManager extends SyncManager {
 
     protected static DatabaseManager dbManager;
-    //   protected static StorageManager storageManager;
+
     protected static Languages languages;
 
     public KernelManager(Context context)
@@ -22,9 +22,6 @@ public class KernelManager extends SyncManager {
 
         if (languages == null)
             languages = dbManager.readLanguages();
-
-        //   if (storageManager == null)
-        //       storageManager = new StorageManager();
     }
 
     public Languages getLanguages()
@@ -52,9 +49,6 @@ public class KernelManager extends SyncManager {
         if (language.drawer_references == null)
             language.setDrawerReferences(dbManager.readDrawerReferences(language.id));
 
-        if (language.removed_references == null)
-            language.setRemovedReferences(dbManager.readRemovedReferences(language.id));
-
         if (language.tests == null)
             language.setTests(dbManager.readTests(language.id));
 
@@ -67,23 +61,40 @@ public class KernelManager extends SyncManager {
         Language new_language = dbManager.insertLanguage(code, name, settings);
         languages.add(new_language);
         synchronizeNewLanguage(new_language.id);
+        RecordManager.languageCreated(new_language.id, code);
         return new_language;
     }
 
-    public void updateLanguage(int code, String language_name)
+    public void updateLanguageName(String new_name)
     {
         Language language = getCurrentLanguage();
-        language.setCode(code);
-        language.setName(language_name);
+
+        RecordManager.languageNameChanged(language.id, language.code, language.language_name, new_name);
+
+        language.setName(new_name);
 
         dbManager.updateLanguage(language);
         synchronizeUpdatedLanguage(language.id);
+
     }
 
-    public void updateLanguageSettings(boolean setting, int mask)
+    public void updateLanguageCode(int code)
     {
         Language language = getCurrentLanguage();
-        language.setSetting(setting, mask);
+        language.setCode(code);
+
+        dbManager.updateLanguage(language);
+        synchronizeUpdatedLanguage(language.id);
+        RecordManager.languageCodeChanged(language.id, language.code);
+    }
+
+    public void updateLanguageSettings(boolean state, int mask)
+    {
+        Language language = getCurrentLanguage();
+        language.setSetting(state, mask);
+
+        if (mask == Language.MASK_PHRASAL_VERBS)
+            RecordManager.languagePhVStateChanged(language.id, language.code, state);
 
         dbManager.updateLanguage(language);
         synchronizeUpdatedLanguage(language.id);
@@ -95,6 +106,7 @@ public class KernelManager extends SyncManager {
         dbManager.deleteLanguage(language);
         languages.remove(language);
         synchronizeDeleteLanguage(language.id);
+        RecordManager.languageDeleted(language.id, language.code, language.language_name);
     }
 
     public void invalidateData()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/practise_match"
@@ -11,11 +11,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_match"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/match" />
+            android:text="@string/match"/>
 
     </LinearLayout>
 
@@ -25,11 +25,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_complete"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/complete" />
+            android:text="@string/complete"/>
 
     </LinearLayout>
 
@@ -39,11 +39,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_write"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/write" />
+            android:text="@string/write"/>
 
     </LinearLayout>
 
@@ -53,11 +53,11 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_listening"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/listening" />
+            android:text="@string/listening"/>
 
     </LinearLayout>
 
@@ -67,13 +67,12 @@
 
         <ImageView
             style="@style/Option_Imageview"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_test"/>
 
         <TextView
             style="@style/Option_Textview"
-            android:text="@string/test" />
+            android:text="@string/test"/>
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -18,27 +18,30 @@ public final class AppCode {
 
     public static final int THEME_CREATED = 40;
     public static final int THEME_MODIFIED = 41;
-    public static final int THEME_DELETED = 42;
+    public static final int THEME_REMOVED = 42;
 
     public static final int DREFERENCE_CREATED = 50;
     public static final int DREFERENCE_UPDATED = 51;
-    public static final int DREFERENCE_DELETED = 52;
+    public static final int DREFERENCE_REMOVED = 52;
 
     public static final int SYNC_START = 60;
     public static final int SYNC_UPLOADING = 61;
     public static final int SYNC_SAVING = 62;
     public static final int SYNC_OK = 63;
-    public static final int SYNC_NO_INTERNET = 64;
+    public static final int SYNC_ERROR = 64;
+    public static final int SYNC_NO_INTERNET = 65;
 
     public static final String FRAGMENT = "fragment";
     public static final String ACTION = "action";
 
     public static final String DREFERENCE_NAME = "dref";
-    public static final String DREFERENCE_INFLEXIONS = "drefinfs";
+    public static final String INFLEXIONS_WRAPPER = "infwrapper";
 
     public static final String DRAWER_ID = "did";
     public static final String TEST_ID = "testid";
     public static final String THEME_ID = "themeid";
+    public static final String LANGUAGE_ID = "langid";
+    public static final String SEARCH_TERM = "searchterm";
 
     public static final String ACTION_SYNC = "com.delvinglanguages.sync";
 

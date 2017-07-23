@@ -13,10 +13,12 @@ import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.view.lister.viewholder.MainStatsViewHolder;
 import com.delvinglanguages.view.lister.viewholder.MainTypesViewHolder;
+import com.delvinglanguages.view.lister.viewholder.MainWebSearchViewHolder;
 import com.delvinglanguages.view.lister.viewholder.ReferenceViewHolder;
 import com.delvinglanguages.view.lister.viewholder.TestViewHolder;
 import com.delvinglanguages.view.lister.viewholder.ThemeViewHolder;
 import com.delvinglanguages.view.utils.MainCardRVListAdapter;
+import com.delvinglanguages.view.utils.MainSearch;
 
 import java.util.Collection;
 
@@ -62,9 +64,11 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 view.setOnClickListener(itemListener);
                 return new ThemeViewHolder(view);
             case Item.TEST:
-                view = inflater.inflate(R.layout.i_drawer_word, parent, false);
+                view = inflater.inflate(R.layout.i_test, parent, false);
                 view.setOnClickListener(itemListener);
                 return new TestViewHolder(view);
+            case Item.WEB_SEARCH:
+                return new MainWebSearchViewHolder(inflater.inflate(R.layout.i_main_web_search, parent, false));
         }
         return null;
     }
@@ -75,7 +79,7 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Item item = dataSet.get(position);
         switch (item.itemType) {
             case Item.TYPES_DATA:
-                MainTypesViewHolder.populateViewHolder((MainTypesViewHolder) holder, (MainTypesViewHolder.Data) item, resources);
+                MainTypesViewHolder.populateViewHolder((MainTypesViewHolder) holder, (MainTypesViewHolder.Data) item, resources, phrasalsEnabled);
                 break;
             case Item.STATS_DATA:
                 MainStatsViewHolder.populateViewHolder((MainStatsViewHolder) holder, (MainStatsViewHolder.Data) item, resources);
@@ -88,6 +92,9 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             case Item.TEST:
                 TestViewHolder.populateViewHolder((TestViewHolder) holder, (Test) item);
+                break;
+            case Item.WEB_SEARCH:
+                MainWebSearchViewHolder.populateViewHolder((MainWebSearchViewHolder) holder, (MainSearch) item, resources, itemListener);
         }
     }
 
@@ -126,6 +133,11 @@ public class MainCardLister extends RecyclerView.Adapter<RecyclerView.ViewHolder
         dataSet.beginBatchedUpdates();
         dataSet.clear();
         dataSet.endBatchedUpdates();
+    }
+
+    public boolean isEmpty()
+    {
+        return dataSet.size() == 0;
     }
 
 }

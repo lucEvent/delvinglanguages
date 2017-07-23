@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -21,6 +21,7 @@ import com.delvinglanguages.view.fragment.PractiseFragment;
 import com.delvinglanguages.view.fragment.PronunciationFragment;
 import com.delvinglanguages.view.fragment.RecycleBinFragment;
 import com.delvinglanguages.view.fragment.ThemesFragment;
+import com.delvinglanguages.view.utils.LanguageListener;
 
 public class LanguageActivity extends AppCompatActivity {
 
@@ -29,8 +30,6 @@ public class LanguageActivity extends AppCompatActivity {
     }
 
     private Option currentOption;
-
-    public static Handler handler;
 
     private LanguageManager dataManager;
 
@@ -58,7 +57,7 @@ public class LanguageActivity extends AppCompatActivity {
     {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
-            case R.id.delete_all:
+            case R.id.clear_recycler_bin:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.msg_confirm_to_clear_all_items)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -75,6 +74,18 @@ public class LanguageActivity extends AppCompatActivity {
                 finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case LanguageListener.LANGUAGE_MERGED_AND_REMOVED:
+                setResult(resultCode, data);
+                finish();
+                break;
+        }
     }
 
     private void setFragment(Option option)
@@ -125,7 +136,7 @@ public class LanguageActivity extends AppCompatActivity {
 
     private void clearRecycleBin()
     {
-        dataManager.deleteAllRemovedReferences();
+        dataManager.deleteAllRemovedItems();
         finish();
     }
 

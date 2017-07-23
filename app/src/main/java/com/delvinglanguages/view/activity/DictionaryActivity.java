@@ -63,7 +63,7 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
-            case AppCode.DREFERENCE_DELETED:
+            case AppCode.DREFERENCE_REMOVED:
                 references = dataManager.getReferences();
                 queriedReferences = references;
 

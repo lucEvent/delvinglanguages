@@ -5,9 +5,12 @@ import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.RemovedItem;
+import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.kernel.util.Tests;
 import com.delvinglanguages.kernel.util.Themes;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 import java.text.Collator;
 import java.util.Locale;
@@ -28,7 +31,7 @@ public class Language {
     public String language_name;
 
     public Dictionary dictionary;
-    public DReferences removed_references;
+    public RemovedItems removed_items;
     public DrawerReferences drawer_references;
     public Themes themes;
     public Tests tests;
@@ -95,7 +98,7 @@ public class Language {
 
     public boolean isLoaded()
     {
-        return dictionary != null && drawer_references != null && removed_references != null;
+        return dictionary != null && drawer_references != null;
     }
 
     /**
@@ -112,9 +115,9 @@ public class Language {
         this.drawer_references = drawer_references;
     }
 
-    public void setRemovedReferences(DReferences removed_references)
+    public void setRemovedItems(RemovedItems removed_items)
     {
-        this.removed_references = removed_references;
+        this.removed_items = removed_items;
     }
 
     public void setName(String name)
@@ -134,13 +137,10 @@ public class Language {
 
     public void setSetting(boolean state, int mask)
     {
-        if (state) {
+        if (state)
             this.settings |= mask;
-        } else {
-            if ((this.settings & mask) != 0) {
-                this.settings ^= mask;
-            }
-        }
+        else if ((this.settings & mask) != 0)
+            this.settings ^= mask;
     }
 
     public DReferences getPhrasalVerbs()
@@ -193,13 +193,24 @@ public class Language {
     public void removeReference(DReference reference)
     {
         dictionary.removeEntry(reference);
-
-        removed_references.add(reference);
+        removed_items = null;
     }
 
-    public void deleteReference(int position)
+    public void removeTheme(Theme theme)
     {
-        removed_references.remove(position);
+        themes.remove(theme);
+        removed_items = null;
+    }
+
+    public void removeTest(Test test)
+    {
+        tests.remove(test);
+        removed_items = null;
+    }
+
+    public void deleteItem(int position)
+    {
+        removed_items.remove(position);
     }
 
     public void deleteDrawerReference(DrawerReference drawerReference)
@@ -207,18 +218,29 @@ public class Language {
         drawer_references.remove(drawerReference);
     }
 
-    public void deleteAllRemovedReferences()
+    public void deleteAllRemovedItems()
     {
-        removed_references.clear();
+        removed_items = null;
     }
 
     /**
      * ********************** Restores ***********************
      **/
-    public void restoreReference(DReference reference)
+    public void restoreItem(RemovedItem item)
     {
-        removed_references.remove(reference);
-        dictionary.addEntry(reference);
+        removed_items.remove(item);
+
+        switch (item.wrap_type) {
+            case Wrapper.TYPE_REFERENCE:
+                dictionary.addEntry(item.castToReference());
+                break;
+            case Wrapper.TYPE_THEME:
+                themes.add(item.castToTheme());
+                break;
+            case Wrapper.TYPE_TEST:
+                tests.add(item.castToTest());
+                break;
+        }
     }
 
     public void updateReference(DReference reference, String name, String pronunciation, Inflexions inflexions)
@@ -237,7 +259,7 @@ public class Language {
     {
         dictionary = null;
         drawer_references = null;
-        removed_references = null;
+        removed_items = null;
         themes = null;
         tests = null;
     }

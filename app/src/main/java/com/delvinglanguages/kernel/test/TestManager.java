@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Tests;
@@ -36,6 +37,7 @@ public class TestManager extends KernelManager {
         Test test = dbManager.insertTest(language.id, test_name, references, -1);
         language.tests.add(test);
 
+        RecordManager.testAdded(language.id, language.code, test.id);
         synchronizeNewItem(language.id, test.id, test);
         return test;
     }
@@ -48,12 +50,13 @@ public class TestManager extends KernelManager {
         synchronizeUpdateItem(language.id, test.id, test);
     }
 
-    public void deleteTest(Test test)
+    public void removeTest(Test test)
     {
         Language language = getCurrentLanguage();
-        language.tests.remove(test);
-        dbManager.deleteTest(test.id, language.id);
+        language.removeTest(test);
+        dbManager.removeTest(language.id, test);
 
+        RecordManager.testRemoved(language.id, language.code, test.id);
         synchronizeDeleteItem(language.id, test.id, Wrapper.TYPE_TEST);
     }
 

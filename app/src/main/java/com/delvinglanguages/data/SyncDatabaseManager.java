@@ -3,10 +3,11 @@ package com.delvinglanguages.data;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.delvinglanguages.data.Database.DBDeletedItem;
 import com.delvinglanguages.data.Database.DBDrawerReference;
-import com.delvinglanguages.data.Database.DBItemeRemoved;
 import com.delvinglanguages.data.Database.DBLanguage;
 import com.delvinglanguages.data.Database.DBReference;
+import com.delvinglanguages.data.Database.DBRemovedItem;
 import com.delvinglanguages.data.Database.DBStatistics;
 import com.delvinglanguages.data.Database.DBTest;
 import com.delvinglanguages.data.Database.DBTheme;
@@ -148,16 +149,16 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
-    public SyncWrappers readRemoves()
+    public SyncWrappers readDeletes()
     {
         SyncWrappers result = new SyncWrappers();
 
-        Cursor cursor = db.query(DBTest.db, DBTest.cols, SELECTION_NOT_SYNCED, null, null, null, null);
+        Cursor cursor = db.query(DBDeletedItem.db, DBDeletedItem.cols, null, null, null, null, null);
 
         if (cursor.moveToFirst())
             do {
 
-                result.add(DBItemeRemoved.parse(cursor));
+                result.add(DBDeletedItem.parse(cursor));
 
             } while (cursor.moveToNext());
 
@@ -201,7 +202,7 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         values.put(Database.id, item_id);
         values.put(Database.lang_id, language_id);
         values.put(Database.type, type);
-        db.insert(DBItemeRemoved.db, null, values);
+        db.insert(DBDeletedItem.db, null, values);
         values.clear();
     }
 
@@ -283,7 +284,7 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
 
     public void syncRemoves()
     {
-        db.delete(DBItemeRemoved.db, null, null);
+        db.delete(DBRemovedItem.db, null, null);
     }
 
 }

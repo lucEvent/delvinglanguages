@@ -15,6 +15,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Inflexion;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.view.dialog.AddTranslationDialog;
@@ -97,7 +98,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
                 in_reference.setText(ref_name);
                 in_reference.setSelection(ref_name.length());
 
-                data.inflexions = new Inflexions(bundle.getString(AppCode.DREFERENCE_INFLEXIONS));
+                data.inflexions = Inflexions.fromWrapper(bundle.getString(AppCode.INFLEXIONS_WRAPPER));
         }
 
         adapter = new InflexionEditLister(this, data.inflexions, onModifyInflexion, onDeleteInflexion);
@@ -112,7 +113,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        inflexionManager = new AddTranslationDialog(this, new ReferenceHandler(this));
+        inflexionManager = new AddTranslationDialog(this, new ReferenceHandler(this), dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS));
     }
 
     @Override

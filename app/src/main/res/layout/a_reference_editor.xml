@@ -55,8 +55,8 @@
                     android:background="#0f00"
                     android:hint="@string/word"
                     android:inputType="textCapSentences"
+                    android:maxLines="1"
                     android:padding="8dp"
-                    android:singleLine="true"
                     android:textAlignment="textStart"
                     android:textAppearance="?android:attr/textAppearanceLarge">
 
@@ -76,8 +76,9 @@
                     android:layout_margin="8dp"
                     android:background="#0f00"
                     android:hint="@string/pronunciation"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="8dp"
-                    android:singleLine="true"
                     android:textAlignment="textStart"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 

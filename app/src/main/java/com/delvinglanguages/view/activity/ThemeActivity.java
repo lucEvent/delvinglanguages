@@ -1,7 +1,6 @@
 package com.delvinglanguages.view.activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemeManager;
 import com.delvinglanguages.view.activity.practise.TestActivity;
 import com.delvinglanguages.view.lister.ThemePairLister;
+import com.delvinglanguages.view.utils.HorizontalFloatingButtonBar;
 
 public class ThemeActivity extends AppCompatActivity {
 
@@ -56,6 +56,12 @@ public class ThemeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        //Buttons
+        HorizontalFloatingButtonBar floatingButtonBar = (HorizontalFloatingButtonBar) findViewById(R.id.option_buttons);
+        floatingButtonBar.addButton(R.drawable.ic_play, R.string.test, onTest);
+        floatingButtonBar.addButton(R.drawable.ic_edit, R.string.edit, onEdit);
+        floatingButtonBar.addButton(R.drawable.ic_delete, R.string.delete, onDelete);
+
         setTitle(theme.getName());
     }
 
@@ -85,55 +91,51 @@ public class ThemeActivity extends AppCompatActivity {
         }
     }
 
-    public void actionPractise(View v)
-    {
-        Test test = dataManager.toTest(this, theme);
+    private View.OnClickListener onTest = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            Test test = dataManager.toTest(v.getContext(), theme);
 
-        Intent intent = new Intent(this, TestActivity.class);
-        intent.putExtra(AppCode.TEST_ID, test.id);
-        startActivity(intent);
-    }
+            Intent intent = new Intent(v.getContext(), TestActivity.class);
+            intent.putExtra(AppCode.TEST_ID, test.id);
+            startActivity(intent);
+        }
+    };
 
-    private Dialog editOptionsDialog;
+    private View.OnClickListener onEdit = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            Intent intent = new Intent(v.getContext(), ThemeEditorActivity.class);
+            intent.putExtra(AppCode.THEME_ID, theme.id);
+            startActivityForResult(intent, 0);
+        }
+    };
 
-    public void actionSelectOption(View v)
-    {
-        editOptionsDialog = new AlertDialog.Builder(this)
-                .setView(R.layout.d_edit_delete)
-                .create();
-
-        editOptionsDialog.show();
-    }
-
-    public void actionEdit(View v)
-    {
-        editOptionsDialog.dismiss();
-        Intent intent = new Intent(this, ThemeEditorActivity.class);
-        intent.putExtra(AppCode.THEME_ID, theme.id);
-        startActivityForResult(intent, 0);
-    }
-
-    public void actionDelete(View v)
-    {
-        editOptionsDialog.dismiss();
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.msg_confirm_to_delete_xxx)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        onConfirmDelete();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-                .show();
-    }
+    private View.OnClickListener onDelete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle(R.string.msg_confirm_to_remove)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            onConfirmDelete();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create()
+                    .show();
+        }
+    };
 
     private void onConfirmDelete()
     {
-        dataManager.deleteTheme(theme);
-        setResult(AppCode.THEME_DELETED);
+        dataManager.removeTheme(theme);
+        setResult(AppCode.THEME_REMOVED);
         finish();
     }
 

@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.kernel.test.Test;
@@ -32,6 +34,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
     private TestGame testManager;
     private Test currentTest;
     private TestReferenceState currentReference;
+    private boolean showPhrasal;
 
     private Handler handler;
     private PronunciationManager pronunciationManager;
@@ -51,6 +54,8 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         testManager = new TestGame(new DReferences());
         pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), false);
 
+        showPhrasal = dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS);
+
         int test_id = getIntent().getExtras().getInt(AppCode.TEST_ID);
         currentTest = dataManager.getTests().getTestById(test_id);
 
@@ -67,6 +72,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         }
         new AlertDialog.Builder(this)
                 .setTitle(R.string.msg_go_out_from_test)
+                .setMessage(R.string.msg_progress_wont_save)
                 .setNegativeButton(R.string.go_out, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
@@ -104,16 +110,16 @@ public class TestActivity extends AppCompatActivity implements TestListener {
                 fragment = TestDelvingFragment.getInstance(handler, refState, TestReferenceState.TestStage.MATCH);
                 break;
             case MATCH:
-                fragment = TestMatchFragment.getInstance(handler, refState, TestReferenceState.TestStage.COMPLETE);
+                fragment = TestMatchFragment.getInstance(handler, refState, TestReferenceState.TestStage.COMPLETE, showPhrasal);
                 break;
             case COMPLETE:
-                fragment = TestCompleteFragment.getInstance(handler, refState, TestReferenceState.TestStage.WRITE);
+                fragment = TestCompleteFragment.getInstance(handler, refState, TestReferenceState.TestStage.WRITE, showPhrasal);
                 break;
             case WRITE:
-                fragment = TestWriteFragment.getInstance(handler, refState, ttsAvailable ? TestReferenceState.TestStage.LISTENING : TestReferenceState.TestStage.END);
+                fragment = TestWriteFragment.getInstance(handler, refState, ttsAvailable ? TestReferenceState.TestStage.LISTENING : TestReferenceState.TestStage.END, showPhrasal);
                 break;
             case LISTENING:
-                fragment = TestListeningFragment.getInstance(handler, refState, TestReferenceState.TestStage.END);
+                fragment = TestListeningFragment.getInstance(handler, refState, TestReferenceState.TestStage.END, showPhrasal);
                 break;
         }
 
@@ -128,15 +134,15 @@ public class TestActivity extends AppCompatActivity implements TestListener {
     {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content, TestResultFragment.getInstance(handler, currentTest))
+                .replace(R.id.content, TestResultFragment.getInstance(handler, currentTest, showPhrasal))
                 .commit();
     }
 
     @Override
-    public void onTestDeleted()
+    public void onTestRemoved()
     {
-        dataManager.deleteTest(currentTest);
-        setResult(TestListener.TEST_DELETED);
+        dataManager.removeTest(currentTest);
+        setResult(TestListener.TEST_REMOVED);
         finish();
     }
 
@@ -146,7 +152,8 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         testRunning = true;
         round = 0;
 
-        for (TestReferenceState refState : currentTest.references)
+        currentTest.start();
+        for (TestReferenceState refState : currentTest.states)
             refState.stage = TestReferenceState.TestStage.DELVING;
 
         setFragment(testManager.nextTestReference(currentTest));
@@ -167,9 +174,10 @@ public class TestActivity extends AppCompatActivity implements TestListener {
 
     private void nextStep()
     {
-        if (round >= currentTest.references.size() * (ttsAvailable ? 5 : 4)) {
-            currentTest.run_finished();
+        if (round >= currentTest.size() * (ttsAvailable ? 5 : 4)) {
+            currentTest.finish();
             testRunning = false;
+            RecordManager.testDone(dataManager.getCurrentLanguage().id, dataManager.getCurrentLanguage().code, currentTest.id);
             setMainFragment();
             return;
         }

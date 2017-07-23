@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.delvinglanguages.data.Database.DBDrawerReference;
 import com.delvinglanguages.data.Database.DBLanguage;
 import com.delvinglanguages.data.Database.DBReference;
-import com.delvinglanguages.data.Database.DBRemovedReference;
+import com.delvinglanguages.data.Database.DBRemovedItem;
 import com.delvinglanguages.data.Database.DBStatistics;
 import com.delvinglanguages.data.Database.DBTest;
 import com.delvinglanguages.data.Database.DBTheme;
@@ -16,13 +16,14 @@ import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.kernel.util.Tests;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Themes;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 import java.util.Random;
-import java.util.TreeSet;
 
 /**
  * BaseDatabaseManager
@@ -105,19 +106,13 @@ public abstract class BaseDatabaseManager {
 
     public DReferences readReferences(int language_id)
     {
-        TreeSet<Integer> removedReferencesIds = readRemovedReferencesIds(language_id);
-
         DReferences result = new DReferences();
         Cursor cursor = db.query(DBReference.db, DBReference.cols, Database.lang_id + EQ + language_id, null, null, null, null);
 
         if (cursor.moveToFirst())
             do {
 
-                int word_id = cursor.getInt(0);
-                if (removedReferencesIds.contains(word_id))
-                    removedReferencesIds.remove(word_id);
-                else
-                    result.add(DBReference.parse(cursor));
+                result.add(DBReference.parse(cursor));
 
             } while (cursor.moveToNext());
 
@@ -134,22 +129,6 @@ public abstract class BaseDatabaseManager {
             do {
 
                 result.add(DBDrawerReference.parse(cursor));
-
-            } while (cursor.moveToNext());
-
-        cursor.close();
-        return result;
-    }
-
-    protected TreeSet<Integer> readRemovedReferencesIds(int language_id)
-    {
-        Cursor cursor = db.query(DBRemovedReference.db, DBRemovedReference.cols, Database.lang_id + EQ + language_id, null, null, null, null);
-
-        TreeSet<Integer> result = new TreeSet<>();
-        if (cursor.moveToFirst())
-            do {
-
-                result.add(DBRemovedReference.parse(cursor));
 
             } while (cursor.moveToNext());
 
@@ -182,6 +161,22 @@ public abstract class BaseDatabaseManager {
             do {
 
                 result.add(DBTest.parse(cursor));
+
+            } while (cursor.moveToNext());
+
+        cursor.close();
+        return result;
+    }
+
+    public RemovedItems readRemovedItems(int language_id)
+    {
+        Cursor cursor = db.query(DBRemovedItem.db, DBRemovedItem.cols, Database.lang_id + EQ + language_id, null, null, null, null);
+
+        RemovedItems result = new RemovedItems();
+        if (cursor.moveToFirst())
+            do {
+
+                result.add(DBRemovedItem.parse(cursor));
 
             } while (cursor.moveToNext());
 
@@ -235,12 +230,14 @@ public abstract class BaseDatabaseManager {
         values.clear();
     }
 
-    protected void insertRemovedReference(int lang_id, int reference_id, int synced)
+    protected void insertRemovedItem(int item_id, int lang_id, Wrapper wrapper, int synced)
     {
+        values.put(Database.id, item_id);
         values.put(Database.lang_id, lang_id);
-        values.put(Database.reference_id, reference_id);
+        values.put(Database.type, wrapper.wrapType());
+        values.put(Database.wrappedContent, wrapper.wrap());
         values.put(Database.synced, synced);
-        db.insert(DBRemovedReference.db, null, values);
+        db.insert(DBRemovedItem.db, null, values);
         values.clear();
     }
 
@@ -349,10 +346,10 @@ public abstract class BaseDatabaseManager {
     public void deleteLanguage(int language_id)
     {
         db.delete(DBReference.db, Database.lang_id + EQ + language_id, null);
-        db.delete(DBRemovedReference.db, Database.lang_id + EQ + language_id, null);
         db.delete(DBDrawerReference.db, Database.lang_id + EQ + language_id, null);
         db.delete(DBTest.db, Database.lang_id + EQ + language_id, null);
         db.delete(DBTheme.db, Database.lang_id + EQ + language_id, null);
+        db.delete(DBRemovedItem.db, Database.lang_id + EQ + language_id, null);
         db.delete(DBLanguage.db, Database.id + EQ + language_id, null);
         db.delete(DBStatistics.db, Database.id + EQ + language_id, null);
     }
@@ -360,11 +357,6 @@ public abstract class BaseDatabaseManager {
     public void deleteReference(int language_id, int id)
     {
         db.delete(DBReference.db, Database.lang_id + " = " + language_id + AND + Database.id + " = " + id, null);
-    }
-
-    public void deleteRemovedReference(int language_id, int ref_id)
-    {
-        db.delete(DBRemovedReference.db, Database.lang_id + " = " + language_id + AND + Database.reference_id + " = " + ref_id, null);
     }
 
     public void deleteDrawerReference(int language_id, int id)
@@ -380,6 +372,17 @@ public abstract class BaseDatabaseManager {
     public void deleteTest(int language_id, int id)
     {
         db.delete(DBTest.db, Database.lang_id + " = " + language_id + AND + Database.id + " = " + id, null);
+    }
+
+    public void deleteRemovedItem(int language_id, int item_id, int type)
+    {
+        db.delete(DBRemovedItem.db,
+                Database.lang_id + " = " + language_id + AND + Database.id + " = " + item_id + AND + Database.type + " = " + type, null);
+    }
+
+    public void deleteAllRemovedItems(int language_id)
+    {
+        db.delete(DBRemovedItem.db, Database.lang_id + EQ + language_id, null);
     }
 
 }

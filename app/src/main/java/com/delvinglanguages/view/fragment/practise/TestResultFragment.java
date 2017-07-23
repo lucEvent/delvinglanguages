@@ -25,17 +25,18 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestResultFragment extends android.app.Fragment {
 
-    public static TestResultFragment getInstance(Handler handler, Test test)
+    public static TestResultFragment getInstance(Handler handler, Test test, boolean showPhrasal)
     {
         TestResultFragment f = new TestResultFragment();
         f.handler = handler;
         f.test = test;
+        f.showPhrasal = showPhrasal;
         return f;
     }
 
     private Handler handler;
     private Test test;
-    private ReferenceLister adapter;
+    private boolean showPhrasal;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -51,7 +52,7 @@ public class TestResultFragment extends android.app.Fragment {
 
         Context context = getActivity();
 
-        adapter = new ReferenceLister(test.getReferences(), true, null);
+        ReferenceLister adapter = new ReferenceLister(test.getReferences(), showPhrasal, null);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setAutoMeasureEnabled(true);
@@ -114,7 +115,7 @@ public class TestResultFragment extends android.app.Fragment {
                 break;
             case R.id.delete:
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.msg_confirm_to_delete_xxx)
+                        .setTitle(R.string.msg_confirm_to_remove)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id)
@@ -134,7 +135,7 @@ public class TestResultFragment extends android.app.Fragment {
 
     private void onConfirmDelete()
     {
-        handler.obtainMessage(TestListener.TEST_DELETED).sendToTarget();
+        handler.obtainMessage(TestListener.TEST_REMOVED).sendToTarget();
     }
 
 }

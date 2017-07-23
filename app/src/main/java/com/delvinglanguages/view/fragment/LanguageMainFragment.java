@@ -41,6 +41,7 @@ import com.delvinglanguages.view.lister.viewholder.MainTypesViewHolder;
 import com.delvinglanguages.view.utils.DataHandler;
 import com.delvinglanguages.view.utils.DataListener;
 import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.MainSearch;
 
 public class LanguageMainFragment extends Fragment
         implements TextWatcher, View.OnClickListener, View.OnFocusChangeListener, DataListener {
@@ -114,16 +115,15 @@ public class LanguageMainFragment extends Fragment
 
             listManager.setPhrasals(currentLanguage.getSetting(Language.MASK_PHRASAL_VERBS));
 
-            displayLanguageData();
             dataManager.fetchLanguageContents(currentLanguage);
+            displayLanguageData();
         }
     }
 
-    @Override
-    public void onResume()
+    public void refreshValues()
     {
-        super.onResume();
         listManager.notifyDataSetChanged();
+        listManager.setPhrasals(currentLanguage.getSetting(Language.MASK_PHRASAL_VERBS));
     }
 
     @Override
@@ -188,6 +188,9 @@ public class LanguageMainFragment extends Fragment
 
             case R.id.option_more:
 
+                if (optionsDialog != null && optionsDialog.isShowing())
+                    return;
+
                 optionsDialog = new LanguageOptionsDialog(getActivity(), onMoreOptionsClick, currentLanguage.getSetting(Language.MASK_PHRASAL_VERBS)).dialog;
                 optionsDialog.show();
                 return;
@@ -248,6 +251,10 @@ public class LanguageMainFragment extends Fragment
             case LanguageListener.LANGUAGE_NAME_CHANGED:
                 getActivity().setTitle(dataManager.getCurrentLanguage().language_name);
                 break;
+            case LanguageListener.LANGUAGE_MERGED_AND_REMOVED:
+                int id = data.getExtras().getInt(AppCode.LANGUAGE_ID);
+                Main.handler.obtainMessage(resultCode, id, -1).sendToTarget();
+                return;
         }
         Main.handler.obtainMessage(resultCode).sendToTarget();
     }
@@ -269,9 +276,15 @@ public class LanguageMainFragment extends Fragment
 
         listManager.clear();
 
+        boolean foundPerfectMatch = false;
+
         for (DReference ref : currentLanguage.dictionary.getDictionary())
-            if (ref.hasContent(search))
+            if (ref.hasContent(search)) {
                 listManager.addItem(ref);
+
+                if (ref.name.toLowerCase().equals(search))
+                    foundPerfectMatch = true;
+            }
 
         for (Theme theme : currentLanguage.themes)
             if (theme.hasContent(search))
@@ -280,6 +293,11 @@ public class LanguageMainFragment extends Fragment
         for (Test test : currentLanguage.tests)
             if (test.hasContent(search))
                 listManager.addItem(test);
+
+        if (listManager.isEmpty())
+            listManager.addItem(new MainSearch((String) search, true));
+        else if (!foundPerfectMatch)
+            listManager.addItem(new MainSearch((String) search, false));
 
     }
 
@@ -346,31 +364,40 @@ public class LanguageMainFragment extends Fragment
         @Override
         public void onClick(View v)
         {
-
             Object item = v.getTag();
+            Intent intent;
+
             if (item instanceof DReference) {
 
-                DReference reference = (DReference) item;
-
-                Intent intent = new Intent(getActivity(), DReferenceActivity.class);
-                intent.putExtra(AppCode.DREFERENCE_NAME, reference.name);
-                startActivity(intent);
+                intent = new Intent(getActivity(), DReferenceActivity.class);
+                intent.putExtra(AppCode.DREFERENCE_NAME, ((DReference) item).name);
 
             } else if (item instanceof Theme) {
 
-                Theme theme = (Theme) item;
-                Intent intent = new Intent(getActivity(), ThemeActivity.class);
-                intent.putExtra(AppCode.THEME_ID, theme.id);
-                startActivity(intent);
+                intent = new Intent(getActivity(), ThemeActivity.class);
+                intent.putExtra(AppCode.THEME_ID, ((Theme) item).id);
 
             } else if (item instanceof Test) {
 
-                Test test = (Test) item;
-                Intent intent = new Intent(getActivity(), TestActivity.class);
-                intent.putExtra(AppCode.TEST_ID, test.id);
-                startActivity(intent);
+                intent = new Intent(getActivity(), TestActivity.class);
+                intent.putExtra(AppCode.TEST_ID, ((Test) item).id);
 
-            }
+            } else if (item instanceof MainSearch) {
+
+                MainSearch searchItem = (MainSearch) item;
+
+                if (v.getId() == R.id.button_add_to_drawer) {
+                    dataManager.createDrawerReference(searchItem.term);
+                    Toast.makeText(v.getContext(), v.getResources().getString(R.string.msg_added_to_drawer, searchItem.term), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(getActivity(), WebSearchActivity.class);
+                intent.putExtra(AppCode.SEARCH_TERM, searchItem.term);
+
+            } else
+                return;
+
+            startActivity(intent);
         }
     };
 

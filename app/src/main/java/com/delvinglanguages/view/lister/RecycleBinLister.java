@@ -6,16 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.view.lister.viewholder.RecycledItemViewHolder;
 
 public class RecycleBinLister extends RecyclerView.Adapter<RecycledItemViewHolder> {
 
-    private DReferences items;
+    private RemovedItems items;
 
     private View.OnClickListener onRestoreItemListener;
 
-    public RecycleBinLister(DReferences items, View.OnClickListener itemListener)
+    public RecycleBinLister(RemovedItems items, View.OnClickListener itemListener)
     {
         this.items = items;
         this.onRestoreItemListener = itemListener;

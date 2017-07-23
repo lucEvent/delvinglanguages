@@ -7,6 +7,7 @@ import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
@@ -37,6 +38,7 @@ public class ThemeManager extends KernelManager {
         Theme theme = dbManager.insertTheme(language.id, theme_name, theme_pairs);
         language.addTheme(theme);
 
+        RecordManager.themeAdded(language.id, language.code, theme.id);
         synchronizeNewItem(language.id, theme.id, theme);
         return theme;
     }
@@ -49,16 +51,18 @@ public class ThemeManager extends KernelManager {
         Language language = getCurrentLanguage();
         dbManager.updateTheme(theme, language.id);
 
+        RecordManager.themeModified(language.id, language.code, theme.id);
         synchronizeUpdateItem(language.id, theme.id, theme);
     }
 
-    public void deleteTheme(Theme theme)
+    public void removeTheme(Theme theme)
     {
         Language language = getCurrentLanguage();
-        language.themes.remove(theme);
-        dbManager.deleteTheme(theme.id, language.id);
+        language.removeTheme(theme);
+        dbManager.removeTheme(language.id, theme);
 
-        synchronizeDeleteItem(getCurrentLanguage().id, theme.id, Wrapper.TYPE_THEME);
+        RecordManager.themeRemoved(language.id, language.code, theme.id);
+        synchronizeDeleteItem(language.id, theme.id, Wrapper.TYPE_THEME);
     }
 
     public Test toTest(Context context, Theme theme)
@@ -78,6 +82,8 @@ public class ThemeManager extends KernelManager {
             }
 
             test = dbManager.insertTest(language.id, test_name, references, theme.id);
+
+            RecordManager.testAdded(language.id, language.code, test.id);
             synchronizeNewItem(language.id, test.id, test);
         }
         Test replaceable = language.tests.getTestById(test.id);

@@ -35,9 +35,9 @@ public class TestGame extends Game {
     public TestReferenceState nextTestReference(Test test)
     {
         while (true) {
-            int position = nextInt(test.references.size());
+            int position = nextInt(test.size());
 
-            TestReferenceState refState = test.references.get(position);
+            TestReferenceState refState = test.states.get(position);
             if (refState.stage != TestReferenceState.TestStage.END)
                 return refState;
         }

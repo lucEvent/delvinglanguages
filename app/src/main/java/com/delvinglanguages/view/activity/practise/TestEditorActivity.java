@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.test.TestManager;
 import com.delvinglanguages.view.utils.TestListener;
@@ -52,6 +53,9 @@ public class TestEditorActivity extends AppCompatActivity implements View.OnClic
             type_filter[i].setOnClickListener(this);
             type_filter[i].setSelected(true);
         }
+
+        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+            type_filter[4].setVisibility(View.GONE);
 
     }
 

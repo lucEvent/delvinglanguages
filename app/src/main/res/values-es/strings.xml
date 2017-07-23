@@ -18,8 +18,8 @@
     <string name="adverb">Adverbio</string>
     <string name="adverb_cap">ADVERBIO</string>
     <string name="phv">VF</string>
-    <string name="phrasalverb">Verbo Frasal</string>
-    <string name="phrasalverbs">Verbos Frasales</string>
+    <string name="phrasalverb">Verbo frasal</string>
+    <string name="phrasalverbs">Verbos frasales</string>
     <string name="phrasal_cap">VERBO FRASAL</string>
     <string name="exp">EXP</string>
     <string name="expression">Expresión</string>
@@ -62,10 +62,11 @@
     <string name="type_filter">Filtra por tipo</string>
     <string name="number_of_words">Número de palabras</string>
     <string name="main_types_content_description">%1$d sustantivos\n%2$d verbos\n%3$d adjetivos\n%4$d adverbios\n%5$d verbos frasales\n%6$d expresiones\n%7$d preposiciones\n%8$d conjunciones\n%9$d otros\n%10$d temas\n%11$d tests</string>
+    <string name="main_types_content_description_no_phrasals">%1$d sustantivos\n%2$d verbos\n%3$d adjetivos\n%4$d adverbios\n%5$d expresiones\n%6$d preposiciones\n%7$d conjunciones\n%8$d otros\n%9$d temas\n%10$d tests</string>
     <string name="content">Contenido</string>
     <string name="statistics">Estadísticas</string>
     <string name="main_stats_content_description">Intentos:\t\t\t\t\t\t %1$d\nAciertos a la 1a:\t %2$d (%3$.1f%%)\nAciertos a la 2a:\t %4$d (%5$.1f%%)\nAciertos a la 3a:\t %6$d (%7$.1f%%)\nFallos:\t\t\t\t\t\t\t %8$d (%9$.1f%%)</string>
-    <string name="x_words">%1$s palabras</string>
+    <string name="x_words">%1$d palabras</string>
     <string name="create_a_language">Crea un idioma</string>
     <string name="import_from_file">Importa desde archivo</string>
     <string name="synchronize_your_account">Sincroniza tu cuenta</string>
@@ -97,6 +98,9 @@
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
     <string name="start">Empezar</string>
+    <string name="add_to_drawer">Añadir al borrador</string>
+    <string name="enabled">habilitado</string>
+    <string name="disabled">desabilitado</string>
 
 
     <!-- * ******************** Hints **************************** * -->
@@ -139,7 +143,7 @@
     <string name="msg_language_saved_">%1$s guardado con %2$d palabras, %3$d palabras del borrador, %4$d temas y %5$d tests</string>
     <string name="msg_missing_filename">Falta nombre del archivo</string>
     <string name="msg_no_language_selected">Ningún idioma seleccionado</string>
-    <string name="msg_confirm_to_delete_xxx">Confirma para eliminar</string>
+    <string name="msg_confirm_to_remove">Confirma para eliminar</string>
     <string name="msg_go_back_without_saving">Salir sin guardar cambios</string>
     <string name="msg_go_out_from_test">Salir sin acabar el test</string>
     <string name="msg_missing_theme_name">Falta nombre del tema</string>
@@ -158,7 +162,7 @@
     <string name="msg_no_conflicts_found">Ningún conflicto encontrado</string>
     <string name="msg_estimating_merge_of">Estimando la fusión de %1$s con %2$s</string>
     <string name="msg_be_patience">Ten paciencia!</string>
-    <string name="msg_conflicts_need_supervision">%1$s conflictos necesitan supervisión</string>
+    <string name="msg_conflicts_need_supervision">%1$d conflictos necesitan supervisión</string>
     <string name="msg_reading">Leyendo %1$s</string>
     <string name="msg_calculating_changes">Calculando cambios</string>
     <string name="msg_merging">Fusionando</string>
@@ -175,9 +179,14 @@
     <string name="msg_synchronizing">Sincronizando</string>
     <string name="msg_no_internet_connection">No se ha encontrado conexion a internet</string>
     <string name="msg_no_languages_found">No se encontraron datos</string>
-    <string name="msg_in_next_releases">Disponible en próximas actualizaciones</string>
     <string name="msg_title_synching_account">Sincronizando cuenta</string>
     <string name="msg_starting_process">Inicializando…</string>
+    <string name="msg_progress_wont_save">El progreso no se guardará</string>
+    <string name="msg_nothing_to_add">No hay nada para añadir</string>
+    <string name="msg_impossible_to_add_search">No se puede añadir así, cambia la dirección de la traducción</string>
+    <string name="msg_no_results_found_for">No se han encontrado resultados para <em>%1$s</em>.</string>
+    <string name="msg_added_to_drawer">%1$s añadido al borrador</string>
+    <string name="msg_in_next_releases">Disponible en próximas actualizaciones</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -213,5 +222,40 @@
     <string name="pref_language_merge">Fusionar</string>
     <string name="pref_language_remove">Eliminar</string>
     <string name="pref_language_reset_statistics">Restaurar estadísticas</string>
+
+
+    <!-- * ********************** Record strings ************************* * -->
+    <string name="h_in">En %1$s</string>
+    <string name="h_deleted_list">Lista eliminada</string>
+    <string name="h_list_created">Nueva lista</string>
+    <string name="h_list_deleted">Lista eliminada</string>
+    <string name="h_list_integrated">Lista integrada</string>
+    <string name="h_list_integrated_in">%1$s en %2$s</string>
+    <string name="h_list_code_changed">Su idioma ahora es %1$s</string>
+    <string name="h_list_name_changed">%1$s renombrado a %2$s</string>
+    <string name="h_list_stats_cleared">Estadísticas reseteadas</string>
+    <string name="h_recycle_bin_cleared">Papalera vaciada</string>
+    <string name="h_drawer_added">%1$d palabra(s) añadida(s) al borrador</string>
+    <string name="h_drawer_deleted">%1$d palabra(s) eliminada(s) del borrador</string>
+    <string name="h_reference_added">%1$d palabra(s) añadida(s) al diccionario</string>
+    <string name="h_reference_modified">%1$d palabra(s) modificada(s)</string>
+    <string name="h_reference_removed">%1$d palabra(s) eliminada(s)</string>
+    <string name="h_reference_recovered">%1$d palabra(s) restaurada(s) desde la papelera</string>
+    <string name="h_theme_added">%1$d tema(s) creado(s)</string>
+    <string name="h_theme_modified">%1$d tema(s) modificado(s)</string>
+    <string name="h_theme_removed">%1$d tema(s) eliminado(s)</string>
+    <string name="h_theme_recovered">%1$d tema(s) restaurado(s) desde de la papelera</string>
+    <string name="h_test_added">%1$d test(s) creado(s)</string>
+    <string name="h_test_done">%1$d test(s) hecho(s)</string>
+    <string name="h_test_removed">%1$d test(s) eliminado(s</string>
+    <string name="h_test_recovered">%1$d test(s) restaurado(s) desde de la papelera</string>
+    <string name="h_practised_match">%1$d palabra(s) praticada(s) en Empareja</string>
+    <string name="h_practised_complete">%1$d palabra(s) praticada(s) en Completa</string>
+    <string name="h_practised_write">%1$d palabra(s) praticada(s) en Escribe</string>
+    <string name="h_practised_listening">%1$d palabra(s) praticada(s) en Escucha</string>
+    <string name="h_app_lang_changed">Tu idioma ha sido cambiado a %1$s</string>
+    <string name="h_app_theme_changed">El tema de la App ha sido cambiado a %1$s</string>
+    <string name="h_import">%1$d lista(s) importada(s) desde un archivo</string>
+    <string name="h_export">%1$d lista(s) exportada(s) a un archivo</string>
 
 </resources>

@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.CompleteGame;
+import com.delvinglanguages.kernel.record.Record;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseCompleteActivity extends Activity {
@@ -71,6 +73,9 @@ public class PractiseCompleteActivity extends Activity {
         key[7] = (Button) findViewById(R.id.key_b4);
         for (int i = 0; i < key.length; i++)
             key[i].setTag(i);
+
+        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+            findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownType = AppAnimator.getTypeStatusVector();
     }
@@ -167,7 +172,7 @@ public class PractiseCompleteActivity extends Activity {
                 new Thread(new Runnable() {
                     public void run()
                     {
-                        dataManager.exercise(currentReference, intento);
+                        dataManager.exercise(Record.PRACTISED_COMPLETE, currentReference, intento);
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException ignored) {

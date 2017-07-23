@@ -29,6 +29,8 @@ public class MainCardRVListAdapter extends SortedList<Item> {
                         return ((Theme) item).getName();
                     case Item.TEST:
                         return ((Test) item).name;
+                    case Item.WEB_SEARCH:
+                        return "";
                     case Item.TYPES_DATA:
                         return "2";
                     case Item.STATS_DATA:

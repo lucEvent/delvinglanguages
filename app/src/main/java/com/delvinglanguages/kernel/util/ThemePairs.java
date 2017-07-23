@@ -6,7 +6,7 @@ import com.delvinglanguages.kernel.theme.ThemePair;
 
 import java.util.ArrayList;
 
-public class ThemePairs extends ArrayList<ThemePair> implements Wrapper<ThemePairs> {
+public class ThemePairs extends ArrayList<ThemePair> implements Wrapper {
 
     private static final String SEP = "%Th";
 
@@ -18,6 +18,21 @@ public class ThemePairs extends ArrayList<ThemePair> implements Wrapper<ThemePai
     public ThemePairs(int capacity)
     {
         super(capacity);
+    }
+
+    public static ThemePairs fromWrapper(@NonNull String wrapper)
+    {
+        String[] parts = wrapper.split(SEP);
+
+        int size = Integer.parseInt(parts[0]);
+        int index = 1;
+        ThemePairs pair = new ThemePairs();
+        for (int i = 0; i < size; i++) {
+            String delved = parts[index++];
+            String _native = parts[index++];
+            pair.add(new ThemePair(delved, _native));
+        }
+        return pair;
     }
 
     @Override
@@ -33,26 +48,9 @@ public class ThemePairs extends ArrayList<ThemePair> implements Wrapper<ThemePai
     }
 
     @Override
-    public ThemePairs unWrap(@NonNull String wrapper)
-    {
-        clear();
-
-        int index = 1;
-
-        String[] parts = wrapper.split(SEP);
-
-        int size = Integer.parseInt(parts[0]);
-        for (int i = 0; i < size; i++) {
-            String delved = parts[index++];
-            String _native = parts[index++];
-            add(new ThemePair(delved, _native));
-        }
-        return this;
-    }
-
-    @Override
     public int wrapType()
     {
         return Wrapper.TYPE_THEME_PAIRS;
     }
+
 }

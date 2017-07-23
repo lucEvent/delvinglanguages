@@ -92,35 +92,34 @@ public class WordReference extends OnlineDictionary {
         @Override
         public void run()
         {
-            try {
-                URL page = new URL(header + search.searchTerm);
-                AppSettings.printlog(header + search.searchTerm);
-                //Lectura del contenido de la pagina
-                BufferedReader in = new BufferedReader(new InputStreamReader(page.openStream()));
+            AppSettings.printlog(header + search.searchTerm);
 
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(header + search.searchTerm).openStream()))) {
+
+                //Page content reading
                 StringBuilder content = new StringBuilder();
                 String inputLine;
-                while ((inputLine = in.readLine()) != null) {
+                while ((inputLine = in.readLine()) != null)
                     content.append(inputLine);
-                }
+
                 in.close();
 
-                //Tratamiento datos json
+                // json data management
                 JSONObject alldata = new JSONObject(content.toString());
 
                 String[] terms = new String[]{"term0", "term1", "term2"};
                 for (String termi : terms) {
-                    if (!alldata.has(termi)) {
+                    if (!alldata.has(termi))
                         continue;
-                    }
+
                     JSONObject data = alldata.getJSONObject(termi);
 
                     String[] sections = new String[]{"Entries", "PrincipalTranslations", "AdditionalTranslations"};
-                    for (String section : sections) {
-                        if (data.has(section)) {
+                    for (String section : sections)
+                        if (data.has(section))
                             addAll(data.getJSONObject(section));
-                        }
-                    }
+
                 }
             } catch (Exception e) {
                 AppSettings.printerror("[WR] Error in run", e);

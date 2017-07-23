@@ -127,11 +127,9 @@
         <activity
             android:name=".view.activity.LanguageMergerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
-            <intent-filter>
-                <action android:name="com.delvinglanguages.merger.MERGE"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.LanguageActivity"/>
         </activity>
 
         <service

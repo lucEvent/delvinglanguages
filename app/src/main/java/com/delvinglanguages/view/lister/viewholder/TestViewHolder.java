@@ -30,7 +30,7 @@ public class TestViewHolder extends RecyclerView.ViewHolder {
         StringBuilder testStats = new StringBuilder();
         testStats.append(context.getString(R.string.msg_test_done_times, test.getRunTimes())).append("\n");
         testStats.append(context.getString(R.string.msg_test_accuracy, test.getAccuracy())).append("\n");
-        testStats.append(context.getString(R.string.x_words, test.references.size()));
+        testStats.append(context.getString(R.string.x_words, test.size()));
 
         holder.subtitle.setText(testStats);
         holder.view.setTag(test);

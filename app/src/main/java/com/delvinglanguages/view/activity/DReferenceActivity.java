@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +21,7 @@ import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.manager.DReferenceNavigator;
 import com.delvinglanguages.view.lister.InflexionLister;
+import com.delvinglanguages.view.utils.HorizontalFloatingButtonBar;
 
 public class DReferenceActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class DReferenceActivity extends AppCompatActivity {
 
     private InflexionLister adapter;
 
-    private FloatingActionButton editButton, deleteButton;
+    private HorizontalFloatingButtonBar floatingButtonBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,10 +48,10 @@ public class DReferenceActivity extends AppCompatActivity {
                 LanguageCode.getLocale(AppSettings.getAppLanguageCode()));
 
         //Buttons
-        editButton = (FloatingActionButton) findViewById(R.id.edit_button);
-        deleteButton = (FloatingActionButton) findViewById(R.id.delete_button);
-        editButton.setEnabled(false);
-        deleteButton.setEnabled(false);
+        floatingButtonBar = (HorizontalFloatingButtonBar) findViewById(R.id.option_buttons);
+        floatingButtonBar.addButton(R.drawable.ic_edit, R.string.edit, onEdit);
+        floatingButtonBar.addButton(R.drawable.ic_delete, R.string.delete, onRemove);
+        floatingButtonBar.setEnabled(false);
 
         //Reference
         String reference_str = getIntent().getExtras().getString(AppCode.DREFERENCE_NAME);
@@ -110,9 +110,8 @@ public class DReferenceActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.textview_pronunciation)).setText(reference.pronunciation);
 
-
-        editButton.setEnabled(!editButton.isEnabled());
-        deleteButton.setEnabled(!deleteButton.isEnabled());
+        floatingButtonBar.close();
+        floatingButtonBar.setEnabled(!floatingButtonBar.isEnabled());
     }
 
     @Override
@@ -130,34 +129,40 @@ public class DReferenceActivity extends AppCompatActivity {
         }
     }
 
-    public void actionEdit(View v)
-    {
-        Intent intent = new Intent(this, ReferenceEditorActivity.class);
-        intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_MODIFY);
-        intent.putExtra(AppCode.DREFERENCE_NAME, navigator.current().name);
-        startActivityForResult(intent, 0);
-    }
+    private View.OnClickListener onEdit = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            Intent intent = new Intent(v.getContext(), ReferenceEditorActivity.class);
+            intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_MODIFY);
+            intent.putExtra(AppCode.DREFERENCE_NAME, navigator.current().name);
+            startActivityForResult(intent, 0);
+        }
+    };
 
-    public void actionDelete(View v)
-    {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.msg_confirm_to_delete_xxx)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        onConfirmDelete();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-                .show();
-    }
+    private View.OnClickListener onRemove = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle(R.string.msg_confirm_to_remove)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            onConfirmRemove();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create()
+                    .show();
+        }
+    };
 
-    private void onConfirmDelete()
+    private void onConfirmRemove()
     {
-        dataManager.deleteReferenceTemporarily(navigator.current());
-        setResult(AppCode.DREFERENCE_DELETED);
+        dataManager.removeReference(navigator.current());
+        setResult(AppCode.DREFERENCE_REMOVED);
         finish();
     }
 

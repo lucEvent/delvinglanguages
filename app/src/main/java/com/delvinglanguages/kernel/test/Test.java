@@ -8,7 +8,7 @@ import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.kernel.util.TestReferenceStates;
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class Test extends Item implements Wrapper<Test> {
+public class Test extends Item implements Wrapper {
 
     private final static String SEP = "%Tt";
     private final static String SEP2 = "%T%";
@@ -19,7 +19,8 @@ public class Test extends Item implements Wrapper<Test> {
 
     private int runTimes;
 
-    public TestReferenceStates references;
+    private TestReferenceStates totalStates;
+    public TestReferenceStates states;
 
     public Test(int id, String name, int runTimes, @NonNull String wrappedContent, int theme_id)
     {
@@ -27,7 +28,7 @@ public class Test extends Item implements Wrapper<Test> {
         this.theme_id = theme_id;
         this.name = name;
         this.runTimes = runTimes;
-        this.references = unWrapContent(wrappedContent);
+        this.totalStates = unWrapContent(wrappedContent);
     }
 
     public Test(int id, String name, @NonNull DReferences refs, int theme_id)
@@ -36,9 +37,56 @@ public class Test extends Item implements Wrapper<Test> {
         this.theme_id = theme_id;
         this.name = name;
         this.runTimes = 0;
-        this.references = new TestReferenceStates(refs.size());
+        this.totalStates = new TestReferenceStates(refs.size());
         for (DReference ref : refs)
-            this.references.add(new TestReferenceState(ref));
+            this.totalStates.add(new TestReferenceState(ref));
+    }
+
+    public static Test fromWrapper(int id, @NonNull String wrapper)
+    {
+        String[] parts = wrapper.split(SEP2);
+        return new Test(id, parts[0], Integer.parseInt(parts[1]), parts[2], Integer.parseInt(parts[3]));
+    }
+
+    @Override
+    public String wrap()
+    {
+        return name + SEP2 +
+                runTimes + SEP2 +
+                Test.wrapContent(this) + SEP2 +
+                theme_id;
+    }
+
+    @Override
+    public int wrapType()
+    {
+        return Wrapper.TYPE_TEST;
+    }
+
+    public void start()
+    {
+        states = new TestReferenceStates(totalStates.size());
+        for (TestReferenceState state : totalStates)
+            states.add(new TestReferenceState(state.reference));
+    }
+
+    public void finish()
+    {
+        runTimes++;
+        for (int i = 0; i < totalStates.size(); i++) {
+            TestReferenceState total = totalStates.get(i);
+            TestReferenceState last = states.get(i);
+
+            total.match.attempts = last.match.attempts;
+            total.match.errors = last.match.errors;
+            total.complete.attempts = last.complete.attempts;
+            total.complete.errors = last.complete.errors;
+            total.write.attempts = last.write.attempts;
+            total.write.errors = last.write.errors;
+            total.listening.attempts = last.listening.attempts;
+            total.listening.errors = last.listening.errors;
+        }
+        states = null;
     }
 
     private TestReferenceStates unWrapContent(@NonNull String wrappedContent)
@@ -46,14 +94,12 @@ public class Test extends Item implements Wrapper<Test> {
         String[] items = wrappedContent.split(SEP);
         int index = 0;
 
-        DReference refAux = DReference.createBait("");
-
         int nRefs = Integer.parseInt(items[index++]);
         TestReferenceStates res = new TestReferenceStates(nRefs);
         for (int i = 0; i < nRefs; i++) {
             TestReferenceState refState = new TestReferenceState(null);
 
-            refState.reference = refAux.unWrap(items[index++]);
+            refState.reference = DReference.fromWrapper(-1, items[index++]);
             refState.match.attempts = Integer.parseInt(items[index++]);
             refState.match.errors = Integer.parseInt(items[index++]);
             refState.complete.attempts = Integer.parseInt(items[index++]);
@@ -71,8 +117,8 @@ public class Test extends Item implements Wrapper<Test> {
     public static String wrapContent(@NonNull Test test)
     {
         StringBuilder res = new StringBuilder();
-        res.append(test.references.size());
-        for (TestReferenceState refState : test.references) {
+        res.append(test.totalStates.size());
+        for (TestReferenceState refState : test.totalStates) {
 
             res.append(SEP).append(refState.reference.wrap());
             res.append(SEP).append(refState.match.attempts).append(SEP).append(refState.match.errors);
@@ -87,7 +133,7 @@ public class Test extends Item implements Wrapper<Test> {
     public DReferences getReferences()
     {
         DReferences res = new DReferences();
-        for (TestReferenceState refState : references)
+        for (TestReferenceState refState : totalStates)
             res.add(refState.reference);
         return res;
     }
@@ -97,21 +143,21 @@ public class Test extends Item implements Wrapper<Test> {
         return runTimes != 0;
     }
 
-    public void run_finished()
-    {
-        runTimes++;
-    }
-
     public int getRunTimes()
     {
         return runTimes;
+    }
+
+    public int size()
+    {
+        return totalStates.size();
     }
 
     public double getAccuracy()
     {
         int attempts = 0;
         int errors = 0;
-        for (TestReferenceState refState : references) {
+        for (TestReferenceState refState : totalStates) {
             attempts += refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             errors += refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
         }
@@ -130,7 +176,7 @@ public class Test extends Item implements Wrapper<Test> {
         double bestAccuracy = -1.0;
         String bestName = "";
 
-        for (TestReferenceState refState : references) {
+        for (TestReferenceState refState : totalStates) {
             int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
             double accuracy = getAccuracy(attempts, errors);
@@ -152,12 +198,12 @@ public class Test extends Item implements Wrapper<Test> {
         double worstAccuracy = 100000.0;
         String worstName = "";
 
-        for (TestReferenceState refState : references) {
+        for (TestReferenceState refState : totalStates) {
             int attempts = refState.match.attempts + refState.complete.attempts + refState.write.attempts + refState.listening.attempts;
             int errors = refState.match.errors + refState.complete.errors + refState.write.errors + refState.listening.errors;
             double accuracy = getAccuracy(attempts, errors);
 
-            if (accuracy < worstAttempt || ((accuracy == worstAttempt) && (attempts > worstAttempt))) {
+            if (accuracy < worstAccuracy || ((accuracy == worstAccuracy) && (attempts > worstAttempt))) {
                 worstName = refState.reference.name;
                 worstAttempt = attempts;
                 worstAccuracy = accuracy;
@@ -171,28 +217,6 @@ public class Test extends Item implements Wrapper<Test> {
     public boolean hasContent(CharSequence s)
     {
         return name.toLowerCase().contains(s);
-    }
-
-    @Override
-    public String wrap()
-    {
-        return name + SEP2 +
-                runTimes + SEP2 +
-                Test.wrapContent(this) + SEP2 +
-                theme_id;
-    }
-
-    @Override
-    public Test unWrap(@NonNull String wrapper)
-    {
-        String[] parts = wrapper.split(SEP2);
-        return new Test(-1, parts[0], Integer.parseInt(parts[1]), parts[2], Integer.parseInt(parts[3]));
-    }
-
-    @Override
-    public int wrapType()
-    {
-        return Wrapper.TYPE_TEST;
     }
 
 }

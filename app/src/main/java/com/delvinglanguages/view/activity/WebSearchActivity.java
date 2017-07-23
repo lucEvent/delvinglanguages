@@ -2,6 +2,7 @@ package com.delvinglanguages.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppData;
@@ -25,8 +27,8 @@ import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.util.Inflexions;
-import com.delvinglanguages.net.MicrosoftTranslator;
 import com.delvinglanguages.net.WordReference;
+import com.delvinglanguages.net.YandexTranslator;
 import com.delvinglanguages.net.utils.OnlineDictionary;
 import com.delvinglanguages.net.utils.Search;
 import com.delvinglanguages.view.lister.WebSearchLister;
@@ -69,29 +71,44 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
         from = new KernelManager(this).getCurrentLanguage().code;
         to = AppSettings.getAppLanguageCode();
+
         dictionary = new WordReference(from, to, handler);
+        if (!dictionary.isTranslationAvailable(from, to))
+            dictionary = new YandexTranslator(from, to, handler);
 
         lfrom = AppData.getLanguageName(from);
         lto = AppData.getLanguageName(to);
 
-        if (!dictionary.isTranslationAvailable(from, to))
-            dictionary = new MicrosoftTranslator(from, to, handler);
-
-        if (dictionary.isTranslationAvailable(from, to))
+        TextView copyright = (TextView) findViewById(R.id.copyright);
+        if (dictionary.isTranslationAvailable(from, to)) {
             input.addTextChangedListener(this);
-        else {
-            TextView msgr = (TextView) findViewById(R.id.messager);
-            msgr.setVisibility(View.VISIBLE);
-            msgr.setText(getString(R.string.msg_cannot_translate_from_to, lfrom, lto));
+
+            copyright.setText(dictionary instanceof WordReference ? "© WordReference.com" : "Powered by Yandex.Translate");
+
+        } else {
+            copyright.setVisibility(View.GONE);
+
+            TextView messager = (TextView) findViewById(R.id.messager);
+            messager.setVisibility(View.VISIBLE);
+            messager.setText(getString(R.string.msg_cannot_translate_from_to, lfrom, lto));
         }
 
         updateLanguages();
 
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
+        if (imm != null)
             imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
-        }
+
         input.requestFocus();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String term = extras.getString(AppCode.SEARCH_TERM);
+
+            input.setText(term);
+            input.setSelection(term.length());
+            onTextChanged(term, 0, 0, term.length());
+        }
     }
 
     @Override
@@ -147,8 +164,14 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
     public void onAddAction(View v)
     {
-        if (currentSearch == null || !addEnabled)
+        if (currentSearch == null) {
+            Toast.makeText(this, R.string.msg_nothing_to_add, Toast.LENGTH_SHORT).show();
             return;
+        }
+        if (!addEnabled) {
+            Toast.makeText(this, R.string.msg_impossible_to_add_search, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Inflexions inflexions = new Inflexions();
         ArrayList<String> translations = new ArrayList<>();
@@ -171,7 +194,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         Intent intent = new Intent(getApplicationContext(), ReferenceEditorActivity.class);
         intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_SEARCH);
         intent.putExtra(AppCode.DREFERENCE_NAME, searchedWord);
-        intent.putExtra(AppCode.DREFERENCE_INFLEXIONS, inflexions.wrap());
+        intent.putExtra(AppCode.INFLEXIONS_WRAPPER, inflexions.wrap());
         startActivity(intent);
     }
 
@@ -211,6 +234,13 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
     @Override
     public void afterTextChanged(Editable s)
     {
+    }
+
+    public void onCopyright(View view)
+    {
+        String url = dictionary instanceof WordReference ? "http://www.wordreference.com/" : "http://translate.yandex.com/";
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
 }

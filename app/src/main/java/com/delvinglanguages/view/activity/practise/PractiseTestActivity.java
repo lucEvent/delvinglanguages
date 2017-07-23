@@ -75,7 +75,7 @@ public class PractiseTestActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (resultCode) {
-            case TestListener.TEST_DELETED:
+            case TestListener.TEST_REMOVED:
             case TestListener.TEST_CREATED:
                 adapter.notifyDataSetChanged();
                 break;

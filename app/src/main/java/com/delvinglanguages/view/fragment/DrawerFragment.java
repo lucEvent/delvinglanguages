@@ -87,7 +87,7 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
                 String message = String.format(getString(R.string.msg_word_exists), in);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             } else {
-                dataManager.createReference(in);
+                dataManager.createDrawerReference(in);
                 adapter.notifyDataSetChanged();
                 input.setText("");
             }
@@ -98,7 +98,7 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
     @Override
     public void onItemDismiss(int position)
     {
-        dataManager.deleteReference(dataManager.getDrawerReferences().get(position));
+        dataManager.deleteDrawerReference(dataManager.getDrawerReferences().get(position));
         adapter.notifyItemRemoved(position);
     }
 

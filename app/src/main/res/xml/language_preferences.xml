@@ -31,11 +31,7 @@
 
         <Preference
             android:key="@string/pref_language_merge_key"
-            android:title="@string/pref_language_merge">
-
-            <intent android:action="com.delvinglanguages.merger.MERGE"/>
-
-        </Preference>
+            android:title="@string/pref_language_merge"/>
 
         <Preference
             android:key="@string/pref_language_remove_key"

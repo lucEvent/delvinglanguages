@@ -9,6 +9,7 @@ public abstract class TestFragment extends Fragment {
 
     protected Handler handler;
     protected TestReferenceState reference;
+    protected boolean showPhrasal;
 
     protected TestReferenceState.TestStage nextStage;
 

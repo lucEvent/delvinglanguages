@@ -12,13 +12,11 @@ import android.support.annotation.NonNull;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.net.CredentialsManager;
 import com.delvinglanguages.view.utils.LanguageListener;
 
 public class AppSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private static final int PREF_MASK_APP_LANGUAGE_NAME = 0x01;
-    private static final int PREF_MASK_APP_THEME = 0x02;
 
     private CredentialsManager credentialsManager;
 
@@ -28,7 +26,7 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.app_preferences);
 
-        setUpPreferenceSummaries(0xff);
+        setUpSummaries();
 
         findPreference(AppSettings.ONLINE_BACKUP)
                 .setOnPreferenceChangeListener(onBackUpChangeListener);
@@ -51,24 +49,29 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-
-        if (key.equals(AppSettings.APP_LANGUAGE_CODE_KEY))
-            setUpPreferenceSummaries(PREF_MASK_APP_LANGUAGE_NAME);
-
-        else if (key.equals(AppSettings.APP_THEME_KEY))
-            setUpPreferenceSummaries(PREF_MASK_APP_THEME);
-    }
-
-    private void setUpPreferenceSummaries(int mask)
-    {
-        if ((mask & PREF_MASK_APP_LANGUAGE_NAME) != 0) {
+        if (key.equals(AppSettings.APP_LANGUAGE_CODE_KEY)) {
             ListPreference app_name = (ListPreference) findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
             app_name.setSummary(app_name.getEntry());
-        }
-        if ((mask & PREF_MASK_APP_THEME) != 0) {
+
+            RecordManager.appLanguageChanged(Integer.parseInt(app_name.getValue()));
+        } else if (key.equals(AppSettings.PHONKB_VIBRATION_KEY))
+            RecordManager.appKBVibrationStateChanged(((SwitchPreference) findPreference(AppSettings.PHONKB_VIBRATION_KEY)).isChecked());
+
+        else if (key.equals(AppSettings.APP_THEME_KEY)) {
             ListPreference app_theme = (ListPreference) findPreference(AppSettings.APP_THEME_KEY);
             app_theme.setSummary(app_theme.getEntry());
+
+            RecordManager.appThemeChanged(Integer.parseInt(app_theme.getValue()));
         }
+    }
+
+    private void setUpSummaries()
+    {
+        ListPreference app_name = (ListPreference) findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
+        app_name.setSummary(app_name.getEntry());
+
+        ListPreference app_theme = (ListPreference) findPreference(AppSettings.APP_THEME_KEY);
+        app_theme.setSummary(app_theme.getEntry());
     }
 
     private Preference.OnPreferenceChangeListener onBackUpChangeListener = new Preference.OnPreferenceChangeListener() {
@@ -83,19 +86,20 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
                 if (!credentialsManager.hasPermissions()) {
 
                     credentialsManager.askPermissions(AppSettingsFragment.this);
-
                     return false;
 
                 } else if (!credentialsManager.hasCredentials()) {
-                    credentialsManager.askCredentials(AppSettingsFragment.this);
 
+                    credentialsManager.askCredentials(AppSettingsFragment.this);
                     return false;
                 }
                 Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+                RecordManager.appOnlineBackUpStateChanged(true);
 
-            } else
+            } else {
                 Main.handler.obtainMessage(LanguageListener.DISABLE_SYNCHRONIZATION).sendToTarget();
-
+                RecordManager.appOnlineBackUpStateChanged(false);
+            }
             return true;
         }
     };

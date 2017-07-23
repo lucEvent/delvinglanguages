@@ -21,12 +21,13 @@ import com.delvinglanguages.view.utils.TestListener;
 
 public class TestWriteFragment extends TestFragment implements TextWatcher {
 
-    public static TestWriteFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
+    public static TestWriteFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage, boolean showPhrasal)
     {
         TestWriteFragment f = new TestWriteFragment();
         f.reference = reference;
         f.handler = handler;
         f.nextStage = nextStage;
+        f.showPhrasal = showPhrasal;
         return f;
     }
 
@@ -54,6 +55,9 @@ public class TestWriteFragment extends TestFragment implements TextWatcher {
         view.findViewById(R.id.configuration).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.help).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.next).setVisibility(View.INVISIBLE);
+
+        if (!showPhrasal)
+            view.findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         attempt = 1;
         iswrong = false;

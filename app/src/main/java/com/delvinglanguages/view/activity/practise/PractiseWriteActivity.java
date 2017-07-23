@@ -15,8 +15,10 @@ import android.widget.Toast;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.game.WriteGame;
+import com.delvinglanguages.kernel.record.Record;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseWriteActivity extends Activity implements TextWatcher {
@@ -55,6 +57,9 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
 
         help = (ImageButton) findViewById(R.id.help);
         next = (ImageButton) findViewById(R.id.next);
+
+        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+            findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownTypes = AppAnimator.getTypeStatusVector();
 
@@ -106,7 +111,7 @@ public class PractiseWriteActivity extends Activity implements TextWatcher {
                 help.setClickable(false);
                 next.setClickable(false);
 
-                dataManager.exercise(currentReference, attempt);
+                dataManager.exercise(Record.PRACTISED_WRITE, currentReference, attempt);
 
                 new Thread(new Runnable() {
                     public void run()

@@ -18,8 +18,8 @@
     <string name="adverb">Adverbi</string>
     <string name="adverb_cap">ADVERBI</string>
     <string name="phv">VP</string>
-    <string name="phrasalverb">Verb Preposicional</string>
-    <string name="phrasalverbs">Verbs Preposicionals</string>
+    <string name="phrasalverb">Verb preposicional</string>
+    <string name="phrasalverbs">Verbs preposicionals</string>
     <string name="phrasal_cap">VERB PREPOSICIONAL</string>
     <string name="exp">EXP</string>
     <string name="expression">Expressió</string>
@@ -62,10 +62,11 @@
     <string name="type_filter">Filtra per tipus</string>
     <string name="number_of_words">Número de paraules</string>
     <string name="main_types_content_description">%1$d sustantius\n%2$d verbs\n%3$d adjectius\n%4$d adverbis\n%5$d verbs preposicionals\n%6$d expressions\n%7$d preposicions\n%8$d conjuncions\n%9$d altres\n%10$d temes\n%11$d tests</string>
+    <string name="main_types_content_description_no_phrasals">%1$d sustantius\n%2$d verbs\n%3$d adjectius\n%4$d adverbis\n%5$d expressions\n%6$d preposicions\n%7$d conjuncions\n%8$d altres\n%9$d temes\n%10$d tests</string>
     <string name="content">Contingut</string>
     <string name="statistics">Estadístiques</string>
     <string name="main_stats_content_description">Intents:\t\t\t\t\t\t %1$d\nEncerts a la 1a:\t %2$d (%3$.1f%%)\nEncerts a la 2a:\t %4$d (%5$.1f%%)\nEncerts a la 3a:\t %6$d (%7$.1f%%)\nFallades:\t\t\t\t\t %8$d (%9$.1f%%)</string>
-    <string name="x_words">%1$s paraules</string>
+    <string name="x_words">%1$d paraules</string>
     <string name="create_a_language">Crea un idioma</string>
     <string name="import_from_file">Importa des d\'arxiu</string>
     <string name="synchronize_your_account">Sincronitza compte</string>
@@ -97,6 +98,9 @@
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
     <string name="start">Començar</string>
+    <string name="add_to_drawer">Afegir a l\'esborrany</string>
+    <string name="enabled">activat</string>
+    <string name="disabled">desactivat</string>
 
 
     <!-- * ******************** Hints **************************** * -->
@@ -139,7 +143,7 @@
     <string name="msg_language_saved_">%1$s guardat amb %2$d paraules, %3$d paraules a l\'esborrany, %4$d temes i %5$d tests</string>
     <string name="msg_missing_filename">Falta nom de l\'arxiu</string>
     <string name="msg_no_language_selected">Cap idioma sel·leccionat</string>
-    <string name="msg_confirm_to_delete_xxx">Confirma per eliminar</string>
+    <string name="msg_confirm_to_remove">Confirma per eliminar</string>
     <string name="msg_go_back_without_saving">Sortir sense guardar canvis</string>
     <string name="msg_go_out_from_test">Sortir sense acabar el test</string>
     <string name="msg_missing_theme_name">Falta nom del tema</string>
@@ -158,7 +162,7 @@
     <string name="msg_no_conflicts_found">Cap conflicte trobat</string>
     <string name="msg_estimating_merge_of">Estimant la fusió de %1$s amb %2$s</string>
     <string name="msg_be_patience">Sigues pacient!</string>
-    <string name="msg_conflicts_need_supervision">%1$s conflictes necessiten supervisió</string>
+    <string name="msg_conflicts_need_supervision">%1$d conflictes necessiten supervisió</string>
     <string name="msg_reading">Llegint %1$s</string>
     <string name="msg_calculating_changes">Calculant canvis</string>
     <string name="msg_merging">Fusionant</string>
@@ -175,9 +179,14 @@
     <string name="msg_synchronizing">Sincronitzant</string>
     <string name="msg_no_internet_connection">No s\'ha trobat connexió a internet</string>
     <string name="msg_no_languages_found">No s\'han trobat dades</string>
-    <string name="msg_in_next_releases">Disponible en properes actualitzacions</string>
     <string name="msg_title_synching_account">Sincronitzant compte</string>
     <string name="msg_starting_process">Inicialitzant…</string>
+    <string name="msg_progress_wont_save">El progrés no es guardarà</string>
+    <string name="msg_nothing_to_add">No hi ha res per afegir</string>
+    <string name="msg_impossible_to_add_search">No es pot afegir així, canvia la direcció de la traducció</string>
+    <string name="msg_no_results_found_for">No s\'han trobat resultats per <em>%1$s</em>.</string>
+    <string name="msg_added_to_drawer">%1$s afegit a l\'esborrany</string>
+    <string name="msg_in_next_releases">Disponible en properes actualitzacions</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
@@ -213,5 +222,40 @@
     <string name="pref_language_merge">Fusionar</string>
     <string name="pref_language_remove">Eliminar</string>
     <string name="pref_language_reset_statistics">Restaurar estadístiques</string>
+
+
+    <!-- * ********************** Record strings ************************* * -->
+    <string name="h_in">A %1$s</string>
+    <string name="h_deleted_list">Llista eliminada</string>
+    <string name="h_list_created">Nova llista</string>
+    <string name="h_list_deleted">Llista eliminada</string>
+    <string name="h_list_integrated">Llista integrada</string>
+    <string name="h_list_integrated_in">%1$s a %2$s</string>
+    <string name="h_list_code_changed">El seu idioma ara és %1$s</string>
+    <string name="h_list_name_changed">%1$s reanomenat a %2$s</string>
+    <string name="h_list_stats_cleared">Estadístiques resetejades</string>
+    <string name="h_recycle_bin_cleared">Paperera buidada</string>
+    <string name="h_drawer_added">%1$d paraula(es) afegida(es) a l\'esborrany</string>
+    <string name="h_drawer_deleted">%1$d paraula(es) eliminada(es) de l\'esborrany</string>
+    <string name="h_reference_added">%1$d paraula(es) afegida(es) al diccionari</string>
+    <string name="h_reference_modified">%1$d paraula(es) modificada(es)</string>
+    <string name="h_reference_removed">%1$d paraula(es) eliminada(es)</string>
+    <string name="h_reference_recovered">%1$d paraula(es) restaurada(s) des de la paperera</string>
+    <string name="h_theme_added">%1$d tema(es) creat(s)</string>
+    <string name="h_theme_modified">%1$d tema(es) modificat(s)</string>
+    <string name="h_theme_removed">%1$d tema(es) eliminat(s)</string>
+    <string name="h_theme_recovered">%1$d tema(es) restaurat(s) des de la paperera</string>
+    <string name="h_test_added">%1$d test(s) creat(s)</string>
+    <string name="h_test_done">%1$d test(s) fet(s)</string>
+    <string name="h_test_removed">%1$d test(s) eliminat(s</string>
+    <string name="h_test_recovered">%1$d test(s) restaurat(s) des de la paperera</string>
+    <string name="h_practised_match">%1$d paraula(es) praticada(es) a Aparella</string>
+    <string name="h_practised_complete">%1$d paraula(es) praticada(es) a Completa</string>
+    <string name="h_practised_write">%1$d paraula(es) praticada(es) a Escriu</string>
+    <string name="h_practised_listening">%1$d paraula(es) praticada(es) a Escolta</string>
+    <string name="h_app_lang_changed">El teu idioma ha estat cambiat a %1$s</string>
+    <string name="h_app_theme_changed">El tema de l\'App ha estat cambiat a %1$s</string>
+    <string name="h_import">%1$d llista(es) importada(es) des d\'un archiu</string>
+    <string name="h_export">%1$d llista(es) exportada(es) a un archiu</string>
 
 </resources>

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.delvinglanguages.kernel.util.Wrapper;
 
-public class DrawerReference implements Wrapper<DrawerReference> {
+public class DrawerReference implements Wrapper {
 
     public final int id;
 
@@ -16,16 +16,15 @@ public class DrawerReference implements Wrapper<DrawerReference> {
         this.name = name;
     }
 
+    public static DrawerReference fromWrapper(int id, @NonNull String wrapper)
+    {
+        return new DrawerReference(id, wrapper);
+    }
+
     @Override
     public String wrap()
     {
         return name;
-    }
-
-    @Override
-    public DrawerReference unWrap(@NonNull String wrapper)
-    {
-        return new DrawerReference(-1, wrapper);
     }
 
     @Override

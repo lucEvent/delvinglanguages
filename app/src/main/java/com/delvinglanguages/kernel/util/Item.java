@@ -7,6 +7,7 @@ public abstract class Item {
     public static final int TEST = 2;
     public static final int TYPES_DATA = 3;
     public static final int STATS_DATA = 4;
+    public static final int WEB_SEARCH = 5;
 
     public final int id;
     public final int itemType;

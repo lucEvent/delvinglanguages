@@ -14,6 +14,7 @@ import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.theme.ThemePair;
@@ -120,6 +121,8 @@ public class BackUpManager {
             }
             stream.close();
 
+            RecordManager.appImport(nLangs);
+
         } catch (Exception e) {
 
             handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
@@ -214,6 +217,9 @@ public class BackUpManager {
                 handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
             }
             stream.close();
+
+            RecordManager.appExport(languages.size());
+
         } catch (Exception e) {
             handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
             AppSettings.printerror("[BUM] Exception in backupData", e);

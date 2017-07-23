@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.delvinglanguages.AppSettings;
-import com.delvinglanguages.data.Database.DBReference;
-import com.delvinglanguages.data.Database.DBRemovedReference;
 import com.delvinglanguages.data.Database.DBTest;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
@@ -16,13 +14,15 @@ import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.RemovedItem;
+import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.kernel.util.Tests;
 import com.delvinglanguages.kernel.util.ThemePairs;
 import com.delvinglanguages.kernel.util.Themes;
+import com.delvinglanguages.kernel.util.Wrapper;
 
 import java.util.Random;
-import java.util.TreeSet;
 
 public class DatabaseManager extends BaseDatabaseManager {
 
@@ -76,23 +76,12 @@ public class DatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
-    public DReferences readRemovedReferences(int lang_id)
+    public RemovedItems readRemovedItems(int lang_id)
     {
-        DReferences result = new DReferences();
-
+        RemovedItems result;
         synchronized (this) {
             openReadableDatabase();
-
-            TreeSet<Integer> referenceIds = readRemovedReferencesIds(lang_id);
-
-            for (Integer reference_id : referenceIds) {
-                Cursor cursor = db.query(DBReference.db, DBReference.cols, Database.id + " = " + reference_id, null, null, null, null);
-
-                if (cursor.moveToFirst())
-                    result.add(DBReference.parse(cursor));
-
-                cursor.close();
-            }
+            result = super.readRemovedItems(lang_id);
             closeReadableDatabase();
         }
         AppSettings.printlog("# RemovedReferences in DB: " + result.size());
@@ -167,15 +156,6 @@ public class DatabaseManager extends BaseDatabaseManager {
             closeWritableDatabase();
         }
         return new DReference(random_id, name, pronunciation, inflexions, DReference.INITIAL_PRIORITY);
-    }
-
-    public void insertRemovedReference(int lang_id, int reference_id)
-    {
-        synchronized (this) {
-            openWritableDatabase();
-            super.insertRemovedReference(lang_id, reference_id, Database.NOT_SYNCED);
-            closeWritableDatabase();
-        }
     }
 
     public DrawerReference insertDrawerReference(int lang_id, String note)
@@ -287,22 +267,12 @@ public class DatabaseManager extends BaseDatabaseManager {
         }
     }
 
-    public void deleteReferenceTemporarily(int lang_id, int reference_id)
-    {
-        insertRemovedReference(lang_id, reference_id);
-    }
-
-    public void deleteAllRemovedReferences(int lang_id)
+    public void removeReference(int lang_id, DReference reference)
     {
         synchronized (this) {
             openWritableDatabase();
-
-            TreeSet<Integer> ids = readRemovedReferencesIds(lang_id);
-
-            db.delete(DBRemovedReference.db, Database.lang_id + " = " + lang_id, null);
-            for (Integer reference_id : ids)
-                deleteReference(lang_id, reference_id);
-
+            super.deleteReference(lang_id, reference.id);
+            super.insertRemovedItem(reference.id, lang_id, reference, Database.NOT_SYNCED);
             closeWritableDatabase();
         }
     }
@@ -316,20 +286,40 @@ public class DatabaseManager extends BaseDatabaseManager {
         }
     }
 
-    public void deleteTheme(int id, int lang_id)
+    public void removeTheme(int lang_id, Theme theme)
     {
         synchronized (this) {
             openWritableDatabase();
-            super.deleteTheme(lang_id, id);
+            super.deleteTheme(lang_id, theme.id);
+            super.insertRemovedItem(theme.id, lang_id, theme, Database.NOT_SYNCED);
             closeWritableDatabase();
         }
     }
 
-    public void deleteTest(int id, int lang_id)
+    public void removeTest(int lang_id, Test test)
     {
         synchronized (this) {
             openWritableDatabase();
-            super.deleteTest(lang_id, id);
+            super.deleteTest(lang_id, test.id);
+            super.insertRemovedItem(test.id, lang_id, test, Database.NOT_SYNCED);
+            closeWritableDatabase();
+        }
+    }
+
+    public void deleteRemovedItem(int lang_id, int item_id, int type)
+    {
+        synchronized (this) {
+            openWritableDatabase();
+            super.deleteRemovedItem(lang_id, item_id, type);
+            closeWritableDatabase();
+        }
+    }
+
+    public void deleteAllRemovedItems(int lang_id)
+    {
+        synchronized (this) {
+            openWritableDatabase();
+            super.deleteAllRemovedItems(lang_id);
             closeWritableDatabase();
         }
     }
@@ -338,11 +328,26 @@ public class DatabaseManager extends BaseDatabaseManager {
     ////////////////////// Restores \\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
-    public void restoreReference(int reference_id, int lang_id)
+    public void restoreRemovedItem(int lang_id, RemovedItem removedItem)
     {
         synchronized (this) {
             openWritableDatabase();
-            super.deleteRemovedReference(lang_id, reference_id);
+            super.deleteRemovedItem(lang_id, removedItem.id, removedItem.wrap_type);
+
+            switch (removedItem.wrap_type) {
+                case Wrapper.TYPE_REFERENCE:
+                    DReference reference = removedItem.castToReference();
+                    super.insertReference(reference.id, lang_id, reference.name, reference.getInflexions().wrap(), reference.pronunciation, reference.priority, Database.NOT_SYNCED);
+                    break;
+                case Wrapper.TYPE_THEME:
+                    Theme theme = removedItem.castToTheme();
+                    super.insertTheme(theme.id, lang_id, theme.getName(), theme.getPairs(), Database.NOT_SYNCED);
+                    break;
+                case Wrapper.TYPE_TEST:
+                    Test test = removedItem.castToTest();
+                    super.insertTest(test.id, lang_id, test.name, test.getRunTimes(), Test.wrapContent(test), test.theme_id, Database.NOT_SYNCED);
+                    break;
+            }
             closeWritableDatabase();
         }
     }

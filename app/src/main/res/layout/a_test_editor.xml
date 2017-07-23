@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +30,7 @@
                     android:background="@drawable/ripple_round"
                     android:contentDescription="@string/cancel"
                     android:onClick="actionCancel"
-                    android:src="@drawable/ic_cancel_accent" />
+                    android:src="@drawable/ic_cancel_accent"/>
 
                 <Button
                     style="?android:attr/buttonBarButtonStyle"
@@ -38,7 +39,7 @@
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
                     android:onClick="actionSave"
-                    android:text="@string/save" />
+                    android:text="@string/save"/>
 
             </RelativeLayout>
 
@@ -53,12 +54,13 @@
                     android:layout_margin="8dp"
                     android:background="#0f00"
                     android:hint="@string/hint_enter_test_name"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="8dp"
-                    android:singleLine="true"
                     android:textAlignment="textStart"
                     android:textAppearance="?android:attr/textAppearanceLarge">
 
-                    <requestFocus />
+                    <requestFocus/>
                 </EditText>
 
             </android.support.design.widget.TextInputLayout>
@@ -78,7 +80,7 @@
 
                 <TextView
                     style="@style/option_title"
-                    android:text="@string/number_of_words" />
+                    android:text="@string/number_of_words"/>
 
                 <Spinner
                     android:id="@+id/number_of_words"
@@ -91,13 +93,13 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:spinnerMode="dropdown"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
 
                 <TextView
                     style="@style/option_title"
-                    android:text="@string/type_filter" />
+                    android:text="@string/type_filter"/>
 
-                <include layout="@layout/v_buttons_type" />
+                <include layout="@layout/v_buttons_type"/>
 
             </LinearLayout>
         </ScrollView>

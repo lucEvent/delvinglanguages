@@ -40,20 +40,19 @@ public class ReferenceViewHolder extends RecyclerView.ViewHolder {
         holder.dreference.setText(reference.name);
         holder.translation.setText(reference.getTranslationsAsString());
 
-        holder.noun.setBackgroundResource((type & DReference.NOUN) != 0 ? R.color.noun : R.color.none);
-        holder.verb.setBackgroundResource((type & DReference.VERB) != 0 ? R.color.verb : R.color.none);
-        holder.adjc.setBackgroundResource((type & DReference.ADJECTIVE) != 0 ? R.color.adjective : R.color.none);
-        holder.advb.setBackgroundResource((type & DReference.ADVERB) != 0 ? R.color.adverb : R.color.none);
-        if (showPhrasal) {
-            holder.phrv.setBackgroundResource((type & DReference.PHRASAL_VERB) != 0 ? R.color.phrasal : R.color.none);
-            holder.phrv.setVisibility(View.VISIBLE);
-        } else {
+        holder.noun.setVisibility((type & DReference.NOUN) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.verb.setVisibility((type & DReference.VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.adjc.setVisibility((type & DReference.ADJECTIVE) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.advb.setVisibility((type & DReference.ADVERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+        if (showPhrasal)
+            holder.phrv.setVisibility((type & DReference.PHRASAL_VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+        else
             holder.phrv.setVisibility(View.GONE);
-        }
-        holder.expr.setBackgroundResource((type & DReference.EXPRESSION) != 0 ? R.color.expression : R.color.none);
-        holder.prep.setBackgroundResource((type & DReference.PREPOSITION) != 0 ? R.color.preposition : R.color.none);
-        holder.conj.setBackgroundResource((type & DReference.CONJUNCTION) != 0 ? R.color.conjunction : R.color.none);
-        holder.othr.setBackgroundResource((type & DReference.OTHER) != 0 ? R.color.other : R.color.none);
+
+        holder.expr.setVisibility((type & DReference.EXPRESSION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.prep.setVisibility((type & DReference.PREPOSITION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.conj.setVisibility((type & DReference.CONJUNCTION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.othr.setVisibility((type & DReference.OTHER) != 0 ? View.VISIBLE : View.INVISIBLE);
 
         holder.container.setTag(reference);
     }
