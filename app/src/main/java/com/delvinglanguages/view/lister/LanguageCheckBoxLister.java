@@ -11,15 +11,15 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.util.DelvingLists;
 
-public class LanguageCheckBoxLister extends ArrayAdapter<Language> implements View.OnClickListener {
+public class LanguageCheckBoxLister extends ArrayAdapter<DelvingList> implements View.OnClickListener {
 
     private boolean[] checks;
     private LayoutInflater inflater;
 
-    public LanguageCheckBoxLister(Context context, Languages values)
+    public LanguageCheckBoxLister(Context context, DelvingLists values)
     {
         super(context, R.layout.i_checkbox, values);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,9 +39,9 @@ public class LanguageCheckBoxLister extends ArrayAdapter<Language> implements Vi
             view.setOnClickListener(this);
             view.findViewById(R.id.checkbox).setOnClickListener(this);
         }
-        Language language = getItem(position);
+        DelvingList delvingList = getItem(position);
 
-        ((TextView) view.findViewById(R.id.text)).setText(language.language_name);
+        ((TextView) view.findViewById(R.id.text)).setText(delvingList.name);
 
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
         checkBox.setTag(position);

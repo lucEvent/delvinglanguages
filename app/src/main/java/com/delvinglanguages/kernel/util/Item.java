@@ -3,7 +3,7 @@ package com.delvinglanguages.kernel.util;
 public abstract class Item {
 
     public static final int DREFERENCE = 0;
-    public static final int THEME = 1;
+    public static final int SUBJECT = 1;
     public static final int TEST = 2;
     public static final int TYPES_DATA = 3;
     public static final int STATS_DATA = 4;

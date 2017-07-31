@@ -47,7 +47,7 @@
     <string name="dictionary">Diccionari</string>
     <string name="drawer">Esborrany</string>
     <string name="more">Més</string>
-    <string name="themes">Temes</string>
+    <string name="subjects">Temes</string>
     <string name="pronunciation">Pronunciació</string>
     <string name="recycle_bin">Paperera</string>
     <string name="language_settings">Opcions de l\'idioma</string>
@@ -71,6 +71,8 @@
     <string name="import_from_file">Importa des d\'arxiu</string>
     <string name="synchronize_your_account">Sincronitza compte</string>
     <string name="how_do_we_start">Com començem?</string>
+    <string name="add_one_now">Afegeix una ara</string>
+    <string name="create_one_now">Crea un ara</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -94,18 +96,19 @@
     <string name="no">No</string>
     <string name="yes">Sí</string>
     <string name="add_word">Afegir paraula</string>
-    <string name="add_theme">Afegir tema</string>
+    <string name="add_subject">Afegir tema</string>
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
     <string name="start">Començar</string>
     <string name="add_to_drawer">Afegir a l\'esborrany</string>
     <string name="enabled">activat</string>
     <string name="disabled">desactivat</string>
+    <string name="ok">Val</string>
 
 
     <!-- * ******************** Hints **************************** * -->
     <string name="hint_enter_language">Inserta el nom de l\'idioma</string>
-    <string name="hint_enter_theme_name">Nom del tema</string>
+    <string name="hint_enter_subject_name">Nom del tema</string>
     <string name="hint_search">Cerca</string>
     <string name="hint_enter_drawer">Inserta una paraula</string>
     <string name="hint_enter_backup_name">Inserta el nom de l\'arxiu</string>
@@ -131,7 +134,7 @@
     <string name="msg_found_languages">S\'ha trobat %1$d idioma(es)</string>
     <string name="msg_n_references">%1$d paraules</string>
     <string name="msg_n_drawerreferences">%1$d paraules a l\'esborrany</string>
-    <string name="msg_n_themes">%1$d temes</string>
+    <string name="msg_n_subjects">%1$d temes</string>
     <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">S\'ha importat amb èxit</string>
     <string name="msg_export_finished">S\'ha exportat amb èxit</string>
@@ -146,8 +149,8 @@
     <string name="msg_confirm_to_remove">Confirma per eliminar</string>
     <string name="msg_go_back_without_saving">Sortir sense guardar canvis</string>
     <string name="msg_go_out_from_test">Sortir sense acabar el test</string>
-    <string name="msg_missing_theme_name">Falta nom del tema</string>
-    <string name="msg_missing_theme_content">Falta contingut del tema</string>
+    <string name="msg_missing_subject_name">Falta nom del tema</string>
+    <string name="msg_missing_subject_content">Falta contingut del tema</string>
     <string name="msg_missing_content">Falta contingut</string>
     <string name="msg_notifier_tts">El teu dispositiu no té els recursos per pronunciar %1$s. Intenta descarregar-ho a Configuració o descarrega una aplicació TTS de la Google Play.</string>
     <string name="msg_missing_test_name">Falta nom del test</string>
@@ -186,12 +189,21 @@
     <string name="msg_impossible_to_add_search">No es pot afegir així, canvia la direcció de la traducció</string>
     <string name="msg_no_results_found_for">No s\'han trobat resultats per <em>%1$s</em>.</string>
     <string name="msg_added_to_drawer">%1$s afegit a l\'esborrany</string>
+    <string name="msg_no_content_dictionary">Diccionari buit</string>
+    <string name="msg_no_content_drawer">Esborrany buit</string>
+    <string name="msg_no_content_subjects">No hi ha temes</string>
+    <string name="msg_no_content_entries">No hi ha entrades</string>
+    <string name="msg_no_content_recycle_bin">Paperera buida</string>
+    <string name="msg_no_content_records">Historial buit</string>
+    <string name="msg_no_language_to_merge_with">No hi ha cap llista amb la que integrar</string>
+    <string name="msg_error_backup">S\'ha produït un error. Prova a reinicialitzar l\'app</string>
+    <string name="msg_language_cant_be_same">Els idiomes no poden ser iguals</string>
     <string name="msg_in_next_releases">Disponible en properes actualitzacions</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
     <string name="title_drawer_fragment">Esborrany %1$s</string>
-    <string name="title_themes_fragment">Temes %1$s</string>
+    <string name="title_subjects_fragment">Temes %1$s</string>
     <string name="title_pronunciation_fragment">Pronunciació %1$s</string>
     <string name="title_practise_fragment">Practica %1$s</string>
     <string name="title_activity_practisetest">Tests %1$s</string>
@@ -202,10 +214,8 @@
 
     <!-- * ********************** App Settings strings ************************* * -->
     <string name="pref_title_general">General</string>
-    <string name="pref_title_customization">Personalizació</string>
     <string name="pref_title_data">Dades</string>
 
-    <string name="pref_app_language">El teu idioma</string>
     <string name="pref_phonetic_keyboard_vibration">Vibració del teclat fonètic</string>
     <string name="pref_app_theme">Estil de l\'aplicació</string>
     <string name="pref_backup_n_synchronization">Còpia de seguretat online</string>
@@ -213,15 +223,17 @@
     <string name="pref_export_data">Exportar dades</string>
 
 
-    <!-- * ********************** Language Settings strings ************************* * -->
+    <!-- * ********************** DelvingList Settings strings ************************* * -->
     <string name="pref_title_options">Opcions</string>
 
-    <string name="pref_language_code">Idioma</string>
-    <string name="pref_language_name">Nom de l\'idioma</string>
-    <string name="pref_language_phrasalverbs">Verbs preposicionals</string>
-    <string name="pref_language_merge">Fusionar</string>
-    <string name="pref_language_remove">Eliminar</string>
-    <string name="pref_language_reset_statistics">Restaurar estadístiques</string>
+    <string name="pref_list_language_from_code">De</string>
+    <string name="pref_list_language_to_code">A</string>
+    <string name="pref_list_name">Nom de l\'idioma</string>
+    <string name="pref_list_phrasal_verbs">Verbs preposicionals</string>
+    <string name="pref_list_public">Públic</string>
+    <string name="pref_list_merge">Fusionar</string>
+    <string name="pref_list_remove">Eliminar</string>
+    <string name="pref_list_reset_statistics">Restaurar estadístiques</string>
 
 
     <!-- * ********************** Record strings ************************* * -->
@@ -231,7 +243,7 @@
     <string name="h_list_deleted">Llista eliminada</string>
     <string name="h_list_integrated">Llista integrada</string>
     <string name="h_list_integrated_in">%1$s a %2$s</string>
-    <string name="h_list_code_changed">El seu idioma ara és %1$s</string>
+    <string name="h_list_code_changed">Canviat de %1$s a %2$s</string>
     <string name="h_list_name_changed">%1$s reanomenat a %2$s</string>
     <string name="h_list_stats_cleared">Estadístiques resetejades</string>
     <string name="h_recycle_bin_cleared">Paperera buidada</string>
@@ -241,10 +253,10 @@
     <string name="h_reference_modified">%1$d paraula(es) modificada(es)</string>
     <string name="h_reference_removed">%1$d paraula(es) eliminada(es)</string>
     <string name="h_reference_recovered">%1$d paraula(es) restaurada(s) des de la paperera</string>
-    <string name="h_theme_added">%1$d tema(es) creat(s)</string>
-    <string name="h_theme_modified">%1$d tema(es) modificat(s)</string>
-    <string name="h_theme_removed">%1$d tema(es) eliminat(s)</string>
-    <string name="h_theme_recovered">%1$d tema(es) restaurat(s) des de la paperera</string>
+    <string name="h_subject_added">%1$d tema(es) creat(s)</string>
+    <string name="h_subject_modified">%1$d tema(es) modificat(s)</string>
+    <string name="h_subject_removed">%1$d tema(es) eliminat(s)</string>
+    <string name="h_subject_recovered">%1$d tema(es) restaurat(s) des de la paperera</string>
     <string name="h_test_added">%1$d test(s) creat(s)</string>
     <string name="h_test_done">%1$d test(s) fet(s)</string>
     <string name="h_test_removed">%1$d test(s) eliminat(s</string>
@@ -253,8 +265,7 @@
     <string name="h_practised_complete">%1$d paraula(es) praticada(es) a Completa</string>
     <string name="h_practised_write">%1$d paraula(es) praticada(es) a Escriu</string>
     <string name="h_practised_listening">%1$d paraula(es) praticada(es) a Escolta</string>
-    <string name="h_app_lang_changed">El teu idioma ha estat cambiat a %1$s</string>
-    <string name="h_app_theme_changed">El tema de l\'App ha estat cambiat a %1$s</string>
+    <string name="h_app_theme_changed">L\'estil de l\'App ha estat cambiat a %1$s</string>
     <string name="h_import">%1$d llista(es) importada(es) des d\'un archiu</string>
     <string name="h_export">%1$d llista(es) exportada(es) a un archiu</string>
 

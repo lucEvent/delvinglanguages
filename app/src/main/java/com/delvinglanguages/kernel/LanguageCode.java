@@ -6,7 +6,7 @@ import java.util.Locale;
 
 public class LanguageCode {
 
-    // Language codes
+    // DelvingList codes
     public static final int ARABIC = 0;
     public static final int BASQUE = 1;
     public static final int CATALAN = 2;

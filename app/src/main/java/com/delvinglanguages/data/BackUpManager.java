@@ -11,20 +11,20 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.data.util.InStream;
 import com.delvinglanguages.data.util.OutStream;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.KernelManager;
-import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.RecordManager;
+import com.delvinglanguages.kernel.subject.Subject;
+import com.delvinglanguages.kernel.subject.SubjectPair;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
-import com.delvinglanguages.kernel.theme.ThemePair;
 import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.DrawerReferences;
-import com.delvinglanguages.kernel.util.Languages;
 import com.delvinglanguages.kernel.util.Statistics;
+import com.delvinglanguages.kernel.util.SubjectPairs;
+import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Tests;
-import com.delvinglanguages.kernel.util.ThemePairs;
-import com.delvinglanguages.kernel.util.Themes;
 import com.delvinglanguages.view.utils.MessageListener;
 
 import java.io.File;
@@ -52,17 +52,17 @@ public class BackUpManager {
 
             int version = stream.readInt();
 
-            int nLangs = version == VERSION2 ? stream.readInt() : version;
-            handler.obtainMessage(MessageListener.MESSAGE, "\n" + context.getString(R.string.msg_found_languages, nLangs)).sendToTarget();
-            for (int i = 0; i < nLangs; i++) {    // For each language
-                int lang_id = version == VERSION2 ? stream.readInt() : Math.abs(new Random().nextInt());
-                int lang_code = stream.readInt();
-                String lang_name = stream.readString();
-                int lang_settings = stream.readInt();
-                lang_id = database.insertLanguage(lang_id, lang_code, lang_name, lang_settings);
+            int nLists = version == VERSION2 ? stream.readInt() : version;
+            handler.obtainMessage(MessageListener.MESSAGE, context.getString(R.string.msg_found_languages, nLists)).sendToTarget();
+            for (int i = 0; i < nLists; i++) {    // For each list
+                int list_id = version == VERSION2 ? stream.readInt() : Math.abs(new Random().nextInt());
+                int list_lang_codes = stream.readInt();
+                String list_name = stream.readString();
+                int list_settings = stream.readInt();
+                list_id = database.insertDelvingList(list_id, list_lang_codes & 0xFF, list_lang_codes >> 16, list_name, list_settings);
 
                 // Statistics
-                Statistics statistics = new Statistics(lang_id);
+                Statistics statistics = new Statistics(list_id);
                 statistics.attempts = stream.readInt();
                 statistics.hits_at_1st = stream.readInt();
                 statistics.hits_at_2nd = stream.readInt();
@@ -71,13 +71,13 @@ public class BackUpManager {
                 database.updateStatistics(statistics);
 
                 int nReferences = stream.readInt();
-                for (int j = 0; j < nReferences; j++) {   // For each WORD of the language
+                for (int j = 0; j < nReferences; j++) {   // For each WORD of the list
                     int id = version == VERSION2 ? stream.readInt() : j + 1;
                     String name = stream.readString();
                     String pronunciation = stream.readString();
                     int priority = stream.readInt();
                     String inflexionsString = stream.readString();
-                    database.insertReference(id, lang_id, name, inflexionsString, pronunciation, priority);
+                    database.insertReference(id, list_id, name, inflexionsString, pronunciation, priority);
                     //         debug(" -" + name);
                 }
 
@@ -85,21 +85,21 @@ public class BackUpManager {
                 for (int j = 0; j < nDrawerReferences; j++) {    // For each entry of warehouse
                     int id = version == VERSION2 ? stream.readInt() : j + 1;
                     String note = stream.readString();
-                    database.insertDrawerReference(id, lang_id, note);
+                    database.insertDrawerReference(id, list_id, note);
                 }
 
-                int nThemes = stream.readInt();
-                for (int j = 0; j < nThemes; j++) { // Por cada theme
+                int nSubjects = stream.readInt();
+                for (int j = 0; j < nSubjects; j++) { // Por cada theme
                     int id = version == VERSION2 ? stream.readInt() : j + 1;
                     String thName = stream.readString();
-                    ThemePairs thPairs = new ThemePairs();
+                    SubjectPairs thPairs = new SubjectPairs();
                     int nthPairs = stream.readInt();
                     for (int k = 0; k < nthPairs; k++) {
                         String thpDelv = stream.readString();
                         String thpNatv = stream.readString();
-                        thPairs.add(new ThemePair(thpDelv, thpNatv));
+                        thPairs.add(new SubjectPair(thpDelv, thpNatv));
                     }
-                    database.insertTheme(id, lang_id, thName, thPairs);
+                    database.insertSubject(id, list_id, thName, thPairs);
                 }
 
                 int nTests = stream.readInt();
@@ -108,24 +108,24 @@ public class BackUpManager {
                     String test_name = stream.readString();
                     int test_runTimes = stream.readInt();
                     String test_content = stream.readString();
-                    int theme_id = version == VERSION2 ? stream.readInt() : -1;
-                    database.insertTest(id, lang_id, test_name, test_runTimes, test_content, theme_id);
+                    int subject_id = version == VERSION2 ? stream.readInt() : -1;
+                    database.insertTest(id, list_id, test_name, test_runTimes, test_content, subject_id);
                 }
-                String message = "\n" + (i + 1) + ". " + lang_name + "\n  " +
+                String message = (i + 1) + ". " + list_name + "\n  [" +
                         context.getString(R.string.msg_n_references, nReferences) + "\n  " +
                         context.getString(R.string.msg_n_drawerreferences, nDrawerReferences) + "\n  " +
-                        context.getString(R.string.msg_n_themes, nThemes) + "\n  " +
-                        context.getString(R.string.msg_n_tests, nTests);
+                        context.getString(R.string.msg_n_subjects, nSubjects) + "\n  " +
+                        context.getString(R.string.msg_n_tests, nTests) + "]";
 
                 handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
             }
             stream.close();
 
-            RecordManager.appImport(nLangs);
+            RecordManager.appImport(nLists);
 
         } catch (Exception e) {
 
-            handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
+            handler.obtainMessage(MessageListener.ERROR).sendToTarget();
             AppSettings.printerror("[BUM] Exception in restoreData", e);
             database.closeWritableDatabase();
             return;
@@ -136,7 +136,7 @@ public class BackUpManager {
     }
 
 
-    public void backupData(Context context, String filename, Languages languages)
+    public void backupData(Context context, String filename, DelvingLists delvingLists)
     {
         BackUpDatabaseManager database = new BackUpDatabaseManager(context);
         database.openReadableDatabase();
@@ -146,7 +146,7 @@ public class BackUpManager {
 
             String state = Environment.getExternalStorageState();
             if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                handler.obtainMessage(MessageListener.ERROR, "\n" + context.getString(R.string.msg_could_access_disc)).sendToTarget();
+                handler.obtainMessage(MessageListener.ERROR, context.getString(R.string.msg_could_access_disc)).sendToTarget();
                 return;
             }
             File externalDir = Environment.getExternalStorageDirectory();
@@ -159,24 +159,24 @@ public class BackUpManager {
             OutStream stream = new OutStream(backupfile);
             stream.writeInt(CURRENT_VERSION);
 
-            stream.writeInt(languages.size());
-            for (Language language : languages) { // For each language
-                handler.obtainMessage(MessageListener.MESSAGE, "\n" + context.getString(R.string.msg_saving_, language.language_name)).sendToTarget();
-                stream.writeInt(language.id);
-                stream.writeInt(language.code);
-                stream.writeString(language.language_name);
-                stream.writeInt(language.settings);
+            stream.writeInt(delvingLists.size());
+            for (DelvingList delvingList : delvingLists) { // For each list
+                handler.obtainMessage(MessageListener.MESSAGE, context.getString(R.string.msg_saving_, delvingList.name)).sendToTarget();
+                stream.writeInt(delvingList.id);
+                stream.writeInt(delvingList.getCodes());
+                stream.writeString(delvingList.name);
+                stream.writeInt(delvingList.settings);
 
-                Statistics e = language.statistics;   // Statistics
+                Statistics e = delvingList.statistics;   // Statistics
                 stream.writeInt(e.attempts);
                 stream.writeInt(e.hits_at_1st);
                 stream.writeInt(e.hits_at_2nd);
                 stream.writeInt(e.hits_at_3rd);
                 stream.writeInt(e.misses);
 
-                DReferences references = database.readReferences(language.id);
+                DReferences references = database.readReferences(delvingList.id);
                 stream.writeInt(references.size());
-                for (DReference w : references) {  // For each reference of the language
+                for (DReference w : references) {  // For each reference of the list
                     stream.writeInt(w.id);
                     stream.writeString(w.name);
                     stream.writeString(w.pronunciation);
@@ -184,51 +184,53 @@ public class BackUpManager {
                     stream.writeString(w.getInflexions().wrap());
                 }
 
-                DrawerReferences drawer = database.readDrawerReferences(language.id);
+                DrawerReferences drawer = database.readDrawerReferences(delvingList.id);
                 stream.writeInt(drawer.size());
-                for (DrawerReference n : drawer) {    // For each reference in the drawer of the language
+                for (DrawerReference n : drawer) {    // For each reference in the drawer of the list
                     stream.writeInt(n.id);
                     stream.writeString(n.name);
                 }
 
-                Themes themes = database.readThemes(language.id);
-                stream.writeInt(themes.size());
-                for (Theme theme : themes) {    // For each theme of the language
-                    stream.writeInt(theme.id);
-                    stream.writeString(theme.getName());
-                    stream.writeInt(theme.getPairs().size());
-                    for (ThemePair pair : theme.getPairs()) {   // For each themepair of the theme
+                Subjects subjects = database.readSubjects(delvingList.id);
+                stream.writeInt(subjects.size());
+                for (Subject subject : subjects) {    // For each subject of the list
+                    stream.writeInt(subject.id);
+                    stream.writeString(subject.getName());
+                    stream.writeInt(subject.getPairs().size());
+                    for (SubjectPair pair : subject.getPairs()) {   // For each subjectpair of the subject
                         stream.writeString(pair.inDelved);
                         stream.writeString(pair.inNative);
                     }
                 }
 
-                Tests tests = database.readTests(language.id);
+                Tests tests = database.readTests(delvingList.id);
                 stream.writeInt(tests.size());
-                for (Test test : tests) {   // For each test of the language
+                for (Test test : tests) {   // For each test of the list
                     stream.writeInt(test.id);
                     stream.writeString(test.name);
                     stream.writeInt(test.getRunTimes());
                     stream.writeString(Test.wrapContent(test));
-                    stream.writeInt(test.theme_id);
+                    stream.writeInt(test.subject_id);
                 }
 
-                String message = "\n" + context.getString(R.string.msg_language_saved_, language.language_name, references.size(), drawer.size(), themes.size(), tests.size());
+                String message = context.getString(R.string.msg_language_saved_, delvingList.name, references.size(), drawer.size(), subjects.size(), tests.size());
                 handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
             }
             stream.close();
 
-            RecordManager.appExport(languages.size());
+            RecordManager.appExport(delvingLists.size());
+
+            handler.obtainMessage(AppCode.EXPORT_SUCCESSFUL).sendToTarget();
 
         } catch (Exception e) {
-            handler.obtainMessage(MessageListener.ERROR, "\nException:" + e.toString()).sendToTarget();
+            handler.obtainMessage(MessageListener.ERROR).sendToTarget();
             AppSettings.printerror("[BUM] Exception in backupData", e);
         } finally {
 
             database.closeReadableDatabase();
 
         }
-        handler.obtainMessage(AppCode.EXPORT_SUCCESSFUL).sendToTarget();
+
     }
 
 }

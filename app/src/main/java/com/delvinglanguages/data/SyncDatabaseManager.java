@@ -4,20 +4,20 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.delvinglanguages.data.Database.DBDeletedItem;
+import com.delvinglanguages.data.Database.DBDelvingList;
 import com.delvinglanguages.data.Database.DBDrawerReference;
-import com.delvinglanguages.data.Database.DBLanguage;
 import com.delvinglanguages.data.Database.DBReference;
 import com.delvinglanguages.data.Database.DBRemovedItem;
 import com.delvinglanguages.data.Database.DBStatistics;
+import com.delvinglanguages.data.Database.DBSubject;
 import com.delvinglanguages.data.Database.DBTest;
-import com.delvinglanguages.data.Database.DBTheme;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.ThemePairs;
+import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.net.utils.SyncWrapper;
 import com.delvinglanguages.net.utils.SyncWrappers;
 
@@ -36,16 +36,16 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         super(context);
     }
 
-    public Languages readLanguages()
+    public DelvingLists readLists()
     {
-        Languages result = new Languages();
+        DelvingLists result = new DelvingLists();
 
-        Cursor cursor = db.query(DBLanguage.db, DBLanguage.cols, SELECTION_NOT_SYNCED, null, null, null, null);
+        Cursor cursor = db.query(DBDelvingList.db, DBDelvingList.cols, SELECTION_NOT_SYNCED, null, null, null, null);
 
         if (cursor.moveToFirst())
             do {
 
-                result.add(Database.DBLanguage.parse(cursor));
+                result.add(DBDelvingList.parse(cursor));
 
             } while (cursor.moveToNext());
 
@@ -111,17 +111,17 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
-    public SyncWrappers readThemes()
+    public SyncWrappers readSubjects()
     {
         SyncWrappers result = new SyncWrappers();
 
-        Cursor cursor = db.query(DBTheme.db, DBTheme.cols, SELECTION_NOT_SYNCED, null, null, null, null);
+        Cursor cursor = db.query(DBSubject.db, DBSubject.cols, SELECTION_NOT_SYNCED, null, null, null, null);
 
         if (cursor.moveToFirst())
             do {
 
-                Theme theme = DBTheme.parse(cursor);
-                result.add(new SyncWrapper(theme.id, cursor.getInt(1), theme.wrapType(), theme.wrap()));
+                Subject subject = DBSubject.parse(cursor);
+                result.add(new SyncWrapper(subject.id, cursor.getInt(1), subject.wrapType(), subject.wrap()));
 
             } while (cursor.moveToNext());
 
@@ -172,35 +172,35 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
     ////////////////////// Inserts \\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
-    public void insertLanguage(int lang_id, int code, String name, int settings)
+    public void insertLanguage(int list_id, int from_code, int to_code, String name, int settings)
     {
-        super.insertLanguage(lang_id, code, name, settings, Database.SYNCED);
+        super.insertDelvingList(list_id, from_code, to_code, name, settings, Database.SYNCED);
     }
 
-    public void insertReference(int id, int lang_id, String name, String inflexions, String pronunciation, int priority)
+    public void insertReference(int id, int list_id, String name, String inflexions, String pronunciation, int priority)
     {
-        super.insertReference(id, lang_id, name, inflexions, pronunciation, priority, Database.SYNCED);
+        super.insertReference(id, list_id, name, inflexions, pronunciation, priority, Database.SYNCED);
     }
 
-    public void insertDrawerReference(int id, int lang_id, String note)
+    public void insertDrawerReference(int id, int list_id, String note)
     {
-        super.insertDrawerReference(id, lang_id, note, Database.SYNCED);
+        super.insertDrawerReference(id, list_id, note, Database.SYNCED);
     }
 
-    public void insertTheme(int id, int lang_id, String name, ThemePairs pairs)
+    public void insertSubject(int id, int list_id, String name, SubjectPairs pairs)
     {
-        super.insertTheme(id, lang_id, name, pairs, Database.SYNCED);
+        super.insertSubject(id, list_id, name, pairs, Database.SYNCED);
     }
 
-    public void insertTest(int id, int lang_id, String name, int runTimes, String content, int theme_id)
+    public void insertTest(int id, int list_id, String name, int runTimes, String content, int subject_id)
     {
-        super.insertTest(id, lang_id, name, runTimes, content, theme_id, Database.SYNCED);
+        super.insertTest(id, list_id, name, runTimes, content, subject_id, Database.SYNCED);
     }
 
-    public void insertSyncItem(int item_id, int language_id, int type)
+    public void insertSyncItem(int item_id, int list_id, int type)
     {
         values.put(Database.id, item_id);
-        values.put(Database.lang_id, language_id);
+        values.put(Database.list_id, list_id);
         values.put(Database.type, type);
         db.insert(DBDeletedItem.db, null, values);
         values.clear();
@@ -210,9 +210,9 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
     ////////////////////// Updates \\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
-    public void updateLanguage(int id, int code, String name, int settings)
+    public void updateLanguage(int id, int from_code, int to_code, String name, int settings)
     {
-        super.updateLanguage(id, code, name, settings, Database.SYNCED);
+        super.updateDelvingList(id, from_code, to_code, name, settings, Database.SYNCED);
     }
 
     public void updateStatistics(Statistics statistics)
@@ -220,20 +220,20 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         super.updateStatistics(statistics.id, statistics, Database.SYNCED);
     }
 
-    public void updateReference(DReference reference, int lang_id)
+    public void updateReference(DReference reference, int list_id)
     {
-        super.updateReference(reference.id, lang_id, reference.name, reference.getInflexions().wrap(),
+        super.updateReference(reference.id, list_id, reference.name, reference.getInflexions().wrap(),
                 reference.pronunciation, reference.priority, Database.SYNCED);
     }
 
-    public void updateTheme(Theme theme, int lang_id)
+    public void updateSubject(Subject subject, int list_id)
     {
-        super.updateTheme(theme.id, lang_id, theme.getName(), theme.getPairs(), Database.SYNCED);
+        super.updateSubject(subject.id, list_id, subject.getName(), subject.getPairs(), Database.SYNCED);
     }
 
-    public void updateTest(Test test, int lang_id)
+    public void updateTest(Test test, int list_id)
     {
-        super.updateTest(test.id, lang_id, test.name, test.getRunTimes(), Test.wrapContent(test), Database.SYNCED);
+        super.updateTest(test.id, list_id, test.name, test.getRunTimes(), Test.wrapContent(test), Database.SYNCED);
     }
 
     // **************************************************** \\
@@ -243,7 +243,7 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
     public void syncLanguages()
     {
         values.put(Database.synced, Database.SYNCED);
-        db.update(DBLanguage.db, values, SELECTION_NOT_SYNCED, null);
+        db.update(DBDelvingList.db, values, SELECTION_NOT_SYNCED, null);
         values.clear();
     }
 
@@ -268,10 +268,10 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         values.clear();
     }
 
-    public void syncThemes()
+    public void syncSubjects()
     {
         values.put(Database.synced, Database.SYNCED);
-        db.update(DBTheme.db, values, SELECTION_NOT_SYNCED, null);
+        db.update(DBSubject.db, values, SELECTION_NOT_SYNCED, null);
         values.clear();
     }
 

@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.DrawerReference;
-import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.net.utils.SyncWrapper;
@@ -30,14 +30,13 @@ public class Database extends SQLiteOpenHelper {
     public static final String hits2 = "hits2";
     public static final String hits3 = "hits3";
     public static final String misses = "misses";
-    public static final String lang_id = "lang_id";
+    public static final String list_id = "lang_id";
     public static final String inflexions = "inflexions";
     public static final String pronunciation = "pronunciation";
     public static final String priority = "priority";
-    public static final String reference_id = "reference_id";
     public static final String runtimes = "runtimes";
     public static final String content = "content";
-    public static final String theme_id = "theme_id";
+    public static final String subject_id = "theme_id";
     public static final String pairs = "pairs";
     public static final String type = "type";
     public static final String synced = "synced";
@@ -46,8 +45,7 @@ public class Database extends SQLiteOpenHelper {
     public static final int SYNCED = 1;
     public static final int NOT_SYNCED = 0;
 
-
-    public static final class DBLanguage {
+    public static final class DBDelvingList {
 
         public static String db = "language";
 
@@ -63,9 +61,10 @@ public class Database extends SQLiteOpenHelper {
                         synced + " INTEGER" +
                         ");";
 
-        public static Language parse(Cursor c)
+        public static DelvingList parse(Cursor c)
         {
-            return new Language(c.getInt(0), c.getInt(1), c.getString(2), c.getInt(4));
+            int codes = c.getInt(1);
+            return new DelvingList(c.getInt(0), codes & 0xFF, codes >> 16, c.getString(2), c.getInt(4));
         }
 
     }
@@ -98,12 +97,12 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "reference";
 
-        public static String[] cols = {id, lang_id, name, pronunciation, inflexions, priority};
+        public static String[] cols = {id, list_id, name, pronunciation, inflexions, priority};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         pronunciation + " TEXT NOT NULL," +
                         inflexions + " TEXT NOT NULL," +
@@ -122,12 +121,12 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "drawerreference";
 
-        public static String[] cols = {id, lang_id, name};
+        public static String[] cols = {id, list_id, name};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         synced + " INTEGER" +
                         ");";
@@ -143,16 +142,16 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "test";
 
-        public static String[] cols = {id, lang_id, name, runtimes, content, theme_id};
+        public static String[] cols = {id, list_id, name, runtimes, content, subject_id};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         runtimes + " INTEGER," +
                         content + " TEXT NOT NULL," +
-                        theme_id + " INTEGER," +
+                        subject_id + " INTEGER," +
                         synced + " INTEGER" +
                         ");";
 
@@ -163,24 +162,24 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-    public static final class DBTheme {
+    public static final class DBSubject {
 
         public static String db = "theme";
 
-        public static String[] cols = {id, lang_id, name, pairs};
+        public static String[] cols = {id, list_id, name, pairs};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         name + " TEXT NOT NULL," +
                         pairs + " TEXT NOT NULL," +
                         synced + " INTEGER" +
                         ");";
 
-        public static Theme parse(Cursor c)
+        public static Subject parse(Cursor c)
         {
-            return new Theme(c.getInt(0), c.getString(2), c.getString(3));
+            return new Subject(c.getInt(0), c.getString(2), c.getString(3));
         }
 
     }
@@ -189,12 +188,12 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "removed_item";
 
-        public static String[] cols = {id, lang_id, type, wrappedContent};
+        public static String[] cols = {id, list_id, type, wrappedContent};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         type + " INTEGER," +
                         wrappedContent + " TEXT NOT NULL," +
                         synced + " INTEGER" +
@@ -211,12 +210,12 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "deleted_item";
 
-        public static String[] cols = {id, lang_id, type};
+        public static String[] cols = {id, list_id, type};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
                         id + " INTEGER," +
-                        lang_id + " INTEGER," +
+                        list_id + " INTEGER," +
                         type + " INTEGER" +
                         ");";
 
@@ -235,12 +234,12 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(DBLanguage.creator);
+        db.execSQL(DBDelvingList.creator);
         db.execSQL(DBStatistics.creator);
         db.execSQL(DBReference.creator);
         db.execSQL(DBDrawerReference.creator);
         db.execSQL(DBTest.creator);
-        db.execSQL(DBTheme.creator);
+        db.execSQL(DBSubject.creator);
         db.execSQL(DBRemovedItem.creator);
         db.execSQL(DBDeletedItem.creator);
     }
@@ -259,7 +258,7 @@ public class Database extends SQLiteOpenHelper {
         // Delete all needed tables
         // db.execSQL("DROP TABLE "+ "db_languages");
         // Create all needed tables
-        // db.execSQL(CREATE_THEME);
+        // db.execSQL(CREATE_SUBJECT);
     }
 
 }

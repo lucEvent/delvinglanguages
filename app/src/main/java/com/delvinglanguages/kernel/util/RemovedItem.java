@@ -1,23 +1,23 @@
 package com.delvinglanguages.kernel.util;
 
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
 
 public class RemovedItem {
 
     public final int id;
 
-    public final int language_id;
+    public final int list_id;
 
     public final int wrap_type;
 
     public String wrapper;
 
-    public RemovedItem(int id, int lang_id, int wrap_type, String wrapper)
+    public RemovedItem(int id, int list_id, int wrap_type, String wrapper)
     {
         this.id = id;
-        this.language_id = lang_id;
+        this.list_id = list_id;
         this.wrap_type = wrap_type;
         this.wrapper = wrapper;
     }
@@ -27,9 +27,9 @@ public class RemovedItem {
         return DReference.fromWrapper(id, wrapper);
     }
 
-    public Theme castToTheme()
+    public Subject castToSubject()
     {
-        return Theme.fromWrapper(id, wrapper);
+        return Subject.fromWrapper(id, wrapper);
     }
 
     public Test castToTest()

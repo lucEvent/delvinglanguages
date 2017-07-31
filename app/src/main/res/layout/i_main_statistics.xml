@@ -26,7 +26,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pref_language_reset_statistics"/>
+            android:text="@string/pref_list_reset_statistics"/>
     </LinearLayout>
 
 </LinearLayout>

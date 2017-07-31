@@ -14,7 +14,7 @@ import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.net.CredentialsManager;
-import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.DelvingListListener;
 
 public class AppSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -49,12 +49,7 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        if (key.equals(AppSettings.APP_LANGUAGE_CODE_KEY)) {
-            ListPreference app_name = (ListPreference) findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
-            app_name.setSummary(app_name.getEntry());
-
-            RecordManager.appLanguageChanged(Integer.parseInt(app_name.getValue()));
-        } else if (key.equals(AppSettings.PHONKB_VIBRATION_KEY))
+        if (key.equals(AppSettings.PHONKB_VIBRATION_KEY))
             RecordManager.appKBVibrationStateChanged(((SwitchPreference) findPreference(AppSettings.PHONKB_VIBRATION_KEY)).isChecked());
 
         else if (key.equals(AppSettings.APP_THEME_KEY)) {
@@ -67,9 +62,6 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
 
     private void setUpSummaries()
     {
-        ListPreference app_name = (ListPreference) findPreference(AppSettings.APP_LANGUAGE_CODE_KEY);
-        app_name.setSummary(app_name.getEntry());
-
         ListPreference app_theme = (ListPreference) findPreference(AppSettings.APP_THEME_KEY);
         app_theme.setSummary(app_theme.getEntry());
     }
@@ -93,11 +85,11 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
                     credentialsManager.askCredentials(AppSettingsFragment.this);
                     return false;
                 }
-                Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+                Main.handler.obtainMessage(DelvingListListener.ENABLE_SYNCHRONIZATION).sendToTarget();
                 RecordManager.appOnlineBackUpStateChanged(true);
 
             } else {
-                Main.handler.obtainMessage(LanguageListener.DISABLE_SYNCHRONIZATION).sendToTarget();
+                Main.handler.obtainMessage(DelvingListListener.DISABLE_SYNCHRONIZATION).sendToTarget();
                 RecordManager.appOnlineBackUpStateChanged(false);
             }
             return true;
@@ -112,7 +104,7 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
 
         if (credentialsManager.hasCredentials()) {
             ((SwitchPreference) findPreference(AppSettings.ONLINE_BACKUP)).setChecked(true);
-            Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+            Main.handler.obtainMessage(DelvingListListener.ENABLE_SYNCHRONIZATION).sendToTarget();
         }
     }
 
@@ -126,7 +118,7 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
         if (credentialsManager.hasPermissions())
             if (credentialsManager.hasCredentials()) {
                 ((SwitchPreference) findPreference(AppSettings.ONLINE_BACKUP)).setChecked(true);
-                Main.handler.obtainMessage(LanguageListener.ENABLE_SYNCHRONIZATION).sendToTarget();
+                Main.handler.obtainMessage(DelvingListListener.ENABLE_SYNCHRONIZATION).sendToTarget();
             } else
                 credentialsManager.askCredentials(this);
     }

@@ -18,20 +18,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.KernelManager;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.view.activity.BackUpActivity;
-import com.delvinglanguages.view.activity.CreateLanguageActivity;
+import com.delvinglanguages.view.activity.CreateDelvingListActivity;
 import com.delvinglanguages.view.activity.StartActivity;
+import com.delvinglanguages.view.fragment.DelvingListMainFragment;
 import com.delvinglanguages.view.fragment.FragmentManager;
-import com.delvinglanguages.view.fragment.LanguageMainFragment;
 import com.delvinglanguages.view.fragment.RecordsFragment;
-import com.delvinglanguages.view.utils.LanguageHandler;
-import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.DelvingListHandler;
+import com.delvinglanguages.view.utils.DelvingListListener;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        LanguageListener {
+        DelvingListListener {
 
     private enum MainState {
         FIRST_LAUNCH, OTHERWISE
@@ -47,7 +47,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     private DrawerLayout drawer;
 
-    private LanguageMainFragment languageFragment;
+    private DelvingListMainFragment delvingListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,7 +59,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         //   setTheme(AppSettings.getAppThemeResource());
         setContentView(R.layout.a_main);
 
-        Main.handler = new LanguageHandler(this);
+        Main.handler = new DelvingListHandler(this);
         dataManager = new KernelManager(this);
         dataManager.synchronize();
 
@@ -78,26 +78,26 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         fragmentManager = new FragmentManager(this, navigationView, R.id.content);
 
         setUpDrawer();
-        updateLanguageList();
+        updateDelvingListsList();
 
-        languageFragment = new LanguageMainFragment();
+        delvingListFragment = new DelvingListMainFragment();
 
-        Language currentLanguage = dataManager.getCurrentLanguage();
-        if (currentLanguage == null) {
-            if (dataManager.getNumberOfLanguages() == 0) {
+        DelvingList currentDelvingList = dataManager.getCurrentList();
+        if (currentDelvingList == null) {
+            if (dataManager.getNumberOfLists() == 0) {
                 state = MainState.FIRST_LAUNCH;
                 startActivityForResult(new Intent(this, StartActivity.class), 0);
                 return;
             } else {
-                currentLanguage = dataManager.getLanguages().first();
-                AppSettings.setCurrentLanguage(currentLanguage.id);
+                currentDelvingList = dataManager.getDelvingLists().first();
+                AppSettings.setCurrentList(currentDelvingList.id);
             }
         }
 
         if (savedInstanceState != null)
             navigateTo((Integer) savedInstanceState.get("currentItemSelected"));
         else
-            displayFirstFragment(currentLanguage);
+            displayFirstFragment(currentDelvingList);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     {
         super.onResume();
 
-        if (fragmentManager.currentFragment instanceof LanguageMainFragment)
-            ((LanguageMainFragment) fragmentManager.currentFragment).refreshValues();
+        if (fragmentManager.currentFragment instanceof DelvingListMainFragment)
+            ((DelvingListMainFragment) fragmentManager.currentFragment).refreshValues();
     }
 
     public void onDrawerActionBarItemSelected(View v)
@@ -150,8 +150,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         String title;
 
         switch (where) {
-            case R.id.nav_create_language:
-                startActivityForResult(new Intent(this, CreateLanguageActivity.class), 0);
+            case R.id.nav_create_delving_list:
+                startActivityForResult(new Intent(this, CreateDelvingListActivity.class), 0);
                 return true;
             case R.id.nav_historial:
                 title = getString(R.string.historial);
@@ -166,19 +166,19 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 title = getString(R.string.about);
                 break;
             default:
-                AppSettings.setCurrentLanguage(where);
-                fragment = languageFragment;
-                languageFragment.invalidate();
-                title = dataManager.getCurrentLanguage().language_name;
+                AppSettings.setCurrentList(where);
+                fragment = delvingListFragment;
+                delvingListFragment.invalidate();
+                title = dataManager.getCurrentList().name;
 
         }
         drawer.closeDrawer(GravityCompat.START);
 
-        if (fragment instanceof LanguageMainFragment) {
+        if (fragment instanceof DelvingListMainFragment) {
 
             fragmentManager.setNavigationItemId(0, where);
 
-            if (fragmentManager.currentFragment != languageFragment)
+            if (fragmentManager.currentFragment != delvingListFragment)
                 fragmentManager.popToFirst();
 
             else
@@ -203,28 +203,28 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         switch (resultCode) {
             case AppCode.ACTION_CREATE:
 
-                startActivityForResult(new Intent(this, CreateLanguageActivity.class), 0);
+                startActivityForResult(new Intent(this, CreateDelvingListActivity.class), 0);
 
                 break;
-            case AppCode.RESULT_LANGUAGE_CREATED:
+            case AppCode.RESULT_LIST_CREATED:
 
-                updateLanguageList();
+                updateDelvingListsList();
 
                 state = MainState.OTHERWISE;
 
-                Language language = dataManager.getLanguages().last();
+                DelvingList delvingList = dataManager.getDelvingLists().last();
 
                 if (fragmentManager.currentFragment == null) {
-                    displayFirstFragment(language);
-                    languageFragment.invalidate();
-                    setTitle(dataManager.getLanguages().first().language_name);
+                    displayFirstFragment(delvingList);
+                    delvingListFragment.invalidate();
+                    setTitle(dataManager.getDelvingLists().first().name);
                 } else
-                    navigateTo(language.id);
+                    navigateTo(delvingList.id);
 
                 Snackbar.make(drawer, R.string.msg_language_created, Snackbar.LENGTH_SHORT).show();
 
                 break;
-            case AppCode.RESULT_LANGUAGE_CREATED_CANCELED:
+            case AppCode.RESULT_LIST_CREATED_CANCELED:
 
                 if (state == MainState.FIRST_LAUNCH)
                     startActivityForResult(new Intent(this, StartActivity.class), 0);
@@ -238,8 +238,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case AppCode.RESULT_IMPORT_DONE:
 
-                if (dataManager.getCurrentLanguage() == null)
-                    displayFirstFragment(dataManager.getLanguages().first());
+                if (dataManager.getCurrentList() == null)
+                    displayFirstFragment(dataManager.getDelvingLists().first());
 
                 break;
             case AppCode.RESULT_IMPORT_CANCELED:
@@ -250,13 +250,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case AppCode.RESULT_SYNC_DONE:
 
-                updateLanguageList();
+                updateDelvingListsList();
 
-                Language currentLanguage = dataManager.getCurrentLanguage();
-                if (currentLanguage == null)
-                    currentLanguage = dataManager.getLanguages().first();
+                DelvingList currentDelvingList = dataManager.getCurrentList();
+                if (currentDelvingList == null)
+                    currentDelvingList = dataManager.getDelvingLists().first();
 
-                displayFirstFragment(currentLanguage);
+                displayFirstFragment(currentDelvingList);
                 break;
             case AppCode.START_ABORTED:
                 finish();
@@ -264,18 +264,18 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    private void displayFirstFragment(Language language)
+    private void displayFirstFragment(DelvingList delvingList)
     {
-        AppSettings.setCurrentLanguage(language.id);
-        currentItemSelected = language.id;
-        fragmentManager.addFragment(languageFragment, language.id);
+        AppSettings.setCurrentList(delvingList.id);
+        currentItemSelected = delvingList.id;
+        fragmentManager.addFragment(delvingListFragment, delvingList.id);
     }
 
     private void setUpDrawer()
     {
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
-        header.findViewById(R.id.nav_create_language).setOnLongClickListener(onDrawerActionBarButtonLongClick);
+        header.findViewById(R.id.nav_create_delving_list).setOnLongClickListener(onDrawerActionBarButtonLongClick);
         header.findViewById(R.id.nav_historial).setOnLongClickListener(onDrawerActionBarButtonLongClick);
         header.findViewById(R.id.nav_app_settings).setOnLongClickListener(onDrawerActionBarButtonLongClick);
         header.findViewById(R.id.nav_about).setOnLongClickListener(onDrawerActionBarButtonLongClick);
@@ -287,7 +287,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         {
             int msg = -1;
             switch (v.getId()) {
-                case R.id.nav_create_language:
+                case R.id.nav_create_delving_list:
                     msg = R.string.create_language;
                     break;
                 case R.id.nav_historial:
@@ -310,16 +310,16 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         }
     };
 
-    private void updateLanguageList()
+    private void updateDelvingListsList()
     {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
 
-        menu.removeGroup(R.id.group_languages);
+        menu.removeGroup(R.id.group_delving_lists);
 
-        Languages languages = dataManager.getLanguages();
-        for (Language language : languages) {
-            MenuItem mi = menu.add(R.id.group_languages, language.id, 1, language.language_name);
+        DelvingLists delvingLists = dataManager.getDelvingLists();
+        for (DelvingList delvingList : delvingLists) {
+            MenuItem mi = menu.add(R.id.group_delving_lists, delvingList.id, 1, delvingList.name);
             mi.setCheckable(true);
         }
 
@@ -327,11 +327,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public void onLanguageRemoved()
+    public void onListRemoved()
     {
-        updateLanguageList();
+        updateDelvingListsList();
 
-        Language next = dataManager.getLanguages().first();
+        DelvingList next = dataManager.getDelvingLists().first();
         if (next == null) {
             state = MainState.FIRST_LAUNCH;
             startActivityForResult(new Intent(this, StartActivity.class), 0);
@@ -340,23 +340,23 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public void onLanguageRecovered()
+    public void onListRecovered()
     {
-        updateLanguageList();
+        updateDelvingListsList();
     }
 
     @Override
-    public void onLanguageNameChanged()
+    public void onListNameChanged()
     {
-        updateLanguageList();
+        updateDelvingListsList();
     }
 
     @Override
-    public void onLanguageMergeAndRemoved(int id)
+    public void onListMergeAndRemoved(int list_merged_into_id)
     {
-        updateLanguageList();
+        updateDelvingListsList();
 
-        Language next = dataManager.getLanguages().getLanguageById(id);
+        DelvingList next = dataManager.getDelvingLists().getListById(list_merged_into_id);
         navigateTo(next.id);
     }
 
@@ -364,7 +364,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public void onSyncDataChanged()
     {
         dataManager.invalidateData();
-        updateLanguageList();
+        updateDelvingListsList();
     }
 
     @Override

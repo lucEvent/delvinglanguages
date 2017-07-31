@@ -11,7 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.LanguageCode;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.view.dialog.NotifierDialog;
 
 import java.util.Locale;
@@ -30,7 +31,7 @@ public class PronunciationFragment extends android.app.Fragment implements View.
         super.onCreate(savedInstanceState);
 
         speechEngine = new TextToSpeech(getActivity(), this);
-        locale = new LanguageManager(getActivity()).getCurrentLanguage().getLocale();
+        locale = LanguageCode.getLocale(new DelvingListManager(getActivity()).getCurrentList().from_code);
     }
 
     @Override

@@ -54,7 +54,7 @@
                     android:layout_margin="8dp"
                     android:background="#0f00"
                     android:hint="@string/hint_enter_test_name"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:padding="8dp"
                     android:textAlignment="textStart"

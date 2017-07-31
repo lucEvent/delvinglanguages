@@ -32,7 +32,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,7 +55,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/nav_create_language"
+            android:id="@+id/nav_create_delving_list"
             style="@style/btnDrawerActionbar"
             android:onClick="onDrawerActionBarItemSelected"
             android:src="@drawable/ic_add"/>

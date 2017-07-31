@@ -9,11 +9,7 @@
         android:layout_width="40dp"
         android:layout_height="31.4dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/flag_es"/>
+        android:layout_margin="10dp"/>
 
     <TextView
         android:id="@+id/title"
@@ -21,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10dip"
-        android:text="Delving Languages"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

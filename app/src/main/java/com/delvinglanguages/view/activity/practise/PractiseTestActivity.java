@@ -31,7 +31,7 @@ public class PractiseTestActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(
                 getString(R.string.title_activity_practisetest,
-                        new KernelManager(this).getCurrentLanguage().language_name));
+                        new KernelManager(this).getCurrentList().name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 

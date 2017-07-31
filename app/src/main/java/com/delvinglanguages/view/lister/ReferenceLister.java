@@ -8,26 +8,30 @@ import android.view.ViewGroup;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.view.lister.viewholder.ReferenceViewHolder;
-import com.delvinglanguages.view.utils.ReferenceRVListAdapter;
+import com.delvinglanguages.view.utils.ItemListRVAdapter;
 
-public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
+import java.util.Collection;
 
-    private final ReferenceRVListAdapter dataSet;
-    private final boolean phv_enabled;
-    private View.OnClickListener itemListener;
+public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    protected final ItemListRVAdapter dataSet;
+    protected boolean phv_enabled;
+    protected View.OnClickListener itemListener;
 
     public ReferenceLister(DReferences dataSet, boolean phv_enabled, View.OnClickListener itemListener)
     {
         this.phv_enabled = phv_enabled;
         this.itemListener = itemListener;
 
-        this.dataSet = new ReferenceRVListAdapter(this);
-        this.dataSet.addAll(dataSet);
+        this.dataSet = new ItemListRVAdapter(this);
+        for (DReference n : dataSet)
+            this.dataSet.add(n);
     }
 
     @Override
-    public ReferenceViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.i_dreference, parent, false);
         v.setOnClickListener(itemListener);
@@ -35,9 +39,9 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ReferenceViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        ReferenceViewHolder.populateViewHolder(holder, dataSet.get(position), phv_enabled);
+        ReferenceViewHolder.populateViewHolder((ReferenceViewHolder) holder, (DReference) dataSet.get(position), phv_enabled);
     }
 
     @Override
@@ -46,18 +50,36 @@ public class ReferenceLister extends RecyclerView.Adapter<ReferenceViewHolder> {
         return dataSet.size();
     }
 
-    public void setNewDataSet(DReferences newDataSet)
+    public final void setPhrasals(boolean enabled)
+    {
+        this.phv_enabled = enabled;
+    }
+
+    public final void addItem(Item item)
     {
         synchronized (this.dataSet) {
-            dataSet.beginBatchedUpdates();
-
-            dataSet.clear();
-
-            for (DReference n : newDataSet)
-                dataSet.add(n);
-
-            dataSet.endBatchedUpdates();
+            dataSet.add(item);
         }
+    }
+
+    public final void setNewDataSet(Collection<Item> newDataSet)
+    {
+        synchronized (this.dataSet) {
+            dataSet.clear();
+            dataSet.addAll(newDataSet);
+        }
+    }
+
+    public final void clear()
+    {
+        synchronized (this.dataSet) {
+            dataSet.clear();
+        }
+    }
+
+    public final boolean isEmpty()
+    {
+        return dataSet.size() == 0;
     }
 
 }

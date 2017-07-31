@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import com.delvinglanguages.AppData;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.LanguageCode;
-import com.delvinglanguages.kernel.LanguageManager;
 import com.delvinglanguages.kernel.record.AppSettingsRecord;
-import com.delvinglanguages.kernel.record.LanguageRecord;
-import com.delvinglanguages.kernel.record.LanguageSettingsRecord;
+import com.delvinglanguages.kernel.record.DelvingListRecord;
+import com.delvinglanguages.kernel.record.DelvingListSettingsRecord;
 import com.delvinglanguages.kernel.record.Record;
 
 public class RecordViewHolder extends RecyclerView.ViewHolder {
@@ -37,10 +37,10 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         int main_icon = -1, secondary_icon = -1;
         String title = "........", description = "........";
 
-        if (record instanceof LanguageRecord) {
-            LanguageRecord lr = (LanguageRecord) record;
+        if (record instanceof DelvingListRecord) {
+            DelvingListRecord lr = (DelvingListRecord) record;
 
-            String list_name = LanguageManager.getLanguageName(lr.language_id);
+            String list_name = DelvingListManager.getListName(lr.list_id);
             title = res.getString(R.string.h_in, (list_name != null ? list_name : res.getString(R.string.h_deleted_list)));
 
             switch (record.type) {
@@ -74,25 +74,25 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
                     secondary_icon = R.drawable.ic_undo;
                     description = res.getString(R.string.h_reference_recovered, lr.getNumber());
                     break;
-                case Record.THEME_CREATED:
-                    main_icon = R.drawable.ic_theme;
+                case Record.SUBJECT_CREATED:
+                    main_icon = R.drawable.ic_subject;
                     secondary_icon = R.drawable.ic_add;
-                    description = res.getString(R.string.h_theme_added, lr.getNumber());
+                    description = res.getString(R.string.h_subject_added, lr.getNumber());
                     break;
-                case Record.THEME_MODIFIED:
-                    main_icon = R.drawable.ic_theme;
+                case Record.SUBJECT_MODIFIED:
+                    main_icon = R.drawable.ic_subject;
                     secondary_icon = R.drawable.ic_edit;
-                    description = res.getString(R.string.h_theme_modified, lr.getNumber());
+                    description = res.getString(R.string.h_subject_modified, lr.getNumber());
                     break;
-                case Record.THEME_REMOVED:
-                    main_icon = R.drawable.ic_theme;
+                case Record.SUBJECT_REMOVED:
+                    main_icon = R.drawable.ic_subject;
                     secondary_icon = R.drawable.ic_delete;
-                    description = res.getString(R.string.h_theme_removed, lr.getNumber());
+                    description = res.getString(R.string.h_subject_removed, lr.getNumber());
                     break;
-                case Record.THEME_RECOVERED:
-                    main_icon = R.drawable.ic_theme;
+                case Record.SUBJECT_RECOVERED:
+                    main_icon = R.drawable.ic_subject;
                     secondary_icon = R.drawable.ic_undo;
-                    description = res.getString(R.string.h_theme_recovered, lr.getNumber());
+                    description = res.getString(R.string.h_subject_recovered, lr.getNumber());
                     break;
                 case Record.TEST_CREATED:
                     main_icon = R.drawable.ic_test;
@@ -136,53 +136,53 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
                     break;
             }
 
-        } else if (record instanceof LanguageSettingsRecord) {
-            LanguageSettingsRecord sr = (LanguageSettingsRecord) record;
+        } else if (record instanceof DelvingListSettingsRecord) {
+            DelvingListSettingsRecord sr = (DelvingListSettingsRecord) record;
 
             int flag = LanguageCode.getFlagResId(sr.language_code);
-            String list_name = LanguageManager.getLanguageName(sr.language_id);
+            String list_name = DelvingListManager.getListName(sr.list_id);
             if (list_name == null)
                 list_name = res.getString(R.string.h_deleted_list);
 
             switch (record.type) {
-                // Language Settings
-                case Record.LANGUAGE_CREATED:
+                // DelvingList Settings
+                case Record.LIST_CREATED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_add;
                     title = res.getString(R.string.h_list_created);
                     description = list_name;
                     break;
-                case Record.LANGUAGE_REMOVED:
+                case Record.LIST_REMOVED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_delete;
                     title = res.getString(R.string.h_list_deleted);
                     description = (String) sr.newValue;
                     break;
-                case Record.LANGUAGE_INTEGRATED:
+                case Record.LIST_INTEGRATED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_play;
                     title = res.getString(R.string.h_list_integrated);
                     description = sr.oldValue + res.getString(R.string.h_list_integrated_in) + sr.newValue;
                     break;
-                case Record.LANGUAGE_CODE_CHANGED:
+                case Record.LIST_CODES_CHANGED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_configuration;
                     title = list_name;
-                    description = res.getString(R.string.h_list_code_changed, AppData.getLanguageName((Integer) sr.newValue));
+                    description = res.getString(R.string.h_list_code_changed, AppData.getLanguageName((Integer) sr.oldValue), AppData.getLanguageName((Integer) sr.newValue));
                     break;
-                case Record.LANGUAGE_NAME_CHANGED:
+                case Record.LIST_NAME_CHANGED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_configuration;
                     title = res.getString(R.string.h_list_name_changed, sr.oldValue, sr.newValue);
                     description = "";
                     break;
-                case Record.LANGUAGE_PHRASAL_STATE_CHANGED:
+                case Record.LIST_PHRASAL_STATE_CHANGED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_configuration;
                     title = list_name;
                     description = res.getString(R.string.phrasalverbs) + " " + ((Boolean) sr.newValue ? res.getString(R.string.enabled) : res.getString(R.string.disabled));
                     break;
-                case Record.LANGUAGE_STATISTICS_CLEARED:
+                case Record.LIST_STATISTICS_CLEARED:
                     main_icon = flag;
                     secondary_icon = R.drawable.ic_configuration;
                     title = list_name;
@@ -203,10 +203,6 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
             secondary_icon = android.R.drawable.presence_invisible;
 
             switch (record.type) {
-                case Record.APPSET_LANGUAGE_CHANGED:
-                    title = res.getString(R.string.settings);
-                    description = res.getString(R.string.h_app_lang_changed, AppData.getLanguageName((Integer) asr.value));
-                    break;
                 case Record.APPSET_KBVIBRATION_STATE_CHANGED:
                     title = res.getString(R.string.settings);
                     description = res.getString(R.string.pref_phonetic_keyboard_vibration) + " " + ((Boolean) asr.value ? res.getString(R.string.enabled) : res.getString(R.string.disabled));

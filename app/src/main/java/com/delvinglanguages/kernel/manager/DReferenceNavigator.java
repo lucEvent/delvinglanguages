@@ -3,17 +3,14 @@ package com.delvinglanguages.kernel.manager;
 import android.content.Context;
 import android.view.View;
 
-import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.util.DReferences;
-
-import java.util.Locale;
 
 public class DReferenceNavigator {
 
-    private Language language;
+    private DelvingList delvingList;
 
     private int index;
 
@@ -21,41 +18,39 @@ public class DReferenceNavigator {
 
     private PronunciationManager delvedPronunciationManager, nativePronunciationManager;
 
+    private final int odd;
 
-    public DReferenceNavigator(Context context, Locale delvedLocale, Locale nativeLocale)
+    public DReferenceNavigator(Context context, DelvingList delvingList, int from_code, int to_code, boolean inverse)
     {
         index = -1;
         references = new DReferences();
-        language = new LanguageManager(context).getCurrentLanguage();
+        this.delvingList = delvingList;
+        odd = inverse ? 1 : 0;
 
-        delvedPronunciationManager = new PronunciationManager(context, delvedLocale, true);
-        nativePronunciationManager = new PronunciationManager(context, nativeLocale, true);
+        delvedPronunciationManager = new PronunciationManager(context, LanguageCode.getLocale(from_code), true);
+        nativePronunciationManager = new PronunciationManager(context, LanguageCode.getLocale(to_code), true);
     }
 
     public DReference back()
     {
+        references.remove(index);
         index--;
-        return references.remove(index);
+        return references.get(index);
     }
 
     public DReference forward(String translation)
     {
-        DReference ref;
-
-        DReference bait = DReference.createBait(translation);
-        if (index % 2 != 0)
-            ref = language.getDictionary().ceiling(bait);
-        else
-            ref = language.getDictionaryInverse().ceiling(bait);
-        AppSettings.printlog("->" + ref.name);
-        forward(ref);
-        return ref;
-    }
-
-    public void forward(DReference reference)
-    {
-        references.add(reference);
         index++;
+
+        DReference ref;
+        DReference bait = DReference.createBait(translation);
+        if (index % 2 == odd)
+            ref = delvingList.getDictionary().ceiling(bait);
+        else
+            ref = delvingList.getDictionaryInverse().ceiling(bait);
+
+        references.add(ref);
+        return ref;
     }
 
     public DReference current()
@@ -78,7 +73,7 @@ public class DReferenceNavigator {
         @Override
         public void onClick(View v)
         {
-            if (index % 2 == 0) {
+            if (index % 2 == odd) {
                 delvedPronunciationManager.pronounce(current().name);
             } else
                 nativePronunciationManager.pronounce(current().name);

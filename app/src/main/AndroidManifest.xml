@@ -33,9 +33,13 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".view.activity.CreateLanguageActivity"
+            android:name=".view.activity.CreateDelvingListActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"/>
+        </activity>
 
         <activity
             android:name=".view.activity.BackUpActivity"
@@ -48,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.LanguageActivity"
+            android:name=".view.activity.DelvingListActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -56,15 +60,15 @@
                 android:value=".Main"/>
         </activity>
         <activity
-            android:name=".view.activity.ThemeActivity"
+            android:name=".view.activity.SubjectActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.LanguageActivity"/>
+                android:value=".view.activity.DelvingListActivity"/>
         </activity>
         <activity
-            android:name=".view.activity.ThemeEditorActivity"
+            android:name=".view.activity.SubjectEditorActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -125,11 +129,11 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".view.activity.LanguageMergerActivity"
+            android:name=".view.activity.DelvingListMergerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.LanguageActivity"/>
+                android:value=".view.activity.DelvingListActivity"/>
         </activity>
 
         <service

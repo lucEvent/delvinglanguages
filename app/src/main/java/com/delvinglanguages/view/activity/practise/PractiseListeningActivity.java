@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.LanguageCode;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.game.WriteGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.kernel.record.Record;
@@ -23,7 +23,7 @@ import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseListeningActivity extends Activity implements TextWatcher {
 
-    protected LanguageManager dataManager;
+    protected DelvingListManager dataManager;
     protected WriteGame gameManager;
     private PronunciationManager pronunciationManager;
 
@@ -44,9 +44,9 @@ public class PractiseListeningActivity extends Activity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_practise_listening);
 
-        dataManager = new LanguageManager(this);
+        dataManager = new DelvingListManager(this);
         gameManager = new WriteGame(dataManager.getReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), true);
+        pronunciationManager = new PronunciationManager(this, LanguageCode.getLocale(dataManager.getCurrentList().from_code), true);
 
         handler = new Handler();
 
@@ -58,7 +58,7 @@ public class PractiseListeningActivity extends Activity implements TextWatcher {
         help = (ImageButton) findViewById(R.id.help);
         next = (ImageButton) findViewById(R.id.next);
 
-        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+        if (!dataManager.getCurrentList().arePhrasalVerbsEnabled())
             findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownTypes = AppAnimator.getTypeStatusVector();

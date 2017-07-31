@@ -14,18 +14,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.Item;
+import com.delvinglanguages.view.lister.DictionaryLister;
 import com.delvinglanguages.view.lister.ReferenceLister;
+import com.delvinglanguages.view.utils.MainSearch;
+import com.delvinglanguages.view.utils.NoContentViewHelper;
 
 public class DictionaryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
-    private LanguageManager dataManager;
+    private DelvingListManager dataManager;
     private DReferences references;
 
     private ReferenceLister adapter;
@@ -42,20 +46,27 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        dataManager = new LanguageManager(this);
+        dataManager = new DelvingListManager(this);
         references = dataManager.getReferences();
         queriedReferences = references;
         lastQuery = "";
 
-        adapter = new ReferenceLister(references, dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS), this);
+        if (!references.isEmpty()) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setAutoMeasureEnabled(true);
+            adapter = new DictionaryLister(references, dataManager.getCurrentList().arePhrasalVerbsEnabled(), this, getResources());
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setAutoMeasureEnabled(true);
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+            recyclerView.setHasFixedSize(false);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+        } else
+
+            displayNoContentMessage();
+
     }
 
     @Override
@@ -66,6 +77,9 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
             case AppCode.DREFERENCE_REMOVED:
                 references = dataManager.getReferences();
                 queriedReferences = references;
+
+                if (references.isEmpty())
+                    displayNoContentMessage();
 
             case AppCode.DREFERENCE_UPDATED:
                 onQueryTextChange(lastQuery);
@@ -81,8 +95,10 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         search = (SearchView) menu.findItem(R.id.search).getActionView();
 
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-        search.setOnQueryTextListener(this);
+        if (!references.isEmpty()) {
+            search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(this);
+        }
 
         return true;
     }
@@ -113,35 +129,67 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     @Override
     public boolean onQueryTextChange(String query)
     {
+        adapter.clear();
+
+        DReferences searchableRefs;
         if (query.startsWith(lastQuery))
-            queriedReferences = filter(queriedReferences, query);
+            searchableRefs = queriedReferences;
         else
-            queriedReferences = filter(references, query);
+            searchableRefs = references;
 
         lastQuery = query;
-        adapter.setNewDataSet(queriedReferences);
-        return true;
-    }
 
-    private DReferences filter(DReferences models, String query)
-    {
         query = query.toLowerCase();
+        boolean foundPerfectMatch = false;
 
-        DReferences filteredList = new DReferences();
-        for (DReference ref : models)
-            if (ref.hasContent(query)) filteredList.add(ref);
+        DReferences newQueriedReference = new DReferences();
+        for (DReference ref : searchableRefs)
+            if (ref.hasContent(query)) {
+                newQueriedReference.add(ref);
+                adapter.addItem(ref);
 
-        return filteredList;
+                if (ref.name.toLowerCase().equals(query))
+                    foundPerfectMatch = true;
+            }
+        queriedReferences = newQueriedReference;
+
+        if (adapter.isEmpty())
+            adapter.addItem(new MainSearch(query, true));
+        else if (!foundPerfectMatch)
+            adapter.addItem(new MainSearch(query, false));
+
+        return true;
     }
 
     @Override
     public void onClick(View v)
     {
-        DReference ref = (DReference) v.getTag();
+        Item item = (Item) v.getTag();
 
-        Intent intent = new Intent(this, DReferenceActivity.class);
-        intent.putExtra(AppCode.DREFERENCE_NAME, ref.name);
-        startActivityForResult(intent, AppCode.ACTION_MODIFY);
+        if (item instanceof DReference) {
+            DReference ref = (DReference) item;
+
+            Intent intent = new Intent(this, DReferenceActivity.class);
+            intent.putExtra(AppCode.DREFERENCE_NAME, ref.name);
+            startActivityForResult(intent, AppCode.ACTION_MODIFY);
+        } else {
+            MainSearch searchItem = (MainSearch) item;
+
+            if (v.getId() == R.id.button_add_to_drawer) {
+                dataManager.createDrawerReference(searchItem.term);
+                Toast.makeText(v.getContext(), v.getResources().getString(R.string.msg_added_to_drawer, searchItem.term), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(this, WebSearchActivity.class);
+            intent.putExtra(AppCode.SEARCH_TERM, searchItem.term);
+            startActivity(intent);
+        }
+    }
+
+    private void displayNoContentMessage()
+    {
+        new NoContentViewHelper(findViewById(R.id.no_content), R.string.msg_no_content_dictionary)
+                .displayMessage();
     }
 
 }

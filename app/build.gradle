@@ -8,8 +8,8 @@ android {
         applicationId "com.delvinglanguages"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 4
-        versionName "4.2.0"
+        versionCode 5
+        versionName "4.2.1"
     }
     buildTypes {
         release {

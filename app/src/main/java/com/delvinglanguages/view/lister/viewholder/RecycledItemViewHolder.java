@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.Wrapper;
 
@@ -37,12 +37,12 @@ public class RecycledItemViewHolder extends RecyclerView.ViewHolder {
                 holder.subtitle.setText(reference.getTranslationsAsString());
 
                 break;
-            case Wrapper.TYPE_THEME:
-                Theme theme = removedItem.castToTheme();
+            case Wrapper.TYPE_SUBJECT:
+                Subject subject = removedItem.castToSubject();
                 Context context = holder.subtitle.getContext();
 
-                holder.title.setText(theme.getName());
-                holder.subtitle.setText(context.getString(R.string.x_words, theme.getPairs().size()));
+                holder.title.setText(subject.getName());
+                holder.subtitle.setText(context.getString(R.string.x_words, subject.getPairs().size()));
                 break;
             case Wrapper.TYPE_TEST:
                 Test test = removedItem.castToTest();

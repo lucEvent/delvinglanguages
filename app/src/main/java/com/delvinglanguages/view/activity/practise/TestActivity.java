@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Language;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
@@ -52,9 +52,9 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         handler = new TestHandler(this);
         dataManager = new TestManager(this);
         testManager = new TestGame(new DReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), false);
+        pronunciationManager = new PronunciationManager(this, LanguageCode.getLocale(dataManager.getCurrentList().from_code), false);
 
-        showPhrasal = dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS);
+        showPhrasal = dataManager.getCurrentList().arePhrasalVerbsEnabled();
 
         int test_id = getIntent().getExtras().getInt(AppCode.TEST_ID);
         currentTest = dataManager.getTests().getTestById(test_id);
@@ -177,7 +177,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         if (round >= currentTest.size() * (ttsAvailable ? 5 : 4)) {
             currentTest.finish();
             testRunning = false;
-            RecordManager.testDone(dataManager.getCurrentLanguage().id, dataManager.getCurrentLanguage().code, currentTest.id);
+            RecordManager.testDone(dataManager.getCurrentList().id, dataManager.getCurrentList().from_code, currentTest.id);
             setMainFragment();
             return;
         }

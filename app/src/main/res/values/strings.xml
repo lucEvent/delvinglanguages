@@ -1,11 +1,12 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">4.2.0</string>
+    <string name="app_version" translatable="false">4.2.1</string>
     <string name="about_content_contact" translatable="false">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features" translatable="false">New features and improvements:</string>
     <string name="about_content_new_features" translatable="false">
-        Version 4.2.0 2017-07-23:\nIntroducing Records.\nOnline translator now powered by Yandex.Translate in some languages.\nNow you can also recover Themes and Tests from the Recycle Bin.\nBug fixes and other improvements.\n
+        Version 4.2.1 2017-07-31:\nOnline search now allows to add translations in both directions.\nInternal changes.\nBug fixes and improvements.\n
+        \nVersion 4.2.0 2017-07-23:\nIntroducing Records.\nOnline translator now powered by Yandex.Translate in some languages.\nNow you can also recover Themes and Tests from the Recycle Bin.\nBug fixes and other improvements.\n
         \nVersion 4.1.0 2017-07-01:\nMore languages supported.\nFlags improved.\nNavigation improved (+ new navigation list).\nMatch practise improved.\nImport fixes.\nBug fixes and other improvements.\n
         \nVersion 4.0.1 2016-11-01:\nMinor bug fixes.\n
         \nVersion 4.0.0 2016-08-30:\nIntroducing Data backup in server and synchronization.\nBugs fixed.\n
@@ -19,10 +20,11 @@
     </string>
     <string name="about_content_title_next_releases" translatable="false">In next releases:</string>
     <string name="about_content_next_releases" translatable="false">
-        - Test bugs\n
         - Sync bugs\n
         - Phrasal verbs screen feature\n
         - Verbs screen features\n
+        - Test configuration\n
+        - Dark theme\n
     </string>
 
     <string name="version">version</string>
@@ -60,7 +62,7 @@
 
 
     <!-- * ******************** Labels **************************** * -->
-    <string name="create_language">Create language</string>
+    <string name="create_language">Create language_code</string>
     <string name="historial">Records</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
@@ -71,7 +73,7 @@
     <string name="dictionary">Dictionary</string>
     <string name="drawer">Drawer</string>
     <string name="more">More</string>
-    <string name="themes">Themes</string>
+    <string name="subjects">Subjects</string>
     <string name="pronunciation">Pronunciation</string>
     <string name="recycle_bin">Recycle bin</string>
     <string name="language_settings">Language settings</string>
@@ -85,16 +87,19 @@
     <string name="test">Test</string>
     <string name="type_filter">Type filter</string>
     <string name="number_of_words">Number of words</string>
-    <string name="main_types_content_description">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d phrasal verbs\n%6$d expressions\n%7$d prepositions\n%8$d conjunctions\n%9$d others\n%10$d themes\n%11$d tests</string>
-    <string name="main_types_content_description_no_phrasals">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d expressions\n%6$d prepositions\n%7$d conjunctions\n%8$d others\n%9$d themes\n%10$d tests</string>
+    <string name="main_types_content_description">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d phrasal verbs\n%6$d expressions\n%7$d prepositions\n%8$d conjunctions\n%9$d others\n%10$d subjects\n%11$d tests</string>
+    <string name="main_types_content_description_no_phrasals">%1$d nouns\n%2$d verbs\n%3$d adjectives\n%4$d adverbs\n%5$d expressions\n%6$d prepositions\n%7$d conjunctions\n%8$d others\n%9$d subjects\n%10$d tests</string>
     <string name="content">Content</string>
     <string name="statistics">Statistics</string>
     <string name="main_stats_content_description">Attempts:\t\t %1$d\nNeat hits:\t\t\t %2$d (%3$.1f%%)\nHits at 2nd:\t %4$d (%5$.1f%%)\nHits at 3rd:\t\t %6$d (%7$.1f%%)\nErrors:\t\t\t\t %8$d (%9$.1f%%)</string>
     <string name="x_words">%1$d words</string>
-    <string name="create_a_language">Create a language</string>
+    <string name="create_a_language">Create a language_code</string>
     <string name="import_from_file">Import from file</string>
     <string name="synchronize_your_account">Synchronize your account</string>
     <string name="how_do_we_start">How do we start?</string>
+    <string name="add_one_now">Add one now</string>
+    <string name="create_one_now">Create one now</string>
+
 
     <!-- * ******************** Buttons **************************** * -->
     <string name="cancel">Cancel</string>
@@ -117,18 +122,19 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="add_word">Add word</string>
-    <string name="add_theme">Add theme</string>
+    <string name="add_subject">Add subject</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="start">Start</string>
     <string name="add_to_drawer">Add to drawer</string>
     <string name="enabled">enabled</string>
     <string name="disabled">disabled</string>
+    <string name="ok">OK</string>
 
 
     <!-- * ******************** Hints **************************** * -->
-    <string name="hint_enter_language">Enter language name</string>
-    <string name="hint_enter_theme_name">Theme name</string>
+    <string name="hint_enter_language">Enter language_code name</string>
+    <string name="hint_enter_subject_name">Subject name</string>
     <string name="hint_search">Search</string>
     <string name="hint_enter_drawer">Write a word</string>
     <string name="hint_enter_backup_name">Enter a name for the backup file</string>
@@ -147,14 +153,14 @@
     <string name="msg_missing_word">Missing word</string>
     <string name="msg_missing_translations">Missing translations</string>
     <string name="msg_missing_type">Missing type</string>
-    <string name="msg_missing_language_name">Missing language name</string>
+    <string name="msg_missing_language_name">Missing language_code name</string>
     <string name="msg_language_created">Language created</string>
     <string name="msg_not_implemented">Function not implement yet</string>
     <string name="msg_preparing_file">Preparing file</string>
-    <string name="msg_found_languages">Found %1$d language(s)</string>
+    <string name="msg_found_languages">Found %1$d language_code(s)</string>
     <string name="msg_n_references">%1$d words</string>
     <string name="msg_n_drawerreferences">%1$d words in the drawer</string>
-    <string name="msg_n_themes">%1$d themes</string>
+    <string name="msg_n_subjects">%1$d subjects</string>
     <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">Import finished successfully</string>
     <string name="msg_export_finished">Export finished successfully</string>
@@ -163,14 +169,14 @@
     <string name="msg_select_languages_backup">Select languages to backup</string>
     <string name="msg_could_access_disc">Couldn\'t access to disc</string>
     <string name="msg_saving_">Saving %1$s</string>
-    <string name="msg_language_saved_">%1$s saved with %2$d words, %3$d words in drawer, %4$d themes and %5$d tests</string>
+    <string name="msg_language_saved_">%1$s saved with %2$d words, %3$d words in drawer, %4$d subjects and %5$d tests</string>
     <string name="msg_missing_filename">Missing file name</string>
-    <string name="msg_no_language_selected">No language selected</string>
+    <string name="msg_no_language_selected">No language_code selected</string>
     <string name="msg_confirm_to_remove">Confirm to delete</string>
     <string name="msg_go_back_without_saving">Go out without saving changes</string>
     <string name="msg_go_out_from_test">Go out without finishing the test</string>
-    <string name="msg_missing_theme_name">Missing theme name</string>
-    <string name="msg_missing_theme_content">Missing theme content</string>
+    <string name="msg_missing_subject_name">Missing subject name</string>
+    <string name="msg_missing_subject_content">Missing subject content</string>
     <string name="msg_missing_content">Missing content</string>
     <string name="msg_notifier_tts">Your device does not have the needed resources for pronunciation in %1$s. Try to download them in Settings or get a TTS application from the Google Play store.</string>
     <string name="msg_missing_test_name">Missing test name</string>
@@ -181,7 +187,7 @@
     <string name="msg_test_worst_reference">Most difficult word: %1$s</string>
     <string name="msg_confirm_to_clear_all_items">Confirm to clear all items</string>
     <string name="msg_confirm_to_reset_statistics">Confirm to reset statistics</string>
-    <string name="msg_select_language_to_merge_with">Select language to merge with</string>
+    <string name="msg_select_language_to_merge_with">Select language_code to merge with</string>
     <string name="msg_no_conflicts_found">No conflicts found</string>
     <string name="msg_estimating_merge_of">Estimating merge of %1$s and %2$s</string>
     <string name="msg_be_patience">Be patience!</string>
@@ -190,7 +196,7 @@
     <string name="msg_calculating_changes">Calculating changes</string>
     <string name="msg_merging">Merging</string>
     <string name="msg_temp_conflicts_treatment">This app version will just ignore any conflict. A coming update may let you decide what to do. Stay updated!</string>
-    <string name="msg_remove_language_after_merge">Do you want to remove this language?</string>
+    <string name="msg_remove_language_after_merge">Do you want to remove this language_code?</string>
     <string name="msg_permission_for_backup_denied">We CANNOT read/write storage without your permission</string>
     <string name="msg_dictionary_empty">Cannot practise. Dictionary is empty</string>
     <string name="msg_cannot_start_test">No word matched your selection. Test cannot be created</string>
@@ -209,12 +215,21 @@
     <string name="msg_impossible_to_add_search">Impossible to add this way, switch the translator direction</string>
     <string name="msg_no_results_found_for">No results have been found for <em>%1$s</em>.</string>
     <string name="msg_added_to_drawer">%1$s added to drawer</string>
+    <string name="msg_no_content_dictionary">Dictionary is empty</string>
+    <string name="msg_no_content_drawer">Drawer is empty</string>
+    <string name="msg_no_content_subjects">There are no subjects yet</string>
+    <string name="msg_no_content_entries">There are no entries yet</string>
+    <string name="msg_no_content_recycle_bin">Recycle bin is empty</string>
+    <string name="msg_no_content_records">There are no records yet</string>
+    <string name="msg_no_language_to_merge_with">There are no other lists to merge with</string>
+    <string name="msg_error_backup">An error has occurred. Try restarting the app</string>
+    <string name="msg_language_cant_be_same">Languages can\'t be the same</string>
     <string name="msg_in_next_releases">Available in coming releases. Stay updated!</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
     <string name="title_drawer_fragment">%1$s drawer</string>
-    <string name="title_themes_fragment">%1$s themes</string>
+    <string name="title_subjects_fragment">%1$s subjects</string>
     <string name="title_pronunciation_fragment">%1$s pronunciation</string>
     <string name="title_practise_fragment">%1$s practise</string>
     <string name="title_activity_practisetest">%1$s tests</string>
@@ -225,40 +240,41 @@
 
     <!-- * ********************** App Settings strings ************************* * -->
     <string name="pref_title_general">General</string>
-    <string name="pref_title_customization">Customization</string>
     <string name="pref_title_data">Data</string>
 
-    <string name="pref_app_language">App language</string>
     <string name="pref_phonetic_keyboard_vibration">Phonetic keyboard vibration</string>
     <string name="pref_app_theme">App theme</string>
     <string name="pref_backup_n_synchronization">Online security backup</string>
     <string name="pref_import_data">Import data</string>
     <string name="pref_export_data">Export data</string>
 
-    <string name="pref_app_language_key" translatable="false">pref1</string>
     <string name="pref_phonetic_keyboard_vibration_key" translatable="false">pref2</string>
     <string name="pref_app_theme_key" translatable="false">pref3</string>
     <string name="pref_import_data_key" translatable="false">pref4</string>
     <string name="pref_export_data_key" translatable="false">pref5</string>
-    <string name="pref_current_language_key" translatable="false">pref6</string>
+    <string name="pref_current_list_key" translatable="false">pref6</string>
     <string name="pref_backup_n_synchronization_key" translatable="false">pref7</string>
 
-    <!-- * ********************** Language Settings strings ************************* * -->
+    <!-- * ********************** language_code Settings strings ************************* * -->
     <string name="pref_title_options">Options</string>
 
-    <string name="pref_language_code">Language</string>
-    <string name="pref_language_name">Language name</string>
-    <string name="pref_language_phrasalverbs">Phrasal verbs</string>
-    <string name="pref_language_merge">Merge</string>
-    <string name="pref_language_remove">Delete</string>
-    <string name="pref_language_reset_statistics">Reset statistics</string>
+    <string name="pref_list_language_from_code">From</string>
+    <string name="pref_list_language_to_code">To</string>
+    <string name="pref_list_name">Language name</string>
+    <string name="pref_list_phrasal_verbs">Phrasal verbs</string>
+    <string name="pref_list_public">Public</string>
+    <string name="pref_list_merge">Merge</string>
+    <string name="pref_list_remove">Delete</string>
+    <string name="pref_list_reset_statistics">Reset statistics</string>
 
-    <string name="pref_language_code_key" translatable="false">langpref1</string>
-    <string name="pref_language_name_key" translatable="false">langpref2</string>
-    <string name="pref_language_phrasalverbs_key" translatable="false">langpref3</string>
-    <string name="pref_language_merge_key" translatable="false">langpref4</string>
-    <string name="pref_language_remove_key" translatable="false">langpref5</string>
-    <string name="pref_language_reset_statistics_key" translatable="false">langpref6</string>
+    <string name="pref_list_language_from_code_key" translatable="false">langpref1</string>
+    <string name="pref_list_language_to_code_key" translatable="false">langpref2</string>
+    <string name="pref_list_name_key" translatable="false">langpref3</string>
+    <string name="pref_list_phrasal_key" translatable="false">langpref4</string>
+    <string name="pref_list_public_key" translatable="false">langpref5</string>
+    <string name="pref_list_merge_key" translatable="false">langpref6</string>
+    <string name="pref_list_remove_key" translatable="false">langpref7</string>
+    <string name="pref_list_reset_statistics_key" translatable="false">langpref8</string>
 
     <!-- * ********************** Record strings ************************* * -->
     <string name="h_in">In %1$s</string>
@@ -267,7 +283,7 @@
     <string name="h_list_deleted">List deleted</string>
     <string name="h_list_integrated">List integrated</string>
     <string name="h_list_integrated_in">%1$s in %2$s</string>
-    <string name="h_list_code_changed">Its language is now %1$s</string>
+    <string name="h_list_code_changed">Changed from %1$s to %2$s</string>
     <string name="h_list_name_changed">%1$s renamed to %2$s</string>
     <string name="h_list_stats_cleared">Statistics cleared</string>
     <string name="h_recycle_bin_cleared">Recycle bin cleared</string>
@@ -277,10 +293,10 @@
     <string name="h_reference_modified">%1$d word(s) modified</string>
     <string name="h_reference_removed">%1$d word(s) removed</string>
     <string name="h_reference_recovered">%1$d word(s) recovered from recycle bin</string>
-    <string name="h_theme_added">%1$d theme(s) created</string>
-    <string name="h_theme_modified">%1$d theme(s) modified</string>
-    <string name="h_theme_removed">%1$d theme(s) removed</string>
-    <string name="h_theme_recovered">%1$d theme(s) recovered from recycle bin</string>
+    <string name="h_subject_added">%1$d subject(s) created</string>
+    <string name="h_subject_modified">%1$d subject(s) modified</string>
+    <string name="h_subject_removed">%1$d subject(s) removed</string>
+    <string name="h_subject_recovered">%1$d subject(s) recovered from recycle bin</string>
     <string name="h_test_added">%1$d test(s) created</string>
     <string name="h_test_done">%1$d test(s) done</string>
     <string name="h_test_removed">%1$d test(s) removed</string>
@@ -289,10 +305,9 @@
     <string name="h_practised_complete">%1$d word(s) practised on Complete</string>
     <string name="h_practised_write">%1$d word(s) practised on Write</string>
     <string name="h_practised_listening">%1$d word(s) practised on Listening</string>
-    <string name="h_app_lang_changed">Your language changed to %1$s</string>
     <string name="h_app_theme_changed">App style set to %1$s</string>
-    <string name="h_import">%1$d language(s) imported from file</string>
-    <string name="h_export">%1$d language(s) exported to a file</string>
+    <string name="h_import">%1$d language_code(s) imported from file</string>
+    <string name="h_export">%1$d language_code(s) exported to a file</string>
 
     <!-- ********************************************************************************* -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>

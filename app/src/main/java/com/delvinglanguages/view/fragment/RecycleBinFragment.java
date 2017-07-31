@@ -13,13 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.view.lister.RecycleBinLister;
+import com.delvinglanguages.view.utils.NoContentViewHelper;
 
 public class RecycleBinFragment extends Fragment {
 
-    private LanguageManager dataManager;
+    private DelvingListManager dataManager;
     private RecycleBinLister adapter;
 
     @Override
@@ -32,23 +33,26 @@ public class RecycleBinFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.f_list_with_button, container, false);
+        View view = inflater.inflate(R.layout.f_list, container, false);
 
         Context context = getActivity();
 
-        dataManager = new LanguageManager(context);
+        dataManager = new DelvingListManager(context);
 
-        adapter = new RecycleBinLister(dataManager.getRemovedItems(), onRestoreItem);
+        if (!dataManager.getRemovedItems().isEmpty()) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setAutoMeasureEnabled(true);
+            adapter = new RecycleBinLister(dataManager.getRemovedItems(), onRestoreItem);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            layoutManager.setAutoMeasureEnabled(true);
 
-        view.findViewById(R.id.button).setVisibility(View.GONE);
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+            recyclerView.setHasFixedSize(false);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+        } else
+            displayNoContentMessage(view);
 
         return view;
     }
@@ -68,8 +72,17 @@ public class RecycleBinFragment extends Fragment {
             int position = dataManager.getRemovedItems().indexOf((RemovedItem) v.getTag());
             dataManager.restoreItem((RemovedItem) v.getTag());
             adapter.notifyItemRemoved(position);
+
+            if (adapter.getItemCount() == 0)
+                displayNoContentMessage(getView());
         }
     };
+
+    private void displayNoContentMessage(View rootView)
+    {
+        new NoContentViewHelper(rootView.findViewById(R.id.no_content), R.string.msg_no_content_recycle_bin)
+                .displayMessage();
+    }
 
 }
 

@@ -3,12 +3,12 @@ package com.delvinglanguages.kernel;
 import android.content.Context;
 
 import com.delvinglanguages.data.MergeDatabaseManager;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
+import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Tests;
-import com.delvinglanguages.kernel.util.Themes;
 
 public class MergeManager extends KernelManager {
 
@@ -17,13 +17,13 @@ public class MergeManager extends KernelManager {
         public int num_conflicts_accepted;
         public int num_conflicts;
 
-        public Language src;
-        public Language dst;
+        public DelvingList src;
+        public DelvingList dst;
 
         public DReferences src_references;
         public DrawerReferences src_drawerReferences;
         //   public DReferences src_removedReferences;
-        public Themes src_themes;
+        public Subjects src_subjects;
         public Tests src_tests;
 
         //   public DReferences src_hot_references;
@@ -39,16 +39,16 @@ public class MergeManager extends KernelManager {
         this.context = context;
     }
 
-    public Language getLanguageContent(Language language)
+    public DelvingList getDelvingListContent(DelvingList list)
     {
-        loadContentOf(language);
+        loadContentOf(list);
 
-        while (!language.isDictionaryCreated()) ;
+        while (!list.isDictionaryCreated()) ;
 
-        return language;
+        return list;
     }
 
-    public MergePlan createMergePlan(Language src, Language dst)
+    public MergePlan createMergePlan(DelvingList src, DelvingList dst)
     {
         MergePlan plan = new MergePlan();
         plan.src = src;
@@ -78,13 +78,13 @@ public class MergeManager extends KernelManager {
   //              plan.src_hot_removedReferences.add(ref);
                 plan.num_conflicts++;
 */
-        plan.src_themes = src.themes;
+        plan.src_subjects = src.subjects;
         plan.src_tests = src.tests;
 
         return plan;
     }
 
-    public void merge(Language dst, MergePlan mergePlan)
+    public void merge(DelvingList dst, MergePlan mergePlan)
     {
         MergeDatabaseManager database = new MergeDatabaseManager(context);
         database.openWritableDatabase();
@@ -98,15 +98,15 @@ public class MergeManager extends KernelManager {
         //      for (DReference ref : mergePlan.src_removedReferences)// TODO: 07/04/2016
         //        database.updateReferenceLanguage(ref.id, dst.id);
 
-        for (Theme theme : mergePlan.src_themes)
-            database.updateThemeLanguage(theme.id, dst.id, mergePlan.src.id);
+        for (Subject subject : mergePlan.src_subjects)
+            database.updateSubjectLanguage(subject.id, dst.id, mergePlan.src.id);
 
         for (Test test : mergePlan.src_tests)
             database.updateTestLanguage(test.id, dst.id, mergePlan.src.id);
 
         database.closeWritableDatabase();
 
-        RecordManager.languageIntegrated(mergePlan.src.id, mergePlan.src.code, mergePlan.src.language_name, mergePlan.dst.language_name);
+        RecordManager.listIntegrated(mergePlan.src.id, mergePlan.src.from_code, mergePlan.src.name, mergePlan.dst.name);
 //        synchronizeUpdate(dst.id);//// TODO: 20/08/2016
     }
 

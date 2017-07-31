@@ -14,6 +14,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +29,9 @@ import com.delvinglanguages.Main;
 import com.delvinglanguages.R;
 import com.delvinglanguages.data.BackUpManager;
 import com.delvinglanguages.kernel.KernelManager;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.view.lister.LanguageCheckBoxLister;
-import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.DelvingListListener;
 import com.delvinglanguages.view.utils.MessageListener;
 
 public class BackUpActivity extends Activity {
@@ -57,6 +59,7 @@ public class BackUpActivity extends Activity {
         setContentView(R.layout.a_backup);
 
         console = (TextView) findViewById(R.id.console);
+        console.setMovementMethod(new ScrollingMovementMethod());
         scrollbox = (ScrollView) findViewById(R.id.scrollbox);
         buttons = findViewById(R.id.import_buttons);
 
@@ -161,23 +164,26 @@ public class BackUpActivity extends Activity {
         @Override
         public void handleMessage(Message msg)
         {
-
             switch (msg.what) {
                 case MessageListener.ERROR:
+                    if (msg.obj != null)
+                        console.append(Html.fromHtml("<span style='color:red'>" + msg.obj + "</span><br><br>"));
+                    console.append(Html.fromHtml("<span style='color:red'>" + getString(R.string.msg_error_backup) + "</span><br><br>"));
                     displayButtons();
+                    break;
                 case MessageListener.MESSAGE:
-                    console.append((String) msg.obj);
+                    console.append(Html.fromHtml("<span style='color:#236990'>" + msg.obj + "</span><br><br>"));
                     break;
                 case MessageListener.MESSAGE_INT:
-                    console.append(getString((int) msg.obj));
+                    console.append(Html.fromHtml("<span style='color:#009900'>" + getString((int) msg.obj) + "</span><br><br>"));
                     break;
                 case AppCode.IMPORT_SUCCESSFUL:
-                    console.append("\n" + getString(R.string.msg_import_finished));
+                    console.append(Html.fromHtml("<span style='color:#009900'>" + getString(R.string.msg_import_finished) + "</span>"));
                     displayButtons();
                     done = true;
                     break;
                 case AppCode.EXPORT_SUCCESSFUL:
-                    console.append("\n" + getString(R.string.msg_export_finished));
+                    console.append(Html.fromHtml("<span style='color:#009900'>" + getString(R.string.msg_export_finished) + "</span>"));
                     displayButtons();
                     done = true;
             }
@@ -194,7 +200,7 @@ public class BackUpActivity extends Activity {
 
 
         console.setText("");
-        buttons.setVisibility(View.GONE);
+        buttons.setVisibility(View.INVISIBLE);
     }
 
     public void done(View view)
@@ -206,7 +212,7 @@ public class BackUpActivity extends Activity {
     private void setChanges()
     {
         if (done && action == IMPORT) {
-            Main.handler.obtainMessage(LanguageListener.LANGUAGE_RECOVERED).sendToTarget();
+            Main.handler.obtainMessage(DelvingListListener.LIST_RECOVERED).sendToTarget();
             setResult(AppCode.RESULT_IMPORT_DONE);
         } else
             setResult(AppCode.RESULT_IMPORT_CANCELED);
@@ -235,7 +241,7 @@ public class BackUpActivity extends Activity {
         KernelManager dataManager = new KernelManager(this);
 
         ListView list = new ListView(this);
-        export_adapter = new LanguageCheckBoxLister(this, dataManager.getLanguages());
+        export_adapter = new LanguageCheckBoxLister(this, dataManager.getDelvingLists());
         list.setAdapter(export_adapter);
         list.setOnItemClickListener(null);
 
@@ -258,16 +264,14 @@ public class BackUpActivity extends Activity {
                 finish();
             } else {
 
-                Languages allLanguages = new KernelManager(BackUpActivity.this).getLanguages();
+                DelvingLists allDelvingLists = new KernelManager(BackUpActivity.this).getDelvingLists();
                 boolean[] checks = export_adapter.getChecks();
-                export_languages = new Languages();
-                for (int i = 0; i < checks.length; i++) {
-                    if (checks[i]) {
-                        export_languages.add(allLanguages.get(i));
-                    }
-                }
+                export_delvingLists = new DelvingLists();
+                for (int i = 0; i < checks.length; i++)
+                    if (checks[i])
+                        export_delvingLists.add(allDelvingLists.get(i));
 
-                if (export_languages.isEmpty()) {
+                if (export_delvingLists.isEmpty()) {
 
                     handler.obtainMessage(MessageListener.ERROR, getString(R.string.msg_no_language_selected)).sendToTarget();
 
@@ -289,7 +293,7 @@ public class BackUpActivity extends Activity {
         }
     };
 
-    private Languages export_languages;
+    private DelvingLists export_delvingLists;
     private LanguageCheckBoxLister export_adapter;
     private EditText export_input;
 
@@ -313,7 +317,7 @@ public class BackUpActivity extends Activity {
                         @Override
                         public void run()
                         {
-                            new BackUpManager(handler).backupData(BackUpActivity.this, filename, export_languages);
+                            new BackUpManager(handler).backupData(BackUpActivity.this, filename, export_delvingLists);
                         }
                     }).start();
 

@@ -3,7 +3,7 @@ package com.delvinglanguages.data;
 import android.content.Context;
 
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.ThemePairs;
+import com.delvinglanguages.kernel.util.SubjectPairs;
 
 /**
  * FastDatabaseManager
@@ -26,29 +26,29 @@ public class BackUpDatabaseManager extends BaseDatabaseManager {
     ////////////////////// Inserts \\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
-    public int insertLanguage(int lang_id, int code, String name, int settings)
+    public int insertDelvingList(int list_id, int from_code, int to_code, String name, int settings)
     {
-        return super.insertLanguage(lang_id, code, name, settings, Database.NOT_SYNCED);
+        return super.insertDelvingList(list_id, from_code, to_code, name, settings, Database.NOT_SYNCED);
     }
 
-    public void insertReference(int id, int lang_id, String name, String inflexions, String pronunciation, int priority)
+    public void insertReference(int id, int list_id, String name, String inflexions, String pronunciation, int priority)
     {
-        super.insertReference(id, lang_id, name, inflexions, pronunciation, priority, Database.NOT_SYNCED);
+        super.insertReference(id, list_id, name, inflexions, pronunciation, priority, Database.NOT_SYNCED);
     }
 
-    public void insertDrawerReference(int id, int lang_id, String note)
+    public void insertDrawerReference(int id, int list_id, String note)
     {
-        super.insertDrawerReference(id, lang_id, note, Database.NOT_SYNCED);
+        super.insertDrawerReference(id, list_id, note, Database.NOT_SYNCED);
     }
 
-    public void insertTheme(int id, int lang_id, String name, ThemePairs pairs)
+    public void insertSubject(int id, int list_id, String name, SubjectPairs pairs)
     {
-        super.insertTheme(id, lang_id, name, pairs, Database.NOT_SYNCED);
+        super.insertSubject(id, list_id, name, pairs, Database.NOT_SYNCED);
     }
 
-    public void insertTest(int id, int lang_id, String name, int runTimes, String content, int theme_id)
+    public void insertTest(int id, int list_id, String name, int runTimes, String content, int subject_id)
     {
-        super.insertTest(id, lang_id, name, runTimes, content, theme_id, Database.NOT_SYNCED);
+        super.insertTest(id, list_id, name, runTimes, content, subject_id, Database.NOT_SYNCED);
     }
 
     // **************************************************** \\

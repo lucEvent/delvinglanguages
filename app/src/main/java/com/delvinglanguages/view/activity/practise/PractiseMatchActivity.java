@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.LanguageCode;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.game.MatchGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.kernel.record.Record;
@@ -22,7 +22,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
 
     private static final long TIME_UNVEILING = 1500;
 
-    protected LanguageManager dataManager;
+    protected DelvingListManager dataManager;
     protected MatchGame gameManager;
     private PronunciationManager pronunciationManager;
 
@@ -40,9 +40,9 @@ public class PractiseMatchActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
 
-        dataManager = new LanguageManager(this);
+        dataManager = new DelvingListManager(this);
         gameManager = new MatchGame(dataManager.getReferences());
-        pronunciationManager = new PronunciationManager(this, dataManager.getCurrentLanguage().getLocale(), true);
+        pronunciationManager = new PronunciationManager(this, LanguageCode.getLocale(dataManager.getCurrentList().from_code), true);
 
         initUI();
         nextReference();
@@ -61,7 +61,7 @@ public class PractiseMatchActivity extends AppCompatActivity {
         for (int i = 0; i < button_answer.length; i++)
             button_answer[i] = (Button) findViewById(button_ids[i]);
 
-        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+        if (!dataManager.getCurrentList().arePhrasalVerbsEnabled())
             findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownType = AppAnimator.getTypeStatusVector();

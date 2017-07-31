@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.game.MatchGame;
 import com.delvinglanguages.kernel.test.TestReferenceState;
 import com.delvinglanguages.view.utils.AppAnimator;
@@ -44,7 +44,7 @@ public class TestMatchFragment extends TestFragment {
     {
         super.onCreate(savedInstanceState);
 
-        LanguageManager dataManager = new LanguageManager(getActivity());
+        DelvingListManager dataManager = new DelvingListManager(getActivity());
         MatchGame gameManager = new MatchGame(dataManager.getReferences());
         roundData = gameManager.nextRound(reference.reference, n_options, own_options_max);
     }

@@ -2,8 +2,8 @@ package com.delvinglanguages.kernel.test;
 
 import android.content.Context;
 
+import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.KernelManager;
-import com.delvinglanguages.kernel.Language;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.game.TestGame;
 import com.delvinglanguages.kernel.util.DReferences;
@@ -19,45 +19,45 @@ public class TestManager extends KernelManager {
 
     public Tests getTests()
     {
-        Language language = getCurrentLanguage();
-        if (language.tests == null)
-            language.setTests(dbManager.readTests(language.id));
+        DelvingList delvingList = getCurrentList();
+        if (delvingList.tests == null)
+            delvingList.setTests(dbManager.readTests(delvingList.id));
 
-        return language.tests;
+        return delvingList.tests;
     }
 
     public Test createTest(String test_name, int numberOfWords, int type)
     {
-        Language language = getCurrentLanguage();
+        DelvingList delvingList = getCurrentList();
 
-        DReferences references = new TestGame(language.getReferences()).getRandomReferences(numberOfWords, type);
+        DReferences references = new TestGame(delvingList.getReferences()).getRandomReferences(numberOfWords, type);
         if (references.isEmpty())
             return null;
 
-        Test test = dbManager.insertTest(language.id, test_name, references, -1);
-        language.tests.add(test);
+        Test test = dbManager.insertTest(delvingList.id, test_name, references, -1);
+        delvingList.tests.add(test);
 
-        RecordManager.testAdded(language.id, language.code, test.id);
-        synchronizeNewItem(language.id, test.id, test);
+        RecordManager.testAdded(delvingList.id, delvingList.from_code, test.id);
+        synchronizeNewItem(delvingList.id, test.id, test);
         return test;
     }
 
     public void updateTest(Test test)
     {
-        Language language = getCurrentLanguage();
-        dbManager.updateTest(test, language.id);
+        DelvingList delvingList = getCurrentList();
+        dbManager.updateTest(test, delvingList.id);
 
-        synchronizeUpdateItem(language.id, test.id, test);
+        synchronizeUpdateItem(delvingList.id, test.id, test);
     }
 
     public void removeTest(Test test)
     {
-        Language language = getCurrentLanguage();
-        language.removeTest(test);
-        dbManager.removeTest(language.id, test);
+        DelvingList delvingList = getCurrentList();
+        delvingList.removeTest(test);
+        dbManager.removeTest(delvingList.id, test);
 
-        RecordManager.testRemoved(language.id, language.code, test.id);
-        synchronizeDeleteItem(language.id, test.id, Wrapper.TYPE_TEST);
+        RecordManager.testRemoved(delvingList.id, delvingList.from_code, test.id);
+        synchronizeDeleteItem(delvingList.id, test.id, Wrapper.TYPE_TEST);
     }
 
 }

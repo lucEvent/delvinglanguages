@@ -92,7 +92,7 @@ public class StartActivity extends Activity {
 
                     KernelManager km = new KernelManager(StartActivity.this);
                     km.invalidateData();
-                    if (!km.getLanguages().isEmpty()) {
+                    if (!km.getDelvingLists().isEmpty()) {
                         StartActivity.this.setResult(AppCode.RESULT_SYNC_DONE);
                         finish();
                     } else {

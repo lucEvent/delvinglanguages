@@ -12,15 +12,14 @@ import android.widget.Toast;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.game.CompleteGame;
 import com.delvinglanguages.kernel.record.Record;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseCompleteActivity extends Activity {
 
-    protected LanguageManager dataManager;
+    protected DelvingListManager dataManager;
     protected CompleteGame gameManager;
     protected Handler handler;
 
@@ -46,7 +45,7 @@ public class PractiseCompleteActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
 
-        dataManager = new LanguageManager(this);
+        dataManager = new DelvingListManager(this);
         gameManager = new CompleteGame(dataManager.getReferences());
 
         handler = new Handler();
@@ -74,7 +73,7 @@ public class PractiseCompleteActivity extends Activity {
         for (int i = 0; i < key.length; i++)
             key[i].setTag(i);
 
-        if (!dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS))
+        if (!dataManager.getCurrentList().arePhrasalVerbsEnabled())
             findViewById(R.id.phrasal_verb).setVisibility(View.GONE);
 
         shownType = AppAnimator.getTypeStatusVector();

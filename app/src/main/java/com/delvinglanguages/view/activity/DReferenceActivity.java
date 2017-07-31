@@ -14,18 +14,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.delvinglanguages.AppCode;
-import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.LanguageCode;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.manager.DReferenceNavigator;
 import com.delvinglanguages.view.lister.InflexionLister;
 import com.delvinglanguages.view.utils.HorizontalFloatingButtonBar;
 
 public class DReferenceActivity extends AppCompatActivity {
 
-    private LanguageManager dataManager;
+    private DelvingListManager dataManager;
 
     private DReferenceNavigator navigator;
 
@@ -43,21 +42,23 @@ public class DReferenceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        dataManager = new LanguageManager(this);
-        navigator = new DReferenceNavigator(this, dataManager.getCurrentLanguage().getLocale(),
-                LanguageCode.getLocale(AppSettings.getAppLanguageCode()));
-
         //Buttons
         floatingButtonBar = (HorizontalFloatingButtonBar) findViewById(R.id.option_buttons);
         floatingButtonBar.addButton(R.drawable.ic_edit, R.string.edit, onEdit);
         floatingButtonBar.addButton(R.drawable.ic_delete, R.string.delete, onRemove);
-        floatingButtonBar.setEnabled(false);
+
+        dataManager = new DelvingListManager(this);
+        DelvingList delvingList = dataManager.getCurrentList();
 
         //Reference
         String reference_str = getIntent().getExtras().getString(AppCode.DREFERENCE_NAME);
-        DReference reference = dataManager.getReference(reference_str);
-        navigator.forward(reference);
+        navigator = new DReferenceNavigator(this, delvingList, delvingList.from_code, delvingList.to_code, reference_str == null);
+        floatingButtonBar.setEnabled(reference_str == null);
 
+        if (reference_str == null)
+            reference_str = getIntent().getExtras().getString(AppCode.DREFERENCE_NAME_INVERSE);
+
+        DReference reference = navigator.forward(reference_str);
         displayDReference(reference);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

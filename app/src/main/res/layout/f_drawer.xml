@@ -13,6 +13,15 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <ViewStub
+        android:id="@+id/no_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:layout="@layout/vs_no_content"/>
+
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
@@ -44,9 +53,9 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
+        android:singleLine="true"
         android:text="@string/delete"
         android:textAllCaps="true"
-        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold"
         android:visibility="gone"/>

@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppData;
-import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.LanguageCode;
@@ -69,8 +69,9 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        from = new KernelManager(this).getCurrentLanguage().code;
-        to = AppSettings.getAppLanguageCode();
+        DelvingList current = new KernelManager(this).getCurrentList();
+        from = current.from_code;
+        to = current.to_code;
 
         dictionary = new WordReference(from, to, handler);
         if (!dictionary.isTranslationAvailable(from, to))
@@ -134,7 +135,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
     private int currentSearchCode = -1;
     private Search currentSearch;
-    private boolean addEnabled = true;
+    private boolean isSearchInverse = false;
 
     private Handler handler = new Handler() {
 
@@ -168,10 +169,10 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
             Toast.makeText(this, R.string.msg_nothing_to_add, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!addEnabled) {
+  /*      if (!addEnabled) {
             Toast.makeText(this, R.string.msg_impossible_to_add_search, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         Inflexions inflexions = new Inflexions();
         ArrayList<String> translations = new ArrayList<>();
@@ -192,7 +193,7 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
         String searchedWord = Character.toUpperCase(currentSearch.searchTerm.charAt(0)) + currentSearch.searchTerm.substring(1);
 
         Intent intent = new Intent(getApplicationContext(), ReferenceEditorActivity.class);
-        intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_SEARCH);
+        intent.putExtra(AppCode.ACTION, isSearchInverse ? ReferenceEditorActivity.ACTION_SEARCH_INVERSE : ReferenceEditorActivity.ACTION_SEARCH);
         intent.putExtra(AppCode.DREFERENCE_NAME, searchedWord);
         intent.putExtra(AppCode.INFLEXIONS_WRAPPER, inflexions.wrap());
         startActivity(intent);
@@ -211,7 +212,8 @@ public class WebSearchActivity extends AppCompatActivity implements TextWatcher 
 
         updateLanguages();
 
-        addEnabled = !addEnabled;
+        isSearchInverse = !isSearchInverse;
+        onTextChanged("", 0, 0, 0);
     }
 
     @Override

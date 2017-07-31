@@ -13,20 +13,20 @@ public class PhrasalVerbs implements Runnable, Serializable {
             "Away", "Back", "By", "Down", "For", "Forth", "Forward", "From", "In", "Into", "It", "Of", "Off", "On", "Onto", "Out", "Over", "Round",
             "Through", "To", "Together", "Towards", "Under", "Up", "Upon", "With"};
 
-    private static final String[] swedishPreps = {"I", "På", "Till", "Framför", "Åt", "Vid", "Ur", "Om", "Mot", "Av", "F�r", "F�re", "Genom",
+    private static final String[] swedishPreps = {"I", "På", "Till", "Framför", "Åt", "Vid", "Ur", "Om", "Mot", "Av", "För", "Före", "Genom",
             "Utan", "Efter", "Över", "Bakom", "Under", "Från", "Bredvid", "Mellan", "Igenom", "Med"};
 
-    private DReferences words;
-    private final int language;
+    private DReferences phrasal_verbs;
+    private final int language_code;
 
     private TreeSet<PVLink> verbs;
     private TreeSet<PVLink> prepositions;
 
 
-    public PhrasalVerbs(int language, DReferences words)
+    public PhrasalVerbs(int language_code, DReferences phrasal_verbs)
     {
-        this.language = language;
-        this.words = words;
+        this.language_code = language_code;
+        this.phrasal_verbs = phrasal_verbs;
 
         new Thread(this).start();
     }
@@ -35,7 +35,7 @@ public class PhrasalVerbs implements Runnable, Serializable {
     public void run()
     {
         String[] sPrepositions;
-        switch (language) {
+        switch (language_code) {
             case LanguageCode.ENGLISH:
                 sPrepositions = englishPreps;
                 break;
@@ -51,7 +51,7 @@ public class PhrasalVerbs implements Runnable, Serializable {
         }
 
         verbs = new TreeSet<>();
-        for (DReference ref : words) {
+        for (DReference ref : phrasal_verbs) {
             if (ref.isPhrasalVerb()) {
                 addPhrasalVerb(ref.name);
             }

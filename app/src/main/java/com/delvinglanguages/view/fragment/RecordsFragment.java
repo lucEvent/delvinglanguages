@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.view.lister.RecordLister;
+import com.delvinglanguages.view.utils.NoContentViewHelper;
 
 public class RecordsFragment extends Fragment {
 
@@ -32,21 +33,24 @@ public class RecordsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.f_list_with_button, container, false);
+        View view = inflater.inflate(R.layout.f_list, container, false);
 
         Context context = getActivity();
 
-        adapter = new RecordLister(RecordManager.getRecords());
+        if (!RecordManager.getRecords().isEmpty()) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setAutoMeasureEnabled(true);
+            adapter = new RecordLister(RecordManager.getRecords());
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            layoutManager.setAutoMeasureEnabled(true);
 
-        view.findViewById(R.id.button).setVisibility(View.GONE);
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+        } else
+            displayNoContentMessage(view);
 
         return view;
     }
@@ -73,6 +77,7 @@ public class RecordsFragment extends Fragment {
                             {
                                 RecordManager.clearRecords();
                                 adapter.clear();
+                                displayNoContentMessage(getView());
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -80,4 +85,11 @@ public class RecordsFragment extends Fragment {
         }
         return true;
     }
+
+    private void displayNoContentMessage(View rootView)
+    {
+        new NoContentViewHelper(rootView.findViewById(R.id.no_content), R.string.msg_no_content_records)
+                .displayMessage();
+    }
+
 }

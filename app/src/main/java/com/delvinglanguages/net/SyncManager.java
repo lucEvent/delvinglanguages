@@ -39,42 +39,42 @@ public class SyncManager {
         }
     }
 
-    protected final void synchronizeNewLanguage(int id)
+    protected final void synchronizeNewList(int id)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
-            intent.putExtra(SyncService.PETITION_KEY, SyncService.ADD_LANGUAGE);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, id);
+            intent.putExtra(SyncService.PETITION_KEY, SyncService.ADD_LIST);
+            intent.putExtra(SyncService.LIST_ID_KEY, id);
             context.startService(intent);
         }
     }
 
-    protected final void synchronizeUpdatedLanguage(int id)
+    protected final void synchronizeUpdatedList(int id)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
-            intent.putExtra(SyncService.PETITION_KEY, SyncService.UPDATE_LANGUAGE);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, id);
+            intent.putExtra(SyncService.PETITION_KEY, SyncService.UPDATE_LIST);
+            intent.putExtra(SyncService.LIST_ID_KEY, id);
             context.startService(intent);
         }
     }
 
-    protected void synchronizeDeleteLanguage(int id)
+    protected void synchronizeDeleteList(int id)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
-            intent.putExtra(SyncService.PETITION_KEY, SyncService.DELETE_LANGUAGE);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, id);
+            intent.putExtra(SyncService.PETITION_KEY, SyncService.DELETE_LIST);
+            intent.putExtra(SyncService.LIST_ID_KEY, id);
             context.startService(intent);
         }
     }
 
-    protected final void synchronizeNewItem(int language_id, int item_id, Wrapper item)
+    protected final void synchronizeNewItem(int list_id, int item_id, Wrapper item)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
             intent.putExtra(SyncService.PETITION_KEY, SyncService.ADD_ITEM);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, language_id);
+            intent.putExtra(SyncService.LIST_ID_KEY, list_id);
             intent.putExtra(SyncService.ITEM_ID_KEY, item_id);
             intent.putExtra(SyncService.ITEM_TYPE_KEY, item.wrapType());
             intent.putExtra(SyncService.ITEM_WRAPPER_KEY, item.wrap());
@@ -82,12 +82,12 @@ public class SyncManager {
         }
     }
 
-    protected final void synchronizeUpdateItem(int language_id, int item_id, Wrapper item)
+    protected final void synchronizeUpdateItem(int list_id, int item_id, Wrapper item)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
             intent.putExtra(SyncService.PETITION_KEY, SyncService.UPDATE_ITEM);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, language_id);
+            intent.putExtra(SyncService.LIST_ID_KEY, list_id);
             intent.putExtra(SyncService.ITEM_ID_KEY, item_id);
             intent.putExtra(SyncService.ITEM_TYPE_KEY, item.wrapType());
             intent.putExtra(SyncService.ITEM_WRAPPER_KEY, item.wrap());
@@ -95,12 +95,12 @@ public class SyncManager {
         }
     }
 
-    protected final void synchronizeDeleteItem(int language_id, int item_id, int type)
+    protected final void synchronizeDeleteItem(int list_id, int item_id, int type)
     {
         if (synchronize) {
             Intent intent = new Intent(context, SyncService.class);
             intent.putExtra(SyncService.PETITION_KEY, SyncService.DELETE_ITEM);
-            intent.putExtra(SyncService.LANGUAGE_ID_KEY, language_id);
+            intent.putExtra(SyncService.LIST_ID_KEY, list_id);
             intent.putExtra(SyncService.ITEM_ID_KEY, item_id);
             intent.putExtra(SyncService.ITEM_TYPE_KEY, type);
             context.startService(intent);

@@ -15,8 +15,7 @@ import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Inflexion;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.view.dialog.AddTranslationDialog;
 import com.delvinglanguages.view.lister.InflexionEditLister;
@@ -31,6 +30,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
     public static final int ACTION_CREATE_FROM_DRAWER = 1;
     public static final int ACTION_MODIFY = 2;
     public static final int ACTION_SEARCH = 3;
+    public static final int ACTION_SEARCH_INVERSE = 4;
 
     private static class EditorData {
 
@@ -45,7 +45,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
 
     private EditorData data;
 
-    private LanguageManager dataManager;
+    private DelvingListManager dataManager;
 
     private EditText in_reference, in_pronunciation;
 
@@ -62,19 +62,19 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
         setContentView(R.layout.a_reference_editor);
 
         data = new EditorData();
-        dataManager = new LanguageManager(this);
+        dataManager = new DelvingListManager(this);
 
         in_reference = (EditText) findViewById(R.id.in_reference);
         in_pronunciation = (EditText) findViewById(R.id.in_pronunciation);
 
-        phonetic_keyboard = new PhoneticKeyboard(this, in_pronunciation, dataManager.getCurrentLanguage().code);
+        phonetic_keyboard = new PhoneticKeyboard(this, in_pronunciation, dataManager.getCurrentList().from_code);
 
         Bundle bundle = getIntent().getExtras();
         data.action = bundle.getInt(AppCode.ACTION);
         switch (data.action) {
             case ACTION_CREATE_FROM_DRAWER:
                 int id = bundle.getInt(AppCode.DRAWER_ID);
-                data.drawerReference = dataManager.getCurrentLanguage().drawer_references.getReferenceById(id);
+                data.drawerReference = dataManager.getCurrentList().drawer_references.getReferenceById(id);
                 data.inflexions = new Inflexions();
 
                 in_reference.setText(data.drawerReference.name);
@@ -86,13 +86,15 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
                 break;
             case ACTION_MODIFY:
                 String ref_name = bundle.getString(AppCode.DREFERENCE_NAME);
-                data.reference = dataManager.getCurrentLanguage().getReference(ref_name);
+                data.reference = dataManager.getCurrentList().getReference(ref_name);
                 data.inflexions = data.reference.getInflexions().clone();
 
                 in_reference.setText(data.reference.name);
                 in_reference.setSelection(data.reference.name.length());
                 in_pronunciation.setText(data.reference.pronunciation);
                 break;
+            case ACTION_SEARCH_INVERSE:
+                ((View) in_pronunciation.getParent()).setVisibility(View.GONE);
             case ACTION_SEARCH:
                 ref_name = bundle.getString(AppCode.DREFERENCE_NAME);
                 in_reference.setText(ref_name);
@@ -113,7 +115,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        inflexionManager = new AddTranslationDialog(this, new ReferenceHandler(this), dataManager.getCurrentLanguage().getSetting(Language.MASK_PHRASAL_VERBS));
+        inflexionManager = new AddTranslationDialog(this, new ReferenceHandler(this), dataManager.getCurrentList().arePhrasalVerbsEnabled());
     }
 
     @Override
@@ -161,11 +163,13 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
                 setResult(AppCode.DREFERENCE_UPDATED);
                 finish();
                 return;
+            case ACTION_SEARCH_INVERSE:
+                dataManager.createReferenceInverse(reference, data.inflexions);
         }
         finish();
 
         Intent intent = new Intent(this, DReferenceActivity.class);
-        intent.putExtra(AppCode.DREFERENCE_NAME, reference);
+        intent.putExtra(data.action != ACTION_SEARCH_INVERSE ? AppCode.DREFERENCE_NAME : AppCode.DREFERENCE_NAME_INVERSE, reference);
         startActivity(intent);
     }
 

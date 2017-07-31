@@ -13,12 +13,12 @@ import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.Main;
 import com.delvinglanguages.data.SyncDatabaseManager;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.DrawerReference;
-import com.delvinglanguages.kernel.Language;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
-import com.delvinglanguages.kernel.theme.Theme;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.kernel.util.Wrapper;
 import com.delvinglanguages.net.utils.SyncWrapper;
@@ -26,7 +26,7 @@ import com.delvinglanguages.net.utils.SyncWrappers;
 import com.delvinglanguages.server.delvingApi.DelvingApi;
 import com.delvinglanguages.server.delvingApi.model.LanguageItem;
 import com.delvinglanguages.server.delvingApi.model.UpdateWrapper;
-import com.delvinglanguages.view.utils.LanguageListener;
+import com.delvinglanguages.view.utils.DelvingListListener;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -36,15 +36,15 @@ import java.io.IOException;
 public class SyncService extends IntentService {
 
     public static final String PETITION_KEY = "petition";
-    public static final String LANGUAGE_ID_KEY = "lang_id";
+    public static final String LIST_ID_KEY = "list_id";
     public static final String ITEM_ID_KEY = "item_id";
     public static final String ITEM_TYPE_KEY = "item_type";
     public static final String ITEM_WRAPPER_KEY = "item_wrapper";
 
     public static final int SYNCHRONIZE = 1;
-    public static final int ADD_LANGUAGE = 2;
-    public static final int UPDATE_LANGUAGE = 3;
-    public static final int DELETE_LANGUAGE = 4;
+    public static final int ADD_LIST = 2;
+    public static final int UPDATE_LIST = 3;
+    public static final int DELETE_LIST = 4;
     public static final int ADD_ITEM = 5;
     public static final int UPDATE_ITEM = 6;
     public static final int DELETE_ITEM = 7;
@@ -101,8 +101,8 @@ public class SyncService extends IntentService {
 
         Bundle extras = intent.getExtras();
         int petition = extras.getInt(PETITION_KEY);
-        int language_id = extras.getInt(LANGUAGE_ID_KEY);
-        LanguageManager dataManager = new LanguageManager(this);
+        int list_id = extras.getInt(LIST_ID_KEY);
+        DelvingListManager dataManager = new DelvingListManager(this);
         AppSettings.printlog("[SS] Connection with the server for " + petition);
         try {
             switch (petition) {
@@ -116,7 +116,7 @@ public class SyncService extends IntentService {
                     boolean changed = downloadChanges(lastSync);
 
                     if (changed)
-                        Main.handler.obtainMessage(LanguageListener.SYNC_DATA_CHANGED).sendToTarget();
+                        Main.handler.obtainMessage(DelvingListListener.SYNC_DATA_CHANGED).sendToTarget();
 
                     // 2. Update last sync time
                     AppSettings.printlog("2. Update last sync time");
@@ -131,28 +131,28 @@ public class SyncService extends IntentService {
 
                     sendBroadcast(new Intent(AppCode.ACTION_SYNC).putExtra(AppCode.ACTION_SYNC, AppCode.SYNC_OK));
                     break;
-                case ADD_LANGUAGE:
+                case ADD_LIST:
 
-                    Language language = dataManager.getLanguages().getLanguageById(language_id);
+                    DelvingList delvingList = dataManager.getDelvingLists().getListById(list_id);
 
                     apiService.updateLanguage(
-                            parseLanguage(language)
+                            parseLanguage(delvingList)
                     ).execute();
                     apiService.updateLanguageItem(
-                            parseItem(language_id, language.statistics.id, Wrapper.TYPE_STATISTICS, language.statistics.wrap())
+                            parseItem(list_id, delvingList.statistics.id, Wrapper.TYPE_STATISTICS, delvingList.statistics.wrap())
                     ).execute();
 
                     break;
-                case UPDATE_LANGUAGE:
+                case UPDATE_LIST:
 
                     apiService.updateLanguage(
-                            parseLanguage(dataManager.getLanguages().getLanguageById(language_id))
+                            parseLanguage(dataManager.getDelvingLists().getListById(list_id))
                     ).execute();
 
                     break;
-                case DELETE_LANGUAGE:
+                case DELETE_LIST:
 
-                    apiService.removeLanguage(language_id).execute();
+                    apiService.removeLanguage(list_id).execute();
 
                     break;
 
@@ -164,7 +164,7 @@ public class SyncService extends IntentService {
                     String wrapper = extras.getString(ITEM_WRAPPER_KEY);
 
                     apiService.updateLanguageItem(
-                            parseItem(language_id, item_id, type, wrapper)
+                            parseItem(list_id, item_id, type, wrapper)
                     ).execute();
 
                     break;
@@ -172,7 +172,7 @@ public class SyncService extends IntentService {
 
                     item_id = extras.getInt(ITEM_ID_KEY);
                     type = extras.getInt(ITEM_TYPE_KEY);
-                    apiService.removeLanguageItem(item_id, language_id, type).execute();
+                    apiService.removeLanguageItem(item_id, list_id, type).execute();
 
                     break;
             }
@@ -195,19 +195,19 @@ public class SyncService extends IntentService {
         if (update.getLanguagesToAdd() != null) {
             changes = true;
             for (com.delvinglanguages.server.delvingApi.model.Language sl : update.getLanguagesToAdd())
-                syncDatabase.insertLanguage(sl.getId(), sl.getCode(), sl.getName(), sl.getSettings());
+                syncDatabase.insertLanguage(sl.getId(), sl.getCode() & 0xFF, sl.getCode() >> 16, sl.getName(), sl.getSettings());
         }
 
         if (update.getLanguagesToUpdate() != null) {
             changes = true;
             for (com.delvinglanguages.server.delvingApi.model.Language sl : update.getLanguagesToUpdate())
-                syncDatabase.updateLanguage(sl.getId(), sl.getCode(), sl.getName(), sl.getSettings());
+                syncDatabase.updateLanguage(sl.getId(), sl.getCode() & 0xFF, sl.getCode() >> 16, sl.getName(), sl.getSettings());
         }
 
         if (update.getLanguagesToRemove() != null) {
             changes = true;
             for (int id : update.getLanguagesToRemove())
-                syncDatabase.deleteLanguage(id);
+                syncDatabase.deleteDelvingList(id);
         }
 
         if (update.getItemsToAdd() != null)
@@ -221,13 +221,13 @@ public class SyncService extends IntentService {
                         DrawerReference dref = DrawerReference.fromWrapper(item.getId(), item.getWrapper());
                         syncDatabase.insertDrawerReference(item.getId(), item.getLanguageId(), dref.name);
                         break;
-                    case Wrapper.TYPE_THEME:
-                        Theme theme = Theme.fromWrapper(item.getId(), item.getWrapper());
-                        syncDatabase.insertTheme(theme.id, item.getLanguageId(), theme.getName(), theme.getPairs());
+                    case Wrapper.TYPE_SUBJECT:
+                        Subject subject = Subject.fromWrapper(item.getId(), item.getWrapper());
+                        syncDatabase.insertSubject(subject.id, item.getLanguageId(), subject.getName(), subject.getPairs());
                         break;
                     case Wrapper.TYPE_TEST:
                         Test test = Test.fromWrapper(item.getId(), item.getWrapper());
-                        syncDatabase.insertTest(test.id, item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.theme_id);
+                        syncDatabase.insertTest(test.id, item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.subject_id);
                         break;
                 }
 
@@ -237,8 +237,8 @@ public class SyncService extends IntentService {
                     case Wrapper.TYPE_REFERENCE:
                         syncDatabase.updateReference(DReference.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
                         break;
-                    case Wrapper.TYPE_THEME:
-                        syncDatabase.updateTheme(Theme.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
+                    case Wrapper.TYPE_SUBJECT:
+                        syncDatabase.updateSubject(Subject.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
                         break;
                     case Wrapper.TYPE_TEST:
                         syncDatabase.updateTest(Test.fromWrapper(item.getId(), item.getWrapper()), item.getLanguageId());
@@ -257,8 +257,8 @@ public class SyncService extends IntentService {
                     case Wrapper.TYPE_DRAWER_REFERENCE:
                         syncDatabase.deleteDrawerReference(item.getLanguageId(), item.getId());
                         break;
-                    case Wrapper.TYPE_THEME:
-                        syncDatabase.deleteTheme(item.getLanguageId(), item.getId());
+                    case Wrapper.TYPE_SUBJECT:
+                        syncDatabase.deleteSubject(item.getLanguageId(), item.getId());
                         break;
                     case Wrapper.TYPE_TEST:
                         syncDatabase.deleteTest(item.getLanguageId(), item.getId());
@@ -277,12 +277,12 @@ public class SyncService extends IntentService {
         //Opening database
         syncDatabase.openReadableDatabase();
 
-        // uploading languages
-        Languages syncLanguages = syncDatabase.readLanguages();
-        if (!syncLanguages.isEmpty()) {
+        // uploading lists
+        DelvingLists syncDelvingLists = syncDatabase.readLists();
+        if (!syncDelvingLists.isEmpty()) {
 
-            for (Language language : syncLanguages)
-                apiService.updateLanguage(parseLanguage(language)).execute();
+            for (DelvingList delvingList : syncDelvingLists)
+                apiService.updateLanguage(parseLanguage(delvingList)).execute();
 
             syncDatabase.syncLanguages();
         }
@@ -291,7 +291,7 @@ public class SyncService extends IntentService {
         if (!syncStatistics.isEmpty()) {
             for (SyncWrapper wrapper : syncStatistics) {
                 apiService.updateLanguageItem(
-                        parseItem(wrapper.language_id, wrapper.id, Wrapper.TYPE_STATISTICS, wrapper.wrapper)
+                        parseItem(wrapper.list_id, wrapper.id, Wrapper.TYPE_STATISTICS, wrapper.wrapper)
                 ).execute();
             }
             syncDatabase.syncStatistics();
@@ -301,7 +301,7 @@ public class SyncService extends IntentService {
         if (!refSWrappers.isEmpty()) {
             for (SyncWrapper wrapper : refSWrappers)
                 apiService.updateLanguageItem(
-                        parseItem(wrapper.language_id, wrapper.id, Wrapper.TYPE_REFERENCE, wrapper.wrapper)
+                        parseItem(wrapper.list_id, wrapper.id, Wrapper.TYPE_REFERENCE, wrapper.wrapper)
                 ).execute();
             syncDatabase.syncReferences();
         }
@@ -310,25 +310,25 @@ public class SyncService extends IntentService {
         if (!drefSWrappers.isEmpty()) {
             for (SyncWrapper wrapper : drefSWrappers)
                 apiService.updateLanguageItem(
-                        parseItem(wrapper.language_id, wrapper.id, Wrapper.TYPE_DRAWER_REFERENCE, wrapper.wrapper)
+                        parseItem(wrapper.list_id, wrapper.id, Wrapper.TYPE_DRAWER_REFERENCE, wrapper.wrapper)
                 ).execute();
             syncDatabase.syncDrawerReferences();
         }
 
-        SyncWrappers themeSWrappers = syncDatabase.readThemes();
-        if (!themeSWrappers.isEmpty()) {
-            for (SyncWrapper wrapper : themeSWrappers)
+        SyncWrappers subjectSWrappers = syncDatabase.readSubjects();
+        if (!subjectSWrappers.isEmpty()) {
+            for (SyncWrapper wrapper : subjectSWrappers)
                 apiService.updateLanguageItem(
-                        parseItem(wrapper.language_id, wrapper.id, Wrapper.TYPE_THEME, wrapper.wrapper)
+                        parseItem(wrapper.list_id, wrapper.id, Wrapper.TYPE_SUBJECT, wrapper.wrapper)
                 ).execute();
-            syncDatabase.syncThemes();
+            syncDatabase.syncSubjects();
         }
 
         SyncWrappers testSWrappers = syncDatabase.readTests();
         if (!testSWrappers.isEmpty()) {
             for (SyncWrapper wrapper : testSWrappers)
                 apiService.updateLanguageItem(
-                        parseItem(wrapper.language_id, wrapper.id, Wrapper.TYPE_TEST, wrapper.wrapper)
+                        parseItem(wrapper.list_id, wrapper.id, Wrapper.TYPE_TEST, wrapper.wrapper)
                 ).execute();
             syncDatabase.syncTests();
         }
@@ -337,11 +337,11 @@ public class SyncService extends IntentService {
         if (!removes.isEmpty()) {
             for (SyncWrapper removedItem : removes) {
                 if (removedItem.wrap_type == Wrapper.TYPE_LANGUAGE)
-                    apiService.removeLanguage(removedItem.language_id).execute();
+                    apiService.removeLanguage(removedItem.list_id).execute();
 
                 else
                     apiService.removeLanguageItem(
-                            removedItem.id, removedItem.language_id, removedItem.wrap_type
+                            removedItem.id, removedItem.list_id, removedItem.wrap_type
                     ).execute();
 
             }
@@ -351,30 +351,30 @@ public class SyncService extends IntentService {
         syncDatabase.closeReadableDatabase();
     }
 
-    private LanguageItem parseItem(int language_id, int id, int type, String wrapper)
+    private LanguageItem parseItem(int list_id, int id, int type, String wrapper)
     {
         return new LanguageItem()
-                .setLanguageId(language_id)
+                .setLanguageId(list_id)
                 .setId(id)
                 .setType(type)
                 .setWrapper(wrapper);
     }
 
-    private com.delvinglanguages.server.delvingApi.model.Language parseLanguage(Language l)
+    private com.delvinglanguages.server.delvingApi.model.Language parseLanguage(DelvingList l)
     {
         return new com.delvinglanguages.server.delvingApi.model.Language()
                 .setId(l.id)
-                .setCode(l.code)
+                .setCode(l.getCodes())
                 .setSettings(l.settings)
-                .setName(l.language_name)
-                .setIsPublic(l.getSetting(Language.MASK_PUBLIC));
+                .setName(l.name)
+                .setIsPublic(l.isPublic());
     }
 
     private void saveSynchronize(Intent intent)
     {
         Bundle extras = intent.getExtras();
         int petition = extras.getInt(PETITION_KEY);
-        int language_id = extras.getInt(LANGUAGE_ID_KEY);
+        int list_id = extras.getInt(LIST_ID_KEY);
 
         switch (petition) {
             case SYNCHRONIZE:
@@ -382,10 +382,10 @@ public class SyncService extends IntentService {
                 sendBroadcast(new Intent(AppCode.ACTION_SYNC).putExtra(AppCode.ACTION_SYNC, AppCode.SYNC_NO_INTERNET));
 
                 break;
-            case DELETE_LANGUAGE:
+            case DELETE_LIST:
 
                 syncDatabase.openWritableDatabase();
-                syncDatabase.insertSyncItem(language_id, language_id, Wrapper.TYPE_LANGUAGE);
+                syncDatabase.insertSyncItem(list_id, list_id, Wrapper.TYPE_LANGUAGE);
                 syncDatabase.closeWritableDatabase();
 
                 break;
@@ -394,7 +394,7 @@ public class SyncService extends IntentService {
                 int item_id = extras.getInt(ITEM_ID_KEY);
                 int type = extras.getInt(ITEM_TYPE_KEY);
                 syncDatabase.openWritableDatabase();
-                syncDatabase.insertSyncItem(item_id, language_id, type);
+                syncDatabase.insertSyncItem(item_id, list_id, type);
                 syncDatabase.closeWritableDatabase();
 
                 break;

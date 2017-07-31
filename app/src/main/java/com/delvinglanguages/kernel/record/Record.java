@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 
 public abstract class Record implements Comparable<Record> {
 
-    public static final int LANGUAGE_CREATED = 9000;
-    public static final int LANGUAGE_REMOVED = 9001;
-    public static final int LANGUAGE_INTEGRATED = 9002;
-    public static final int LANGUAGE_CODE_CHANGED = 9003;
-    public static final int LANGUAGE_NAME_CHANGED = 9004;
-    public static final int LANGUAGE_PHRASAL_STATE_CHANGED = 9005;
-    public static final int LANGUAGE_STATISTICS_CLEARED = 9006;
+    public static final int LIST_CREATED = 9000;
+    public static final int LIST_REMOVED = 9001;
+    public static final int LIST_INTEGRATED = 9002;
+    public static final int LIST_CODES_CHANGED = 9003;
+    public static final int LIST_NAME_CHANGED = 9004;
+    public static final int LIST_PHRASAL_STATE_CHANGED = 9005;
+    public static final int LIST_STATISTICS_CLEARED = 9006;
 
     public static final int DRAWERWORD_ADDED = 9010;
     public static final int DRAWERWORD_DELETED = 9011;
@@ -20,10 +20,10 @@ public abstract class Record implements Comparable<Record> {
     public static final int REFERENCE_REMOVED = 9022;
     public static final int REFERENCE_RECOVERED = 9023;
 
-    public static final int THEME_CREATED = 9030;
-    public static final int THEME_MODIFIED = 9031;
-    public static final int THEME_REMOVED = 9032;
-    public static final int THEME_RECOVERED = 9033;
+    public static final int SUBJECT_CREATED = 9030;
+    public static final int SUBJECT_MODIFIED = 9031;
+    public static final int SUBJECT_REMOVED = 9032;
+    public static final int SUBJECT_RECOVERED = 9033;
 
     public static final int TEST_CREATED = 9040;
     public static final int TEST_DONE = 9041;
@@ -37,7 +37,6 @@ public abstract class Record implements Comparable<Record> {
 
     public static final int RECYCLE_BIN_CLEARED = 9060;
 
-    public static final int APPSET_LANGUAGE_CHANGED = 9070;
     public static final int APPSET_KBVIBRATION_STATE_CHANGED = 9071;
     public static final int APPSET_THEME_CHANGED = 9072;
     public static final int APPSET_ONLINE_BACKUP_STATE_CHANGED = 9073;

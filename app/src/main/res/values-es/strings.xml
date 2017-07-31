@@ -47,7 +47,7 @@
     <string name="dictionary">Diccionario</string>
     <string name="drawer">Borrador</string>
     <string name="more">Más</string>
-    <string name="themes">Temas</string>
+    <string name="subjects">Temas</string>
     <string name="pronunciation">Pronunciación</string>
     <string name="recycle_bin">Papelera</string>
     <string name="language_settings">Opciones del idioma</string>
@@ -71,6 +71,8 @@
     <string name="import_from_file">Importa desde archivo</string>
     <string name="synchronize_your_account">Sincroniza tu cuenta</string>
     <string name="how_do_we_start">¿Cómo empezamos?</string>
+    <string name="add_one_now">Añade una ahora</string>
+    <string name="create_one_now">Crea uno ahora</string>
 
 
     <!-- * ******************** Buttons **************************** * -->
@@ -94,18 +96,19 @@
     <string name="no">No</string>
     <string name="yes">Sí</string>
     <string name="add_word">Añade palabra</string>
-    <string name="add_theme">Añade tema</string>
+    <string name="add_subject">Añade tema</string>
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
     <string name="start">Empezar</string>
     <string name="add_to_drawer">Añadir al borrador</string>
     <string name="enabled">habilitado</string>
     <string name="disabled">desabilitado</string>
+    <string name="ok">Vale</string>
 
 
     <!-- * ******************** Hints **************************** * -->
     <string name="hint_enter_language">Inserta el nombre del idioma</string>
-    <string name="hint_enter_theme_name">Nombre del tema</string>
+    <string name="hint_enter_subject_name">Nombre del tema</string>
     <string name="hint_search">Busca</string>
     <string name="hint_enter_drawer">Inserta una palabra</string>
     <string name="hint_enter_backup_name">Inserta el nombre del archivo</string>
@@ -131,7 +134,7 @@
     <string name="msg_found_languages">Se encontró %1$d idioma(s)</string>
     <string name="msg_n_references">%1$d palabras</string>
     <string name="msg_n_drawerreferences">%1$d palabras en borrador</string>
-    <string name="msg_n_themes">%1$d temas</string>
+    <string name="msg_n_subjects">%1$d temas</string>
     <string name="msg_n_tests">%1$d tests</string>
     <string name="msg_import_finished">Se importó satisfactoriamente</string>
     <string name="msg_export_finished">Se exportó satisfactoriamente</string>
@@ -146,8 +149,8 @@
     <string name="msg_confirm_to_remove">Confirma para eliminar</string>
     <string name="msg_go_back_without_saving">Salir sin guardar cambios</string>
     <string name="msg_go_out_from_test">Salir sin acabar el test</string>
-    <string name="msg_missing_theme_name">Falta nombre del tema</string>
-    <string name="msg_missing_theme_content">Falta contenido del tema</string>
+    <string name="msg_missing_subject_name">Falta nombre del tema</string>
+    <string name="msg_missing_subject_content">Falta contenido del tema</string>
     <string name="msg_missing_content">Falta contenido</string>
     <string name="msg_notifier_tts">Tu dispositivo no tiene los recursos para pronunciar %1$s. Intenta descargarlo en Configuración o descarga una aplicación TTS de la Google Play.</string>
     <string name="msg_missing_test_name">Falta nombre del test</string>
@@ -186,12 +189,21 @@
     <string name="msg_impossible_to_add_search">No se puede añadir así, cambia la dirección de la traducción</string>
     <string name="msg_no_results_found_for">No se han encontrado resultados para <em>%1$s</em>.</string>
     <string name="msg_added_to_drawer">%1$s añadido al borrador</string>
+    <string name="msg_no_content_dictionary">Diccionario vacío</string>
+    <string name="msg_no_content_drawer">Borrador vacío</string>
+    <string name="msg_no_content_subjects">No hay temas</string>
+    <string name="msg_no_content_entries">No hay entradas</string>
+    <string name="msg_no_content_recycle_bin">Papelera vacía</string>
+    <string name="msg_no_content_records">Historial vacío</string>
+    <string name="msg_no_language_to_merge_with">No hay ninguna lista con la que integrar</string>
+    <string name="msg_error_backup">Se ha producido un error. Prueba a reinicializar la app</string>
+    <string name="msg_language_cant_be_same">Los idiomas no pueden ser iguales</string>
     <string name="msg_in_next_releases">Disponible en próximas actualizaciones</string>
 
 
     <!-- * *************** Activities and fragment's titles ********************* * -->
     <string name="title_drawer_fragment">Borrador %1$s</string>
-    <string name="title_themes_fragment">Temas %1$s</string>
+    <string name="title_subjects_fragment">Temas %1$s</string>
     <string name="title_pronunciation_fragment">Pronunciación %1$s</string>
     <string name="title_practise_fragment">Practica %1$s</string>
     <string name="title_activity_practisetest">Tests %1$s</string>
@@ -202,10 +214,8 @@
 
     <!-- * ********************** App Settings strings ************************* * -->
     <string name="pref_title_general">General</string>
-    <string name="pref_title_customization">Personalización</string>
     <string name="pref_title_data">Datos</string>
 
-    <string name="pref_app_language">Tu idioma</string>
     <string name="pref_phonetic_keyboard_vibration">Vibración del teclado fonético</string>
     <string name="pref_app_theme">Estilo de la app</string>
     <string name="pref_backup_n_synchronization">Copia de seguridad online</string>
@@ -213,15 +223,17 @@
     <string name="pref_export_data">Exportar datos</string>
 
 
-    <!-- * ********************** Language Settings strings ************************* * -->
+    <!-- * ********************** DelvingList Settings strings ************************* * -->
     <string name="pref_title_options">Opciones</string>
 
-    <string name="pref_language_code">Idioma</string>
-    <string name="pref_language_name">Nombre del idioma</string>
-    <string name="pref_language_phrasalverbs">Verbos frasales</string>
-    <string name="pref_language_merge">Fusionar</string>
-    <string name="pref_language_remove">Eliminar</string>
-    <string name="pref_language_reset_statistics">Restaurar estadísticas</string>
+    <string name="pref_list_language_from_code">De</string>
+    <string name="pref_list_language_to_code">A</string>
+    <string name="pref_list_name">Nombre del idioma</string>
+    <string name="pref_list_phrasal_verbs">Verbos frasales</string>
+    <string name="pref_list_public">Público</string>
+    <string name="pref_list_merge">Fusionar</string>
+    <string name="pref_list_remove">Eliminar</string>
+    <string name="pref_list_reset_statistics">Restaurar estadísticas</string>
 
 
     <!-- * ********************** Record strings ************************* * -->
@@ -231,7 +243,7 @@
     <string name="h_list_deleted">Lista eliminada</string>
     <string name="h_list_integrated">Lista integrada</string>
     <string name="h_list_integrated_in">%1$s en %2$s</string>
-    <string name="h_list_code_changed">Su idioma ahora es %1$s</string>
+    <string name="h_list_code_changed">Cambiado de %1$s a %2$s</string>
     <string name="h_list_name_changed">%1$s renombrado a %2$s</string>
     <string name="h_list_stats_cleared">Estadísticas reseteadas</string>
     <string name="h_recycle_bin_cleared">Papalera vaciada</string>
@@ -241,10 +253,10 @@
     <string name="h_reference_modified">%1$d palabra(s) modificada(s)</string>
     <string name="h_reference_removed">%1$d palabra(s) eliminada(s)</string>
     <string name="h_reference_recovered">%1$d palabra(s) restaurada(s) desde la papelera</string>
-    <string name="h_theme_added">%1$d tema(s) creado(s)</string>
-    <string name="h_theme_modified">%1$d tema(s) modificado(s)</string>
-    <string name="h_theme_removed">%1$d tema(s) eliminado(s)</string>
-    <string name="h_theme_recovered">%1$d tema(s) restaurado(s) desde de la papelera</string>
+    <string name="h_subject_added">%1$d tema(s) creado(s)</string>
+    <string name="h_subject_modified">%1$d tema(s) modificado(s)</string>
+    <string name="h_subject_removed">%1$d tema(s) eliminado(s)</string>
+    <string name="h_subject_recovered">%1$d tema(s) restaurado(s) desde de la papelera</string>
     <string name="h_test_added">%1$d test(s) creado(s)</string>
     <string name="h_test_done">%1$d test(s) hecho(s)</string>
     <string name="h_test_removed">%1$d test(s) eliminado(s</string>
@@ -253,8 +265,7 @@
     <string name="h_practised_complete">%1$d palabra(s) praticada(s) en Completa</string>
     <string name="h_practised_write">%1$d palabra(s) praticada(s) en Escribe</string>
     <string name="h_practised_listening">%1$d palabra(s) praticada(s) en Escucha</string>
-    <string name="h_app_lang_changed">Tu idioma ha sido cambiado a %1$s</string>
-    <string name="h_app_theme_changed">El tema de la App ha sido cambiado a %1$s</string>
+    <string name="h_app_theme_changed">El estilo de la App ha sido cambiado a %1$s</string>
     <string name="h_import">%1$d lista(s) importada(s) desde un archivo</string>
     <string name="h_export">%1$d lista(s) exportada(s) a un archivo</string>
 

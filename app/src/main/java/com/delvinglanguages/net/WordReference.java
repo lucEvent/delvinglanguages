@@ -92,10 +92,10 @@ public class WordReference extends OnlineDictionary {
         @Override
         public void run()
         {
-            AppSettings.printlog(header + search.searchTerm);
+            String url = header + search.searchTerm.replace(" ", "%20");
+            AppSettings.printlog(url);
 
-
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(header + search.searchTerm).openStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
 
                 //Page content reading
                 StringBuilder content = new StringBuilder();
@@ -176,6 +176,7 @@ public class WordReference extends OnlineDictionary {
                 case "n":
                 case "nf":
                 case "nm":
+                case "nmf":
                 case "nfpl":
                 case "nmpl":
                 case "loc nom":
@@ -185,6 +186,7 @@ public class WordReference extends OnlineDictionary {
                 case "n inv m/f":
                 case "n común":
                 case "npl":
+                case "n común inv":
                     type = 0;
                     break;
                 case "vtr":
@@ -211,6 +213,7 @@ public class WordReference extends OnlineDictionary {
                     type = 3;
                     break;
                 case "vtr phrasal sep":
+                case "vi phrasal":
                     type = 4;
                     break;
                 case "loc verb":
@@ -231,6 +234,7 @@ public class WordReference extends OnlineDictionary {
                 case "pron":
                 case "prefijo":
                 case "loc prnl":
+                case "abr":
                     type = 8;
                     break;
                 default:

@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
 
-import com.delvinglanguages.kernel.LanguageCode;
-
 public class AppSettings {
 
     public static final boolean DEBUG = false;
@@ -23,20 +21,18 @@ public class AppSettings {
     /**
      * ************** Default values *********************
      **/
-    private static final String DEFAULT_APP_LANGUAGE_CODE = Integer.toString(LanguageCode.ENGLISH);
     private static final boolean DEFAULT_PHONKB_VIBRATION = true;
     private static final String DEFAULT_APP_THEME = "0";
     private static final boolean DEFAULT_ONLINE_BACKUP = false;
-    private static final int DEFAULT_CURRENT_LANGUAGE = -1;
+    private static final int DEFAULT_CURRENT_LIST = -1;
 
     /**
      * Settings string keys
      */
-    public static String APP_LANGUAGE_CODE_KEY;
     public static String PHONKB_VIBRATION_KEY;
     public static String APP_THEME_KEY;
     public static String ONLINE_BACKUP;
-    public static String CURRENT_LANGUAGE_KEY;
+    public static String CURRENT_LIST_KEY;
     private static String LAST_SYNCHRONIZATION = "pref20";
 
     private static SharedPreferences preferences;
@@ -48,10 +44,9 @@ public class AppSettings {
     {
         if (preferences == null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            APP_LANGUAGE_CODE_KEY = context.getString(R.string.pref_app_language_key);
             PHONKB_VIBRATION_KEY = context.getString(R.string.pref_phonetic_keyboard_vibration_key);
             APP_THEME_KEY = context.getString(R.string.pref_app_theme_key);
-            CURRENT_LANGUAGE_KEY = context.getString(R.string.pref_current_language_key);
+            CURRENT_LIST_KEY = context.getString(R.string.pref_current_list_key);
             ONLINE_BACKUP = context.getString(R.string.pref_backup_n_synchronization_key);
         }
         if (colors == null) {
@@ -59,26 +54,20 @@ public class AppSettings {
         }
     }
 
-    public static int getAppLanguageCode()
-    {
-        String scode = preferences.getString(APP_LANGUAGE_CODE_KEY, DEFAULT_APP_LANGUAGE_CODE);
-        return Integer.parseInt(scode);
-    }
-
     public static boolean isPhoneticKBVibrationEnabled()
     {
         return preferences.getBoolean(PHONKB_VIBRATION_KEY, DEFAULT_PHONKB_VIBRATION);
     }
 
-    public static int getCurrentLanguage()
+    public static int getCurrentList()
     {
-        return preferences.getInt(CURRENT_LANGUAGE_KEY, DEFAULT_CURRENT_LANGUAGE);
+        return preferences.getInt(CURRENT_LIST_KEY, DEFAULT_CURRENT_LIST);
     }
 
-    public static void setCurrentLanguage(int id)
+    public static void setCurrentList(int id)
     {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(CURRENT_LANGUAGE_KEY, id);
+        editor.putInt(CURRENT_LIST_KEY, id);
         editor.apply();
     }
 
@@ -130,11 +119,6 @@ public class AppSettings {
             if (e != null)
                 e.printStackTrace();
         }
-    }
-
-    public static String getAppLanguageName()
-    {
-        return AppData.getLanguageName(getAppLanguageCode());
     }
 
 }

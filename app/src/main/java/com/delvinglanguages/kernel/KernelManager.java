@@ -4,14 +4,14 @@ import android.content.Context;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.DatabaseManager;
-import com.delvinglanguages.kernel.util.Languages;
+import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.net.SyncManager;
 
 public class KernelManager extends SyncManager {
 
     protected static DatabaseManager dbManager;
 
-    protected static Languages languages;
+    protected static DelvingLists lists;
 
     public KernelManager(Context context)
     {
@@ -20,98 +20,106 @@ public class KernelManager extends SyncManager {
         if (dbManager == null)
             dbManager = new DatabaseManager(context);
 
-        if (languages == null)
-            languages = dbManager.readLanguages();
+        if (lists == null)
+            lists = dbManager.readLists();
     }
 
-    public Languages getLanguages()
+    public DelvingLists getDelvingLists()
     {
-        return languages;
+        return lists;
     }
 
-    public int getNumberOfLanguages()
+    public int getNumberOfLists()
     {
-        return languages.size();
+        return lists.size();
     }
 
-    public Language getCurrentLanguage()
+    public DelvingList getCurrentList()
     {
-        int lang_id = AppSettings.getCurrentLanguage();
-        if (lang_id == -1) return null;
-        else return languages.getLanguageById(lang_id);
+        int list_id = AppSettings.getCurrentList();
+        if (list_id == -1) return null;
+        else return lists.getListById(list_id);
     }
 
-    protected synchronized void loadContentOf(Language language)
+    protected synchronized void loadContentOf(DelvingList delvingList)
     {
-        if (language.dictionary == null)
-            language.setReferences(dbManager.readReferences(language.id));
+        if (delvingList.dictionary == null)
+            delvingList.setReferences(dbManager.readReferences(delvingList.id));
 
-        if (language.drawer_references == null)
-            language.setDrawerReferences(dbManager.readDrawerReferences(language.id));
+        if (delvingList.drawer_references == null)
+            delvingList.setDrawerReferences(dbManager.readDrawerReferences(delvingList.id));
 
-        if (language.tests == null)
-            language.setTests(dbManager.readTests(language.id));
+        if (delvingList.tests == null)
+            delvingList.setTests(dbManager.readTests(delvingList.id));
 
-        if (language.themes == null)
-            language.setThemes(dbManager.readThemes(language.id));
+        if (delvingList.subjects == null)
+            delvingList.setSubjects(dbManager.readSubjects(delvingList.id));
     }
 
-    public Language createLanguage(int code, String name, int settings)
+    public DelvingList createDelvingList(int from_code, int to_code, String name, int settings)
     {
-        Language new_language = dbManager.insertLanguage(code, name, settings);
-        languages.add(new_language);
-        synchronizeNewLanguage(new_language.id);
-        RecordManager.languageCreated(new_language.id, code);
-        return new_language;
+        DelvingList new_list = dbManager.insertDelvingList(from_code, to_code, name, settings);
+        lists.add(new_list);
+        synchronizeNewList(new_list.id);
+        RecordManager.listCreated(new_list.id, from_code);
+        return new_list;
     }
 
-    public void updateLanguageName(String new_name)
+    public void updateListName(String new_name)
     {
-        Language language = getCurrentLanguage();
+        DelvingList list = getCurrentList();
 
-        RecordManager.languageNameChanged(language.id, language.code, language.language_name, new_name);
+        RecordManager.listNameChanged(list.id, list.from_code, list.name, new_name);
 
-        language.setName(new_name);
+        list.setName(new_name);
 
-        dbManager.updateLanguage(language);
-        synchronizeUpdatedLanguage(language.id);
-
+        dbManager.updateDelvingList(list);
+        synchronizeUpdatedList(list.id);
     }
 
-    public void updateLanguageCode(int code)
+    public void updateListLanguageFromCode(int from_code)
     {
-        Language language = getCurrentLanguage();
-        language.setCode(code);
+        DelvingList list = getCurrentList();
+        list.setFromCode(from_code);
 
-        dbManager.updateLanguage(language);
-        synchronizeUpdatedLanguage(language.id);
-        RecordManager.languageCodeChanged(language.id, language.code);
+        dbManager.updateDelvingList(list);
+        synchronizeUpdatedList(list.id);
+        RecordManager.listLanguageCodesChanged(list.id, from_code, list.to_code);
     }
 
-    public void updateLanguageSettings(boolean state, int mask)
+    public void updateListLanguageToCode(int to_code)
     {
-        Language language = getCurrentLanguage();
-        language.setSetting(state, mask);
+        DelvingList list = getCurrentList();
+        list.setToCode(to_code);
 
-        if (mask == Language.MASK_PHRASAL_VERBS)
-            RecordManager.languagePhVStateChanged(language.id, language.code, state);
-
-        dbManager.updateLanguage(language);
-        synchronizeUpdatedLanguage(language.id);
+        dbManager.updateDelvingList(list);
+        synchronizeUpdatedList(list.id);
+        RecordManager.listLanguageCodesChanged(list.id, list.from_code, to_code);
     }
 
-    public void deleteLanguage()
+    public void phrasalVerbsStateChanged(boolean state)
     {
-        Language language = getCurrentLanguage();
-        dbManager.deleteLanguage(language);
-        languages.remove(language);
-        synchronizeDeleteLanguage(language.id);
-        RecordManager.languageDeleted(language.id, language.code, language.language_name);
+        DelvingList list = getCurrentList();
+        list.setPhrasalVerbsState(state);
+
+        RecordManager.listPhVStateChanged(list.id, list.from_code, state);
+
+        dbManager.updateDelvingList(list);
+        synchronizeUpdatedList(list.id);
+    }
+
+    public void deleteCurrentList()
+    {
+        DelvingList list = getCurrentList();
+        dbManager.deleteDelvingList(list);
+        lists.remove(list);
+        synchronizeDeleteList(list.id);
+        RecordManager.listDeleted(list.id, list.from_code, list.name);
     }
 
     public void invalidateData()
     {
-        languages = dbManager.readLanguages();
+        lists = dbManager.readLists();
     }
 
 }

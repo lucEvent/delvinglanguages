@@ -17,18 +17,20 @@ import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.LanguageManager;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.view.activity.ReferenceEditorActivity;
 import com.delvinglanguages.view.lister.DrawerLister;
 import com.delvinglanguages.view.utils.ListItemSwipeCallback;
 import com.delvinglanguages.view.utils.ListItemSwipeListener;
+import com.delvinglanguages.view.utils.NoContentViewHelper;
 
 public class DrawerFragment extends Fragment implements TextView.OnEditorActionListener, ListItemSwipeListener {
 
     private EditText input;
     private DrawerLister adapter;
+    private NoContentViewHelper noContentViewHelper;
 
-    private LanguageManager dataManager;
+    private DelvingListManager dataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -36,7 +38,7 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
         Context context = getActivity();
         View view = inflater.inflate(R.layout.f_drawer, container, false);
 
-        dataManager = new LanguageManager(context);
+        dataManager = new DelvingListManager(context);
 
         adapter = new DrawerLister(context, dataManager.getDrawerReferences(), onItemClick);
 
@@ -55,6 +57,8 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
         input = (EditText) view.findViewById(R.id.input);
         input.setOnEditorActionListener(this);
 
+        noContentViewHelper = new NoContentViewHelper(view.findViewById(R.id.no_content), R.string.msg_no_content_drawer);
+
         return view;
     }
 
@@ -63,6 +67,12 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
     {
         super.onResume();
         adapter.notifyDataSetChanged();
+
+        if (adapter.getItemCount() > 0)
+            noContentViewHelper.hide();
+        else
+            noContentViewHelper.displayMessage();
+
     }
 
     private View.OnClickListener onItemClick = new View.OnClickListener() {
@@ -87,6 +97,9 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
                 String message = String.format(getString(R.string.msg_word_exists), in);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             } else {
+                if (adapter.getItemCount() == 0)
+                    noContentViewHelper.hide();
+
                 dataManager.createDrawerReference(in);
                 adapter.notifyDataSetChanged();
                 input.setText("");
@@ -100,6 +113,9 @@ public class DrawerFragment extends Fragment implements TextView.OnEditorActionL
     {
         dataManager.deleteDrawerReference(dataManager.getDrawerReferences().get(position));
         adapter.notifyItemRemoved(position);
+
+        if (adapter.getItemCount() == 0)
+            noContentViewHelper.displayMessage();
     }
 
     @Override
