@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.data.DatabaseManager;
+import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.util.DelvingLists;
+import com.delvinglanguages.kernel.util.Usages;
 import com.delvinglanguages.net.SyncManager;
 
 public class KernelManager extends SyncManager {
@@ -52,8 +54,16 @@ public class KernelManager extends SyncManager {
         if (delvingList.tests == null)
             delvingList.setTests(dbManager.readTests(delvingList.id));
 
-        if (delvingList.subjects == null)
+        if (delvingList.subjects == null) {
             delvingList.setSubjects(dbManager.readSubjects(delvingList.id));
+            for (Subject s : delvingList.subjects)
+                s.setReferences(dbManager.readReferences(delvingList.id, s.getReferencesIds()));
+        }
+    }
+
+    public Usages getUsages(DReference reference)
+    {
+        return dbManager.readUsages(getCurrentList().id, reference.id,new Usages(reference.getTranslations()));
     }
 
     public DelvingList createDelvingList(int from_code, int to_code, String name, int settings)

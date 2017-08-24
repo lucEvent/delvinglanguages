@@ -12,9 +12,10 @@ import com.delvinglanguages.kernel.util.Item;
 import com.delvinglanguages.view.lister.viewholder.ReferenceViewHolder;
 import com.delvinglanguages.view.utils.ItemListRVAdapter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ReferenceLister extends SearchableLister<Item> {
 
     protected final ItemListRVAdapter dataSet;
     protected boolean phv_enabled;
@@ -41,7 +42,7 @@ public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        ReferenceViewHolder.populateViewHolder((ReferenceViewHolder) holder, (DReference) dataSet.get(position), phv_enabled);
+        ((ReferenceViewHolder) holder).bind((DReference) dataSet.get(position), phv_enabled);
     }
 
     @Override
@@ -55,6 +56,7 @@ public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.phv_enabled = enabled;
     }
 
+    @Override
     public final void addItem(Item item)
     {
         synchronized (this.dataSet) {
@@ -62,13 +64,45 @@ public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public final void setNewDataSet(Collection<Item> newDataSet)
+    @Override
+    public final void updateItem(Item item)
     {
         synchronized (this.dataSet) {
-            dataSet.clear();
-            dataSet.addAll(newDataSet);
+            int position = dataSet.indexOf(item);
+            dataSet.updateItemAt(position, item);
         }
     }
+
+    @Override
+    public final void removeItem(Item item)
+    {
+        synchronized (this.dataSet) {
+            dataSet.remove(item);
+        }
+    }
+
+    @Override
+    public void replaceAll(ArrayList<? extends Item> newItems)
+    {
+        synchronized (this.dataSet) {
+            dataSet.beginBatchedUpdates();
+            for (int i = dataSet.size() - 1; i >= 0; i--) {
+                final Item item = dataSet.get(i);
+                if (!newItems.contains(item))
+                    dataSet.remove(item);
+            }
+            dataSet.addAll((Collection<Item>) newItems);
+            dataSet.endBatchedUpdates();
+        }
+    }
+
+    public final void removeItem(int position)
+    {
+        synchronized (this.dataSet) {
+            dataSet.removeItemAt(position);
+        }
+    }
+
 
     public final void clear()
     {
@@ -77,6 +111,7 @@ public class ReferenceLister extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    @Override
     public final boolean isEmpty()
     {
         return dataSet.size() == 0;

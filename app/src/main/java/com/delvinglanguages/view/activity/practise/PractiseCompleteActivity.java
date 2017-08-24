@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.game.CompleteGame;
 import com.delvinglanguages.kernel.record.Record;
+import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseCompleteActivity extends Activity {
@@ -46,7 +48,20 @@ public class PractiseCompleteActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         dataManager = new DelvingListManager(this);
-        gameManager = new CompleteGame(dataManager.getReferences());
+        // Select proper references
+        DReferences references;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(AppCode.DREFERENCE_NAME_NUM)) {
+            int num = extras.getInt(AppCode.DREFERENCE_NAME_NUM);
+            references = new DReferences(num);
+
+            for (int i = 0; i < num; i++)
+                references.add(dataManager.getReference(extras.getString(AppCode.DREFERENCE_NAME + i)));
+
+        } else
+            references = dataManager.getReferences();
+        //
+        gameManager = new CompleteGame(references);
 
         handler = new Handler();
 

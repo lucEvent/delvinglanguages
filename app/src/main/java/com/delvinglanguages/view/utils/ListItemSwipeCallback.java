@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 public class ListItemSwipeCallback extends ItemTouchHelper.Callback {
 
-    private final ListItemSwipeListener mAdapter;
-    private TextView swipeView;
+    private final ListItemSwipeListener listener;
+    private final TextView swipeView;
 
-    public ListItemSwipeCallback(ListItemSwipeListener adapter, TextView swipeView)
+    public ListItemSwipeCallback(ListItemSwipeListener listener, TextView swipeView)
     {
-        mAdapter = adapter;
+        this.listener = listener;
         this.swipeView = swipeView;
     }
 
@@ -35,7 +35,7 @@ public class ListItemSwipeCallback extends ItemTouchHelper.Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
     {
         swipeView.setVisibility(View.GONE);
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+        listener.onItemDismiss(viewHolder.getAdapterPosition());
     }
 
     @Override
@@ -55,8 +55,8 @@ public class ListItemSwipeCallback extends ItemTouchHelper.Callback {
     {
         View itemView = viewHolder.itemView;
 
-        if (dX != 0 && Math.abs(dX) != itemView.getWidth()) {
-            swipeView.setY(itemView.getTop());
+        if (dX != 0 && Math.abs(dX) != recyclerView.getWidth()) {
+            swipeView.setY(itemView.getTop() + ((View) itemView.getParent()).getTop());
 
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) swipeView.getLayoutParams();
             if (dX >= 0) {

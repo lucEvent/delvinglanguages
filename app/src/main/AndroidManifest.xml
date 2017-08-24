@@ -135,6 +135,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.activity.DelvingListActivity"/>
         </activity>
+        <activity
+            android:name=".view.activity.PhrasalVerbsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Main"/>
+        </activity>
+        <activity
+            android:name=".view.activity.UsagesEditorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.DReferenceActivity"/>
+        </activity>
+        <activity
+            android:name=".view.activity.ReferenceSelectorActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
             android:name=".net.SyncService"

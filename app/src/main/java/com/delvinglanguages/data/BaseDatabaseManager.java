@@ -12,15 +12,18 @@ import com.delvinglanguages.data.Database.DBRemovedItem;
 import com.delvinglanguages.data.Database.DBStatistics;
 import com.delvinglanguages.data.Database.DBSubject;
 import com.delvinglanguages.data.Database.DBTest;
+import com.delvinglanguages.data.Database.DBUsage;
+import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.Usage;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Tests;
+import com.delvinglanguages.kernel.util.Usages;
 import com.delvinglanguages.kernel.util.Wrapper;
 
 import java.util.Random;
@@ -46,7 +49,7 @@ public abstract class BaseDatabaseManager {
 
     protected ContentValues values;
 
-    public BaseDatabaseManager(Context context)
+    BaseDatabaseManager(Context context)
     {
         scheme = new Database(context);
         values = new ContentValues();
@@ -55,9 +58,10 @@ public abstract class BaseDatabaseManager {
     /**
      * *********** Only Readable DB ***************
      **/
-    public void openReadableDatabase()
+    public SQLiteDatabase openReadableDatabase()
     {
         db = scheme.getReadableDatabase();
+        return db;
     }
 
     public void closeReadableDatabase()
@@ -82,7 +86,7 @@ public abstract class BaseDatabaseManager {
     /////////////////////// Reads \\\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
-    public DelvingLists readLists()
+    protected DelvingLists readLists()
     {
         DelvingLists result = new DelvingLists();
 
@@ -104,7 +108,7 @@ public abstract class BaseDatabaseManager {
         return result;
     }
 
-    public DReferences readReferences(int list_id)
+    protected DReferences readReferences(int list_id)
     {
         DReferences result = new DReferences();
         Cursor cursor = db.query(DBReference.db, DBReference.cols, Database.list_id + EQ + list_id, null, null, null, null);
@@ -120,7 +124,19 @@ public abstract class BaseDatabaseManager {
         return result;
     }
 
-    public DrawerReferences readDrawerReferences(int list_id)
+    protected DReference readReference(int list_id, int reference_id)
+    {
+        DReference result = null;
+        Cursor cursor = db.query(DBReference.db, DBReference.cols, Database.list_id + EQ + list_id + AND + Database.id + EQ + reference_id, null, null, null, null);
+
+        if (cursor.moveToFirst())
+            result = DBReference.parse(cursor);
+
+        cursor.close();
+        return result;
+    }
+
+    protected DrawerReferences readDrawerReferences(int list_id)
     {
         DrawerReferences result = new DrawerReferences();
         Cursor cursor = db.query(DBDrawerReference.db, DBDrawerReference.cols, Database.list_id + EQ + list_id, null, null, null, Database.name + " ASC");
@@ -136,7 +152,7 @@ public abstract class BaseDatabaseManager {
         return result;
     }
 
-    public Subjects readSubjects(int list_id)
+    protected Subjects readSubjects(int list_id)
     {
         Cursor cursor = db.query(DBSubject.db, DBSubject.cols, Database.list_id + EQ + list_id, null, null, null, null);
 
@@ -152,7 +168,7 @@ public abstract class BaseDatabaseManager {
         return result;
     }
 
-    public Tests readTests(int list_id)
+    protected Tests readTests(int list_id)
     {
         Cursor cursor = db.query(DBTest.db, DBTest.cols, Database.list_id + EQ + list_id, null, null, null, null);
 
@@ -168,7 +184,7 @@ public abstract class BaseDatabaseManager {
         return result;
     }
 
-    public RemovedItems readRemovedItems(int list_id)
+    protected RemovedItems readRemovedItems(int list_id)
     {
         Cursor cursor = db.query(DBRemovedItem.db, DBRemovedItem.cols, Database.list_id + EQ + list_id, null, null, null, null);
 
@@ -182,6 +198,21 @@ public abstract class BaseDatabaseManager {
 
         cursor.close();
         return result;
+    }
+
+    protected Usages readUsages(int list_id, int reference_id, Usages usages)
+    {
+        Cursor cursor = db.query(DBUsage.db, DBUsage.cols, Database.list_id + EQ + list_id + AND + Database.reference_id + EQ + reference_id, null, null, null, null);
+
+        if (cursor.moveToFirst())
+            do {
+
+                usages.add(DBUsage.parse(cursor));
+
+            } while (cursor.moveToNext());
+
+        cursor.close();
+        return usages;
     }
 
     // **************************************************** \\
@@ -251,28 +282,40 @@ public abstract class BaseDatabaseManager {
         values.clear();
     }
 
-    protected void insertSubject(int id, int list_id, String name, SubjectPairs pairs, int synced)
+    protected void insertSubject(int id, int list_id, String name, String referencesIds, int synced)
     {
         values.put(Database.id, id);
         values.put(Database.list_id, list_id);
         values.put(Database.name, name);
-        values.put(Database.pairs, pairs.wrap());
+        values.put(Database.pairs, referencesIds);
         values.put(Database.synced, synced);
         db.insert(DBSubject.db, null, values);
         values.clear();
     }
 
-    protected void insertTest(int id, int list_id, String name, int runTimes, String content, int subject_id, int synced)
+    protected void insertTest(int id, int list_id, String name, int runTimes, String content, int from_id, int synced)
     {
         values.put(Database.id, id);
         values.put(Database.list_id, list_id);
         values.put(Database.name, name);
         values.put(Database.runtimes, runTimes);
         values.put(Database.content, content);
-        values.put(Database.subject_id, subject_id);
+        values.put(Database.from_id, from_id);
         values.put(Database.synced, synced);
         db.insert(DBTest.db, null, values);
         values.clear();
+    }
+
+    protected void insertUsage(int list_id, int reference_id, Usage usage, int synced)
+    {
+        values.put(Database.list_id, list_id);
+        values.put(Database.reference_id, reference_id);
+        values.put(Database.translation, usage.translation);
+        values.put(Database.usage, usage.usage);
+        values.put(Database.synced, synced);
+        long id = db.insert(DBUsage.db, null, values);
+        values.clear();
+        System.out.println("[" + id + "]=id inserting usage for:" + usage.translation + " [" + reference_id + "]");
     }
 
     // **************************************************** \\
@@ -320,10 +363,10 @@ public abstract class BaseDatabaseManager {
         values.clear();
     }
 
-    protected void updateSubject(int id, int list_id, String name, SubjectPairs pairs, int synced)
+    protected void updateSubject(int id, int list_id, String name, String referencesIds, int synced)
     {
         values.put(Database.name, name);
-        values.put(Database.pairs, pairs.wrap());
+        values.put(Database.pairs, referencesIds);
         values.put(Database.synced, synced);
         db.update(DBSubject.db, values, Database.list_id + " = " + list_id + AND + Database.id + " = " + id, null);
         values.clear();
@@ -345,6 +388,7 @@ public abstract class BaseDatabaseManager {
 
     public void deleteDelvingList(int list_id)
     {
+        db.delete(DBUsage.db, Database.list_id + EQ + list_id, null);
         db.delete(DBReference.db, Database.list_id + EQ + list_id, null);
         db.delete(DBDrawerReference.db, Database.list_id + EQ + list_id, null);
         db.delete(DBTest.db, Database.list_id + EQ + list_id, null);
@@ -374,15 +418,27 @@ public abstract class BaseDatabaseManager {
         db.delete(DBTest.db, Database.list_id + " = " + list_id + AND + Database.id + " = " + id, null);
     }
 
-    public void deleteRemovedItem(int list_id, int item_id, int type)
+    protected void deleteRemovedItem(int list_id, int item_id, int type)
     {
         db.delete(DBRemovedItem.db,
                 Database.list_id + " = " + list_id + AND + Database.id + " = " + item_id + AND + Database.type + " = " + type, null);
     }
 
-    public void deleteAllRemovedItems(int list_id)
+    protected void deleteAllRemovedItems(int list_id)
     {
         db.delete(DBRemovedItem.db, Database.list_id + EQ + list_id, null);
+    }
+
+    protected void deleteAllUsagesOf(int list_id, int reference_id)
+    {
+        db.delete(DBUsage.db, Database.list_id + " = " + list_id + AND + Database.reference_id + " = " + reference_id, null);
+    }
+
+    protected void deleteUsages(int list_id, int reference_id, String translation)
+    {
+        db.delete(DBUsage.db, Database.list_id + " = " + list_id
+                + AND + Database.reference_id + " = " + reference_id
+                + AND + Database.translation + " = '" + translation + "'", null);
     }
 
 }

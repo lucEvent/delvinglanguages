@@ -26,7 +26,7 @@ public class SubjectViewHolder extends RecyclerView.ViewHolder {
         Context context = holder.view.getContext();
 
         holder.title.setText(subject.getName());
-        holder.subtitle.setText(context.getString(R.string.x_words, subject.getPairs().size()));
+        holder.subtitle.setText(context.getString(R.string.x_words, subject.size()));
         holder.view.setTag(subject);
     }
 

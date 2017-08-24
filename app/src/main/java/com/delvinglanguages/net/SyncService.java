@@ -223,11 +223,11 @@ public class SyncService extends IntentService {
                         break;
                     case Wrapper.TYPE_SUBJECT:
                         Subject subject = Subject.fromWrapper(item.getId(), item.getWrapper());
-                        syncDatabase.insertSubject(subject.id, item.getLanguageId(), subject.getName(), subject.getPairs());
+                        syncDatabase.insertSubject(subject.id, item.getLanguageId(), subject.getName(), subject.wrapReferencesIds());
                         break;
                     case Wrapper.TYPE_TEST:
                         Test test = Test.fromWrapper(item.getId(), item.getWrapper());
-                        syncDatabase.insertTest(test.id, item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.subject_id);
+                        syncDatabase.insertTest(test.id, item.getLanguageId(), test.name, test.getRunTimes(), Test.wrapContent(test), test.from_id);
                         break;
                 }
 

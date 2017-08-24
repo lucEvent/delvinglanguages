@@ -81,9 +81,8 @@ public class Inflexions extends ArrayList<Inflexion> implements Wrapper {
     public String[] getTranslations()
     {
         int translation_counter = 0;
-        for (Inflexion i : this) {
+        for (Inflexion i : this)
             translation_counter += i.getTranslations().length;
-        }
 
         String[] res = new String[translation_counter];
         int copy_index = 0;

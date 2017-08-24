@@ -67,6 +67,11 @@ public class DelvingList {
         return dictionary.getTypeCounter();
     }
 
+    public int getNumPhrasalVerbs()
+    {
+        return dictionary.getTypeCounter()[4];
+    }
+
     public TreeSet<DReference> getDictionary()
     {
         return dictionary.getDictionary();

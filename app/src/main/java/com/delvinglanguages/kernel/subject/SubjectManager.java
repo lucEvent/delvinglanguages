@@ -4,14 +4,11 @@ import android.content.Context;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.Inflexion;
-import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.DReferences;
-import com.delvinglanguages.kernel.util.Inflexions;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Wrapper;
 
@@ -31,11 +28,24 @@ public class SubjectManager extends KernelManager {
         return delvingList.subjects;
     }
 
-    public Subject addSubject(String subject_name, SubjectPairs subject_pairs)
+    public DReference getReference(String name)
+    {
+        return getCurrentList().getReference(name);
+    }
+
+    public DReferences getReferences(Subject subject)
+    {
+        if (subject.getReferences() == null)
+            subject.setReferences(dbManager.readReferences(getCurrentList().id, subject.getReferencesIds()));
+
+        return subject.getReferences();
+    }
+
+    public Subject addSubject(String name, DReferences references)
     {
         DelvingList delvingList = getCurrentList();
 
-        Subject subject = dbManager.insertSubject(delvingList.id, subject_name, subject_pairs);
+        Subject subject = dbManager.insertSubject(delvingList.id, name, references);
         delvingList.addSubject(subject);
 
         RecordManager.subjectAdded(delvingList.id, delvingList.from_code, subject.id);
@@ -43,10 +53,10 @@ public class SubjectManager extends KernelManager {
         return subject;
     }
 
-    public void updateSubject(Subject subject, String new_name, SubjectPairs new_pairs)
+    public void updateSubject(Subject subject, String new_name, DReferences new_references)
     {
         subject.setName(new_name);
-        subject.setPairs(new_pairs);
+        subject.setReferences(new_references);
 
         DelvingList delvingList = getCurrentList();
         dbManager.updateSubject(subject, delvingList.id);
@@ -68,27 +78,24 @@ public class SubjectManager extends KernelManager {
     public Test toTest(Context context, Subject subject)
     {
         DelvingList delvingList = getCurrentList();
-        Test test = dbManager.readTestFromSubject(subject.id);
 
-        if (test == null) {
+        Test test = delvingList.tests.getTestFrom(subject.id);
+        if (test != null)
+            return test;
 
-            String test_name = subject.getName() + " " + context.getString(R.string.test);
+        test = dbManager.readTestFrom(subject.id);
+        if (test != null)
+            return test;
 
-            DReferences references = new DReferences(subject.getPairs().size());
-            for (SubjectPair pair : subject.getPairs()) {
-                Inflexions inflexions = new Inflexions(1);
-                inflexions.add(new Inflexion(new String[]{}, new String[]{pair.inNative}, DReference.OTHER));
-                references.add(new DReference(-1, pair.inDelved, "", inflexions, 0));
-            }
+        String test_name = subject.getName() + " " + context.getString(R.string.test);
+        DReferences references = getReferences(subject);
 
-            test = dbManager.insertTest(delvingList.id, test_name, references, subject.id);
+        test = dbManager.insertTest(delvingList.id, test_name, references, subject.id);
 
-            RecordManager.testAdded(delvingList.id, delvingList.from_code, test.id);
-            synchronizeNewItem(delvingList.id, test.id, test);
-        }
-        Test replaceable = delvingList.tests.getTestById(test.id);
-        if (replaceable != null) test = replaceable;
-        else delvingList.tests.add(test);
+        delvingList.tests.add(test);
+        RecordManager.testAdded(delvingList.id, delvingList.from_code, test.id);
+        synchronizeNewItem(delvingList.id, test.id, test);
+
         return test;
     }
 

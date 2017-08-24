@@ -2,59 +2,66 @@ package com.delvinglanguages.kernel.subject;
 
 import android.support.annotation.NonNull;
 
+import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.Item;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.kernel.util.Wrapper;
+
+import java.util.Arrays;
 
 public class Subject extends Item implements Wrapper {
 
     private static final String SEP = "%Th";
 
     private String name;
-    private SubjectPairs pairs;
+    private DReferences references;
 
-    public Subject(int id, String name, String pairsWrapper)
+    private int[] referencesIds;
+
+    public Subject(int id, String name, String referencesIdsWrapper)
     {
-        this(id, name, SubjectPairs.fromWrapper(pairsWrapper));
+        this(id, name, (DReferences) null);
+
+        referencesIds = unwrapReferencesIds(referencesIdsWrapper);
     }
 
-    public Subject(int id, String name, SubjectPairs pairs)
+    public Subject(int id, String name, DReferences references)
     {
         super(id, Item.SUBJECT);
         this.name = name;
-        this.pairs = pairs;
+        this.references = references;
     }
 
     public static Subject fromWrapper(int id, @NonNull String wrapper)
     {
-        int index = 2;
-        SubjectPairs pairs;
-
         String[] parts = wrapper.split(SEP);
+        return new Subject(id, parts[0], parts[1]);
+    }
 
-        String name = parts[0];
-        int size = Integer.parseInt(parts[1]);
-        pairs = new SubjectPairs(size);
-        for (int i = 0; i < size; i++) {
-            String delved = parts[index++];
-            String _native = parts[index++];
-            pairs.add(new SubjectPair(delved, _native));
+    public String wrapReferencesIds()
+    {
+        if (referencesIds == null) {
+            referencesIds = new int[references.size()];
+            for (int i = 0; i < references.size(); i++)
+                referencesIds[i] = references.get(i).id;
         }
-        return new Subject(id, name, pairs);
+        return Arrays.toString(referencesIds);
+    }
+
+    private int[] unwrapReferencesIds(String wrapper)
+    {
+        String[] refIds = wrapper.replace("[", "").replace("]", "").split(", ");
+        int result[] = new int[refIds.length];
+        for (int i = 0; i < result.length; i++)
+            result[i] = Integer.parseInt(refIds[i]);
+
+        return result;
     }
 
     @Override
     public String wrap()
     {
-        StringBuilder res = new StringBuilder();
-        res.append(name).append(SEP)
-                .append(pairs.size());
-
-        for (SubjectPair thp : pairs)
-            res.append(SEP).append(thp.inDelved)
-                    .append(SEP).append(thp.inNative);
-
-        return res.toString();
+        return name + SEP + wrapReferencesIds();
     }
 
     @Override
@@ -68,9 +75,14 @@ public class Subject extends Item implements Wrapper {
         return name;
     }
 
-    public SubjectPairs getPairs()
+    public DReferences getReferences()
     {
-        return pairs;
+        return references;
+    }
+
+    public int[] getReferencesIds()
+    {
+        return referencesIds;
     }
 
     public void setName(String name)
@@ -78,18 +90,24 @@ public class Subject extends Item implements Wrapper {
         this.name = name;
     }
 
-    public void setPairs(SubjectPairs pairs)
+    public void setReferences(DReferences references)
     {
-        this.pairs = pairs;
+        this.references = references;
+        this.referencesIds = null;
     }
 
     public boolean hasContent(CharSequence s)
     {
         if (name.toLowerCase().contains(s)) return true;
-        for (SubjectPair pair : pairs)
-            if (pair.inDelved.toLowerCase().contains(s) || pair.inNative.toLowerCase().contains(s))
+        for (DReference ref : references)
+            if (ref.hasContent(s))
                 return true;
         return false;
+    }
+
+    public int size()
+    {
+        return references != null ? references.size() : referencesIds.length;
     }
 
 }

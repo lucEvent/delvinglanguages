@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.PhrasalVerbsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/btnTopActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+
+            <ImageButton
+                style="@style/btnActionbar"
+                android:onClick="onMatchAction"
+                android:src="@drawable/ic_match"/>
+
+            <ImageButton
+                style="@style/btnActionbar"
+                android:onClick="onCompleteAction"
+                android:src="@drawable/ic_complete"/>
+
+            <ImageButton
+                style="@style/btnActionbar"
+                android:onClick="onWriteAction"
+                android:src="@drawable/ic_write"/>
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                style="@style/btnActionbar"
+                android:onClick="onListeningAction"
+                android:src="@drawable/ic_listening"/>
+
+            <ImageButton
+                style="@style/btnActionbar"
+                android:onClick="onTestAction"
+                android:src="@drawable/ic_test"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/btnTopActionBar"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <ViewStub
+            android:id="@+id/phv_pop_up"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/vs_phrasal_verb_pop_up"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/btnTopActionBar"
+            android:layout_margin="6dp"
+            android:alpha="0"
+            android:src="@drawable/ic_info"
+            android:visibility="gone"
+            app:fabSize="mini"/>
+
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

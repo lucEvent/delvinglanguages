@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/ripple"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/translation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_arrow_right"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:padding="8dp"
+        android:text="Translation"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#f000"/>
+
+    <TextView
+        android:id="@+id/usage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="45dp"
+        android:paddingTop="4dp"
+        android:text="This is the usage example for this translation and bla bka bka"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic"/>
+
+</LinearLayout>

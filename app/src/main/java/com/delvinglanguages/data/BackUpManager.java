@@ -13,16 +13,16 @@ import com.delvinglanguages.data.util.OutStream;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.DrawerReference;
+import com.delvinglanguages.kernel.Inflexion;
 import com.delvinglanguages.kernel.KernelManager;
 import com.delvinglanguages.kernel.RecordManager;
 import com.delvinglanguages.kernel.subject.Subject;
-import com.delvinglanguages.kernel.subject.SubjectPair;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.DrawerReferences;
+import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Tests;
 import com.delvinglanguages.view.utils.MessageListener;
@@ -33,7 +33,8 @@ import java.util.Random;
 public class BackUpManager {
 
     private static final int VERSION2 = 1002;
-    private static final int CURRENT_VERSION = VERSION2;
+    private static final int VERSION_3 = 1003;
+    private static final int CURRENT_VERSION = VERSION_3;
 
     private Handler handler;
 
@@ -51,6 +52,11 @@ public class BackUpManager {
             InStream stream = new InStream(context.getContentResolver().openInputStream(backupfileuri));
 
             int version = stream.readInt();
+
+            if (version > VERSION2) {
+                restoreData_ver3_and_above(context, database, stream, version);
+                return;
+            }
 
             int nLists = version == VERSION2 ? stream.readInt() : version;
             handler.obtainMessage(MessageListener.MESSAGE, context.getString(R.string.msg_found_languages, nLists)).sendToTarget();
@@ -88,22 +94,29 @@ public class BackUpManager {
                     database.insertDrawerReference(id, list_id, note);
                 }
 
+                Random idGenerator = new Random();
                 int nSubjects = stream.readInt();
-                for (int j = 0; j < nSubjects; j++) { // Por cada theme
+                for (int j = 0; j < nSubjects; j++) { // For each subject
                     int id = version == VERSION2 ? stream.readInt() : j + 1;
-                    String thName = stream.readString();
-                    SubjectPairs thPairs = new SubjectPairs();
-                    int nthPairs = stream.readInt();
-                    for (int k = 0; k < nthPairs; k++) {
-                        String thpDelv = stream.readString();
-                        String thpNatv = stream.readString();
-                        thPairs.add(new SubjectPair(thpDelv, thpNatv));
+                    String subName = stream.readString();
+                    DReferences refs = new DReferences();
+                    int subPairs = stream.readInt();
+                    for (int k = 0; k < subPairs; k++) {
+                        int ref_id = idGenerator.nextInt();
+                        String name = stream.readString();
+                        String translation = stream.readString();
+
+                        Inflexions inflexions = new Inflexions(1);
+                        inflexions.add(new Inflexion(new String[]{}, new String[]{translation}, DReference.OTHER));
+                        database.insertReference(ref_id, list_id, name, inflexions.wrap(), "", DReference.INITIAL_PRIORITY);
+                        refs.add(new DReference(ref_id, name, "", inflexions, DReference.INITIAL_PRIORITY));
                     }
-                    database.insertSubject(id, list_id, thName, thPairs);
+                    Subject s = new Subject(id, subName, refs);
+                    database.insertSubject(id, list_id, subName, s.wrapReferencesIds());
                 }
 
                 int nTests = stream.readInt();
-                for (int j = 0; j < nTests; j++) {  // Por cada Test
+                for (int j = 0; j < nTests; j++) {  // For each Test
                     int id = version == VERSION2 ? stream.readInt() : j + 1;
                     String test_name = stream.readString();
                     int test_runTimes = stream.readInt();
@@ -135,6 +148,82 @@ public class BackUpManager {
         handler.obtainMessage(AppCode.IMPORT_SUCCESSFUL).sendToTarget();
     }
 
+    private void restoreData_ver3_and_above(Context context, BackUpDatabaseManager database, InStream stream, int version)
+    {
+        try {
+            int nLists = stream.readInt();
+            handler.obtainMessage(MessageListener.MESSAGE, context.getString(R.string.msg_found_languages, nLists)).sendToTarget();
+            for (int i = 0; i < nLists; i++) {    // For each list
+                int list_id = stream.readInt();
+                int list_lang_codes = stream.readInt();
+                String list_name = stream.readString();
+                int list_settings = stream.readInt();
+                list_id = database.insertDelvingList(list_id, list_lang_codes & 0xFF, list_lang_codes >> 16, list_name, list_settings);
+
+                // Statistics
+                Statistics statistics = new Statistics(list_id);
+                statistics.attempts = stream.readInt();
+                statistics.hits_at_1st = stream.readInt();
+                statistics.hits_at_2nd = stream.readInt();
+                statistics.hits_at_3rd = stream.readInt();
+                statistics.misses = stream.readInt();
+                database.updateStatistics(statistics);
+
+                int nReferences = stream.readInt();
+                for (int j = 0; j < nReferences; j++) {   // For each WORD of the list
+                    int id = stream.readInt();
+                    String name = stream.readString();
+                    String pronunciation = stream.readString();
+                    int priority = stream.readInt();
+                    String inflexionsString = stream.readString();
+                    database.insertReference(id, list_id, name, inflexionsString, pronunciation, priority);
+                    //         debug(" -" + name);
+                }
+
+                int nDrawerReferences = stream.readInt();
+                for (int j = 0; j < nDrawerReferences; j++) {    // For each entry of warehouse
+                    int id = stream.readInt();
+                    String note = stream.readString();
+                    database.insertDrawerReference(id, list_id, note);
+                }
+
+                int nSubjects = stream.readInt();
+                for (int j = 0; j < nSubjects; j++) { // For each subject
+                    int id = stream.readInt();
+                    String subName = stream.readString();
+                    String subRefsIds = stream.readString();
+                    database.insertSubject(id, list_id, subName, subRefsIds);
+                }
+
+                int nTests = stream.readInt();
+                for (int j = 0; j < nTests; j++) {  // For each Test
+                    int id = stream.readInt();
+                    String test_name = stream.readString();
+                    int test_runTimes = stream.readInt();
+                    String test_content = stream.readString();
+                    int subject_id = version == VERSION2 ? stream.readInt() : -1;
+                    database.insertTest(id, list_id, test_name, test_runTimes, test_content, subject_id);
+                }
+                String message = (i + 1) + ". " + list_name + "\n  [" +
+                        context.getString(R.string.msg_n_references, nReferences) + "\n  " +
+                        context.getString(R.string.msg_n_drawerreferences, nDrawerReferences) + "\n  " +
+                        context.getString(R.string.msg_n_subjects, nSubjects) + "\n  " +
+                        context.getString(R.string.msg_n_tests, nTests) + "]";
+
+                handler.obtainMessage(MessageListener.MESSAGE, message).sendToTarget();
+            }
+            stream.close();
+
+            RecordManager.appImport(nLists);
+
+        } catch (Exception e) {
+
+            handler.obtainMessage(MessageListener.ERROR).sendToTarget();
+            AppSettings.printerror("[BUM] Exception in restoreData", e);
+            database.closeWritableDatabase();
+            return;
+        }
+    }
 
     public void backupData(Context context, String filename, DelvingLists delvingLists)
     {
@@ -196,11 +285,7 @@ public class BackUpManager {
                 for (Subject subject : subjects) {    // For each subject of the list
                     stream.writeInt(subject.id);
                     stream.writeString(subject.getName());
-                    stream.writeInt(subject.getPairs().size());
-                    for (SubjectPair pair : subject.getPairs()) {   // For each subjectpair of the subject
-                        stream.writeString(pair.inDelved);
-                        stream.writeString(pair.inNative);
-                    }
+                    stream.writeString(subject.wrapReferencesIds());
                 }
 
                 Tests tests = database.readTests(delvingList.id);
@@ -210,7 +295,7 @@ public class BackUpManager {
                     stream.writeString(test.name);
                     stream.writeInt(test.getRunTimes());
                     stream.writeString(Test.wrapContent(test));
-                    stream.writeInt(test.subject_id);
+                    stream.writeInt(test.from_id);
                 }
 
                 String message = context.getString(R.string.msg_language_saved_, delvingList.name, references.size(), drawer.size(), subjects.size(), tests.size());

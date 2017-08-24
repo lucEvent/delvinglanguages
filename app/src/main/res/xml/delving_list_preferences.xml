@@ -11,7 +11,7 @@
             android:title="@string/pref_list_name"/>
 
         <ListPreference
-            android:dialogIcon="@drawable/ic_language"
+            android:dialogIcon="@drawable/ic_delving_list"
             android:entries="@array/languages"
             android:entryValues="@array/language_codes"
             android:key="@string/pref_list_language_from_code_key"
@@ -20,7 +20,7 @@
             android:title="@string/pref_list_language_from_code"/>
 
         <ListPreference
-            android:dialogIcon="@drawable/ic_language"
+            android:dialogIcon="@drawable/ic_delving_list"
             android:entries="@array/languages"
             android:entryValues="@array/language_codes"
             android:key="@string/pref_list_language_to_code_key"

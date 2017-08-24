@@ -237,16 +237,8 @@
         <item name="android:layout_marginEnd">12dp</item>
     </style>
 
-    <style name="main_item_layout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">4.5dp</item>
-        <item name="android:layout_marginBottom">4.5dp</item>
-        <item name="android:layout_marginRight">9dp</item>
-        <item name="android:layout_marginLeft">9dp</item>
+    <style name="main_item_layout" parent="list_item_layout">
         <item name="android:background">#fff</item>
-        <item name="android:elevation">@dimen/list_item_elevation</item>
-        <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
         <item name="android:paddingTop">12dp</item>
@@ -255,10 +247,10 @@
     <style name="list_item_layout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">3dp</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginTop">@dimen/list_item_layout_marginTopBottom</item>
+        <item name="android:layout_marginBottom">@dimen/list_item_layout_marginTopBottom</item>
+        <item name="android:layout_marginRight">@dimen/list_item_layout_marginLeftRight</item>
+        <item name="android:layout_marginLeft">@dimen/list_item_layout_marginLeftRight</item>
         <item name="android:background">@drawable/ripple</item>
         <item name="android:elevation">@dimen/list_item_elevation</item>
         <item name="android:orientation">vertical</item>
@@ -293,7 +285,7 @@
     </style>
 
     <style name="AppTheme.Button.Colored" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/colorPrimarySoft</item>
+        <item name="colorButtonNormal">@color/colorPrimaryLight</item>
         <item name="android:textColor">@color/colorAccentDark</item>
     </style>
 
@@ -330,6 +322,15 @@
         <item name="android:background">@drawable/bg_btn_drawer_action_bar</item>
         <item name="android:layout_weight">1</item>
         <item name="android:tint">@drawable/tint_btn_drawer_action_bar</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="btnActionbar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_btn_drawer_action_bar</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
     </style>

@@ -31,4 +31,13 @@ public class DReferences extends ArrayList<DReference> {
         return false;
     }
 
+    public DReferences getPhrasalVerbs()
+    {
+        DReferences phvs = new DReferences();
+        for (DReference ref : this)
+            if (ref.isPhrasalVerb())
+                phvs.add(ref);
+        return phvs;
+    }
+
 }

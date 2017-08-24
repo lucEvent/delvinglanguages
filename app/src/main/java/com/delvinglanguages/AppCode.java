@@ -5,7 +5,8 @@ public final class AppCode {
     public static final int ACTION_CREATE = 10;
     public static final int ACTION_MODIFY = 11;
     public static final int ACTION_IMPORT = 12;
-    public static final int START_ABORTED = 13;
+    public static final int ACTION_SELECT = 13;
+    public static final int START_ABORTED = 14;
 
     public static final int RESULT_LIST_CREATED = 20;
     public static final int RESULT_LIST_CREATED_CANCELED = 21;
@@ -23,6 +24,7 @@ public final class AppCode {
     public static final int DREFERENCE_CREATED = 50;
     public static final int DREFERENCE_UPDATED = 51;
     public static final int DREFERENCE_REMOVED = 52;
+    public static final int DREFERENCE_SELECTED = 53;
 
     public static final int SYNC_START = 60;
     public static final int SYNC_UPLOADING = 61;
@@ -35,6 +37,7 @@ public final class AppCode {
     public static final String ACTION = "action";
 
     public static final String DREFERENCE_NAME = "dref";
+    public static final String DREFERENCE_NAME_NUM = "drnum";
     public static final String DREFERENCE_NAME_INVERSE = "drefinv";
     public static final String INFLEXIONS_WRAPPER = "infwrapper";
 

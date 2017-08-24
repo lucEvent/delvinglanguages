@@ -107,7 +107,7 @@ public class TestActivity extends AppCompatActivity implements TestListener {
         Fragment fragment = null;
         switch (refState.stage) {
             case DELVING:
-                fragment = TestDelvingFragment.getInstance(handler, refState, TestReferenceState.TestStage.MATCH);
+                fragment = TestDelvingFragment.getInstance(handler, refState, dataManager.getUsages(refState.reference), TestReferenceState.TestStage.MATCH);
                 break;
             case MATCH:
                 fragment = TestMatchFragment.getInstance(handler, refState, TestReferenceState.TestStage.COMPLETE, showPhrasal);

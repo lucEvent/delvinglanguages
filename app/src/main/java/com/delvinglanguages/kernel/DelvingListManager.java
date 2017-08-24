@@ -2,12 +2,17 @@ package com.delvinglanguages.kernel;
 
 import android.content.Context;
 
+import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.phrasalverb.PhrasalVerb;
+import com.delvinglanguages.kernel.phrasalverb.PhrasalVerbsEngine;
+import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.AppFormat;
 import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.kernel.util.DrawerReferences;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.RemovedItems;
+import com.delvinglanguages.kernel.util.Usages;
 import com.delvinglanguages.kernel.util.Wrapper;
 
 public class DelvingListManager extends KernelManager {
@@ -61,6 +66,11 @@ public class DelvingListManager extends KernelManager {
         loadContentOf(delvingList);
     }
 
+    public PhrasalVerbsEngine getPhrasalVerbsEngine()
+    {
+        return new PhrasalVerbsEngine(getReferences().getPhrasalVerbs());
+    }
+
     /**
      * Creates
      **/
@@ -111,6 +121,33 @@ public class DelvingListManager extends KernelManager {
         deleteDrawerReference(drawerReference);
     }
 
+    public Test createTest(Context context, PhrasalVerb phrasalVerb)
+    {
+        DelvingList delvingList = getCurrentList();
+
+        Test test = delvingList.tests.getTestFrom(phrasalVerb.id);
+        if (test != null)
+            return test;
+
+        test = dbManager.readTestFrom(phrasalVerb.id);
+        if (test != null)
+            return test;
+
+        String test_name = phrasalVerb.verb + " " + context.getString(R.string.test);
+        test = dbManager.insertTest(delvingList.id, test_name, phrasalVerb.variants, phrasalVerb.id);
+
+        delvingList.tests.add(test);
+        RecordManager.testAdded(delvingList.id, delvingList.from_code, test.id);
+        synchronizeNewItem(delvingList.id, test.id, test);
+
+        return test;
+    }
+
+    public void createUsages(DReference reference, Usages usages)
+    {
+        dbManager.insertUsages(getCurrentList().id, reference.id, usages);
+    }
+
     /**
      * Update
      **/
@@ -150,10 +187,15 @@ public class DelvingListManager extends KernelManager {
     public void deleteAllRemovedItems()
     {
         DelvingList delvingList = getCurrentList();
+        dbManager.deleteAllRemovedItems(delvingList.id, delvingList.removed_items);
         delvingList.deleteAllRemovedItems();
-        dbManager.deleteAllRemovedItems(delvingList.id);
 
         RecordManager.listRecycleBinCleared(delvingList.id, delvingList.from_code);
+    }
+
+    public void deleteUsages(DReference reference, Usages usages)
+    {
+        dbManager.deleteUsages(getCurrentList().id, reference.id, usages);
     }
 
     /**
@@ -199,6 +241,14 @@ public class DelvingListManager extends KernelManager {
             dbManager.updateReferencePriority(reference, delvingList.id);
         }
         RecordManager.referencePractised(exercise_type, delvingList.id, delvingList.from_code, reference.id);
+    }
+
+    public void reminded(DReference reference)
+    {
+        DelvingList delvingList = getCurrentList();
+
+        reference.priority -= 1;
+        dbManager.updateReferencePriority(reference, delvingList.id);
     }
 
 }

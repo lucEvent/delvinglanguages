@@ -14,11 +14,12 @@ import android.view.View;
 
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
+import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.subject.SubjectManager;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.view.activity.practise.TestActivity;
-import com.delvinglanguages.view.lister.SubjectPairLister;
+import com.delvinglanguages.view.lister.ReferenceLister;
 import com.delvinglanguages.view.utils.HorizontalFloatingButtonBar;
 
 public class SubjectActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class SubjectActivity extends AppCompatActivity {
 
     private Subject subject;
 
-    private SubjectPairLister adapter;
+    private ReferenceLister adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,14 +45,14 @@ public class SubjectActivity extends AppCompatActivity {
         int subject_id = getIntent().getExtras().getInt(AppCode.SUBJECT_ID);
         subject = dataManager.getSubjects().getSubjectById(subject_id);
 
-        adapter = new SubjectPairLister(subject.getPairs());
+        adapter = new ReferenceLister(dataManager.getReferences(subject), dataManager.getCurrentList().arePhrasalVerbsEnabled(), onEditReference);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setAutoMeasureEnabled(true);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -76,20 +77,40 @@ public class SubjectActivity extends AppCompatActivity {
         return true;
     }
 
+    private DReference editingReference;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == AppCode.SUBJECT_MODIFIED) {
+        switch (resultCode) {
+            case AppCode.SUBJECT_MODIFIED:
+                CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+                toolbar.setTitle(subject.getName());
 
-            CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-            toolbar.setTitle(subject.getName());
-
-            adapter.setNewDataSet(subject.getPairs());
-
+                adapter.replaceAll(dataManager.getReferences(subject));
+                break;
+            case AppCode.DREFERENCE_REMOVED:
+                adapter.removeItem(editingReference);
+                break;
+            case AppCode.DREFERENCE_UPDATED:
+                adapter.updateItem(editingReference);
+                break;
         }
     }
+
+    private View.OnClickListener onEditReference = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            editingReference = (DReference) v.getTag();
+
+            Intent intent = new Intent(SubjectActivity.this, DReferenceActivity.class);
+            intent.putExtra(AppCode.DREFERENCE_NAME, editingReference.name);
+            startActivityForResult(intent, AppCode.ACTION_MODIFY);
+        }
+    };
 
     private View.OnClickListener onTest = new View.OnClickListener() {
         @Override

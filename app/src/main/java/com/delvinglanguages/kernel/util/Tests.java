@@ -25,4 +25,13 @@ public class Tests extends ArrayList<Test> {
         return null;
     }
 
+    public Test getTestFrom(int from_id)
+    {
+        for (Test t : this)
+            if (t.from_id == from_id)
+                return t;
+
+        return null;
+    }
+
 }

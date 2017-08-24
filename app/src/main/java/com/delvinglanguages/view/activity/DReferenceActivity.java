@@ -45,6 +45,7 @@ public class DReferenceActivity extends AppCompatActivity {
         //Buttons
         floatingButtonBar = (HorizontalFloatingButtonBar) findViewById(R.id.option_buttons);
         floatingButtonBar.addButton(R.drawable.ic_edit, R.string.edit, onEdit);
+        floatingButtonBar.addButton(R.drawable.ic_edit, R.string.add_edit_usages, onEditUsages);
         floatingButtonBar.addButton(R.drawable.ic_delete, R.string.delete, onRemove);
 
         dataManager = new DelvingListManager(this);
@@ -102,14 +103,14 @@ public class DReferenceActivity extends AppCompatActivity {
     private void displayDReference(DReference reference)
     {
         if (adapter == null) {
-            adapter = new InflexionLister(this, reference.getInflexions(), onNavigationForward);
-            findViewById(R.id.textview_pronunciation).setOnClickListener(navigator.onPronunciationAction);
+            adapter = new InflexionLister(this, reference.getInflexions(), dataManager.getUsages(reference), onNavigationForward);
+            findViewById(R.id.btn_pronunciation).setOnClickListener(navigator.onPronunciationAction);
         } else
             adapter.setNewDataSet(reference.getInflexions());
 
         ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(reference.name);
 
-        ((TextView) findViewById(R.id.textview_pronunciation)).setText(reference.pronunciation);
+        ((TextView) findViewById(R.id.tv_pronunciation)).setText(reference.pronunciation);
 
         floatingButtonBar.close();
         floatingButtonBar.setEnabled(!floatingButtonBar.isEnabled());
@@ -123,7 +124,7 @@ public class DReferenceActivity extends AppCompatActivity {
             DReference ref = navigator.current();
 
             ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(ref.name);
-            ((TextView) findViewById(R.id.textview_pronunciation)).setText(ref.pronunciation);
+            ((TextView) findViewById(R.id.tv_pronunciation)).setText(ref.pronunciation);
             adapter.setNewDataSet(ref.getInflexions());
 
             setResult(resultCode);
@@ -136,6 +137,16 @@ public class DReferenceActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(v.getContext(), ReferenceEditorActivity.class);
             intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_MODIFY);
+            intent.putExtra(AppCode.DREFERENCE_NAME, navigator.current().name);
+            startActivityForResult(intent, 0);
+        }
+    };
+
+    private View.OnClickListener onEditUsages = new View.OnClickListener() {
+        @Override
+        public void onClick(View v)
+        {
+            Intent intent = new Intent(v.getContext(), UsagesEditorActivity.class);
             intent.putExtra(AppCode.DREFERENCE_NAME, navigator.current().name);
             startActivityForResult(intent, 0);
         }
@@ -171,8 +182,7 @@ public class DReferenceActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            TextView tv = (TextView) v;
-            String translation = (String) tv.getText();
+            String translation = (String) v.getTag();
             displayDReference(navigator.forward(translation));
         }
     };

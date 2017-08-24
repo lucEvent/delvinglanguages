@@ -13,9 +13,9 @@ import android.widget.EditText;
 import com.delvinglanguages.AppCode;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
+import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.DrawerReference;
 import com.delvinglanguages.kernel.Inflexion;
-import com.delvinglanguages.kernel.DelvingListManager;
 import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.view.dialog.AddTranslationDialog;
 import com.delvinglanguages.view.lister.InflexionEditLister;
@@ -28,9 +28,10 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
 
     public static final int ACTION_CREATE = 0;
     public static final int ACTION_CREATE_FROM_DRAWER = 1;
-    public static final int ACTION_MODIFY = 2;
-    public static final int ACTION_SEARCH = 3;
-    public static final int ACTION_SEARCH_INVERSE = 4;
+    public static final int ACTION_CREATE_FOR_SUBJECT = 2;
+    public static final int ACTION_MODIFY = 3;
+    public static final int ACTION_SEARCH = 4;
+    public static final int ACTION_SEARCH_INVERSE = 5;
 
     private static class EditorData {
 
@@ -81,6 +82,7 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
                 in_reference.setSelection(data.drawerReference.name.length());
 
             case ACTION_CREATE:
+            case ACTION_CREATE_FOR_SUBJECT:
                 data.inflexions = new Inflexions();
 
                 break;
@@ -158,6 +160,14 @@ public class ReferenceEditorActivity extends AppCompatActivity implements Refere
                 dataManager.createReference(data.drawerReference, reference, pronunciation, data.inflexions);
                 setResult(AppCode.DREFERENCE_CREATED);
                 break;
+            case ACTION_CREATE_FOR_SUBJECT:
+                dataManager.createReference(reference, pronunciation, data.inflexions);
+
+                setResult(AppCode.DREFERENCE_CREATED,
+                        new Intent()
+                                .putExtra(AppCode.DREFERENCE_NAME, reference));
+                finish();
+                return;
             case ACTION_MODIFY:
                 dataManager.updateReference(data.reference, reference, pronunciation, data.inflexions);
                 setResult(AppCode.DREFERENCE_UPDATED);

@@ -26,8 +26,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_margin="2.5dp"
-        android:background="@drawable/ripple_over_grey"
-        android:padding="14dip"
+        android:background="@drawable/ripple_round"
+        android:padding="14dp"
         android:src="@drawable/ic_undo"/>
 
 </RelativeLayout>

@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="#fff"
-    android:elevation="4dp"
-    android:orientation="vertical">
+    style="@style/list_item_layout"
+    android:background="#0fff"
+    android:elevation="0dp">
 
     <TextView
         android:id="@+id/textview_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/list_item_elevation"
         android:paddingBottom="1dip"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:paddingTop="1dip"
         android:text="EXPRESSION"
+        android:textColor="#ffff"
         android:textSize="10sp"/>
 
     <LinearLayout
@@ -87,8 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="36dp"
             android:text="Lämna"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 

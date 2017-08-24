@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dip"
                     android:background="@drawable/ripple"
-                    android:elevation="3dp"
+                    android:elevation="@dimen/list_item_elevation"
                     android:padding="20dp"
                     android:text="Test statistics"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>

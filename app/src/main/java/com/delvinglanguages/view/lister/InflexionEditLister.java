@@ -15,12 +15,14 @@ public class InflexionEditLister extends InflexionLister {
 
     public static class ViewHolder extends InflexionLister.ViewHolder {
 
+        View itemBox;
         ImageView edit, delete;
 
         public ViewHolder(View v)
         {
             super(v);
 
+            itemBox = v;
             edit = (ImageView) v.findViewById(R.id.edit);
             delete = (ImageView) v.findViewById(R.id.delete);
         }
@@ -29,7 +31,7 @@ public class InflexionEditLister extends InflexionLister {
     public InflexionEditLister(Context context, Inflexions dataset, View.OnClickListener onModifyListener,
                                View.OnClickListener onDeleteListener)
     {
-        super(context, dataset, null);
+        super(context, dataset, null, null);
 
         this.onModifyListener = onModifyListener;
         this.onDeleteListener = onDeleteListener;
@@ -41,6 +43,7 @@ public class InflexionEditLister extends InflexionLister {
         View v = inflater.inflate(R.layout.i_inflexion_edit, parent, false);
 
         ViewHolder holder = new ViewHolder(v);
+        holder.itemBox.setOnClickListener(onModifyListener);
         holder.edit.setOnClickListener(onModifyListener);
         holder.delete.setOnClickListener(onDeleteListener);
         return holder;
@@ -52,14 +55,12 @@ public class InflexionEditLister extends InflexionLister {
         super.onBindViewHolder(holder, position);
 
         Inflexion inflexion = dataset.get(position);
+        ((ViewHolder) holder).itemBox.setTag(inflexion);
         ((ViewHolder) holder).edit.setTag(inflexion);
         ((ViewHolder) holder).delete.setTag(inflexion);
-    }
 
-    @Override
-    public int getItemCount()
-    {
-        return dataset.size();
+        for (int i = 0; i < holder.list_translations.getChildCount(); i++)
+            holder.list_translations.getChildAt(i).setClickable(false);
     }
 
 }

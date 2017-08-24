@@ -7,22 +7,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
-import com.delvinglanguages.AppData;
 import com.delvinglanguages.R;
-import com.delvinglanguages.kernel.DelvingList;
+import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.subject.SubjectManager;
-import com.delvinglanguages.kernel.subject.SubjectPair;
-import com.delvinglanguages.kernel.util.SubjectPairs;
-import com.delvinglanguages.view.lister.SubjectPairEditLister;
+import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.view.lister.ReferenceLister;
+import com.delvinglanguages.view.utils.ListItemSwipeCallback;
+import com.delvinglanguages.view.utils.ListItemSwipeListener;
 import com.delvinglanguages.view.utils.NoContentViewHelper;
 
-public class SubjectEditorActivity extends AppCompatActivity {
+public class SubjectEditorActivity extends AppCompatActivity implements ListItemSwipeListener {
 
     private enum State {
         CREATE, EDIT
@@ -32,19 +34,19 @@ public class SubjectEditorActivity extends AppCompatActivity {
 
         State state;
         Subject subject;
-        SubjectPairs pairs;
+        DReferences references;
 
     }
 
     private EditorData data;
-    private int modifyingPosition = -1;
+    private DReference editingReference;
 
     private SubjectManager dataManager;
-    private SubjectPairEditLister adapter;
+    private ReferenceLister adapter;
     private NoContentViewHelper noContentViewHelper;
 
-    private EditText in_pair1, in_pair2;
     private EditText in_name;
+    private View rem_help;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,8 +55,7 @@ public class SubjectEditorActivity extends AppCompatActivity {
         setContentView(R.layout.a_subject_editor);
 
         in_name = (EditText) findViewById(R.id.in_subject_name);
-        in_pair1 = (EditText) findViewById(R.id.in_pair1);
-        in_pair2 = (EditText) findViewById(R.id.in_pair2);
+        rem_help = findViewById(R.id.help_message);
         noContentViewHelper = new NoContentViewHelper(findViewById(R.id.no_content), R.string.msg_no_content_entries);
 
         dataManager = new SubjectManager(this);
@@ -66,7 +67,7 @@ public class SubjectEditorActivity extends AppCompatActivity {
 
             int subject_id = bundle.getInt(AppCode.SUBJECT_ID);
             data.subject = dataManager.getSubjects().getSubjectById(subject_id);
-            data.pairs = (SubjectPairs) data.subject.getPairs().clone();
+            data.references = (DReferences) dataManager.getReferences(data.subject).clone();
 
             in_name.setText(data.subject.getName());
             in_name.setSelection(data.subject.getName().length());
@@ -74,26 +75,25 @@ public class SubjectEditorActivity extends AppCompatActivity {
         } else {
 
             data.state = State.CREATE;
-            data.pairs = new SubjectPairs();
+            data.references = new DReferences();
 
             noContentViewHelper.displayMessage();
+            rem_help.setVisibility(View.GONE);
         }
 
-        adapter = new SubjectPairEditLister(data.pairs, onModifySubjectPair);
+        adapter = new ReferenceLister(data.references, dataManager.getCurrentList().arePhrasalVerbsEnabled(), onEditReference);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setAutoMeasureEnabled(true);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(false);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        DelvingList current = dataManager.getCurrentList();
-        in_pair1.setHint(getString(R.string.hint_in_, AppData.getLanguageName(current.from_code)));
-        in_pair2.setHint(getString(R.string.hint_in_, AppData.getLanguageName(current.to_code)));
+        ItemTouchHelper.Callback callback = new ListItemSwipeCallback(this, (TextView) findViewById(R.id.swipe_message));
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -102,54 +102,79 @@ public class SubjectEditorActivity extends AppCompatActivity {
         actionCancel(null);
     }
 
-    private View.OnClickListener onModifySubjectPair = new View.OnClickListener() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        switch (resultCode) {
+            case AppCode.DREFERENCE_CREATED:
+                String refName = intent.getExtras().getString(AppCode.DREFERENCE_NAME);
+                DReference newRef = dataManager.getReference(refName);
+                adapter.addItem(newRef);
+                if (!data.references.contains(newRef))
+                    data.references.add(newRef);
+
+                if (!adapter.isEmpty()) {
+                    noContentViewHelper.hide();
+                    rem_help.setVisibility(View.VISIBLE);
+                }
+                break;
+            case AppCode.DREFERENCE_REMOVED:
+                data.references.remove(editingReference);
+                adapter.removeItem(editingReference);
+
+                if (adapter.isEmpty()) {
+                    noContentViewHelper.displayMessage();
+                    rem_help.setVisibility(View.GONE);
+                }
+                break;
+            case AppCode.DREFERENCE_UPDATED:
+                adapter.updateItem(editingReference);
+                break;
+            case AppCode.DREFERENCE_SELECTED:
+                Bundle extras = intent.getExtras();
+
+                int num = extras.getInt(AppCode.DREFERENCE_NAME_NUM);
+                for (int i = 0; i < num; i++) {
+                    newRef = dataManager.getReference(extras.getString(AppCode.DREFERENCE_NAME + i));
+
+                    adapter.addItem(newRef);
+                    if (!data.references.contains(newRef))
+                        data.references.add(newRef);
+                }
+
+                if (!adapter.isEmpty()) {
+                    noContentViewHelper.hide();
+                    rem_help.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+    }
+
+    private View.OnClickListener onEditReference = new View.OnClickListener() {
         @Override
         public void onClick(View v)
         {
-            SubjectPair pair = (SubjectPair) v.getTag();
-            int position = data.pairs.indexOf(pair);
-            if (v.getId() == R.id.edit) {
-                modifyingPosition = position;
+            editingReference = (DReference) v.getTag();
 
-                in_pair1.setText(pair.inDelved);
-                in_pair2.setText(pair.inNative);
-            } else {
-
-                data.pairs.remove(position);
-                adapter.notifyItemRemoved(position);
-
-                if (adapter.getItemCount() == 0)
-                    noContentViewHelper.displayMessage();
-            }
+            Intent intent = new Intent(SubjectEditorActivity.this, DReferenceActivity.class);
+            intent.putExtra(AppCode.DREFERENCE_NAME, editingReference.name);
+            startActivityForResult(intent, AppCode.ACTION_MODIFY);
         }
     };
 
-    public void actionAddPair(View v)
+    public void onAddNewReference(View view)
     {
-        String pair1 = in_pair1.getText().toString();
-        String pair2 = in_pair2.getText().toString();
-        if (pair1.isEmpty() || pair2.isEmpty()) {
-            showMessage(R.string.msg_missing_content);
-            if (pair1.isEmpty()) in_pair1.requestFocus();
-            else in_pair2.requestFocus();
-            return;
-        }
-        if (modifyingPosition != -1) {
-            SubjectPair modifying = data.pairs.get(modifyingPosition);
-            modifying.inDelved = pair1;
-            modifying.inNative = pair2;
-            adapter.notifyItemChanged(modifyingPosition);
-            modifyingPosition = -1;
-        } else {
-            if (adapter.getItemCount() == 0)
-                noContentViewHelper.hide();
+        Intent intent = new Intent(this, ReferenceEditorActivity.class);
+        intent.putExtra(AppCode.ACTION, ReferenceEditorActivity.ACTION_CREATE_FOR_SUBJECT);
+        startActivityForResult(intent, AppCode.ACTION_CREATE);
+    }
 
-            data.pairs.add(new SubjectPair(pair1, pair2));
-            adapter.notifyItemInserted(data.pairs.size() - 1);
-        }
-        in_pair1.setText("");
-        in_pair2.setText("");
-        in_pair1.requestFocus();
+    public void onAddExistingReference(View view)
+    {
+        Intent intent = new Intent(this, ReferenceSelectorActivity.class);
+        startActivityForResult(intent, AppCode.ACTION_SELECT);
     }
 
     public void actionSave(View v)
@@ -160,14 +185,14 @@ public class SubjectEditorActivity extends AppCompatActivity {
             in_name.requestFocus();
             return;
         }
-        if (data.pairs.isEmpty()) {
+        if (data.references.isEmpty()) {
             showMessage(R.string.msg_missing_subject_content);
             return;
         }
 
         if (data.state == State.CREATE) {
 
-            data.subject = dataManager.addSubject(subject_name, data.pairs);
+            data.subject = dataManager.addSubject(subject_name, data.references);
             setResult(AppCode.SUBJECT_CREATED);
 
             Intent intent = new Intent(this, SubjectActivity.class);
@@ -176,7 +201,7 @@ public class SubjectEditorActivity extends AppCompatActivity {
 
         } else {
 
-            dataManager.updateSubject(data.subject, subject_name, data.pairs);
+            dataManager.updateSubject(data.subject, subject_name, data.references);
             setResult(AppCode.SUBJECT_MODIFIED);
         }
         finish();
@@ -195,6 +220,23 @@ public class SubjectEditorActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(R.string.continue_, null)
                 .show();
+    }
+
+    @Override
+    public void onItemDismiss(int position)
+    {
+        data.references.remove(position);
+        adapter.removeItem(position);
+
+        if (adapter.isEmpty()) {
+            noContentViewHelper.displayMessage();
+            rem_help.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition)
+    {
     }
 
     private void showMessage(int text)

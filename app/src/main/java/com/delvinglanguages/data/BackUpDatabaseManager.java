@@ -3,7 +3,6 @@ package com.delvinglanguages.data;
 import android.content.Context;
 
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 
 /**
  * FastDatabaseManager
@@ -41,9 +40,9 @@ public class BackUpDatabaseManager extends BaseDatabaseManager {
         super.insertDrawerReference(id, list_id, note, Database.NOT_SYNCED);
     }
 
-    public void insertSubject(int id, int list_id, String name, SubjectPairs pairs)
+    public void insertSubject(int id, int list_id, String name, String referencesIds)
     {
-        super.insertSubject(id, list_id, name, pairs, Database.NOT_SYNCED);
+        super.insertSubject(id, list_id, name, referencesIds, Database.NOT_SYNCED);
     }
 
     public void insertTest(int id, int list_id, String name, int runTimes, String content, int subject_id)

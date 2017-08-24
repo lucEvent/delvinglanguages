@@ -1,5 +1,6 @@
 package com.delvinglanguages.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,16 +10,22 @@ import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.DrawerReference;
+import com.delvinglanguages.kernel.Inflexion;
+import com.delvinglanguages.kernel.Usage;
 import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
+import com.delvinglanguages.kernel.util.DReferences;
+import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.Statistics;
 import com.delvinglanguages.net.utils.SyncWrapper;
 
+import java.util.Random;
+
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "delving.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String id = "_id";
     public static final String code = "code";
@@ -36,11 +43,14 @@ public class Database extends SQLiteOpenHelper {
     public static final String priority = "priority";
     public static final String runtimes = "runtimes";
     public static final String content = "content";
-    public static final String subject_id = "theme_id";
+    public static final String from_id = "theme_id";
     public static final String pairs = "pairs";
     public static final String type = "type";
     public static final String synced = "synced";
     public static final String wrappedContent = "wrappedContent";
+    public static final String reference_id = "reference_id";
+    public static final String translation = "translation";
+    public static final String usage = "usage";
 
     public static final int SYNCED = 1;
     public static final int NOT_SYNCED = 0;
@@ -142,7 +152,7 @@ public class Database extends SQLiteOpenHelper {
 
         public static String db = "test";
 
-        public static String[] cols = {id, list_id, name, runtimes, content, subject_id};
+        public static String[] cols = {id, list_id, name, runtimes, content, from_id};
 
         public static String creator =
                 "CREATE TABLE " + db + " (" +
@@ -151,7 +161,7 @@ public class Database extends SQLiteOpenHelper {
                         name + " TEXT NOT NULL," +
                         runtimes + " INTEGER," +
                         content + " TEXT NOT NULL," +
-                        subject_id + " INTEGER," +
+                        from_id + " INTEGER," +
                         synced + " INTEGER" +
                         ");";
 
@@ -226,6 +236,29 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    public static final class DBUsage {
+
+        public static String db = "usage";
+
+        public static String[] cols = {reference_id,translation, usage};
+
+        public static String creator =
+                "CREATE TABLE " + db + " (" +
+                        reference_id + " INTEGER," +
+                        list_id + " INTEGER," +
+                        translation + " TEXT NOT NULL," +
+                        usage + " TEXT NOT NULL," +
+                        synced + " INTEGER" +
+                        ");";
+
+        public static Usage parse(Cursor c)
+        {
+            System.out.println("Parsing usage for:"+c.getString(1)+" ["+c.getInt(0)+"]");
+            return new Usage(c.getString(1), c.getString(2));
+        }
+
+    }
+
     public Database(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -242,6 +275,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(DBSubject.creator);
         db.execSQL(DBRemovedItem.creator);
         db.execSQL(DBDeletedItem.creator);
+        db.execSQL(DBUsage.creator);
     }
 
     @Override
@@ -254,11 +288,64 @@ public class Database extends SQLiteOpenHelper {
                 db.execSQL("DROP TABLE removedreference");
                 db.execSQL(DBRemovedItem.creator);
                 db.execSQL(DBDeletedItem.creator);
+            case 2:
+                db.execSQL(DBUsage.creator);
+
+                // *: Converting Subject (old) pairs into DReferences
+                db.beginTransactionNonExclusive();
+
+                Random idGenerator = new Random();
+                Cursor cursor = db.query(DBSubject.db, DBSubject.cols, null, null, null, null, null);
+                if (cursor.moveToFirst())
+                    do {
+
+                        int subject_id = cursor.getInt(0);
+                        int list_id = cursor.getInt(1);
+                        String pairsWrapper = cursor.getString(3);
+
+                        DReferences references = new DReferences();
+
+                        // unwrap
+                        String[] parts = pairsWrapper.split("%Th");
+
+                        int size = Integer.parseInt(parts[0]);
+                        int index = 1;
+                        for (int i = 0; i < size; i++) {
+                            String name = parts[index++];
+                            String translation = parts[index++];
+
+                            Inflexions inflexions = new Inflexions();
+                            inflexions.add(new Inflexion(new String[]{}, new String[]{translation}, DReference.OTHER));
+
+                            int id = idGenerator.nextInt();
+
+                            ContentValues values = new ContentValues();
+                            values.put(Database.id, id);
+                            values.put(Database.list_id, list_id);
+                            values.put(Database.name, name);
+                            values.put(Database.pronunciation, "");
+                            values.put(Database.inflexions, inflexions.wrap());
+                            values.put(Database.priority, DReference.INITIAL_PRIORITY);
+                            values.put(Database.synced, Database.NOT_SYNCED);
+                            db.insert(DBReference.db, null, values);
+
+                            references.add(new DReference(id, name, "", inflexions, 0));
+                        }
+                        // end unwrap
+                        // update subject
+                        Subject subject = new Subject(subject_id, "", references);
+                        ContentValues values = new ContentValues();
+                        values.put(Database.pairs, subject.wrapReferencesIds());
+                        values.put(Database.synced, Database.NOT_SYNCED);
+                        db.update(DBSubject.db, values, Database.list_id + " = " + list_id + " AND " + Database.id + " = " + subject_id, null);
+                        // end update
+                    } while (cursor.moveToNext());
+
+                cursor.close();
+                db.setTransactionSuccessful();
+                db.endTransaction();
+                // end *
         }
-        // Delete all needed tables
-        // db.execSQL("DROP TABLE "+ "db_languages");
-        // Create all needed tables
-        // db.execSQL(CREATE_SUBJECT);
     }
 
 }

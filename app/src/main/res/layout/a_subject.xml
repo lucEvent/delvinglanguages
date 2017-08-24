@@ -41,7 +41,7 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="25dp"/>
+            android:paddingTop="5dp"/>
 
     </android.support.v4.widget.NestedScrollView>
 

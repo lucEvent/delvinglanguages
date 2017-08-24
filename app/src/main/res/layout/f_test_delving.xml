@@ -33,26 +33,38 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/default_list_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textview_pronunciation"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/ripple"
-                android:clickable="true"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/ic_speaker"
-                android:elevation="4dp"
-                android:onClick="onPronunciationAction"
-                android:padding="16dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:onClick="onPronunciationAction"
+                    android:src="@drawable/ic_speaker"
+                    app:backgroundTint="#ffff"
+                    app:fabSize="mini"/>
+
+                <TextView
+                    android:id="@+id/tv_pronunciation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[Pronunciation]"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="italic"/>
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"

@@ -2,9 +2,10 @@
 <resources>
 
     <color name="colorPrimary">#3379A0</color>
-    <color name="colorPrimarySoft">#2A7198</color>
+    <color name="colorPrimaryLight">#2A7198</color>
     <color name="colorPrimaryDark">#236990</color>
     <color name="colorAccent">#FFD54F</color>
+    <color name="colorAccentLight">#FFE89D</color>
     <color name="colorAccentDark">#FFB300</color>
 
     <color name="noun">#E53935</color>
@@ -13,14 +14,15 @@
     <color name="adverb">#039BE5</color>
     <color name="phrasal">#00897B</color>
     <color name="expression">#7CB342</color>
-    <color name="preposition">#FDD835</color>
-    <color name="conjunction">#FB8C00</color>
+    <color name="preposition">#e6bc09</color>
+    <color name="conjunction">#C46D00</color>
     <color name="other">#6D4C41</color>
     <color name="none">#0fff</color>
 
     <color name="button_disabled">#feee</color>
     <color name="button_default">#fddd</color>
     <color name="default_background">#feee</color>
+    <color name="default_list_background">#fff</color>
     <color name="activity_title">#ffff</color>
 
     <color name="drawer_btn_pressed">#ffebebeb</color>

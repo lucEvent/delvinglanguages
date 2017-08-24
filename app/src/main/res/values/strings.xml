@@ -1,11 +1,12 @@
 <resources>
 
     <string name="app_name" translatable="false">Delving Languages</string>
-    <string name="app_version" translatable="false">4.2.1</string>
+    <string name="app_version" translatable="false">4.3.0</string>
     <string name="about_content_contact" translatable="false">Developed by Rafael J. Lucena\nContact: rafaa89(at)gmail.com</string>
     <string name="about_content_title_new_features" translatable="false">New features and improvements:</string>
     <string name="about_content_new_features" translatable="false">
-        Version 4.2.1 2017-07-31:\nOnline search now allows to add translations in both directions.\nInternal changes.\nBug fixes and improvements.\n
+        Version 4.3.0 2017-08-XX:\nIntroducing Usages.\nIntroducing Phrasal Verbs feature screen.\nImprovements.\n
+        \nVersion 4.2.1 2017-07-31:\nOnline search now allows to add translations in both directions.\nInternal changes.\nBug fixes and improvements.\n
         \nVersion 4.2.0 2017-07-23:\nIntroducing Records.\nOnline translator now powered by Yandex.Translate in some languages.\nNow you can also recover Themes and Tests from the Recycle Bin.\nBug fixes and other improvements.\n
         \nVersion 4.1.0 2017-07-01:\nMore languages supported.\nFlags improved.\nNavigation improved (+ new navigation list).\nMatch practise improved.\nImport fixes.\nBug fixes and other improvements.\n
         \nVersion 4.0.1 2016-11-01:\nMinor bug fixes.\n
@@ -97,7 +98,6 @@
     <string name="import_from_file">Import from file</string>
     <string name="synchronize_your_account">Synchronize your account</string>
     <string name="how_do_we_start">How do we start?</string>
-    <string name="add_one_now">Add one now</string>
     <string name="create_one_now">Create one now</string>
 
 
@@ -252,7 +252,6 @@
     <string name="pref_app_theme_key" translatable="false">pref3</string>
     <string name="pref_import_data_key" translatable="false">pref4</string>
     <string name="pref_export_data_key" translatable="false">pref5</string>
-    <string name="pref_current_list_key" translatable="false">pref6</string>
     <string name="pref_backup_n_synchronization_key" translatable="false">pref7</string>
 
     <!-- * ********************** language_code Settings strings ************************* * -->
@@ -312,5 +311,15 @@
     <!-- ********************************************************************************* -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="hint_enter_usage">Enter usage</string>
+    <string name="usages_of">Usage of %1$s</string>
+    <string name="usage_for">Usage for\n%1$s</string>
+    <string name="msg_missing_usage">Missing usage</string>
+    <string name="add_new_word">Add new word</string>
+    <string name="add_existing_word">Add existing word</string>
+    <string name="swipe_to_remove">\u21c6 Swipe to remove \u21c6</string>
+    <string name="add_edit_usages">Add/Edit usages</string>
+    <string name="save_changes">Save  changes</string>
+    <string name="msg_no_phrasal_verbs">This list has not phrasal verbs</string>
 
 </resources>

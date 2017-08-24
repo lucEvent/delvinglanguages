@@ -17,7 +17,6 @@ import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.DelvingLists;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.net.utils.SyncWrapper;
 import com.delvinglanguages.net.utils.SyncWrappers;
 
@@ -36,6 +35,7 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         super(context);
     }
 
+    @Override
     public DelvingLists readLists()
     {
         DelvingLists result = new DelvingLists();
@@ -187,9 +187,9 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
         super.insertDrawerReference(id, list_id, note, Database.SYNCED);
     }
 
-    public void insertSubject(int id, int list_id, String name, SubjectPairs pairs)
+    public void insertSubject(int id, int list_id, String name, String referencesIds)
     {
-        super.insertSubject(id, list_id, name, pairs, Database.SYNCED);
+        super.insertSubject(id, list_id, name, referencesIds, Database.SYNCED);
     }
 
     public void insertTest(int id, int list_id, String name, int runTimes, String content, int subject_id)
@@ -228,7 +228,7 @@ public class SyncDatabaseManager extends BaseDatabaseManager {
 
     public void updateSubject(Subject subject, int list_id)
     {
-        super.updateSubject(subject.id, list_id, subject.getName(), subject.getPairs(), Database.SYNCED);
+        super.updateSubject(subject.id, list_id, subject.getName(), subject.wrapReferencesIds(), Database.SYNCED);
     }
 
     public void updateTest(Test test, int list_id)

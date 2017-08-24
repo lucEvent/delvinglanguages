@@ -1,8 +1,5 @@
 package com.delvinglanguages.view.activity;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.delvinglanguages.AppCode;
@@ -26,15 +22,17 @@ import com.delvinglanguages.view.lister.DictionaryLister;
 import com.delvinglanguages.view.lister.ReferenceLister;
 import com.delvinglanguages.view.utils.MainSearch;
 import com.delvinglanguages.view.utils.NoContentViewHelper;
+import com.delvinglanguages.view.utils.SearchEngine;
 
-public class DictionaryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
+public class DictionaryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DelvingListManager dataManager;
     private DReferences references;
 
-    private ReferenceLister adapter;
+    private RecyclerView recyclerView;
 
-    private SearchView search;
+    private SearchEngine searchEngine;
+    private DReference editingPhrasalVerb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,17 +46,15 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
 
         dataManager = new DelvingListManager(this);
         references = dataManager.getReferences();
-        queriedReferences = references;
-        lastQuery = "";
 
         if (!references.isEmpty()) {
 
-            adapter = new DictionaryLister(references, dataManager.getCurrentList().arePhrasalVerbsEnabled(), this, getResources());
+            ReferenceLister adapter = new DictionaryLister(references, dataManager.getCurrentList().arePhrasalVerbsEnabled(), this, getResources());
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             layoutManager.setAutoMeasureEnabled(true);
 
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+            recyclerView = (RecyclerView) findViewById(R.id.list);
             recyclerView.setHasFixedSize(false);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
@@ -76,13 +72,13 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         switch (resultCode) {
             case AppCode.DREFERENCE_REMOVED:
                 references = dataManager.getReferences();
-                queriedReferences = references;
+                searchEngine.remove(editingPhrasalVerb);
 
                 if (references.isEmpty())
                     displayNoContentMessage();
-
+                break;
             case AppCode.DREFERENCE_UPDATED:
-                onQueryTextChange(lastQuery);
+                searchEngine.update(editingPhrasalVerb);
                 break;
         }
     }
@@ -92,14 +88,11 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
     {
         getMenuInflater().inflate(R.menu.m_dictionary, menu);
 
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        search = (SearchView) menu.findItem(R.id.search).getActionView();
-
         if (!references.isEmpty()) {
-            search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-            search.setOnQueryTextListener(this);
-        }
+            SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
 
+            searchEngine = new SearchEngine(this, recyclerView, search, references);
+        }
         return true;
     }
 
@@ -114,63 +107,16 @@ public class DictionaryActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
-    private DReferences queriedReferences;
-    private String lastQuery;
-
-    @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        invalidateOptionsMenu();
-        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(search.getWindowToken(), 0);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String query)
-    {
-        adapter.clear();
-
-        DReferences searchableRefs;
-        if (query.startsWith(lastQuery))
-            searchableRefs = queriedReferences;
-        else
-            searchableRefs = references;
-
-        lastQuery = query;
-
-        query = query.toLowerCase();
-        boolean foundPerfectMatch = false;
-
-        DReferences newQueriedReference = new DReferences();
-        for (DReference ref : searchableRefs)
-            if (ref.hasContent(query)) {
-                newQueriedReference.add(ref);
-                adapter.addItem(ref);
-
-                if (ref.name.toLowerCase().equals(query))
-                    foundPerfectMatch = true;
-            }
-        queriedReferences = newQueriedReference;
-
-        if (adapter.isEmpty())
-            adapter.addItem(new MainSearch(query, true));
-        else if (!foundPerfectMatch)
-            adapter.addItem(new MainSearch(query, false));
-
-        return true;
-    }
-
     @Override
     public void onClick(View v)
     {
         Item item = (Item) v.getTag();
 
         if (item instanceof DReference) {
-            DReference ref = (DReference) item;
+            editingPhrasalVerb = (DReference) item;
 
             Intent intent = new Intent(this, DReferenceActivity.class);
-            intent.putExtra(AppCode.DREFERENCE_NAME, ref.name);
+            intent.putExtra(AppCode.DREFERENCE_NAME, editingPhrasalVerb.name);
             startActivityForResult(intent, AppCode.ACTION_MODIFY);
         } else {
             MainSearch searchItem = (MainSearch) item;

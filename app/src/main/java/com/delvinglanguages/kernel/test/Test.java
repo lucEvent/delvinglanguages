@@ -13,7 +13,7 @@ public class Test extends Item implements Wrapper {
     private final static String SEP = "%Tt";
     private final static String SEP2 = "%T%";
 
-    public final int subject_id;
+    public final int from_id;
 
     public String name;
 
@@ -22,19 +22,19 @@ public class Test extends Item implements Wrapper {
     private TestReferenceStates totalStates;
     public TestReferenceStates states;
 
-    public Test(int id, String name, int runTimes, @NonNull String wrappedContent, int subject_id)
+    public Test(int id, String name, int runTimes, @NonNull String wrappedContent, int from_id)
     {
         super(id, Item.TEST);
-        this.subject_id = subject_id;
+        this.from_id = from_id;
         this.name = name;
         this.runTimes = runTimes;
         this.totalStates = unWrapContent(wrappedContent);
     }
 
-    public Test(int id, String name, @NonNull DReferences refs, int subject_id)
+    public Test(int id, String name, @NonNull DReferences refs, int from_id)
     {
         super(id, Item.TEST);
-        this.subject_id = subject_id;
+        this.from_id = from_id;
         this.name = name;
         this.runTimes = 0;
         this.totalStates = new TestReferenceStates(refs.size());
@@ -54,7 +54,7 @@ public class Test extends Item implements Wrapper {
         return name + SEP2 +
                 runTimes + SEP2 +
                 Test.wrapContent(this) + SEP2 +
-                subject_id;
+                from_id;
     }
 
     @Override

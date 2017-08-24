@@ -30,7 +30,8 @@
                     android:background="@drawable/ripple_round"
                     android:contentDescription="@string/cancel"
                     android:onClick="actionCancel"
-                    android:src="@drawable/ic_cancel_accent"/>
+                    android:src="@drawable/ic_cancel"
+                    android:tint="@color/colorAccent"/>
 
                 <Button
                     style="?android:attr/buttonBarButtonStyle"

@@ -5,5 +5,6 @@
     <item name="search_item" type="id"/>
     <item name="clear_recycler_bin" type="id"/>
     <item name="clear_records" type="id"/>
+    <item name="save_changes" type="id"/>
 
 </resources>

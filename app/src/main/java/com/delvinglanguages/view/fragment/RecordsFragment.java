@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,9 +59,11 @@ public class RecordsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        menu.add(Menu.NONE, R.id.clear_records, 0, R.string.delete_all)
-                .setIcon(R.drawable.ic_delete_all_white)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItem mi = menu.add(Menu.NONE, R.id.clear_records, 0, R.string.delete_all)
+                .setIcon(R.drawable.ic_delete_all);
+
+        mi.getIcon().setTint(Color.WHITE);
+        mi.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     @Override

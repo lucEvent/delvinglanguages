@@ -9,7 +9,7 @@ import com.delvinglanguages.kernel.DReference;
 
 public class ReferenceViewHolder extends RecyclerView.ViewHolder {
 
-    private View container;
+    protected View container;
     private TextView dreference, translation;
     private View noun, verb, adjc, advb, phrv, expr, prep, conj, othr;
 
@@ -33,28 +33,28 @@ public class ReferenceViewHolder extends RecyclerView.ViewHolder {
         container = v;
     }
 
-    public static void populateViewHolder(ReferenceViewHolder holder, DReference reference, boolean showPhrasal)
+    public void bind(DReference reference, boolean showPhrasal)
     {
         int type = reference.type;
 
-        holder.dreference.setText(reference.name);
-        holder.translation.setText(reference.getTranslationsAsString());
+        dreference.setText(reference.name);
+        translation.setText(reference.getTranslationsAsString());
 
-        holder.noun.setVisibility((type & DReference.NOUN) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.verb.setVisibility((type & DReference.VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.adjc.setVisibility((type & DReference.ADJECTIVE) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.advb.setVisibility((type & DReference.ADVERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+        noun.setVisibility((type & DReference.NOUN) != 0 ? View.VISIBLE : View.INVISIBLE);
+        verb.setVisibility((type & DReference.VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+        adjc.setVisibility((type & DReference.ADJECTIVE) != 0 ? View.VISIBLE : View.INVISIBLE);
+        advb.setVisibility((type & DReference.ADVERB) != 0 ? View.VISIBLE : View.INVISIBLE);
         if (showPhrasal)
-            holder.phrv.setVisibility((type & DReference.PHRASAL_VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
+            phrv.setVisibility((type & DReference.PHRASAL_VERB) != 0 ? View.VISIBLE : View.INVISIBLE);
         else
-            holder.phrv.setVisibility(View.GONE);
+            phrv.setVisibility(View.GONE);
 
-        holder.expr.setVisibility((type & DReference.EXPRESSION) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.prep.setVisibility((type & DReference.PREPOSITION) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.conj.setVisibility((type & DReference.CONJUNCTION) != 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.othr.setVisibility((type & DReference.OTHER) != 0 ? View.VISIBLE : View.INVISIBLE);
+        expr.setVisibility((type & DReference.EXPRESSION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        prep.setVisibility((type & DReference.PREPOSITION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        conj.setVisibility((type & DReference.CONJUNCTION) != 0 ? View.VISIBLE : View.INVISIBLE);
+        othr.setVisibility((type & DReference.OTHER) != 0 ? View.VISIBLE : View.INVISIBLE);
 
-        holder.container.setTag(reference);
+        container.setTag(reference);
     }
 
 }

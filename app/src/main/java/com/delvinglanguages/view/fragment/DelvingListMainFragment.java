@@ -29,6 +29,7 @@ import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.view.activity.DReferenceActivity;
 import com.delvinglanguages.view.activity.DelvingListActivity;
 import com.delvinglanguages.view.activity.DictionaryActivity;
+import com.delvinglanguages.view.activity.PhrasalVerbsActivity;
 import com.delvinglanguages.view.activity.ReferenceEditorActivity;
 import com.delvinglanguages.view.activity.SubjectActivity;
 import com.delvinglanguages.view.activity.SubjectEditorActivity;
@@ -183,6 +184,7 @@ public class DelvingListMainFragment extends Fragment
 
             case R.id.option_drawer:
 
+                //       intent = new Intent(getActivity(), PhrasalVerbsActivity.class);
                 intent.putExtra(AppCode.FRAGMENT, DelvingListActivity.Option.DRAWER);
                 break;
 
@@ -209,11 +211,15 @@ public class DelvingListMainFragment extends Fragment
                 return; // break;
 
             case R.id.option_phrasal_verbs:
-                // TODO: 21/07/2016
-                //intent.putExtra(AppCode.FRAGMENT, DelvingListActivity.Option.PHRASAL_VERBS);
-                Toast.makeText(getActivity(), R.string.msg_in_next_releases, Toast.LENGTH_SHORT).show();
+
+                if (dataManager.getCurrentList().getNumPhrasalVerbs() == 0) {
+                    Toast.makeText(getActivity(), R.string.msg_no_phrasal_verbs, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                intent = new Intent(getActivity(), PhrasalVerbsActivity.class);
                 optionsDialog.dismiss();
-                return; // break;
+                break;
 
             case R.id.option_web_search:
 

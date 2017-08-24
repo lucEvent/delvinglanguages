@@ -13,19 +13,23 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.test.TestReferenceState;
+import com.delvinglanguages.kernel.util.Usages;
 import com.delvinglanguages.view.lister.InflexionLister;
 import com.delvinglanguages.view.utils.TestListener;
 
 public class TestDelvingFragment extends TestFragment {
 
-    public static TestDelvingFragment getInstance(Handler handler, TestReferenceState reference, TestReferenceState.TestStage nextStage)
+    public static TestDelvingFragment getInstance(Handler handler, TestReferenceState reference, Usages usages, TestReferenceState.TestStage nextStage)
     {
         TestDelvingFragment f = new TestDelvingFragment();
         f.reference = reference;
+        f.usages = usages;
         f.handler = handler;
         f.nextStage = nextStage;
         return f;
     }
+
+    private Usages usages;
 
     private InflexionLister adapter;
 
@@ -36,7 +40,7 @@ public class TestDelvingFragment extends TestFragment {
 
         Context context = getActivity();
 
-        adapter = new InflexionLister(getActivity(), reference.reference.getInflexions(), null);
+        adapter = new InflexionLister(getActivity(), reference.reference.getInflexions(), usages, null);
 
         view.findViewById(R.id.actionContinue).setOnClickListener(onContinueAction);
 
@@ -60,7 +64,7 @@ public class TestDelvingFragment extends TestFragment {
 
         adapter.setNewDataSet(reference.reference.getInflexions());
         ((CollapsingToolbarLayout) getActivity().findViewById(R.id.toolbar_layout)).setTitle(reference.reference.name);
-        ((TextView) getActivity().findViewById(R.id.textview_pronunciation)).setText(reference.reference.pronunciation);
+        ((TextView) getActivity().findViewById(R.id.tv_pronunciation)).setText(reference.reference.pronunciation);
     }
 
     private View.OnClickListener onContinueAction = new View.OnClickListener() {

@@ -3,6 +3,7 @@ package com.delvinglanguages.view.fragment.practise;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -97,12 +98,15 @@ public class TestResultFragment extends android.app.Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        menu.add(Menu.NONE, R.id.delete, 0, R.string.delete)
-                .setIcon(R.drawable.ic_delete_white)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(Menu.NONE, R.id.start, 1, R.string.start)
-                .setIcon(R.drawable.ic_play_white)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItem mi1 = menu.add(Menu.NONE, R.id.delete, 0, R.string.delete)
+                .setIcon(R.drawable.ic_delete);
+        mi1.getIcon().setTint(Color.WHITE);
+        mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        MenuItem mi2 = menu.add(Menu.NONE, R.id.start, 1, R.string.start)
+                .setIcon(R.drawable.ic_play);
+        mi2.getIcon().setTint(Color.WHITE);
+        mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     @Override

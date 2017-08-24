@@ -26,7 +26,7 @@ import com.delvinglanguages.view.utils.DelvingListListener;
 public class DelvingListActivity extends AppCompatActivity {
 
     public enum Option {
-        PRACTISE, VERBS, PHRASAL_VERBS, DRAWER, RECYCLE_BIN, SUBJECTS, PRONUNCIATION, SETTINGS
+        PRACTISE, VERBS, DRAWER, RECYCLE_BIN, SUBJECTS, PRONUNCIATION, SETTINGS
     }
 
     private Option currentOption;
@@ -104,10 +104,6 @@ public class DelvingListActivity extends AppCompatActivity {
             case SUBJECTS:
                 fragment = new SubjectsFragment();
                 title = getString(R.string.title_subjects_fragment, delvingList.name);
-                break;
-            case PHRASAL_VERBS:
-                //fragment = new PhrasalsFragment();
-                //title = getString(R.string.title_phrasals);
                 break;
             case VERBS:
                 //fragment = new VerbsFragment();

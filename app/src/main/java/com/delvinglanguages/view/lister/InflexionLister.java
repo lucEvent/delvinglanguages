@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.Inflexion;
+import com.delvinglanguages.kernel.Usage;
 import com.delvinglanguages.kernel.util.Inflexions;
+import com.delvinglanguages.kernel.util.Usages;
 
 public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHolder> {
 
@@ -25,6 +27,8 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
     };
 
     protected Inflexions dataset;
+
+    private Usages usages;
 
     protected LayoutInflater inflater;
 
@@ -52,10 +56,11 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
         }
     }
 
-    public InflexionLister(Context context, Inflexions dataset, View.OnClickListener itemListener)
+    public InflexionLister(Context context, Inflexions dataset, Usages usages, View.OnClickListener itemListener)
     {
         this.inflater = LayoutInflater.from(context);
         this.dataset = dataset;
+        this.usages = usages != null ? usages : new Usages();
         this.itemListener = itemListener;
     }
 
@@ -86,11 +91,10 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
             holder.title_translations.setVisibility(View.VISIBLE);
             holder.title_inflexions.setVisibility(View.VISIBLE);
 
-            StringBuilder sb = new StringBuilder("<html>");
-            for (String form : inflexion.getInflexions()) {
+            StringBuilder sb = new StringBuilder();
+            for (String form : inflexion.getInflexions())
                 sb.append(form).append("<br>");
-            }
-            sb.append("</html>");
+
             holder.text_inflexions.setText(Html.fromHtml(sb.toString()));
 
         } else {
@@ -101,10 +105,22 @@ public class InflexionLister extends RecyclerView.Adapter<InflexionLister.ViewHo
 
         holder.list_translations.removeAllViews();
         for (String translation : inflexion.getTranslations()) {
-            TextView text_translation = (TextView) inflater.inflate(R.layout.i_translation, holder.list_translations, false);
-            text_translation.setText(translation);
-            text_translation.setOnClickListener(itemListener);
-            holder.list_translations.addView(text_translation);
+            View v;
+
+            Usage usage = usages.get(translation);
+            if (usage != null && !usage.usage.isEmpty()) {
+                v = inflater.inflate(R.layout.i_translation_with_usage, holder.list_translations, false);
+
+                ((TextView) v.findViewById(R.id.translation)).setText(translation);
+                ((TextView) v.findViewById(R.id.usage)).setText(usage.usage);
+            } else {
+                v = inflater.inflate(R.layout.i_translation, holder.list_translations, false);
+                ((TextView) v).setText(translation);
+            }
+
+            v.setTag(translation);
+            v.setOnClickListener(itemListener);
+            holder.list_translations.addView(v);
         }
     }
 

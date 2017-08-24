@@ -11,14 +11,16 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.delvinglanguages.AppCode;
 import com.delvinglanguages.AppSettings;
 import com.delvinglanguages.R;
 import com.delvinglanguages.kernel.DReference;
-import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.DelvingListManager;
+import com.delvinglanguages.kernel.LanguageCode;
 import com.delvinglanguages.kernel.game.WriteGame;
 import com.delvinglanguages.kernel.manager.PronunciationManager;
 import com.delvinglanguages.kernel.record.Record;
+import com.delvinglanguages.kernel.util.DReferences;
 import com.delvinglanguages.view.utils.AppAnimator;
 
 public class PractiseListeningActivity extends Activity implements TextWatcher {
@@ -45,7 +47,20 @@ public class PractiseListeningActivity extends Activity implements TextWatcher {
         setContentView(R.layout.a_practise_listening);
 
         dataManager = new DelvingListManager(this);
-        gameManager = new WriteGame(dataManager.getReferences());
+        // Select proper references
+        DReferences references;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(AppCode.DREFERENCE_NAME_NUM)) {
+            int num = extras.getInt(AppCode.DREFERENCE_NAME_NUM);
+            references = new DReferences(num);
+
+            for (int i = 0; i < num; i++)
+                references.add(dataManager.getReference(extras.getString(AppCode.DREFERENCE_NAME + i)));
+
+        } else
+            references = dataManager.getReferences();
+        //
+        gameManager = new WriteGame(references);
         pronunciationManager = new PronunciationManager(this, LanguageCode.getLocale(dataManager.getCurrentList().from_code), true);
 
         handler = new Handler();

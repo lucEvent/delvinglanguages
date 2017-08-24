@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="#fff"
-    android:elevation="4dp"
-    android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/list_item_layout"
+    android:background="#ffff">
 
     <TextView
         android:id="@+id/textView_type"
@@ -16,7 +13,7 @@
         android:paddingRight="10dip"
         android:paddingTop="1dip"
         android:text="EXPRESSION"
-        android:textSize="10sp" />
+        android:textSize="10sp"/>
 
     <LinearLayout
         android:id="@+id/list_translations"
@@ -26,6 +23,6 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"/>
 
 </LinearLayout>

@@ -42,7 +42,7 @@ public class RecycledItemViewHolder extends RecyclerView.ViewHolder {
                 Context context = holder.subtitle.getContext();
 
                 holder.title.setText(subject.getName());
-                holder.subtitle.setText(context.getString(R.string.x_words, subject.getPairs().size()));
+                holder.subtitle.setText(context.getString(R.string.x_words, subject.size()));
                 break;
             case Wrapper.TYPE_TEST:
                 Test test = removedItem.castToTest();

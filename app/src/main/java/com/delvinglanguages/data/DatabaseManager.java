@@ -8,6 +8,7 @@ import com.delvinglanguages.data.Database.DBTest;
 import com.delvinglanguages.kernel.DReference;
 import com.delvinglanguages.kernel.DelvingList;
 import com.delvinglanguages.kernel.DrawerReference;
+import com.delvinglanguages.kernel.Usage;
 import com.delvinglanguages.kernel.subject.Subject;
 import com.delvinglanguages.kernel.test.Test;
 import com.delvinglanguages.kernel.util.DReferences;
@@ -17,9 +18,9 @@ import com.delvinglanguages.kernel.util.Inflexions;
 import com.delvinglanguages.kernel.util.RemovedItem;
 import com.delvinglanguages.kernel.util.RemovedItems;
 import com.delvinglanguages.kernel.util.Statistics;
-import com.delvinglanguages.kernel.util.SubjectPairs;
 import com.delvinglanguages.kernel.util.Subjects;
 import com.delvinglanguages.kernel.util.Tests;
+import com.delvinglanguages.kernel.util.Usages;
 import com.delvinglanguages.kernel.util.Wrapper;
 
 import java.util.Random;
@@ -38,6 +39,7 @@ public class DatabaseManager extends BaseDatabaseManager {
     /////////////////////// Reads \\\\\\\\\\\\\\\\\\\\\\\\\\\\
     // **************************************************** \\
 
+    @Override
     public DelvingLists readLists()
     {
         DelvingLists result;
@@ -63,6 +65,23 @@ public class DatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
+    public DReferences readReferences(int list_id, int[] ids)
+    {
+        DReferences result = new DReferences(ids.length);
+        synchronized (this) {
+            openReadableDatabase();
+
+            for (int i = 0; i < ids.length; i++) {
+                DReference ref = super.readReference(list_id, ids[i]);
+                if (ref != null)
+                    result.add(ref);
+            }
+
+            closeReadableDatabase();
+        }
+        return result;
+    }
+
     @Override
     public DrawerReferences readDrawerReferences(int list_id)
     {
@@ -76,6 +95,7 @@ public class DatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
+    @Override
     public RemovedItems readRemovedItems(int list_id)
     {
         RemovedItems result;
@@ -114,17 +134,28 @@ public class DatabaseManager extends BaseDatabaseManager {
         return result;
     }
 
-    public Test readTestFromSubject(int subject_id)
+    public Test readTestFrom(int from_id)
     {
         Test res = null;
         synchronized (this) {
-            openReadableDatabase();
-            Cursor cursor = db.query(DBTest.db, DBTest.cols, Database.subject_id + "=" + subject_id, null, null, null, Database.name + " ASC");
+            Cursor cursor = openReadableDatabase().query(DBTest.db, DBTest.cols, Database.from_id + "=" + from_id, null, null, null, Database.name + " ASC");
 
             if (cursor.moveToFirst())
                 res = DBTest.parse(cursor);
 
             cursor.close();
+            closeReadableDatabase();
+        }
+        return res;
+    }
+
+    @Override
+    public Usages readUsages(int list_id, int reference_id, Usages usages)
+    {
+        Usages res;
+        synchronized (this) {
+            openReadableDatabase();
+            res = super.readUsages(list_id, reference_id, usages);
             closeReadableDatabase();
         }
         return res;
@@ -170,29 +201,40 @@ public class DatabaseManager extends BaseDatabaseManager {
         return new DrawerReference(random_id, note);
     }
 
-    public Subject insertSubject(int list_id, String name, SubjectPairs pairs)
+    public Subject insertSubject(int list_id, String name, DReferences references)
     {
         int random_id = idGenerator.nextInt();
+        Subject res = new Subject(random_id, name, references);
 
         synchronized (this) {
             openWritableDatabase();
-            super.insertSubject(random_id, list_id, name, pairs, Database.NOT_SYNCED);
+            super.insertSubject(random_id, list_id, name, res.wrapReferencesIds(), Database.NOT_SYNCED);
             closeWritableDatabase();
         }
-        return new Subject(random_id, name, pairs);
+        return res;
     }
 
-    public Test insertTest(int list_id, String name, DReferences references, int subject_id)
+    public Test insertTest(int list_id, String name, DReferences references, int from_id)
     {
         int random_id = idGenerator.nextInt();
-        Test test = new Test(random_id, name, references, subject_id);
+        Test test = new Test(random_id, name, references, from_id);
 
         synchronized (this) {
             openWritableDatabase();
-            super.insertTest(random_id, list_id, name, 0, Test.wrapContent(test), subject_id, Database.NOT_SYNCED);
+            super.insertTest(random_id, list_id, name, 0, Test.wrapContent(test), from_id, Database.NOT_SYNCED);
             closeWritableDatabase();
         }
         return test;
+    }
+
+    public void insertUsages(int list_id, int reference_id, Usages usages)
+    {
+        synchronized (this) {
+            openWritableDatabase();
+            for (Usage usage : usages.values())
+                super.insertUsage(list_id, reference_id, usage, Database.NOT_SYNCED);
+            closeWritableDatabase();
+        }
     }
 
     // **************************************************** \\
@@ -240,7 +282,7 @@ public class DatabaseManager extends BaseDatabaseManager {
     {
         synchronized (this) {
             openWritableDatabase();
-            super.updateSubject(subject.id, list_id, subject.getName(), subject.getPairs(), Database.NOT_SYNCED);
+            super.updateSubject(subject.id, list_id, subject.getName(), subject.wrapReferencesIds(), Database.NOT_SYNCED);
             closeWritableDatabase();
         }
     }
@@ -277,6 +319,7 @@ public class DatabaseManager extends BaseDatabaseManager {
         }
     }
 
+    @Override
     public void deleteDrawerReference(int id, int list_id)
     {
         synchronized (this) {
@@ -306,20 +349,36 @@ public class DatabaseManager extends BaseDatabaseManager {
         }
     }
 
+    @Override
     public void deleteRemovedItem(int list_id, int item_id, int type)
     {
         synchronized (this) {
             openWritableDatabase();
             super.deleteRemovedItem(list_id, item_id, type);
+            if (type == Wrapper.TYPE_REFERENCE)
+                super.deleteAllUsagesOf(list_id, item_id);
             closeWritableDatabase();
         }
     }
 
-    public void deleteAllRemovedItems(int list_id)
+    public void deleteAllRemovedItems(int list_id, RemovedItems removedItems)
     {
         synchronized (this) {
             openWritableDatabase();
+            for (RemovedItem ri : removedItems)
+                if (ri.wrap_type == Wrapper.TYPE_REFERENCE)
+                    super.deleteAllUsagesOf(list_id, ri.id);
             super.deleteAllRemovedItems(list_id);
+            closeWritableDatabase();
+        }
+    }
+
+    public void deleteUsages(int list_id, int reference_id, Usages usages)
+    {
+        synchronized (this) {
+            openWritableDatabase();
+            for (Usage usage : usages.values())
+                super.deleteUsages(list_id, reference_id, usage.translation);
             closeWritableDatabase();
         }
     }
@@ -341,11 +400,11 @@ public class DatabaseManager extends BaseDatabaseManager {
                     break;
                 case Wrapper.TYPE_SUBJECT:
                     Subject subject = removedItem.castToSubject();
-                    super.insertSubject(subject.id, list_id, subject.getName(), subject.getPairs(), Database.NOT_SYNCED);
+                    super.insertSubject(subject.id, list_id, subject.getName(), subject.wrapReferencesIds(), Database.NOT_SYNCED);
                     break;
                 case Wrapper.TYPE_TEST:
                     Test test = removedItem.castToTest();
-                    super.insertTest(test.id, list_id, test.name, test.getRunTimes(), Test.wrapContent(test), test.subject_id, Database.NOT_SYNCED);
+                    super.insertTest(test.id, list_id, test.name, test.getRunTimes(), Test.wrapContent(test), test.from_id, Database.NOT_SYNCED);
                     break;
             }
             closeWritableDatabase();
